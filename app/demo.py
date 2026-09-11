@@ -29,6 +29,13 @@ from evolution.mutations import validate_variant, variant_to_mutations  # noqa: 
 
 METRICS_JSON = ROOT / "reports" / "campaign_metrics.json"
 METRICS_LLM_JSON = ROOT / "reports" / "campaign_metrics_llm.json"
+# Three honest cold-start regimes (see report ch.6/7). Default view = the hard
+# extrapolation regime, so the demo does not lead with the "easy" (data-rich) result.
+REGIMES = {
+    "hard · 低阶外推 (HD≤2 冷启动，推荐)": ROOT / "reports" / "campaign_metrics_hard.json",
+    "easy · 随机池 (≈98% HD≥3，数据充裕)": ROOT / "reports" / "campaign_metrics.json",
+    "sparse · 极稀疏 (仅 77 个单突变)": ROOT / "reports" / "campaign_metrics_sparse.json",
+}
 EVENTS_JSONL = ROOT / "reports" / "campaign_events.jsonl"
 EVENTS_LLM_JSONL = ROOT / "reports" / "campaign_events_llm.jsonl"
 BASELINE_JSON = ROOT / "reports" / "random_baseline_metrics.json"
@@ -144,7 +151,7 @@ def render_campaign_module(metrics: dict) -> None:
     space = metrics.get("candidate_space_size", 0)
     budget = metrics.get("budget_per_round", 0)
     st.caption(
-        f"数据源 `reports/campaign_metrics.json`（schema `{metrics.get('schema_version')}`）· "
+        f"schema `{metrics.get('schema_version')}` · 冷启动：{metrics.get('cold_start', '?')} · "
         f"oracle：{oracle} · 可测空间 {space:,} / 160,000 · 每轮预算 {budget} · LLM：{metrics.get('llm')}"
     )
 
@@ -669,12 +676,15 @@ def main() -> None:
         "不写事件流、不覆盖 `reports/`。运行：`streamlit run app/demo.py`（或 `make demo`）。"
     )
 
-    metrics = load_metrics(str(METRICS_JSON))
     tab1, tab2, tab3 = st.tabs(["① 四策略对比", "② Agent 思考回放", "③ 实时试玩"])
     with tab1:
-        if metrics is None:
-            st.warning("未找到 `reports/campaign_metrics.json`——先跑 `make campaign`。本模块占位停等。")
+        available = {label: p for label, p in REGIMES.items() if p.exists()}
+        if not available:
+            st.warning("未找到 campaign 指标——先跑 `make campaign`（或 `python -m evolution.campaign --cold-start low_hd`）。本模块占位停等。")
         else:
+            label = st.radio("冷启动设定（GB1 本身可解，故对比重点是样本效率与批次产出，而非能否达峰）",
+                             list(available), horizontal=True, key="regime")
+            metrics = load_metrics(str(available[label]))
             render_campaign_module(metrics)
     with tab2:
         render_replay_module()
