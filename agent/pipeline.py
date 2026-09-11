@@ -1,7 +1,7 @@
 """Auditable five-role GB1 pipeline. LLM calls are confined to two roles."""
 from __future__ import annotations
 
-from itertools import combinations
+from itertools import product
 from typing import Any, Callable, Iterable, Sequence
 from pydantic import BaseModel, Field
 
@@ -71,18 +71,32 @@ class HypothesisGenerator:
         return out
 
 class MutationDesigner:
+    """Designs a combinatorial mutation library: at most one substitution per
+    site (WT kept otherwise), so every candidate is a well-formed GB1 variant.
+    This replaces the earlier ``combinations``-based generator, which capped the
+    hypothesis at four substitutions and could place two residues at one site."""
     def run(self, hypothesis: Hypothesis, *, budget=10, event_store=None, round_id=1) -> list[Candidate]:
-        muts = list(dict.fromkeys(hypothesis.mutations))[:4]; out=[]
-        for n in range(1, min(4, len(muts))+1):
-            for combo in combinations(muts, n):
-                parsed=[]
-                try:
-                    for m in combo: parsed.append((m[0], int(m[1:-1]), m[-1]))
-                    seq = "".join(WT[p] if p not in {x[1] for x in parsed} else next(x[2] for x in parsed if x[1]==p) for p in SITES)
-                    if all(x[1] in SITES and x[0] == WT[x[1]] for x in parsed): out.append(Candidate(mutations=list(combo), sequence=seq))
-                except (ValueError, IndexError): continue
-                if len(out) >= budget: break
-            if len(out) >= budget: break
+        # Group WT-anchored substitutions by site; silently drop malformed or off-site notation.
+        by_site: dict[int, list[str]] = {}
+        for m in dict.fromkeys(hypothesis.mutations):
+            try:
+                frm, pos, to = m[0], int(m[1:-1]), m[-1]
+            except (ValueError, IndexError):
+                continue
+            if pos in SITES and frm == WT[pos] and to != WT[pos] and to not in by_site.get(pos, []):
+                by_site.setdefault(pos, []).append(to)
+        active = [p for p in SITES if p in by_site]
+        choices = [[WT[p], *by_site[p]] for p in active]  # WT first => single mutants precede higher-order combos
+        out: list[Candidate] = []
+        for combo in product(*choices) if active else []:
+            chosen = dict(zip(active, combo))
+            muts = [f"{WT[p]}{p}{aa}" for p, aa in chosen.items() if aa != WT[p]]
+            if not muts:
+                continue  # skip the all-WT sequence
+            seq = "".join(chosen.get(p, WT[p]) for p in SITES)
+            out.append(Candidate(mutations=muts, sequence=seq))
+            if len(out) >= budget:
+                break
         _event(event_store, "agent.role.completed", "mutation_designer", {"candidates": [c.model_dump() for c in out]}, round_id)
         return out
 
@@ -94,14 +108,16 @@ class FitnessEvaluator:
         _event(event_store, "agent.role.completed", "fitness_evaluator", {"candidates": [x.model_dump() for x in out]}, round_id); return out
 
 class ScientificCritic:
-    def __init__(self, llm: Callable[[ScoredCandidate, list[dict[str, Any]]], str] | None = None): self.llm=llm
+    def __init__(self, llm: Callable[[ScoredCandidate, list[dict[str, Any]]], str] | None = None, *, no_knowledge: bool = False):
+        self.llm=llm; self.no_knowledge=no_knowledge
     def run(self, scored: list[ScoredCandidate], *, event_store=None, round_id=1) -> tuple[list[ScoredCandidate], list[CriticResult]]:
+        # no_knowledge=True is the ablation: validate_candidate returns [] so all(...) is True (no gating).
         accepted=[]; checks=[]
         for c in scored:
-            rules=validate_candidate(c.mutations); ok=all(x["pass"] for x in rules); note=self.llm(c,rules) if self.llm and ok else ("accepted" if ok else "rejected by knowledge rules")
+            rules=validate_candidate(c.mutations, no_knowledge=self.no_knowledge); ok=all(x["pass"] for x in rules); note=self.llm(c,rules) if self.llm and ok else ("accepted" if ok else "rejected by knowledge rules")
             result=CriticResult(accepted=ok, score=c.mean, rule_check=rules, note=note); checks.append(result)
             if ok: accepted.append(c)
         _event(event_store, "agent.role.completed", "scientific_critic", {"critiques": [x.model_dump() for x in checks]}, round_id); return accepted, checks
 
-def run_pipeline(pool, predictor, *, event_store=None, llm_hypothesis=None, llm_critic=None, budget=10, round_id=1):
-    report=DataAnalyst().run(pool,event_store=event_store,round_id=round_id); hyp=HypothesisGenerator(llm_hypothesis).run(report,event_store=event_store,round_id=round_id); cand=MutationDesigner().run(hyp,budget=budget,event_store=event_store,round_id=round_id); scored=FitnessEvaluator(predictor).run(cand,event_store=event_store,round_id=round_id); accepted, critiques=ScientificCritic(llm_critic).run(scored,event_store=event_store,round_id=round_id); return PipelineResult(report=report,hypothesis=hyp,candidates=scored,accepted=accepted,critiques=critiques)
+def run_pipeline(pool, predictor, *, event_store=None, llm_hypothesis=None, llm_critic=None, budget=10, round_id=1, no_knowledge=False):
+    report=DataAnalyst().run(pool,event_store=event_store,round_id=round_id); hyp=HypothesisGenerator(llm_hypothesis).run(report,event_store=event_store,round_id=round_id); cand=MutationDesigner().run(hyp,budget=budget,event_store=event_store,round_id=round_id); scored=FitnessEvaluator(predictor).run(cand,event_store=event_store,round_id=round_id); accepted, critiques=ScientificCritic(llm_critic, no_knowledge=no_knowledge).run(scored,event_store=event_store,round_id=round_id); return PipelineResult(report=report,hypothesis=hyp,candidates=scored,accepted=accepted,critiques=critiques)

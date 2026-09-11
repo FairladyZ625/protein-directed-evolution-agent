@@ -5,7 +5,7 @@
   "oracle": "measured table lookup",
   "budget_per_round": 96,
   "n_rounds": 3,
-  "llm": "deterministic (pool LLM port available via --use-llm)",
+  "llm": "pool claude-sonnet-5 via injectable hypothesis port",
   "summary": {
     "random": {
       "final_cum_top10_max": 2.373537,
@@ -31,9 +31,9 @@
     },
     "agent_no_knowledge": {
       "final_cum_top10_max": 8.761966,
-      "final_cum_top10_mean": 7.147881,
-      "final_cum_n_strong": 74,
-      "total_beneficial_hits": 215,
+      "final_cum_top10_mean": 6.887227,
+      "final_cum_n_strong": 61,
+      "total_beneficial_hits": 203,
       "cum_top10_max_curve": [
         7.282333,
         8.761966,
@@ -41,14 +41,14 @@
       ]
     },
     "knowledge_agent": {
-      "final_cum_top10_max": 8.761966,
-      "final_cum_top10_mean": 6.905739,
-      "final_cum_n_strong": 52,
-      "total_beneficial_hits": 201,
+      "final_cum_top10_max": 8.045152,
+      "final_cum_top10_mean": 6.038079,
+      "final_cum_n_strong": 46,
+      "total_beneficial_hits": 175,
       "cum_top10_max_curve": [
-        8.761966,
-        8.761966,
-        8.761966
+        8.045152,
+        8.045152,
+        8.045152
       ]
     }
   },
@@ -407,9 +407,9 @@
       "cold_start_pool_size": 5000,
       "acquisition": "agent library, predicted mean",
       "llm_sources": [
-        "deterministic",
-        "deterministic",
-        "deterministic"
+        "fallback",
+        "fallback",
+        "llm:claude-sonnet-5"
       ],
       "rounds": [
         {
@@ -465,7 +465,7 @@
             ]
           ],
           "pool_size_after": 5096,
-          "llm_source": "deterministic"
+          "llm_source": "fallback"
         },
         {
           "round": 2,
@@ -520,62 +520,62 @@
             ]
           ],
           "pool_size_after": 5192,
-          "llm_source": "deterministic"
+          "llm_source": "fallback"
         },
         {
           "round": 3,
           "n_nominated": 96,
-          "top10_max": 7.312656,
-          "top10_mean": 5.681022,
-          "n_hit_beneficial": 61,
-          "hit_rate_beneficial": 0.635417,
+          "top10_max": 5.39975,
+          "top10_mean": 4.089127,
+          "n_hit_beneficial": 49,
+          "hit_rate_beneficial": 0.510417,
           "cum_top10_max": 8.761966,
-          "cum_top10_mean": 7.147881,
-          "cum_n_strong": 74,
+          "cum_top10_mean": 6.887227,
+          "cum_n_strong": 61,
           "top10": [
-            [
-              "FWLG",
-              7.312656
-            ],
-            [
-              "FWAG",
-              6.509479
-            ],
-            [
-              "FYAG",
-              6.500028
-            ],
-            [
-              "VWAA",
-              6.123805
-            ],
             [
               "VNAA",
               5.39975
             ],
             [
-              "FWFG",
-              5.173323
+              "INAA",
+              4.991417
             ],
             [
-              "WIFG",
-              5.122977
+              "LNAA",
+              4.41389
             ],
             [
-              "WWMG",
-              4.9163
+              "VDAA",
+              4.157983
             ],
             [
-              "WAFG",
-              4.8769
+              "IDAA",
+              3.931235
             ],
             [
-              "FRFG",
-              4.875
+              "YNAA",
+              3.928413
+            ],
+            [
+              "FNAA",
+              3.922206
+            ],
+            [
+              "LNMA",
+              3.486929
+            ],
+            [
+              "MNAA",
+              3.397912
+            ],
+            [
+              "FNGA",
+              3.261539
             ]
           ],
           "pool_size_after": 5288,
-          "llm_source": "deterministic"
+          "llm_source": "llm:claude-sonnet-5"
         }
       ]
     },
@@ -587,175 +587,175 @@
       "cold_start_pool_size": 5000,
       "acquisition": "agent library, mean + 0.75·√var + 0.3·BLOSUM62 prior",
       "llm_sources": [
-        "deterministic",
-        "deterministic",
-        "deterministic"
+        "llm:claude-sonnet-5",
+        "llm:claude-sonnet-5",
+        "fallback"
       ],
       "rounds": [
         {
           "round": 1,
           "n_nominated": 96,
-          "top10_max": 8.761966,
-          "top10_mean": 6.492586,
-          "n_hit_beneficial": 83,
-          "hit_rate_beneficial": 0.864583,
-          "cum_top10_max": 8.761966,
-          "cum_top10_mean": 6.492586,
-          "cum_n_strong": 30,
+          "top10_max": 8.045152,
+          "top10_mean": 5.223033,
+          "n_hit_beneficial": 44,
+          "hit_rate_beneficial": 0.458333,
+          "cum_top10_max": 8.045152,
+          "cum_top10_mean": 5.223033,
+          "cum_n_strong": 12,
           "top10": [
-            [
-              "FWAA",
-              8.761966
-            ],
             [
               "FYAA",
               8.045152
-            ],
-            [
-              "FWCA",
-              7.554663
-            ],
-            [
-              "WWCA",
-              7.282333
-            ],
-            [
-              "VACA",
-              5.726747
-            ],
-            [
-              "FHAA",
-              5.665545
-            ],
-            [
-              "FYCA",
-              5.618708
             ],
             [
               "FYGA",
               5.440615
             ],
             [
-              "VNCA",
-              5.430379
-            ],
-            [
               "VNAA",
               5.39975
-            ]
-          ],
-          "pool_size_after": 5096,
-          "llm_source": "deterministic"
-        },
-        {
-          "round": 2,
-          "n_nominated": 96,
-          "top10_max": 6.509479,
-          "top10_mean": 5.662239,
-          "n_hit_beneficial": 71,
-          "hit_rate_beneficial": 0.739583,
-          "cum_top10_max": 8.761966,
-          "cum_top10_mean": 6.828411,
-          "cum_n_strong": 48,
-          "top10": [
-            [
-              "FWAG",
-              6.509479
-            ],
-            [
-              "WWLA",
-              6.291083
-            ],
-            [
-              "WWMA",
-              6.147298
-            ],
-            [
-              "VWAA",
-              6.123805
-            ],
-            [
-              "WWFA",
-              5.841583
-            ],
-            [
-              "WVFA",
-              5.248878
-            ],
-            [
-              "VWCG",
-              5.183614
             ],
             [
               "VYAA",
               5.156918
             ],
             [
-              "WAFA",
-              5.07513
+              "LYGV",
+              5.075299
             ],
             [
-              "WRFA",
-              5.044599
+              "INAA",
+              4.991417
+            ],
+            [
+              "LYAA",
+              4.893728
+            ],
+            [
+              "IYAA",
+              4.425813
+            ],
+            [
+              "LNAA",
+              4.41389
+            ],
+            [
+              "IYGV",
+              4.387745
+            ]
+          ],
+          "pool_size_after": 5096,
+          "llm_source": "llm:claude-sonnet-5"
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 5.869186,
+          "top10_mean": 3.953113,
+          "n_hit_beneficial": 53,
+          "hit_rate_beneficial": 0.552083,
+          "cum_top10_max": 8.045152,
+          "cum_top10_mean": 5.44085,
+          "cum_n_strong": 16,
+          "top10": [
+            [
+              "IAAA",
+              5.869186
+            ],
+            [
+              "VHAA",
+              5.110624
+            ],
+            [
+              "LAAA",
+              4.386993
+            ],
+            [
+              "LHAA",
+              4.095311
+            ],
+            [
+              "MAAA",
+              3.457262
+            ],
+            [
+              "MNAA",
+              3.397912
+            ],
+            [
+              "MYAA",
+              3.376611
+            ],
+            [
+              "LHGV",
+              3.356962
+            ],
+            [
+              "LHGA",
+              3.310822
+            ],
+            [
+              "MHAA",
+              3.169446
             ]
           ],
           "pool_size_after": 5192,
-          "llm_source": "deterministic"
+          "llm_source": "llm:claude-sonnet-5"
         },
         {
           "round": 3,
           "n_nominated": 96,
-          "top10_max": 6.500028,
-          "top10_mean": 4.137543,
-          "n_hit_beneficial": 47,
-          "hit_rate_beneficial": 0.489583,
-          "cum_top10_max": 8.761966,
-          "cum_top10_mean": 6.905739,
-          "cum_n_strong": 52,
+          "top10_max": 6.123805,
+          "top10_mean": 5.72647,
+          "n_hit_beneficial": 78,
+          "hit_rate_beneficial": 0.8125,
+          "cum_top10_max": 8.045152,
+          "cum_top10_mean": 6.038079,
+          "cum_n_strong": 46,
           "top10": [
             [
-              "FYAG",
-              6.500028
+              "VWAA",
+              6.123805
             ],
             [
-              "VWAG",
-              4.84434
+              "IWAA",
+              6.042078
             ],
             [
-              "VYAG",
-              4.229093
+              "IWCA",
+              6.007627
             ],
             [
-              "WNLA",
-              4.202497
+              "LRCA",
+              5.890927
             ],
             [
-              "VNAG",
-              3.854257
+              "LNCA",
+              5.738181
             ],
             [
-              "FIMA",
-              3.689306
+              "VACA",
+              5.726747
             ],
             [
-              "WNFA",
-              3.683065
+              "IRAA",
+              5.496471
             ],
             [
-              "VRAG",
-              3.68068
+              "LACA",
+              5.440592
             ],
             [
-              "FIAG",
-              3.372224
+              "VNCA",
+              5.430379
             ],
             [
-              "WVMA",
-              3.31994
+              "INCA",
+              5.367896
             ]
           ],
           "pool_size_after": 5288,
-          "llm_source": "deterministic"
+          "llm_source": "fallback"
         }
       ]
     }
