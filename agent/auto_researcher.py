@@ -395,9 +395,14 @@ def main(argv=None):
     print(f"llm_used={rep['llm_used']} model={rep.get('agent_model')} budget_spent={rep['budget_spent']} "
           f"tool_calls={rep['n_tool_calls']} "
           f"cum_top10_max={rep['summary']['final_cum_top10_max']} strong={rep['summary']['final_cum_n_strong']}")
-    log_run("agentic", command=f"python -m agent.auto_researcher --dataset {a.dataset} --feature {a.feature} --model {a.model}",
+    _gflag = (f" --guardrail --max-hd {a.max_hd} --blosum-min {a.blosum_min}" if a.guardrail else "")
+    log_run("agentic",
+            command=(f"python -m agent.auto_researcher --dataset {a.dataset} --feature {a.feature} "
+                     f"--budget {a.budget} --n-rounds {a.n_rounds} --seed {a.seed} --model {a.model}{_gflag}"),
             params={"dataset": a.dataset, "feature": a.feature, "budget": a.budget, "n_rounds": a.n_rounds,
-                    "seed": a.seed, "llm": not a.no_llm, "model": a.model},
+                    "seed": a.seed, "llm": not a.no_llm, "model": a.model,
+                    "guardrail": a.guardrail, "max_hd": a.max_hd if a.guardrail else None,
+                    "blosum_min": a.blosum_min if a.guardrail else None},
             artifacts=[str(out.relative_to(ROOT)), str(ev.relative_to(ROOT))],
             summary={**rep["summary"], "llm_used": rep["llm_used"], "budget_spent": rep["budget_spent"]})
     return rep
