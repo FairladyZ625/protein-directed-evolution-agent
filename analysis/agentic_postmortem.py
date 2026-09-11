@@ -86,8 +86,12 @@ def postmortem(feature: str = "one_hot", budget_total: int = 288, seeds: int = 5
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--feature", default="one_hot", choices=("one_hot", "esm2"))
-    p.add_argument("--out", type=Path, default=ROOT / "reports" / "agentic_postmortem_aav.json")
+    p.add_argument("--out", type=Path, default=None)
     a = p.parse_args(argv)
+    if a.out is None:
+        from evolution.results_layout import run_dir
+        name = "postmortem_esm.json" if a.feature != "one_hot" else "postmortem_one_hot.json"
+        a.out = run_dir("agentic", "aav") / name
     rep = postmortem(feature=a.feature)
     a.out.write_text(json.dumps(rep, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps(rep, ensure_ascii=False, indent=2))

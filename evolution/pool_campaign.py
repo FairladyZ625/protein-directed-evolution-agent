@@ -216,12 +216,15 @@ def main(argv: list[str] | None = None) -> dict:
     p.add_argument("--budget", type=int, default=96)
     p.add_argument("--n-rounds", type=int, default=3)
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--out-dir", type=Path, default=ROOT / "reports")
+    p.add_argument("--out-dir", type=Path, default=None,
+                   help="default: harness/reports/runs/workflow@<v>/<dataset>/")
     args = p.parse_args(argv)
 
     from events.store import EventStore
-    tag = f"{args.dataset}_{args.feature}"
-    ev = args.out_dir / f"pool_events_{tag}.jsonl"
+    from evolution.results_layout import run_dir
+    out_dir = args.out_dir or run_dir("workflow", args.dataset)
+    (out_dir / "figures").mkdir(parents=True, exist_ok=True)
+    ev = out_dir / f"pool_{args.feature}.events.jsonl"
     if ev.exists():
         ev.unlink()
     store = EventStore(ev)
@@ -229,8 +232,8 @@ def main(argv: list[str] | None = None) -> dict:
     report = run_pool_campaign(spec, cold_start_hd=args.cold_start_hd, budget=args.budget,
                                n_rounds=args.n_rounds, seed=args.seed, event_store=store)
     store.verify()
-    out_json = args.out_dir / f"pool_metrics_{tag}.json"
-    out_fig = args.out_dir / "figures" / f"pool_curve_{tag}.png"
+    out_json = out_dir / f"pool_{args.feature}.metrics.json"
+    out_fig = out_dir / "figures" / f"pool_{args.feature}.png"
     out_json.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     plot(report, out_fig)
     n_events = sum(1 for _ in store.iter_events())

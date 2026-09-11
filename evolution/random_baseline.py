@@ -21,10 +21,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from evolution.results_layout import run_dir
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "four_mutations_full_data.csv"
-OUT_JSON = ROOT / "reports" / "random_baseline_metrics.json"
-OUT_FIG = ROOT / "reports" / "figures" / "random_baseline_curve.png"
+_GB1 = run_dir("workflow", "gb1")
+OUT_JSON = _GB1 / "random_baseline.metrics.json"
+OUT_FIG = _GB1 / "figures" / "random_baseline.png"
 
 EXPECTED_ROWS = 149_361
 AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"

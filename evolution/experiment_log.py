@@ -18,8 +18,9 @@ from typing import Any, Mapping
 
 from events.store import EventStore
 
+from evolution.results_layout import LEDGER
+
 ROOT = Path(__file__).resolve().parents[1]
-LEDGER = ROOT / "reports" / "experiment_log.jsonl"
 
 
 def _sha256(path: Path) -> str | None:

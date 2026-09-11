@@ -62,7 +62,8 @@ def main() -> None:
         spearmans = {m: round(result[name][m]["spearman"], 3) for m in ("ridge", "xgboost", "mlp")}
         print(name, "n_train", len(train), "n_test", len(test), "spearman", spearmans, flush=True)
 
-    out = Path("reports/predictor_metrics.json")
+    from evolution.results_layout import run_dir
+    out = run_dir("workflow", "gb1") / "predictor_ladder.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, indent=2, ensure_ascii=False))
     print("written", out, flush=True)

@@ -25,5 +25,5 @@ data/avgfp/*.csv
 data/avgfp/*.zip
 
 # ESM 嵌入缓存(大,不入库)
-reports/cache/
+harness/reports/cache/
 features/cache/

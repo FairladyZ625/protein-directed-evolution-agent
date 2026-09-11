@@ -27,19 +27,21 @@ if str(ROOT) not in sys.path:  # streamlit run 不保证把仓库根加进 sys.p
 from agent.llm import llm_available, llm_config  # noqa: E402
 from evolution.mutations import validate_variant, variant_to_mutations  # noqa: E402
 
-METRICS_JSON = ROOT / "reports" / "campaign_metrics.json"
-METRICS_LLM_JSON = ROOT / "reports" / "campaign_metrics_llm.json"
+from evolution.results_layout import run_dir  # noqa: E402
+_GB1 = run_dir("workflow", "gb1", create=False)
+METRICS_JSON = _GB1 / "campaign_easy.metrics.json"
+METRICS_LLM_JSON = _GB1 / "campaign_llm.metrics.json"
 # Three honest cold-start regimes (see report ch.6/7). Default view = the hard
 # extrapolation regime, so the demo does not lead with the "easy" (data-rich) result.
 REGIMES = {
-    "hard · 低阶外推 (HD≤2 冷启动，推荐)": ROOT / "reports" / "campaign_metrics_hard.json",
-    "easy · 随机池 (≈98% HD≥3，数据充裕)": ROOT / "reports" / "campaign_metrics.json",
-    "sparse · 极稀疏 (仅 77 个单突变)": ROOT / "reports" / "campaign_metrics_sparse.json",
+    "hard · 低阶外推 (HD≤2 冷启动，推荐)": _GB1 / "campaign_hard.metrics.json",
+    "easy · 随机池 (≈98% HD≥3，数据充裕)": _GB1 / "campaign_easy.metrics.json",
+    "sparse · 极稀疏 (仅 77 个单突变)": _GB1 / "campaign_sparse.metrics.json",
 }
-EVENTS_JSONL = ROOT / "reports" / "campaign_events.jsonl"
-EVENTS_LLM_JSONL = ROOT / "reports" / "campaign_events_llm.jsonl"
-BASELINE_JSON = ROOT / "reports" / "random_baseline_metrics.json"
-PREDICTOR_JSON = ROOT / "reports" / "predictor_metrics.json"
+EVENTS_JSONL = _GB1 / "campaign_easy.events.jsonl"
+EVENTS_LLM_JSONL = _GB1 / "campaign_llm.events.jsonl"
+BASELINE_JSON = _GB1 / "random_baseline.metrics.json"
+PREDICTOR_JSON = _GB1 / "predictor_ladder.json"
 TRAIN_POOL = ROOT / "data" / "pools" / "train_pool.csv"
 LANDSCAPE_CSV = ROOT / "data" / "four_mutations_full_data.csv"
 

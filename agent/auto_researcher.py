@@ -286,18 +286,22 @@ def main(argv=None):
     p.add_argument("--no-llm", action="store_true", help="force the deterministic fallback")
     p.add_argument("--model", default=os.environ.get("AGENTIC_LLM_MODEL", "gpt-5.6-sol"),
                    help="LLM that drives the agent (default gpt-5.6-sol); workflow modes are unaffected")
-    p.add_argument("--out-dir", type=Path, default=ROOT / "reports")
+    p.add_argument("--out-dir", type=Path, default=None,
+                   help="default: harness/reports/runs/agentic@<v>/<dataset>/")
     a = p.parse_args(argv)
 
-    ev = a.out_dir / f"pool_events_{a.dataset}_agentic.jsonl"
+    from evolution.results_layout import run_dir
+    out_dir = a.out_dir or run_dir("agentic", a.dataset)
+    (out_dir / "figures").mkdir(parents=True, exist_ok=True)
+    ev = out_dir / "agentic.events.jsonl"
     ev.unlink(missing_ok=True)
     store = EventStore(ev)
     spec = load(a.dataset, a.feature)
     rep = run_autoresearch(spec, budget=a.budget, n_rounds=a.n_rounds, seed=a.seed,
                            event_store=store, llm=not a.no_llm, model=a.model)
     store.verify()
-    out = a.out_dir / f"pool_metrics_{a.dataset}_agentic.json"
-    fig = a.out_dir / "figures" / f"pool_curve_{a.dataset}_agentic.png"
+    out = out_dir / "agentic.metrics.json"
+    fig = out_dir / "figures" / "agentic.png"
     out.write_text(json.dumps(rep, ensure_ascii=False, indent=2) + "\n")
     try:
         import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt

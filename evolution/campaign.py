@@ -34,9 +34,15 @@ from agent.pipeline import Hypothesis, run_pipeline
 from agent.llm import chat_json, llm_config
 from knowledge.validators import load_rules
 
+from evolution.results_layout import run_dir
+
 ROOT = Path(__file__).resolve().parents[1]
-OUT_JSON = ROOT / "reports" / "campaign_metrics.json"
-OUT_FIG = ROOT / "reports" / "figures" / "campaign_curve.png"
+# GB1 four-strategy campaign lives on the workflow line; the four regimes
+# (easy/hard/llm/sparse) are produced by passing --out-json/--out-fig/--out-events
+# explicitly. Default is the easy (random-pool) regime.
+_GB1 = run_dir("workflow", "gb1")
+OUT_JSON = _GB1 / "campaign_easy.metrics.json"
+OUT_FIG = _GB1 / "figures" / "campaign_easy.png"
 STRATEGIES = ("random", "greedy", "agent_no_knowledge", "knowledge_agent")
 SITES = (39, 40, 41, 54)              # GB1 mutable positions, aligned to WT="VDGV"
 AA = "ACDEFGHIKLMNPQRSTVWY"
@@ -341,7 +347,7 @@ def main(argv: list[str] | None = None) -> dict:
     p.add_argument("--use-llm", action="store_true", help="inject the pool LLM into the agent hypothesis port")
     p.add_argument("--out-json", type=Path, default=OUT_JSON)
     p.add_argument("--out-fig", type=Path, default=OUT_FIG)
-    p.add_argument("--out-events", type=Path, default=ROOT / "reports" / "campaign_events.jsonl")
+    p.add_argument("--out-events", type=Path, default=_GB1 / "campaign_easy.events.jsonl")
     args = p.parse_args(argv)
 
     from events.store import EventStore

@@ -34,9 +34,10 @@ def esm_encoder(name: str, seqs_all: list[str]):
     """Cached ESM-2 embedder over the mutated-region strings (see features/esm2.py).
 
     Embeddings are computed once for every sequence in the dataset and cached to
-    reports/cache/esm_<name>.npz, then looked up per call.
+    harness/reports/cache/esm_<name>.npz, then looked up per call.
     """
-    cache = ROOT / "reports" / "cache" / f"esm_{name}.npz"
+    from evolution.results_layout import CACHE
+    cache = CACHE / f"esm_{name}.npz"
     cache.parent.mkdir(parents=True, exist_ok=True)
     table: dict[str, np.ndarray] = {}
     if cache.exists():

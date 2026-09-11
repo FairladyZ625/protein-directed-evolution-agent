@@ -96,7 +96,10 @@ def evaluate_ladder(X_train, y_train, X_test, y_test) -> dict[str, dict[str, flo
     return result
 
 
-def train_ladder(X, y, *, out: str | Path = "reports/predictor_metrics.json"):
+def train_ladder(X, y, *, out: str | Path | None = None):
+    if out is None:
+        from evolution.results_layout import run_dir
+        out = run_dir("workflow", "gb1") / "predictor_ladder.json"
     n = len(y); cut1 = int(n * .6)
     result = evaluate_ladder(X[:cut1], y[:cut1], X[cut1:], y[cut1:])
     path = Path(out); path.parent.mkdir(parents=True, exist_ok=True); path.write_text(json.dumps(result, indent=2))
