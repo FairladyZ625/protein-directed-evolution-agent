@@ -362,6 +362,23 @@ def main(argv: list[str] | None = None) -> dict:
         print(f"  {name:20s} cum_top10_max={s['final_cum_top10_max']} "
               f"cum_top10_mean={s['final_cum_top10_mean']} strong={s['final_cum_n_strong']} "
               f"hits={s['total_beneficial_hits']}")
+
+    # Every run appends an immutable entry to the master experiment ledger (never overwritten).
+    from evolution.experiment_log import log_run
+    rel = lambda pth: str(Path(pth).resolve().relative_to(ROOT))  # noqa: E731
+    entry = log_run("campaign",
+                    command=f"python -m evolution.campaign --seed {args.seed} --cold-start {args.cold_start}"
+                            + (f" --max-cold-hd {args.max_cold_hd}" if args.cold_start == "low_hd" else "")
+                            + (" --use-llm" if args.use_llm else ""),
+                    params={"seed": args.seed, "cold_start": args.cold_start,
+                            "max_cold_hd": args.max_cold_hd, "use_llm": args.use_llm,
+                            "budget": report["budget_per_round"], "n_rounds": report["n_rounds"]},
+                    artifacts=[rel(args.out_json), rel(args.out_events), rel(args.out_fig)],
+                    summary={k: {"cum_top10_max": v["final_cum_top10_max"],
+                                 "cum_n_strong": v["final_cum_n_strong"],
+                                 "total_beneficial_hits": v["total_beneficial_hits"]}
+                             for k, v in report["summary"].items()})
+    print(f"[ledger] experiment_log.jsonl <- seq {entry['seq']} ({report['cold_start'].split(' ')[0]})")
     return report
 
 
