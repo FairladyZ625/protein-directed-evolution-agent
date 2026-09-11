@@ -7,6 +7,8 @@ data/*.fasta
 *.db
 *-wal
 *-shm
+# 本地密钥（池子 token 等），只提交 .env.example
+.env
 # Python
 __pycache__/
 *.pyc
