@@ -1,0 +1,17 @@
+# 数据缓存不入库
+data/*.zip
+data/four_mutations_full_data.csv
+data/splits/
+data/*.fasta
+# SQLite 运行时产物
+*.db
+*-wal
+*-shm
+# Python
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+/harness/
+/.harness/
+.worktrees/

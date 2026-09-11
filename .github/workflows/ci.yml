@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Lightweight deps only. The data-pipeline / predictor tests need the 44 MB
+      # GB1 landscape (intentionally not committed, see data/README.md) and ESM-2 /
+      # torch, so they run locally; CI covers the self-contained modules.
+      - name: Install dependencies
+        run: pip install pytest numpy pandas scipy scikit-learn PyYAML networkx
+      - name: Run self-contained tests
+        run: pytest tests/test_events.py tests/test_knowledge.py -q
