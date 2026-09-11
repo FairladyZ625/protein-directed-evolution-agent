@@ -5,6 +5,7 @@
   "oracle": "measured table lookup",
   "budget_per_round": 96,
   "n_rounds": 3,
+  "cold_start": "random (5000 uniform variants; ~98% HD>=3: easy regime)",
   "llm": "deterministic (pool LLM port available via --use-llm)",
   "summary": {
     "random": {
@@ -31,22 +32,22 @@
     },
     "agent_no_knowledge": {
       "final_cum_top10_max": 8.761966,
-      "final_cum_top10_mean": 7.147881,
-      "final_cum_n_strong": 74,
-      "total_beneficial_hits": 215,
+      "final_cum_top10_mean": 7.045837,
+      "final_cum_n_strong": 89,
+      "total_beneficial_hits": 237,
       "cum_top10_max_curve": [
         7.282333,
-        8.761966,
+        8.045152,
         8.761966
       ]
     },
     "knowledge_agent": {
       "final_cum_top10_max": 8.761966,
-      "final_cum_top10_mean": 6.905739,
-      "final_cum_n_strong": 52,
-      "total_beneficial_hits": 201,
+      "final_cum_top10_mean": 7.033856,
+      "final_cum_n_strong": 88,
+      "total_beneficial_hits": 249,
       "cum_top10_max_curve": [
-        8.761966,
+        7.282333,
         8.761966,
         8.761966
       ]
@@ -416,20 +417,16 @@
           "round": 1,
           "n_nominated": 96,
           "top10_max": 7.282333,
-          "top10_mean": 5.23261,
-          "n_hit_beneficial": 75,
-          "hit_rate_beneficial": 0.78125,
+          "top10_mean": 5.096099,
+          "n_hit_beneficial": 67,
+          "hit_rate_beneficial": 0.697917,
           "cum_top10_max": 7.282333,
-          "cum_top10_mean": 5.23261,
-          "cum_n_strong": 18,
+          "cum_top10_mean": 5.096099,
+          "cum_n_strong": 13,
           "top10": [
             [
               "WWCA",
               7.282333
-            ],
-            [
-              "FYCA",
-              5.618708
             ],
             [
               "FYGA",
@@ -462,6 +459,10 @@
             [
               "FAGA",
               4.54135
+            ],
+            [
+              "WYLG",
+              4.253601
             ]
           ],
           "pool_size_after": 5096,
@@ -470,18 +471,14 @@
         {
           "round": 2,
           "n_nominated": 96,
-          "top10_max": 8.761966,
-          "top10_mean": 6.725548,
-          "n_hit_beneficial": 79,
-          "hit_rate_beneficial": 0.822917,
-          "cum_top10_max": 8.761966,
-          "cum_top10_mean": 6.887227,
-          "cum_n_strong": 57,
+          "top10_max": 8.045152,
+          "top10_mean": 6.429934,
+          "n_hit_beneficial": 94,
+          "hit_rate_beneficial": 0.979167,
+          "cum_top10_max": 8.045152,
+          "cum_top10_mean": 6.585493,
+          "cum_n_strong": 58,
           "top10": [
-            [
-              "FWAA",
-              8.761966
-            ],
             [
               "FYAA",
               8.045152
@@ -491,32 +488,36 @@
               7.554663
             ],
             [
-              "WWLG",
-              6.877949
-            ],
-            [
-              "WWFG",
-              6.343497
+              "LWCA",
+              7.22866
             ],
             [
               "WWLA",
               6.291083
             ],
             [
-              "WWMA",
-              6.147298
+              "IWCA",
+              6.007627
+            ],
+            [
+              "YWCA",
+              5.974719
+            ],
+            [
+              "LRCA",
+              5.890927
             ],
             [
               "WWFA",
               5.841583
             ],
             [
-              "VACA",
-              5.726747
+              "LNCA",
+              5.738181
             ],
             [
-              "FHAA",
-              5.665545
+              "VACA",
+              5.726747
             ]
           ],
           "pool_size_after": 5192,
@@ -525,53 +526,53 @@
         {
           "round": 3,
           "n_nominated": 96,
-          "top10_max": 7.312656,
-          "top10_mean": 5.681022,
-          "n_hit_beneficial": 61,
-          "hit_rate_beneficial": 0.635417,
+          "top10_max": 8.761966,
+          "top10_mean": 6.254269,
+          "n_hit_beneficial": 76,
+          "hit_rate_beneficial": 0.791667,
           "cum_top10_max": 8.761966,
-          "cum_top10_mean": 7.147881,
-          "cum_n_strong": 74,
+          "cum_top10_mean": 7.045837,
+          "cum_n_strong": 89,
           "top10": [
             [
-              "FWLG",
-              7.312656
+              "FWAA",
+              8.761966
             ],
             [
-              "FWAG",
-              6.509479
+              "YYAA",
+              6.981333
             ],
             [
-              "FYAG",
-              6.500028
+              "WWMA",
+              6.147298
             ],
             [
               "VWAA",
               6.123805
             ],
             [
-              "VNAA",
-              5.39975
+              "IWAA",
+              6.042078
             ],
             [
-              "FWFG",
-              5.173323
+              "LWAA",
+              6.027489
             ],
             [
-              "WIFG",
-              5.122977
+              "MWCA",
+              5.806655
             ],
             [
-              "WWMG",
-              4.9163
+              "YWAA",
+              5.671913
             ],
             [
-              "WAFG",
-              4.8769
+              "IRAA",
+              5.496471
             ],
             [
-              "FRFG",
-              4.875
+              "MNCA",
+              5.483682
             ]
           ],
           "pool_size_after": 5288,
@@ -595,13 +596,68 @@
         {
           "round": 1,
           "n_nominated": 96,
+          "top10_max": 7.282333,
+          "top10_mean": 5.764109,
+          "n_hit_beneficial": 80,
+          "hit_rate_beneficial": 0.833333,
+          "cum_top10_max": 7.282333,
+          "cum_top10_mean": 5.764109,
+          "cum_n_strong": 24,
+          "top10": [
+            [
+              "WWCA",
+              7.282333
+            ],
+            [
+              "IWCA",
+              6.007627
+            ],
+            [
+              "LRCA",
+              5.890927
+            ],
+            [
+              "LNCA",
+              5.738181
+            ],
+            [
+              "FHAA",
+              5.665545
+            ],
+            [
+              "IRAA",
+              5.496471
+            ],
+            [
+              "FYGA",
+              5.440615
+            ],
+            [
+              "VNCA",
+              5.430379
+            ],
+            [
+              "INCA",
+              5.367896
+            ],
+            [
+              "WRCA",
+              5.321112
+            ]
+          ],
+          "pool_size_after": 5096,
+          "llm_source": "deterministic"
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
           "top10_max": 8.761966,
-          "top10_mean": 6.492586,
-          "n_hit_beneficial": 83,
-          "hit_rate_beneficial": 0.864583,
+          "top10_mean": 6.703731,
+          "n_hit_beneficial": 85,
+          "hit_rate_beneficial": 0.885417,
           "cum_top10_max": 8.761966,
-          "cum_top10_mean": 6.492586,
-          "cum_n_strong": 30,
+          "cum_top10_mean": 6.881561,
+          "cum_n_strong": 69,
           "top10": [
             [
               "FWAA",
@@ -616,59 +672,55 @@
               7.554663
             ],
             [
-              "WWCA",
-              7.282333
+              "LWCA",
+              7.22866
+            ],
+            [
+              "IWAA",
+              6.042078
+            ],
+            [
+              "LWAA",
+              6.027489
+            ],
+            [
+              "YWCA",
+              5.974719
+            ],
+            [
+              "IAAA",
+              5.869186
+            ],
+            [
+              "MWCA",
+              5.806655
             ],
             [
               "VACA",
               5.726747
-            ],
-            [
-              "FHAA",
-              5.665545
-            ],
-            [
-              "FYCA",
-              5.618708
-            ],
-            [
-              "FYGA",
-              5.440615
-            ],
-            [
-              "VNCA",
-              5.430379
-            ],
-            [
-              "VNAA",
-              5.39975
             ]
           ],
-          "pool_size_after": 5096,
+          "pool_size_after": 5192,
           "llm_source": "deterministic"
         },
         {
-          "round": 2,
+          "round": 3,
           "n_nominated": 96,
-          "top10_max": 6.509479,
-          "top10_mean": 5.662239,
-          "n_hit_beneficial": 71,
-          "hit_rate_beneficial": 0.739583,
+          "top10_max": 6.981333,
+          "top10_mean": 5.587183,
+          "n_hit_beneficial": 84,
+          "hit_rate_beneficial": 0.875,
           "cum_top10_max": 8.761966,
-          "cum_top10_mean": 6.828411,
-          "cum_n_strong": 48,
+          "cum_top10_mean": 7.033856,
+          "cum_n_strong": 88,
           "top10": [
             [
-              "FWAG",
-              6.509479
+              "YYAA",
+              6.981333
             ],
             [
               "WWLA",
               6.291083
-            ],
-            [
-              "WWMA",
-              6.147298
             ],
             [
               "VWAA",
@@ -679,79 +731,28 @@
               5.841583
             ],
             [
-              "WVFA",
-              5.248878
-            ],
-            [
-              "VWCG",
-              5.183614
+              "YWAA",
+              5.671913
             ],
             [
               "VYAA",
               5.156918
             ],
             [
-              "WAFA",
-              5.07513
+              "LWLA",
+              5.153992
             ],
             [
-              "WRFA",
-              5.044599
-            ]
-          ],
-          "pool_size_after": 5192,
-          "llm_source": "deterministic"
-        },
-        {
-          "round": 3,
-          "n_nominated": 96,
-          "top10_max": 6.500028,
-          "top10_mean": 4.137543,
-          "n_hit_beneficial": 47,
-          "hit_rate_beneficial": 0.489583,
-          "cum_top10_max": 8.761966,
-          "cum_top10_mean": 6.905739,
-          "cum_n_strong": 52,
-          "top10": [
-            [
-              "FYAG",
-              6.500028
+              "LWMA",
+              5.074865
             ],
             [
-              "VWAG",
-              4.84434
+              "LYAA",
+              4.893728
             ],
             [
-              "VYAG",
-              4.229093
-            ],
-            [
-              "WNLA",
-              4.202497
-            ],
-            [
-              "VNAG",
-              3.854257
-            ],
-            [
-              "FIMA",
-              3.689306
-            ],
-            [
-              "WNFA",
-              3.683065
-            ],
-            [
-              "VRAG",
-              3.68068
-            ],
-            [
-              "FIAG",
-              3.372224
-            ],
-            [
-              "WVMA",
-              3.31994
+              "VIAA",
+              4.682612
             ]
           ],
           "pool_size_after": 5288,

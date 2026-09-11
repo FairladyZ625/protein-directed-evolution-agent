@@ -41,7 +41,8 @@ STRATEGIES = ("random", "greedy", "agent_no_knowledge", "knowledge_agent")
 SITES = (39, 40, 41, 54)              # GB1 mutable positions, aligned to WT="VDGV"
 AA = "ACDEFGHIKLMNPQRSTVWY"
 K_PER_SITE = 8                        # top observed substitutions per site fed to the designer
-LIBRARY_CAP = 2000                    # max candidates the designer enumerates per round
+LIBRARY_CAP = 10000                   # designer enumerates the full hypothesis combinatorial (≤ (K+1)^4 = 6561);
+                                      # high enough to avoid truncating the library before the predictor can rank it
 LAMBDA_UCB = 0.75                     # exploration weight for the knowledge agent
 BETA_BLOSUM = 0.30                    # BLOSUM62 conservativeness prior weight
 
@@ -217,15 +218,33 @@ def _greedy_propose(df, measured, train, budget):
 
 def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: int = N_ROUNDS,
                  budget: int = BUDGET, pool_size: int = POOL_SIZE, event_store=None,
-                 use_llm: bool = False) -> dict:
+                 use_llm: bool = False, cold_start: str = "random", max_cold_hd: int = 2) -> dict:
+    """Run all four strategies.
+
+    cold_start:
+      "random"  — seed pool = ``pool_size`` uniformly random measured variants.
+                  Because random 4-site variants are almost all HD=4, this pool
+                  already densely samples the high-order space near the peak, so
+                  the predictor is strong from round 0 (the "easy" regime).
+      "low_hd"  — seed pool = every measured variant with Hamming distance
+                  ≤ ``max_cold_hd`` from wild type. The nomination space is then
+                  the higher-order mutants (HD > max_cold_hd), so the campaign must
+                  EXTRAPOLATE outward to reach the HD=4 peak — the realistic and
+                  much harder directed-evolution regime.
+    """
     df = load_landscape() if df is None else df.copy()
     if df.empty:
         raise ValueError("measured landscape cannot be empty")
+    if "HD" not in df.columns:
+        df["HD"] = [sum(a != b for a, b in zip(v, WT)) for v in df.Variants]
     blosum_score = _blosum_lookup(load_rules())
     all_results: dict[str, dict] = {}
     for strategy in STRATEGIES:
         rng = np.random.default_rng(seed)
-        pool = build_cold_start_pool(df, rng, pool_size)
+        if cold_start == "low_hd":
+            pool = df[df.HD <= max_cold_hd][["Variants", "HD", "Fitness"]].copy()
+        else:
+            pool = build_cold_start_pool(df, rng, pool_size)
         measured = set(pool.Variants)
         train = pool[["Variants", "Fitness"]].copy()
         rounds, batches, sources = [], [], []
@@ -255,7 +274,7 @@ def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: in
             _event(event_store, "campaign.round.completed", strategy, round_id, row)
         all_results[strategy] = {
             "strategy": strategy, "seed": seed, "n_rounds": len(rounds),
-            "budget_per_round": budget, "cold_start_pool_size": pool_size,
+            "budget_per_round": budget, "cold_start_pool_size": len(pool),
             "acquisition": {"random": "uniform random",
                             "greedy": "predicted mean over full unmeasured space",
                             "agent_no_knowledge": "agent library, predicted mean",
@@ -268,6 +287,9 @@ def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: in
             "missing_combinations": max(0, 160000 - len(df)),
             "oracle": "measured table lookup",
             "budget_per_round": budget, "n_rounds": n_rounds,
+            "cold_start": (f"low_hd (seed pool = all HD<={max_cold_hd}, nominate HD>{max_cold_hd}: extrapolation regime)"
+                           if cold_start == "low_hd"
+                           else f"random ({pool_size} uniform variants; ~98% HD>=3: easy regime)"),
             "llm": (f"pool {(llm_config() or {}).get('model', '?')} via injectable hypothesis port"
                     if use_llm else "deterministic (pool LLM port available via --use-llm)"),
             "summary": _summary(all_results),
@@ -313,6 +335,9 @@ def plot_campaign(report: dict, path: Path = OUT_FIG) -> None:
 def main(argv: list[str] | None = None) -> dict:
     p = argparse.ArgumentParser(description="GB1 four-strategy active-learning campaign")
     p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--cold-start", choices=("random", "low_hd"), default="random",
+                   help="'random' = dense random seed pool (easy); 'low_hd' = seed from HD<=max-cold-hd only, extrapolate outward (hard)")
+    p.add_argument("--max-cold-hd", type=int, default=2, help="for --cold-start low_hd: max Hamming distance in the seed pool")
     p.add_argument("--use-llm", action="store_true", help="inject the pool LLM into the agent hypothesis port")
     p.add_argument("--out-json", type=Path, default=OUT_JSON)
     p.add_argument("--out-fig", type=Path, default=OUT_FIG)
@@ -323,7 +348,8 @@ def main(argv: list[str] | None = None) -> dict:
     if args.out_events.exists():
         args.out_events.unlink()  # fresh hash chain; never append onto a stale stream
     store = EventStore(args.out_events)
-    report = run_campaign(seed=args.seed, use_llm=args.use_llm, event_store=store)
+    report = run_campaign(seed=args.seed, use_llm=args.use_llm, event_store=store,
+                          cold_start=args.cold_start, max_cold_hd=args.max_cold_hd)
     store.verify()  # the audit chain must be intact before we publish it
     n_events = sum(1 for _ in store.iter_events())
 
@@ -336,6 +362,23 @@ def main(argv: list[str] | None = None) -> dict:
         print(f"  {name:20s} cum_top10_max={s['final_cum_top10_max']} "
               f"cum_top10_mean={s['final_cum_top10_mean']} strong={s['final_cum_n_strong']} "
               f"hits={s['total_beneficial_hits']}")
+
+    # Every run appends an immutable entry to the master experiment ledger (never overwritten).
+    from evolution.experiment_log import log_run
+    rel = lambda pth: str(Path(pth).resolve().relative_to(ROOT))  # noqa: E731
+    entry = log_run("campaign",
+                    command=f"python -m evolution.campaign --seed {args.seed} --cold-start {args.cold_start}"
+                            + (f" --max-cold-hd {args.max_cold_hd}" if args.cold_start == "low_hd" else "")
+                            + (" --use-llm" if args.use_llm else ""),
+                    params={"seed": args.seed, "cold_start": args.cold_start,
+                            "max_cold_hd": args.max_cold_hd, "use_llm": args.use_llm,
+                            "budget": report["budget_per_round"], "n_rounds": report["n_rounds"]},
+                    artifacts=[rel(args.out_json), rel(args.out_events), rel(args.out_fig)],
+                    summary={k: {"cum_top10_max": v["final_cum_top10_max"],
+                                 "cum_n_strong": v["final_cum_n_strong"],
+                                 "total_beneficial_hits": v["total_beneficial_hits"]}
+                             for k, v in report["summary"].items()})
+    print(f"[ledger] experiment_log.jsonl <- seq {entry['seq']} ({report['cold_start'].split(' ')[0]})")
     return report
 
 
