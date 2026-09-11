@@ -53,7 +53,8 @@ exhausted, then briefly summarise the best variants you found and your strategy.
 
 def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                      seed: int = 42, event_store=None, llm: bool = True,
-                     request_limit: int = 60, model: str | None = None) -> dict:
+                     request_limit: int = 60, model: str | None = None,
+                     guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0) -> dict:
     fit_col = spec.fitness_col
     total_budget = budget * n_rounds
     strong_thr = float(np.quantile(spec.df[fit_col], 0.9))
@@ -66,7 +67,36 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         "batches": [],            # each test() batch as a DataFrame(seq, fitness)
         "trace": [],
         "pred_cache": None,       # (model, mean, var) valid until measured changes
+        "n_gate_rejected": 0,     # v0.2 Knowledge Gate: candidates blocked before spending budget
     }
+
+    # v0.2 Knowledge Guardrail: an unbypassable gate BEFORE budget is spent, rejecting
+    # biophysically implausible candidates (too high-order, or net non-conservative).
+    # Rejected candidates cost no budget and are returned to the agent as structured errors.
+    _blosum_matrix = None
+    def _blosum(a: str, b: str) -> int:
+        nonlocal _blosum_matrix
+        if _blosum_matrix is None:
+            from knowledge.validators import load_rules
+            _blosum_matrix = load_rules()["blosum62"]
+        if a == b:
+            return 4
+        return _blosum_matrix.get(a, {}).get(b, _blosum_matrix.get(b, {}).get(a, 0))
+
+    def _gate(variants: list[str]):
+        """Return (allowed, rejected{seq: [reasons]}). Reject HD>max_hd or mean BLOSUM62<blosum_min."""
+        allowed, rejected = [], {}
+        for v in variants:
+            subs = [(spec.wt[i], c) for i, c in enumerate(v) if c != spec.wt[i]]
+            reasons = []
+            if len(subs) > max_hd:
+                reasons.append(f"HD {len(subs)} > {max_hd}")
+            if subs:
+                mb = float(np.mean([_blosum(w, c) for w, c in subs]))
+                if mb < blosum_min:
+                    reasons.append(f"mean BLOSUM62 {mb:.1f} < {blosum_min} (non-conservative)")
+            (rejected.setdefault(v, reasons) if reasons else allowed.append(v))
+        return allowed, rejected
 
     def emit(kind, actor, payload):
         state["trace"].append({"event_type": kind, "actor": actor, "payload": payload})
@@ -155,7 +185,22 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         remaining = total_budget - state["spent"]
         if remaining <= 0:
             return {"status": "budget_exhausted", "budget_remaining": 0}
-        chosen = list(dict.fromkeys(variants))[:remaining]
+        requested = list(dict.fromkeys(variants))
+        if guardrail:
+            allowed, rejected = _gate(requested)
+            if rejected:
+                state["n_gate_rejected"] += len(rejected)
+                emit("agent.tool.knowledge_gate", "scientific_critic",
+                     {"n_rejected": len(rejected), "n_allowed": len(allowed),
+                      "max_hd": max_hd, "blosum_min": blosum_min})
+            if not allowed:
+                return {"status": "gate_rejected", "budget_remaining": remaining,
+                        "rejected": dict(list(rejected.items())[:8]),
+                        "hint": (f"All candidates blocked by the Knowledge Gate (require HD<={max_hd} "
+                                 f"and mean BLOSUM62>={blosum_min}). No budget spent. Propose lower-order, "
+                                 f"conservative variants (e.g. from list_pool then check_knowledge).")}
+            requested = allowed
+        chosen = requested[:remaining]
         rows = state["pool"][state["pool"].seq.isin(chosen)].copy()
         state["measured"] = pd.concat([state["measured"], rows], ignore_index=True)
         state["pool"] = state["pool"].drop(rows.index)
@@ -196,7 +241,13 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                 raise RuntimeError("no LLM credentials")
             model_id = model or cfg["model"]
             oa = OAModel(model_id, provider=OpenAIProvider(base_url=cfg["base_url"], api_key=cfg["api_key"]))
-            ag = Agent(oa, system_prompt=SYSTEM_PROMPT)
+            gate_note = ("" if not guardrail else
+                         f"\n\nKNOWLEDGE GATE (unbypassable): before `test` spends budget, every candidate must pass "
+                         f"HD<={max_hd} substitutions AND mean BLOSUM62>={blosum_min} (net-conservative). Candidates that "
+                         f"fail are rejected WITHOUT spending budget and returned as errors — so do NOT waste rounds on "
+                         f"high-order or non-conservative variants; propose low-order, biophysically plausible ones "
+                         f"(use check_knowledge to pre-screen).")
+            ag = Agent(oa, system_prompt=SYSTEM_PROMPT + gate_note)
             agent_model = model_id
             emit("agent.llm.model", "agent", {"model": model_id, "base_url": cfg["base_url"]})
             for fn in (analyze_measured, predict, list_pool, check_knowledge, test, best_so_far):
@@ -264,6 +315,9 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "cold_start_size": int((spec.df.hd <= 2).sum()),
             "budget_per_round": budget, "n_rounds": len(rounds), "total_budget": total_budget,
             "budget_spent": state["spent"], "strong_threshold": round(strong_thr, 4),
+            "guardrail": guardrail, "max_hd": max_hd if guardrail else None,
+            "blosum_min": blosum_min if guardrail else None,
+            "n_gate_rejected": state["n_gate_rejected"],
             "llm_used": llm_used, "llm_summary": llm_summary, "agent_model": agent_model,
             "n_tool_calls": len(state["trace"]),
             "summary": {"final_cum_top10_max": rounds[-1]["cum_top10_max"] if rounds else None,
@@ -286,19 +340,25 @@ def main(argv=None):
     p.add_argument("--no-llm", action="store_true", help="force the deterministic fallback")
     p.add_argument("--model", default=os.environ.get("AGENTIC_LLM_MODEL", "gpt-5.6-sol"),
                    help="LLM that drives the agent (default gpt-5.6-sol); workflow modes are unaffected")
+    p.add_argument("--guardrail", action="store_true",
+                   help="v0.2: unbypassable Knowledge Gate before test (HD<=max-hd + mean BLOSUM62>=0)")
+    p.add_argument("--max-hd", type=int, default=4)
+    p.add_argument("--blosum-min", type=float, default=0.0)
     p.add_argument("--out-dir", type=Path, default=None,
-                   help="default: harness/reports/runs/agentic@<v>/<dataset>/")
+                   help="default: harness/reports/<agentic-version>/<dataset>/")
     a = p.parse_args(argv)
 
     from evolution.results_layout import run_dir
-    out_dir = a.out_dir or run_dir("agentic", a.dataset)
+    version = "v0.2" if a.guardrail else None   # v0.2 folder when the Knowledge Gate is on
+    out_dir = a.out_dir or run_dir("agentic", a.dataset, version=version)
     (out_dir / "figures").mkdir(parents=True, exist_ok=True)
     ev = out_dir / "agentic.events.jsonl"
     ev.unlink(missing_ok=True)
     store = EventStore(ev)
     spec = load(a.dataset, a.feature)
     rep = run_autoresearch(spec, budget=a.budget, n_rounds=a.n_rounds, seed=a.seed,
-                           event_store=store, llm=not a.no_llm, model=a.model)
+                           event_store=store, llm=not a.no_llm, model=a.model,
+                           guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min)
     store.verify()
     out = out_dir / "agentic.metrics.json"
     fig = out_dir / "figures" / "agentic.png"
