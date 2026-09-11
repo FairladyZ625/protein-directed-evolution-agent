@@ -106,4 +106,4 @@ SOL 每轮自主混用多种排序轴探池、自定批大小、轮间重新分�
 
 ---
 
-*来源*：`reports/pool_metrics_aav_agentic.json`、`reports/pool_metrics_aav_one_hot.json`、`reports/pool_events_aav_agentic.jsonl`(链校验通过)、`reports/agentic_postmortem_aav.json`、`reports/experiment_log.jsonl`。全部可复现。
+*来源(本报告文件夹自包含)*：`aav/agentic.metrics.json`、`aav/agentic.events.jsonl`(链校验通过)、`aav/postmortem_one_hot.json`、`aav/postmortem_esm.json`、`../workflow-v1.0/aav/pool_one_hot.metrics.json`(四策略基线对照)、`../experiment_log.jsonl`(版本脊柱)。全部可复现。
