@@ -1,0 +1,12 @@
+{
+  "bytes": 46398100,
+  "expected_rows": 149361,
+  "path": "data/four_mutations_full_data.csv",
+  "rows": 149361,
+  "sha256": "14cfb23e04edcaf99daa106743782b9289c1c673fcb6193ed90f8f19d33755f3",
+  "source": "https://doi.org/10.7554/eLife.16965.024",
+  "source_note": "Wu et al. 2016 supplement, packaged with FLIP-derived sequence/split columns",
+  "unique_variants": 149361,
+  "wt_fitness": 1.0,
+  "wt_variant": "VDGV"
+}
