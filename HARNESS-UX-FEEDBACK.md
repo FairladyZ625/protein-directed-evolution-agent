@@ -105,6 +105,16 @@ ha task preflight <id>                # 要 complete,还差什么(lease/submit p
 - 后果:GLM worker 目前**只能做只读活**(它确实只读核实了任务 ground-truth 并如实汇报),不能承担任何 Harness 写生命周期的委托。
 - 另一并发缺陷:`de-reviewer` 这类 agent 声明把 `runtime_type` 钉死为 codex,`ha runtime run zcode-glm-5-3 --agent de-reviewer` 直接 `agent_runtime_type_mismatch`;想用 GLM 当评审只能裸派 `--role reviewer`(绕过声明)。建议:①修 zcode runtime 的 headless 权限客户端;②允许 agent 声明跨 runtime_type 复用,或提供每类 runtime 的对等角色声明。
 
+## 运行时缺陷(最卡)：dispatched worker 写不进 daemon,导致"独立评审"整条无法落库
+
+派 codex worker(codex-api,订阅启用后**能正常运行并产出真实评审报告**——甚至真发现了一个任务的记录矛盾)做 review→consent→complete 时,它的 `ha` 一律报 `daemon_unavailable … workspace is not registered`:
+- worker 明明在本机(它自己找到 `/Users/lizeyu/.local/bin/ha`、`/opt/homebrew/opt/node@24`),但连不上 CEO session 用的同一个 daemon(pid 98889,socket 在 `/var/folders/.../T/harness-anything/daemon-501-*.sock`,repos=10 含本仓)。
+- worker 尝试自救:`ha daemon repo register` → `EINVAL/invalid_field`;`ha daemon start --service` → `daemon_start_runtime_forbidden`(worker 不许起 daemon)。
+- 最可能原因:**codex worker 的沙箱 HOME/userRoot 与主 session 不同 → 看的是另一个 `~/.harness` → 既无注册也无 daemon**。
+- 连锁:`noIndependentReview` 逃生路(错误提示说 review JSON 可用 `{noIndependentReview, noIndependentReviewReason}`)实际传入仍报 `invalid_command`,schema 不明,executor 走不通。
+- **净后果:一个需要"不同 actor 写库"的动作(独立评审 consent),在"远程/沙箱 worker 连不上本地 daemon + 本机 executor 被 actor_unauthorized + GUI 无入口 + 逃生路 schema 不明"的四重夹击下,事实上无法完成。** baseline milestone 的 10 个任务因此只能停在 in_review,尽管工作、closeout、fact、报告实体、以及一份真实的 codex 只读评审全部就绪。
+- 建议(按重要性):①**让 dispatched worker 与 CEO session 共享同一 daemon/userRoot**(或在派发时把 daemon endpoint+workspace 注册透传进 worker 环境)——这是打通"agent 独立评审"的命门;②补 GUI 的 Task review 入口(见上文 GUI 缺陷);③把 `noIndependentReview` 逃生路的 JSON schema 在 `--help` 里写清,并允许 executor 在无独立评审可得时凭理由完成。
+
 ## 一句总结给维护者
 
 概念闭环(Fact→Decision→Task)已经很好了。**唯一缺的是把每个跃迁的"隐藏前置条件集合"从文档/报错里,前置成一个可查询的清单**。做了 P0 的 `preflight`,agent 的上手成本会断崖式下降——因为 agent 最怕的不是规则多,是规则**不可见、只能靠撞**。
