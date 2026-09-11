@@ -83,6 +83,62 @@ def test_relaxed_gate_lets_everything_through():
     assert rep["budget_spent"] > 0
 
 
+def _big_gated_spec():
+    """A pool with MANY gate-passing variants (HD<=4 conservative A->S/G) plus some
+    gate-failing ones, so we can prove the gate does not starve the budget: candidate
+    generation must surface the valid region and spend the full budget inside it."""
+    import itertools
+    rows = [("AAAAAAAA", 1.0, 0)]
+    for i in range(8):  # cold-start singles
+        s = "A" * i + "S" + "A" * (7 - i)
+        rows.append((s, 1.0 + 0.01 * i, 1))
+    # pool: 20 gate-passing (HD3-4, A->S/G conservative) at varied positions
+    gated = []
+    combos = list(itertools.combinations(range(8), 3))
+    for k, pos in enumerate(combos[:20]):
+        s = list("AAAAAAAA")
+        for j, p in enumerate(pos):
+            s[p] = "S" if (j + k) % 2 == 0 else "G"
+        gated.append(("".join(s), 2.0 + 0.05 * k))
+    for s, f in gated:
+        rows.append((s, f, sum(a != b for a, b in zip(s, "AAAAAAAA"))))
+    # pool: gate-failing (high HD or non-conservative A->P/W)
+    for s, f in [("SSSSSSAA", 3.0), ("SSSSSSSA", 3.1), ("PPPAAAAA", 3.5), ("WWWWAAAA", 4.0)]:
+        rows.append((s, f, sum(a != b for a, b in zip(s, "AAAAAAAA"))))
+    df = pd.DataFrame(rows, columns=["seq", "fitness", "hd"]).drop_duplicates("seq")
+
+    def feat(seqs):
+        aa = "ACDEFGHIKLMNPQRSTVWY"
+        lut = {c: i for i, c in enumerate(aa)}
+        x = np.zeros((len(seqs), 8 * 20))
+        for r, s in enumerate(seqs):
+            for p, c in enumerate(s):
+                x[r, p * 20 + lut[c]] = 1.0
+        return x
+
+    return DatasetSpec(name="toybig", df=df, wt="AAAAAAAA", feature_fn=feat)
+
+
+def test_gate_on_does_not_starve_budget():
+    # Regression for the v0.2 budget-starvation bug: a reject-only gate let candidate
+    # generation keep surfacing gate-failing variants, so budget went unspent. The fix
+    # makes list_pool (and the exploit-fill that calls it) draw from the gate-passing
+    # region, so the full budget is spent inside the valid region.
+    spec = _big_gated_spec()
+    rep = run_autoresearch(spec, budget=5, n_rounds=2, seed=0, llm=False,
+                           guardrail=True, max_hd=4, blosum_min=0.0)
+    assert rep["budget_spent"] == 10, f"gate starved the budget: only {rep['budget_spent']} spent"
+    assert rep["gate_pass_pool_size"] >= 10
+    wt = spec.wt
+    bl = _blosum()
+    for rnd in rep["rounds"]:
+        for seq, _f in rnd["top10"]:
+            subs = [(wt[i], c) for i, c in enumerate(seq) if c != wt[i]]
+            assert len(subs) <= 4
+            if subs:
+                assert np.mean([bl(w, c) for w, c in subs]) >= 0.0
+
+
 def _blosum():
     from knowledge.validators import load_rules
     m = load_rules()["blosum62"]

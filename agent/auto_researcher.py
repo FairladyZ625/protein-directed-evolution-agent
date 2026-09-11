@@ -98,6 +98,17 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             (rejected.setdefault(v, reasons) if reasons else allowed.append(v))
         return allowed, rejected
 
+    # v0.2: precompute which unmeasured-pool variants pass the gate, so candidate
+    # GENERATION (list_pool, and the harness exploit-fill that calls it) surfaces only
+    # the valid region. The gate then SHAPES the search space rather than merely
+    # rejecting at test() time — a reject-only wall starves the budget because the
+    # surrogate ranks high-HD variants first and the agent keeps proposing gate-fails.
+    # test()'s reject-gate is still kept as the unbypassable guarantee (defence in depth).
+    gate_pass = None
+    if guardrail:
+        _allowed, _ = _gate(state["pool"].seq.tolist())
+        gate_pass = set(_allowed)
+
     def emit(kind, actor, payload):
         state["trace"].append({"event_type": kind, "actor": actor, "payload": payload})
         if event_store is not None:
@@ -163,8 +174,12 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             order = np.argsort(-(mean + 3.0 * np.sqrt(np.maximum(var, 0)) + rng.random(len(mean))))
         else:
             order = rng.permutation(len(state["pool"]))
+        if gate_pass is not None:  # v0.2: restrict the candidate view to the gate-passing region
+            seqs = state["pool"].seq.to_numpy()
+            order = [i for i in order if seqs[i] in gate_pass]
         picks = state["pool"].iloc[order[:n]].seq.tolist()
-        emit("agent.tool.list_pool", "hypothesis_generator", {"by": by, "n": len(picks)})
+        emit("agent.tool.list_pool", "hypothesis_generator",
+             {"by": by, "n": len(picks), "gated": gate_pass is not None})
         return picks
 
     def check_knowledge(variants: list[str]) -> dict:
@@ -243,10 +258,11 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             oa = OAModel(model_id, provider=OpenAIProvider(base_url=cfg["base_url"], api_key=cfg["api_key"]))
             gate_note = ("" if not guardrail else
                          f"\n\nKNOWLEDGE GATE (unbypassable): before `test` spends budget, every candidate must pass "
-                         f"HD<={max_hd} substitutions AND mean BLOSUM62>={blosum_min} (net-conservative). Candidates that "
-                         f"fail are rejected WITHOUT spending budget and returned as errors — so do NOT waste rounds on "
-                         f"high-order or non-conservative variants; propose low-order, biophysically plausible ones "
-                         f"(use check_knowledge to pre-screen).")
+                         f"HD<={max_hd} substitutions AND mean BLOSUM62>={blosum_min} (net-conservative). To help you, "
+                         f"`list_pool` ALREADY returns only gate-passing candidates — so trust its output and `test` a "
+                         f"full batch each round; do not hand-craft high-order variants outside list_pool (they are "
+                         f"rejected WITHOUT spending budget and waste the round). Mix exploit (predicted_mean) with "
+                         f"explore (uncertainty/diverse) WITHIN this valid region; use check_knowledge/predict to rank.")
             ag = Agent(oa, system_prompt=SYSTEM_PROMPT + gate_note)
             agent_model = model_id
             emit("agent.llm.model", "agent", {"model": model_id, "base_url": cfg["base_url"]})
@@ -318,6 +334,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "guardrail": guardrail, "max_hd": max_hd if guardrail else None,
             "blosum_min": blosum_min if guardrail else None,
             "n_gate_rejected": state["n_gate_rejected"],
+            "gate_pass_pool_size": len(gate_pass) if gate_pass is not None else None,
             "llm_used": llm_used, "llm_summary": llm_summary, "agent_model": agent_model,
             "n_tool_calls": len(state["trace"]),
             "summary": {"final_cum_top10_max": rounds[-1]["cum_top10_max"] if rounds else None,
