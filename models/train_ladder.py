@@ -17,11 +17,14 @@ class _Base:
         self.models: list[Any] = []
 
     def fit(self, X, y):
+        X, y = np.asarray(X), np.asarray(y)
         self.models = [self._make(i) for i in range(self.kwargs.get("seeds", 5))]
         for i, model in enumerate(self.models):
             if hasattr(model, "random_state") and model.random_state is None:
                 model.random_state = i
-            model.fit(X, y)
+            rng = np.random.default_rng(i)
+            sample = rng.integers(0, len(y), size=len(y))
+            model.fit(X[sample], y[sample])
         return self
 
     def predict(self, X):

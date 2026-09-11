@@ -94,8 +94,20 @@ def load_avgfp(feature: str = "esm2") -> DatasetSpec:
     raw = pd.read_csv(AVGFP_CSV)
     seq_col = next(c for c in ("mutated_sequence", "sequence", "seq") if c in raw.columns)
     fit_col = next(c for c in ("DMS_score", "fitness", "score", "target") if c in raw.columns)
-    wt = raw[seq_col].iloc[raw[seq_col].str.len().idxmax()]  # placeholder; loader refined on real columns
+    raw[seq_col] = raw[seq_col].astype(str).str.upper()
+    mutant_col = next((c for c in ("mutant", "mutation", "mutations") if c in raw.columns), None)
+    wt_rows = raw[mutant_col].astype(str).str.upper().isin(("WT", "WILD_TYPE", "WILDTYPE")) if mutant_col else None
+    if wt_rows is None or not wt_rows.any():
+        raise ValueError("avGFP CSV must contain an explicit WT row in mutant/mutation/mutations")
+    wt_values = raw.loc[wt_rows, seq_col].drop_duplicates()
+    if len(wt_values) != 1:
+        raise ValueError("avGFP CSV contains inconsistent WT sequences")
+    wt = wt_values.iloc[0]
     df = raw[[seq_col, fit_col]].rename(columns={seq_col: "seq", fit_col: "fitness"})
+    valid = df.seq.str.len().eq(len(wt)) & df.seq.str.match(r"^[ACDEFGHIKLMNPQRSTVWY]+$")
+    df = df.loc[valid].copy()
+    df["fitness"] = pd.to_numeric(df["fitness"], errors="coerce")
+    df = df.dropna(subset=["fitness"])
     df["hd"] = [sum(a != b for a, b in zip(s, wt)) for s in df.seq]
     df = df.drop_duplicates("seq").reset_index(drop=True)
     feat = (one_hot_encoder(len(wt)) if feature == "one_hot" else esm_encoder("avgfp", df.seq.tolist()))
