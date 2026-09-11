@@ -26,6 +26,22 @@ class PoolSplit:
         return {"train_pool": len(self.train_pool), "query_pool": len(self.query_pool), "holdout": len(self.holdout)}
 
 
+def build_hd_extrapolation_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Return the leakage-resistant GB1 extrapolation split (HD <=2 / >=3).
+
+    This deliberately does not sample: every validated landscape row belongs to
+    exactly one side, making results reproducible and directly comparable.
+    """
+    required = {"Variants", "HD", "Fitness"}
+    if not required.issubset(df.columns) or len(df) != EXPECTED_ROWS:
+        raise ValueError("HD split requires the validated 149,361-variant landscape")
+    train = df.loc[df["HD"] <= 2, ["Variants", "HD", "Fitness"]].reset_index(drop=True)
+    test = df.loc[df["HD"] >= 3, ["Variants", "HD", "Fitness"]].reset_index(drop=True)
+    if train.empty or test.empty:
+        raise ValueError("HD split produced an empty partition")
+    return train, test
+
+
 def build_three_pools(df: pd.DataFrame, *, seed: int = SEED, train_size: int = TRAIN_SIZE,
                       query_size: int = QUERY_SIZE) -> PoolSplit:
     if len(df) != EXPECTED_ROWS or not df["Variants"].is_unique:

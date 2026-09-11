@@ -71,12 +71,18 @@ def metrics(y_true, y_pred, *, top_k: float = .01) -> dict[str, float]:
             "top_k": float(len(set(pred_idx) & true_idx) / n)}
 
 
-def train_ladder(X, y, *, out: str | Path = "reports/predictor_metrics.json"):
-    n = len(y); cut1, cut2 = int(n*.6), int(n*.8)
+def evaluate_ladder(X_train, y_train, X_test, y_test) -> dict[str, dict[str, float]]:
+    """Fit the three standard predictors and score an explicit split."""
     result = {}
     for name, cls in (("ridge", RidgePredictor), ("xgboost", XGBoostPredictor), ("mlp", MLPPredictor)):
-        model = cls().fit(X[:cut1], y[:cut1])
-        pred, var = model.predict(X[cut1:])
-        result[name] = {**metrics(y[cut1:], pred), "variance_min": float(var.min()), "variance_max": float(var.max())}
+        model = cls().fit(X_train, y_train)
+        pred, var = model.predict(X_test)
+        result[name] = {**metrics(y_test, pred), "variance_min": float(var.min()), "variance_max": float(var.max())}
+    return result
+
+
+def train_ladder(X, y, *, out: str | Path = "reports/predictor_metrics.json"):
+    n = len(y); cut1 = int(n * .6)
+    result = evaluate_ladder(X[:cut1], y[:cut1], X[cut1:], y[cut1:])
     path = Path(out); path.parent.mkdir(parents=True, exist_ok=True); path.write_text(json.dumps(result, indent=2))
     return result
