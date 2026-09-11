@@ -37,8 +37,11 @@ def postmortem(feature: str = "one_hot", budget_total: int = 288, seeds: int = 5
     pool = df[df.hd > 2].reset_index(drop=True)
     strong_thr = float(np.quantile(df.fitness, 0.9))
 
-    model = RidgePredictor(seeds=seeds).fit(spec.feature_fn(cold.seq.tolist()),
-                                             cold.fitness.to_numpy())
+    # ESM-2 embeddings are continuous / non-unit-scale: standardise and relax alpha or Ridge
+    # is mis-regularised (raw Spearman 0.47 -> fair 0.60). one-hot needs neither.
+    esm = feature != "one_hot"
+    model = RidgePredictor(seeds=seeds, standardize=esm, alpha=10.0 if esm else 1.0).fit(
+        spec.feature_fn(cold.seq.tolist()), cold.fitness.to_numpy())
     mean, var = model.predict(spec.feature_fn(pool.seq.tolist()))
     mean, var = np.asarray(mean), np.asarray(var)
     fit, hd = pool.fitness.to_numpy(), pool.hd.to_numpy()

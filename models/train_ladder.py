@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.preprocessing import StandardScaler
 from scipy.stats import spearmanr, pearsonr
 
 
@@ -15,9 +16,17 @@ class _Base:
     def __init__(self, **kwargs: Any):
         self.kwargs = kwargs
         self.models: list[Any] = []
+        # Continuous, non-unit-scale features (ESM-2 embeddings) leave Ridge(alpha=1) badly
+        # mis-regularised: on AAV, raw ESM scores Spearman 0.47 but standardised 0.60. one-hot
+        # (0/1) is already scaled so this is a no-op there. Opt-in to keep existing one-hot
+        # baselines byte-identical; ESM callers pass standardize=True.
+        self._scaler: StandardScaler | None = None
 
     def fit(self, X, y):
-        X, y = np.asarray(X), np.asarray(y)
+        X, y = np.asarray(X, dtype=float), np.asarray(y)
+        if self.kwargs.get("standardize", False):
+            self._scaler = StandardScaler().fit(X)
+            X = self._scaler.transform(X)
         self.models = [self._make(i) for i in range(self.kwargs.get("seeds", 5))]
         for i, model in enumerate(self.models):
             if hasattr(model, "random_state") and model.random_state is None:
@@ -30,6 +39,9 @@ class _Base:
     def predict(self, X):
         if not self.models:
             raise RuntimeError("fit must be called before predict")
+        X = np.asarray(X, dtype=float)
+        if self._scaler is not None:
+            X = self._scaler.transform(X)
         values = np.asarray([m.predict(X) for m in self.models], dtype=float)
         return values.mean(axis=0), values.var(axis=0)
 
