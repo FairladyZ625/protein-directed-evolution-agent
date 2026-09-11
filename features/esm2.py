@@ -9,7 +9,7 @@ import tempfile
 
 import numpy as np
 
-from evolution.mutations import variant_to_sequence
+from evolution.mutations import AMINO_ACIDS, variant_to_sequence
 
 MODEL_NAME = "esm2_t33_650M_UR50D"
 FEATURE_DIM = 1280
@@ -58,7 +58,11 @@ class ESM2Embedder:
         return embeddings.astype(np.float32, copy=False)
 
     def _extract(self, variants: Sequence[str]) -> np.ndarray:
-        sequences = [variant_to_sequence(variant) for variant in variants]
+        sequences = []
+        for variant in variants:
+            if any(aa not in AMINO_ACIDS for aa in variant):
+                raise ValueError("sequence contains a non-standard or stop residue")
+            sequences.append(variant_to_sequence(variant) if len(variant) == 4 else variant)
         if self.backend is not None:
             return np.asarray(self.backend(sequences), dtype=np.float32)
         return self._fair_esm_backend(sequences)

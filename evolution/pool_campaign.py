@@ -113,7 +113,9 @@ def _rank(strategy, pool, measured, spec, blosum, budget, rng, event_store, roun
     pred.fit(spec.feature_fn(measured.seq.tolist()), measured[fit_col].to_numpy())
     mean, var = pred.predict(spec.feature_fn(pool.seq.tolist()))
     _event(event_store, "agent.role.completed", "fitness_evaluator",
-           {"n_scored": len(pool), "mean_max": round(float(mean.max()), 4)}, round_id, strategy)
+           {"n_scored": len(pool), "mean_max": round(float(mean.max()), 4),
+            "variance_min": float(var.min()), "variance_mean": float(var.mean()),
+            "variance_max": float(var.max())}, round_id, strategy)
     if strategy == "greedy":
         acq = mean
     else:
@@ -252,4 +254,3 @@ def main(argv: list[str] | None = None) -> dict:
 
 if __name__ == "__main__":
     main()
-
