@@ -72,3 +72,64 @@ This file contains stable repository operating rules. Current milestone state an
 ## Repository Specifics
 
 Repository-specific rules may be added here after explicit diagnosis; the deterministic base and vertical overlay above remain unchanged.
+
+## 治理配方(本仓实测·抄命令别撞墙)
+
+Fact → Decision → Task 是一个闭环:**观察**促成 **Fact**,Fact 催生 **Decision**(裁定),Decision 派生 **Task**(工作),Task 完成又产出新 **Fact**。下面是每个动作的确切命令序列 + 已踩过的坑,照抄即可,别再逐个报错反向发现。
+
+**通用坑**:
+- `decisions/`、`tasks/`、`entities/` 下的 .md 由 daemon 管理(gitignore),**别直接编辑**,一律走 `ha ... amend/--body-file`;`--body-file` 的文件**必须在仓库根内**(scratchpad 在外会被拒)。
+- 提交类 packet 的多值字段(verificationNotes/deliverables/…)**是数组**,不是字符串。
+- 关系必须是**已声明的三元组**;`relation_triple_undeclared` 时别硬试,先看下面已知可用的三元组。
+
+### 配方 1:记录 Fact
+```
+ha fact record --statement "<观察>" --source "<证据路径>" --confidence high [--task <task-id>]
+```
+带 `--task` 会自动建 `task --produces--> fact`(满足任务完成门的 fact 要求)。`ha fact` **没有 list 命令**。
+
+### 配方 2:建决策并让它可被接受(接受由他人/GUI 做,自己不能自审)
+```
+# ① 提议(chosen/rejected/claims 必填;rejected 每条必带 whyNot)
+ha decision propose --json-input @- <<'J'
+{"title":"…","question":"…","riskTier":"low","urgency":"medium","decisionClass":"ordinary",
+ "chosen":[{"id":"CH1","text":"…","rationale":"…"}],
+ "rejected":[{"id":"RJ1","text":"…","whyNot":"…"}],
+ "claims":[{"id":"C1","loadBearing":true,"text":"…"}]}
+J
+# ② 填 body(否则 accept 报 body_placeholder)——四小节
+printf '## 背景\n…\n## 裁定\n…\n## 影响\n…\n' > .body.md
+ha decision amend <id> --body-file .body.md && rm .body.md
+# ③ 让 load-bearing claim 被证据覆盖(否则 accept 报 coverageRows 0/N):两步,缺一不可
+ha fact record --statement "<支撑该claim的实测观察>" --source "…" --confidence high   # 得到 F-xxxx
+ha relation relate --source-ref decision/<id>/C1 --target-ref fact/F-xxxx --type evidenced-by --rationale "…" --expected-version 0
+ha decision claim fulfill <id> --id C1 --mode evidenced
+# ④ 校验干净后交 GUI/他人 accept(applies_to 空只是软警告,不阻塞)
+ha decision validate <id>
+```
+> 若无实测证据,accept 可走 `--judgment-only "<理由>"` 兜底(样板决策即如此),但有证据优先。
+
+### 配方 3:closeout 一个任务(complete 由他人/GUI 做)
+```
+ha task start <id>                       # 先拿 lease,否则 submit 报 lease_required
+# 写 closeout.md 四个精确小节(否则 complete 报 closeout_placeholder):
+#   ## Summary / ## Verification / ## Residual Risk / ## Same Mechanism Elsewhere
+ha task submit <id> --json-input @- <<'J'
+{"completionClaim":"…","deliverables":["…"],"outputs":["F-…","REP-…"],
+ "verificationNotes":["…"],"knownGaps":["…"],"residualRisks":["…"],"commitSha":"<git HEAD 40位>"}
+J
+# 任务需 ≥1 个 fact(配方1带 --task,或已有 produces 关系)。之后 GUI 做 review-execution+consent→complete。
+```
+
+### 配方 4:把报告/工件登记为实体并挂到任务
+```
+ha vertical entity-kind upsert --from-file kind.json      # 声明种类(minimal:id/entityType/idPrefix/display/descriptorSchemaRef/store/locatorKinds)
+ha entity import --kind <kind> --locator <路径> --expected-version 0 --title "…"   # locator 可是文件或整文件夹(整树 SHA256)
+# 若要 <kind> --relates--> task:该三元组要先在 kind 的 relations 里声明,且每条 relation 需 decisionClaimRef+decisionContentPin(先有决策授权)
+```
+
+### 已知可用的关系三元组(省得猜)
+- `task --produces--> fact`(记 fact 带 --task 时自动生成)
+- `decision/<claim> --evidenced-by--> fact`(给 claim 挂证据)
+- `<artifact-kind>/<ENTITY> --relates--> task`(需 kind 预声明该三元组)
+- 遇 `relation_triple_undeclared`:该 (source-kind,type,target-kind) 没声明,换方向或先在 kind 上声明,别穷举 type。
