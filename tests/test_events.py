@@ -3,6 +3,7 @@ from __future__ import annotations
 import sqlite3
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
@@ -24,6 +25,23 @@ def test_append_hash_chain_and_verification(tmp_path):
     assert [event["seq"] for event in events] == [1, 2]
     assert events[1]["prev_hash"] == events[0]["hash"]
     assert len(store.head_hash) == 64
+    assert store.verify() is None
+
+
+def test_concurrent_appends_keep_chain_intact(tmp_path):
+    """An agentic LLM turn fires tool calls in parallel (pydantic-ai runs sync tools in
+    an anyio thread pool), so append() must be safe under concurrency: no two events may
+    share a seq and the hash chain must still verify."""
+    store = EventStore(tmp_path / "events.jsonl")
+    n = 200
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        list(pool.map(
+            lambda i: store.append("agent.tool.list_pool", round_id=1, strategy="agentic",
+                                   actor="hypothesis_generator", payload={"i": i}),
+            range(n)))
+
+    seqs = [event["seq"] for event in store.iter_events()]
+    assert seqs == list(range(1, n + 1))  # contiguous, no duplicates
     assert store.verify() is None
 
 

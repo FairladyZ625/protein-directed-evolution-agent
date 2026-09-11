@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import threading
 from collections.abc import Iterator, Mapping
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,6 +33,11 @@ class EventStore:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._next_seq, self._last_hash = self._tail()
+        # An agentic LLM turn can fire several tool calls at once; pydantic-ai runs the
+        # sync tool functions in an anyio worker thread pool, so append() is called
+        # concurrently. Serialise the read-tail / write / advance sequence or two events
+        # collide on the same seq and prev_hash and break the chain.
+        self._lock = threading.Lock()
 
     def _tail(self) -> tuple[int, str]:
         last: dict[str, Any] | None = None
@@ -56,28 +62,29 @@ class EventStore:
             raise ValueError("event_type is required")
         if not actor:
             raise ValueError("actor is required")
-        body: dict[str, Any] = {
-            "seq": self._next_seq,
-            "ts": ts or datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"),
-            "event_type": event_type,
-            "round_id": round_id,
-            "strategy": strategy,
-            "actor": actor,
-            "payload": dict(payload or {}),
-        }
-        event = {
-            **body,
-            "prev_hash": self._last_hash,
-            "hash": _event_hash(self._last_hash, body),
-        }
-        encoded = (_canonical(event) + "\n").encode("utf-8")
-        with self.path.open("ab") as stream:
-            stream.write(encoded)
-            stream.flush()
-            os.fsync(stream.fileno())
-        self._next_seq += 1
-        self._last_hash = event["hash"]
-        return event
+        with self._lock:
+            body: dict[str, Any] = {
+                "seq": self._next_seq,
+                "ts": ts or datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"),
+                "event_type": event_type,
+                "round_id": round_id,
+                "strategy": strategy,
+                "actor": actor,
+                "payload": dict(payload or {}),
+            }
+            event = {
+                **body,
+                "prev_hash": self._last_hash,
+                "hash": _event_hash(self._last_hash, body),
+            }
+            encoded = (_canonical(event) + "\n").encode("utf-8")
+            with self.path.open("ab") as stream:
+                stream.write(encoded)
+                stream.flush()
+                os.fsync(stream.fileno())
+            self._next_seq += 1
+            self._last_hash = event["hash"]
+            return event
 
     def iter_events(self) -> Iterator[dict[str, Any]]:
         """Yield complete JSONL records, tolerating an interrupted final write."""
