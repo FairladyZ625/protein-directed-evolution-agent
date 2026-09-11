@@ -82,6 +82,16 @@ ha task preflight <id>                # 要 complete,还差什么(lease/submit p
 
 ---
 
+## GUI 侧缺陷(用户第一手反馈,与 CLI 同等重要)
+
+1. **Task 详情页没有"人做 review-consent"的入口**。CLI 生命周期是 start→submit→**review-execution→review-consent**→complete,但 GUI 的 Task 详情里根本没有让人执行 review/consent 的地方——只有**决策(Decision)有审批按钮**。后果:任务 submit 进入 in_review 后,**人在 GUI 里无路可走**,只能靠 CLI 或派另一个 agent 来 review。这等于生命周期在 GUI 上断了一节。
+   - 建议:Task 详情页补一个"独立评审 / 同意完成"区(镜像 Decision 的接受面板),支持人读 closeout 四小节 + 提交包后一键 review-consent→complete。
+
+2. **状态命名对不上**。CLI 状态是 `in_review`,但 GUI 看板把它显示成"**封存中(Finalizing)**",且没有单独的"**待审阅 / In Review**"分桶。用户在看板上看不到"这些任务在等我审"这一语义。
+   - 建议:GUI 增加 `In Review` 状态列/标签,与 CLI 的 `in_review` 对齐;"封存中/Finalizing"若是另一含义应区分,否则统一命名。
+
+3. **连带影响**:因为人无法在 GUI 完成 Task review,实际闭环只能靠"再派一个 review agent(不同 actor,规避 self-review 的 `actor_unauthorized`)代为 review+consent+complete"。这可行但重——**它把本应是人 30 秒点一下的动作,变成一次 agent 派工**。这条恰好反证了 GUI 评审入口缺失的代价。
+
 ## 一句总结给维护者
 
 概念闭环(Fact→Decision→Task)已经很好了。**唯一缺的是把每个跃迁的"隐藏前置条件集合"从文档/报错里,前置成一个可查询的清单**。做了 P0 的 `preflight`,agent 的上手成本会断崖式下降——因为 agent 最怕的不是规则多,是规则**不可见、只能靠撞**。
