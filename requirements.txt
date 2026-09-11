@@ -35,3 +35,4 @@ typing_extensions==4.16.0
 pydantic==2.13.5
 openai==3.13.0
 streamlit==1.63.0
+pydantic-ai-slim[openai]==2.42.0
