@@ -336,7 +336,8 @@ def main(argv: list[str] | None = None) -> dict:
     p = argparse.ArgumentParser(description="GB1 four-strategy active-learning campaign")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--cold-start", choices=("random", "low_hd"), default="random",
-                   help="'random' = dense random seed pool (easy); 'low_hd' = seed from HD<=2 only, extrapolate outward (hard)")
+                   help="'random' = dense random seed pool (easy); 'low_hd' = seed from HD<=max-cold-hd only, extrapolate outward (hard)")
+    p.add_argument("--max-cold-hd", type=int, default=2, help="for --cold-start low_hd: max Hamming distance in the seed pool")
     p.add_argument("--use-llm", action="store_true", help="inject the pool LLM into the agent hypothesis port")
     p.add_argument("--out-json", type=Path, default=OUT_JSON)
     p.add_argument("--out-fig", type=Path, default=OUT_FIG)
@@ -347,7 +348,8 @@ def main(argv: list[str] | None = None) -> dict:
     if args.out_events.exists():
         args.out_events.unlink()  # fresh hash chain; never append onto a stale stream
     store = EventStore(args.out_events)
-    report = run_campaign(seed=args.seed, use_llm=args.use_llm, event_store=store, cold_start=args.cold_start)
+    report = run_campaign(seed=args.seed, use_llm=args.use_llm, event_store=store,
+                          cold_start=args.cold_start, max_cold_hd=args.max_cold_hd)
     store.verify()  # the audit chain must be intact before we publish it
     n_events = sum(1 for _ in store.iter_events())
 
