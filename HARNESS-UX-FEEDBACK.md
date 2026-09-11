@@ -98,6 +98,13 @@ ha task preflight <id>                # 要 complete,还差什么(lease/submit p
 
 3. **连带影响**:因为人无法在 GUI 完成 Task review,实际闭环只能靠"再派一个 review agent(不同 actor,规避 self-review 的 `actor_unauthorized`)代为 review+consent+complete"。这可行但重——**它把本应是人 30 秒点一下的动作,变成一次 agent 派工**。这条恰好反证了 GUI 评审入口缺失的代价。
 
+## 运行时缺陷:zcode(GLM)worker 在 detached dispatch 里完全跑不了 `ha`
+
+派 GLM worker(`zcode-glm-5-3`)做独立评审时,它的 Bash 工具层对**所有** `ha`/`npx harness-anything` 命令一律返回 `No permission client configured for Bash`——连 `ha --version`、绝对路径、`env`、复合命令都被拦;只有 `echo`/`ls`/`which` 这类只读命令能过。即:**在无人值守(detached/headless)的 zcode runtime 里,需要权限确认的命令无客户端可问,直接硬拒**,导致任何写库动作(review/consent/complete/fact)全部无法执行。
+- 对比:codex runtime(`codex-api`)在同样 detached 下能正常跑 `ha` 写命令。
+- 后果:GLM worker 目前**只能做只读活**(它确实只读核实了任务 ground-truth 并如实汇报),不能承担任何 Harness 写生命周期的委托。
+- 另一并发缺陷:`de-reviewer` 这类 agent 声明把 `runtime_type` 钉死为 codex,`ha runtime run zcode-glm-5-3 --agent de-reviewer` 直接 `agent_runtime_type_mismatch`;想用 GLM 当评审只能裸派 `--role reviewer`(绕过声明)。建议:①修 zcode runtime 的 headless 权限客户端;②允许 agent 声明跨 runtime_type 复用,或提供每类 runtime 的对等角色声明。
+
 ## 一句总结给维护者
 
 概念闭环(Fact→Decision→Task)已经很好了。**唯一缺的是把每个跃迁的"隐藏前置条件集合"从文档/报错里,前置成一个可查询的清单**。做了 P0 的 `preflight`,agent 的上手成本会断崖式下降——因为 agent 最怕的不是规则多,是规则**不可见、只能靠撞**。
