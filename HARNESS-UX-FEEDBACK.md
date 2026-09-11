@@ -65,6 +65,12 @@ ha task preflight <id>                # 要 complete,还差什么(lease/submit p
 ### P1 — 让"已声明的三元组"可发现
 `relation_triple_undeclared` 的错误里直接列出该 source kind 的合法三元组;并加 `ha relation triples [--source-kind fact]` 查询命令。现在靠猜 evidenced-by/supports/relates,纯浪费。
 
+### P1 — 治理型关系的 "compilation authority" 完全不透明(实测彻底卡死)
+想给自建实体种类声明一条受治理的关系(`report --relates--> task`),流程是:建决策→填 body→接受→拿 contentPin→在 kind 的 relations 里填 `decisionClaimRef`+`decisionContentPin`。全部照做、`vertical validate` 也 valid=true,但真去 `ha relation relate` 时报 `invalid_vertical_contract: Decision claim ref decision/<id>/CH1 does not exist in the compilation authority`。
+- 换 C1(claim)/CH1(chosen)都报同样错;既有的 research 种类能用,是因为它的决策是**导入快照(imported_snapshot)**、天生在 authority 集里。
+- **没有任何命令或文档说明:一个新建+已接受的决策如何进入 "compilation authority"**;`validate` 还骗人(声明能过、使用即挂)。结果:用正常 propose→accept 流程创建的决策**无法**授权一条自建关系种类——这条路事实上走不通。
+- 建议:①`validate` 就该在编译期发现 authority 缺失并报错,而不是等到 relate;②给一条 `ha vertical decision-authority add <decision>` 或在 accept 决策时可选"纳入 vertical 编译授权";③错误里直接说明如何让该决策进入 authority。
+
 ### P1 — 创建即脚手架
 `ha decision propose` 自动把 body 填成带四小节的模板(而非留空触发 body_placeholder);`ha task create` 的 closeout.md 已有占位,但可在 submit 时**预检四小节存在**并直接指出缺哪节。
 
