@@ -7,6 +7,7 @@ the agent designs is guaranteed to be measurable by the oracle.
 from itertools import product
 
 import pandas as pd
+import pytest
 
 import evolution.campaign as campaign
 from evolution.campaign import RANDOM_SEEDS, plot_campaign, run_campaign
@@ -28,6 +29,24 @@ def landscape() -> pd.DataFrame:
         f += 0.4 if (seq[0] == "F" and seq[2] == "W") else 0.0
         rows.append({"Variants": seq, "HD": sum(a != b for a, b in zip(seq, _WT)), "Fitness": round(f, 3)})
     return pd.DataFrame(rows)
+
+
+@pytest.fixture(autouse=True)
+def _supply_complete_measured_space(monkeypatch):
+    """Give the pipeline the fixture's complete truth space independently of history.
+
+    Production GB1 has a 149,361-variant measurable set. This synthetic analogue
+    has 16 variants; bare ``_pool_records`` contains only cold-start history, so it
+    must be supplemented or measured-space filtering correctly removes every new
+    nomination.
+    """
+    original = campaign.run_pipeline
+    measured_space = [{"Variants": variant} for variant in landscape()["Variants"]]
+
+    def run_with_measured_space(pool, *args, **kwargs):
+        return original([*pool, *measured_space], *args, **kwargs)
+
+    monkeypatch.setattr(campaign, "run_pipeline", run_with_measured_space)
 
 
 class _EventProbe:

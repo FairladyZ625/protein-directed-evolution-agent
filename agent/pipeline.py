@@ -141,7 +141,9 @@ class ScientificCritic:
         # no_knowledge=True is the ablation: validate_candidate returns [] so all(...) is True (no gating).
         accepted=[]; checks=[]
         for c in scored:
-            rules=validate_candidate(c.mutations, no_knowledge=self.no_knowledge); ok=all(x["pass"] for x in rules)
+            rules=validate_candidate(c.mutations, no_knowledge=self.no_knowledge)
+            gate_rules = [rule for rule in rules if rule["enforcement"] == "gate"]
+            ok=all(rule["pass"] for rule in gate_rules)
             note = "accepted" if ok else "rejected by knowledge rules"
             if self.llm and ok:
                 try:

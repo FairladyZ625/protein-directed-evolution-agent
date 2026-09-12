@@ -44,9 +44,9 @@ blosum62:
   Y: {A: -2, R: -2, N: -2, D: -3, C: -2, Q: -1, E: -2, G: -3, H: 2, I: -1, L: -1, K: -2, M: -1, F: 3, P: -3, S: -2, T: -2, W: 2, Y: 7, V: -1}
   V: {A: 0, R: -3, N: -3, D: -3, C: -1, Q: -2, E: -2, G: -3, H: -3, I: 3, L: 1, K: -2, M: 1, F: -1, P: -2, S: -2, T: 0, W: -3, Y: -1, V: 4}
 rules:
-  - {id: R-MAX-MUTATIONS, type: max_mutations, limit: 4, note: "At most four substitutions per candidate"}
-  - {id: R-NO-STOP, type: alphabet, allowed: "ACDEFGHIKLMNPQRSTVWY", note: "Stop codons and non-standard residues are forbidden"}
-  - {id: R-BLOSUM-CONSERVATIVE, type: blosum, min_score: 1, note: "BLOSUM62 score >= 1 is a conservative substitution"}
-  - {id: R-BLOSUM-AGGRESSIVE, type: blosum, max_score: -1, note: "BLOSUM62 score <= -1 is an aggressive substitution"}
-  - {id: R-GB1-SITES, type: positions, allowed: [39, 40, 41, 54], wild_type: {39: V, 40: D, 41: G, 54: V}, note: "GB1 variable sites"}
-  - {id: R-PRIORITIZE-HISTORICAL, type: historical, note: "Prefer combinations containing historically high-fitness single mutants"}
+  - {id: R-MAX-MUTATIONS, type: max_mutations, enforcement: gate, limit: 4, note: "At most four substitutions per candidate"}
+  - {id: R-NO-STOP, type: alphabet, enforcement: gate, allowed: "ACDEFGHIKLMNPQRSTVWY", note: "Stop codons and non-standard residues are forbidden"}
+  - {id: R-BLOSUM-CONSERVATIVE, type: blosum, enforcement: gate, min_score: 1, note: "BLOSUM62 score >= 1 is a conservative substitution"}
+  - {id: R-BLOSUM-AGGRESSIVE, type: blosum, enforcement: gate, max_score: -1, note: "BLOSUM62 score <= -1 is an aggressive substitution"}
+  - {id: R-GB1-SITES, type: positions, enforcement: gate, allowed: [39, 40, 41, 54], wild_type: {39: V, 40: D, 41: G, 54: V}, note: "GB1 variable sites"}
+  - {id: R-PRIORITIZE-HISTORICAL, type: historical, enforcement: advisory, note: "Prefer combinations containing historically high-fitness single mutants"}

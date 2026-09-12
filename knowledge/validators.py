@@ -50,8 +50,15 @@ def validate_mutations(mutations: Iterable[Any], *, no_knowledge: bool = False,
     cfg = rules or load_rules()
     muts = [_parse(m) for m in mutations]
     historical = {_mutation_key(m) for m in (historical_good or [])}
+    enforcement = {rule["id"]: rule.get("enforcement", "gate") for rule in cfg["rules"]}
     out = []
-    def add(rule_id, passed, note): out.append({"rule_id": rule_id, "pass": bool(passed), "note": note})
+    def add(rule_id, passed, note):
+        out.append({
+            "rule_id": rule_id,
+            "enforcement": enforcement[rule_id],
+            "pass": bool(passed),
+            "note": note,
+        })
     add("R-MAX-MUTATIONS", len(muts) <= 4, f"{len(muts)} substitutions (limit 4)")
     add("R-NO-STOP", all(a in AA and b in AA for a, _, b in muts), "standard amino-acid alphabet")
     for a, pos, b in muts:
