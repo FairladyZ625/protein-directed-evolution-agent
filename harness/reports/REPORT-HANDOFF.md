@@ -415,3 +415,136 @@ fact `F-89963893`。
 - 凡引用 v0.7 的数字,**必须带上 4.4 的三条口径限制**。
 - 凡引用 AAV 知识消融,**必须写明只有 1 个 seed**。
 - 凡引用四策略对比,**必须写明本轮未调商业 LLM、LLM 归属为 deterministic/fallback**。
+
+---
+
+## 七、2026-09-12 晚间追加(交付前最后一轮审计的发现)
+
+这一节是在前六节写完之后、交付前又查了一遍查出来的。**其中 7.1 与 7.2 会改变报告里
+已经写下的表述**,优先处理。
+
+### 7.1 【必须改】「LLM 评审」这件事此前一次都没真正发生过
+
+**事实**:`evolution/campaign.py` 的 `_llm_critic` 返回裸字符串,而
+`agent/pipeline.py` 的 `_structured_call` 会把端口返回值送进
+`CriticReview.model_validate()` —— 后者要求一个带 `note` 字段的映射。所以**每一次**
+LLM critic 调用都抛 `ValidationError`,被 `ScientificCritic` 的 `except Exception`
+吞掉,静默降级成确定性注释。
+
+**证据**:一次 `--use-llm` 真跑的 critique 列表 15/15 全是
+`"accepted (deterministic critic fallback)"`,而同一个端点手工探测 **19 秒就正常应答**
+(`gpt-5.6-sol` via pool)。所以这不是「提供方不可用」,是契约违约被 fallback 伪装成了
+提供方不可用。
+
+- Fact:`F-363846B5`
+- 修复:commit `52b2dd6`(端口返回 `{"note": ...}`;空回复算失败;新增 `llm_budget` 上限)
+- 数据:`harness/reports/workflow-v1.1/gb1/campaign_llm.*`(用修好的 critic 重跑)
+
+**报告怎么改**:
+- 凡出现「LLM Critic 评审候选」「Critic 由 LLM 驱动」之类表述,**改成明确的两段式**:
+  Critic 的**门禁**始终是确定性的知识规则检查,覆盖每一个候选;**自然语言评审意见**
+  由 LLM 写,且**有调用预算上限**(默认 10 条/轮),预算外的候选记确定性注释。
+- 每次跑完可以直接引用事件里的 `llm_critique_budget` / `llm_critiques_spent`
+  两个字段说清 LLM 实际写了多少条 —— 不要再用定性说法。
+- 知识消融报告里记录的「36/36 agent 轮次超时」**很可能是同一机制的另一副面孔**,
+  建议在该处加一句「此现象的成因已定位到端口契约违约(F-363846B5),
+  不能归因于端点不可用」。**这是个诚实性修正,不要略过。**
+
+### 7.2 【必须改】README 列的两条主复现命令,在干净 clone 上跑不起来
+
+`make campaign` 与 `make baseline` 会 `ModuleNotFoundError: No module named 'evolution'`
+—— `python evolution/<script>.py` 只把 `evolution/` 放进 `sys.path`,不放仓库根。
+同仓的 `scripts/smoke.py`、`app/demo.py`、`data/download_gb1.py` 早就各自注入了仓库根,
+唯独两个 make 主入口漏了。阴阳对照:加 `PYTHONPATH=.` 同命令即正常。
+
+- Fact:`F-6D573C04`;修复:commit `f68f8d7`
+- **报告怎么改**:如果报告里写了「按 README 两条命令即可复现」,这句话在修复前是假的。
+  现在是真的了,但建议改成引用一键脚本(`scripts/install.sh` / `scripts/run_all.sh`,
+  见 7.6),那是经过干净 venv 验证的路径。
+
+### 7.3 【新证据】sparse regime 下知识增强首次拿到硬证据
+
+四策略在修好 `measurable_variants` 之后重跑,三个 regime 的结果:
+
+| regime(种子池) | random | greedy | agent 无知识 | **知识增强** |
+|---|---:|---:|---:|---:|
+| easy(5000 随机) | 2.373537 | 8.761966 | 8.761966 | 8.761966 |
+| hard(HD≤2) | 5.081244 | 8.761966 | 8.761966 | 8.761966 |
+| **sparse(HD≤1)** | 3.993242 | 5.772032 | 5.772032 | **8.761966** |
+
+(数字为 `cum_top10_max`,GB1 全局最优 `FWAA` = 8.761966)
+
+**sparse 是四个 regime 里唯一出现策略分层的**:greedy 与无知识 agent 都停在 5.772032,
+只有知识增强(UCB λ=0.75 + BLOSUM62 先验 β=0.30)走到全局最优。
+
+- Fact:`F-61A84D3B`;数据:`harness/reports/workflow-v1.1/gb1/campaign_{easy,hard,sparse}.metrics.json`;commit `c2fa02f`
+- **建议写法**:「种子池越稀疏,领域知识的边际价值越大」。
+  **反过来那半句也必须写**:在信息充足的 easy regime 里知识库不产生可测增益
+  (三个模型策略并列命中),所以**不能把知识增强写成普遍有效**。
+  hard regime 下三者都命中,但知识增强的强命中数最多(65 vs 50 vs 43)。
+
+### 7.4 【新增可引用】强命中与有益命中会给出相反的排序
+
+easy regime 里 `agent_no_knowledge` 的强命中数(95)高于知识增强(86),
+但知识增强的有益命中数最多(250 vs 244 vs 239)。
+**建议在报告里明确写出这个不一致**,并说明两个指标问的是不同问题
+(强命中问「找到多少个高适应度变体」,有益命中问「多少提名优于野生型」)。
+只报对自己有利的那个指标是选择性汇报。
+
+### 7.5 【可复现性】曾有一处「数据在、代码不在」的洞,已堵
+
+`harness/reports/knowledge-ablation/` 的 1.5MB 产物早已在主线,但产生它的
+`knowledge/ablation.py`(404 行)从未合入 —— 报告第 84 节列的复现命令在 main 上
+必然 `ModuleNotFoundError`。同批遗漏 `agent/auto_researcher.py` 的 quality-aware
+采集(`agentic-v0.5` 数据的生产代码)与两个测试文件。
+
+其余产物已逐条 `git grep` 核对,生产脚本都在主线:
+`mutation_order.json` → `analysis/mutation_order.py`、
+`conservation.json` → `features/conservation.py`、
+`predictor_alpha_sweep.json` → `models/alpha_sweep.py`、
+`predictor_ladder_scaling_ablation.json` → `models/evaluate_all.py`、
+`agentic.metrics.json` → `agent/auto_researcher.py`。
+
+- Fact:`F-94CBEC61`;修复:commit `b78bac5`(38 测试通过,阴阳对照完成)
+- **机制教训(建议写进「可复现性」一段)**:把 worktree 里的数据抢救进主线、
+  和把产生它的代码合进主线,是**两个动作**;当时只做了前一个。
+  同类风险在另外 23 个含未合入代码的分支上仍然存在 —— 这是已知局限,建议如实披露。
+
+### 7.6 【交付面】一键安装/运行脚本与版本树补齐
+
+- `scripts/install.sh` / `scripts/run_all.sh`(Linux + macOS),`requirements.txt` 分轻量/完整两档。
+  验收要求是在**全新 `/tmp` venv** 里跑通,不是在已装好的 `.venv` 里跑一遍。
+- `agentic-v0.7` 版本树已补齐(commit `c742ef0`):数据一直都在,只是落在任务包的
+  `artifacts/reports/agentic-v0.7/` 而非 `harness/reports/agentic-v0.7/`,
+  版本树里看不见会让读者以为 v0.7 没有产物。现已复制 47 个结果文件(1.9MB),
+  manifest 记录全部真实 sha256,15 条事件链全部 `verify()` 通过。
+  **provenance 要说清这是复制不是重跑。**
+
+### 7.7 【工程】归档事件流改 gzip,体积 192MB → 7.3MB
+
+修好 `measurable_variants` 之后 agent 真的开始设计大规模文库,每个角色事件把整个候选库
+连同每条 rationale 全量落盘,单个事件约 5MB、一条 hard regime 的流涨到 79MB
+(v1.0 时只有 9MB),GitHub 推送时对两个文件发了 50MB 警告。
+**一条 5MB 的审计事件人也没法审,体积本身就是可审计性的反面。**
+
+现在归档流以 `.jsonl.gz` 保存;`EventStore` 读者仍传逻辑 `.jsonl` 路径,
+原文件不存在时自动回退到 `.gz`,`self.path` 指向真正读的文件。
+压缩档只读 —— 往里 append 直接报错,不静默破坏哈希链。
+
+- commit `8b6c6a8`;验证:解压后 sha256 逐字节一致、事件数与 head hash 压缩前后相同、
+  新测试经反向验证(删掉回退逻辑即红)。
+- **已知残留**:已推送历史里仍留着那两个 79MB blob(`.git` 约 113MB)。
+  彻底清除需要改写已推的 main 历史,**留给用户裁决,未做**。
+
+### 7.8 关于「重跑」这件事的口径(用户定的判据)
+
+用户的规则:**代码改过的就重跑,代码没改的数据不用跑**。按此筛选的结果:
+
+| 版本线 | 代码动过吗 | 处置 |
+|---|---|---|
+| workflow(四策略) | 改了(`no_knowledge` 参数化 + `measurable_variants` + LLM critic) | **已重跑全部四个 regime** |
+| 预测器阶梯 | 改了(bootstrap 方差 + 标准化参数) | 已重跑,产出 v1.1 指标表 |
+| agentic v0.1–v0.7 | 未动 | 不跑,数据按原样保留 |
+| 知识消融(AAV) | `knowledge/` 改过 | **核对时间戳后确认不用跑**:报告产出于 22:46,`knowledge/` 最后改动 21:56 —— 数据本来就是改完之后跑的 |
+
+**报告里若提到「全部重跑」,要改成上面这个分档说法**,不要笼统写成全部重跑。
