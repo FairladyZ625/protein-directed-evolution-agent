@@ -1,4 +1,7 @@
-name: CI
+# workflow 的 name 必须与文件名 stem 一致(都是 ci):Harness 拉取观测时按文件名
+# 查询(`gh run list --workflow ci.yml`),而校验见证时比对的是运行摘要里的
+# workflowName(即本字段),两边必须都落在 settings.ci.workflows 里。
+name: ci
 
 on:
   push:
@@ -19,3 +22,14 @@ jobs:
         run: pip install pytest numpy pandas scipy scikit-learn PyYAML networkx pydantic
       - name: Run self-contained tests
         run: pytest tests/test_events.py tests/test_knowledge.py tests/test_agent.py -q
+
+      # 产出 Harness 任务完成门所需的 CI 见证。只在测试通过后运行,因此工件的存在
+      # 本身就与绿色运行绑定;pass/fail 由 GitHub 运行的 conclusion 判定。
+      - name: Emit Harness CI observation
+        run: python tools/write_ci_observation.py
+      - name: Upload Harness CI observation
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-observation-${{ github.run_id }}-${{ github.run_attempt }}-test
+          path: tmp/ci-observation/observation.json
+          if-no-files-found: error
