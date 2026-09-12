@@ -154,9 +154,24 @@ class ScientificCritic:
             if ok: accepted.append(c)
         _event(event_store, "agent.role.completed", "scientific_critic", {"critiques": [x.model_dump() for x in checks]}, round_id); return accepted, checks
 
-def run_pipeline(pool, predictor, *, event_store=None, llm_hypothesis=None, llm_critic=None, budget=10, round_id=1, no_knowledge=False):
+def run_pipeline(pool, predictor, *, event_store=None, llm_hypothesis=None, llm_critic=None, budget=10,
+                 round_id=1, no_knowledge=False, measurable_variants=None):
+    """Run the five roles for one round.
+
+    ``pool`` is what已经 measured — rows carrying fitness labels, i.e. the training set.
+    ``measurable_variants`` is what the oracle *can* answer — the full candidate space
+    (GB1: 149,361 variants). The two are different sets and conflating them breaks the
+    designer: nominations are by definition not yet measured, so intersecting candidates
+    against the pool-derived set filters out every new nomination and the round yields
+    nothing. Callers that own a candidate space MUST pass it; ``None`` falls back to the
+    pool-derived set, which is only correct when the pool already spans the space
+    (synthetic fixtures do, the real campaign does not).
+    """
     rows = list(pool)
-    measured_variants = {_variant_from_row(row) for row in rows}
+    measured_variants = (
+        {str(v) for v in measurable_variants} if measurable_variants is not None
+        else {_variant_from_row(row) for row in rows}
+    )
     report=DataAnalyst().run(rows,event_store=event_store,round_id=round_id); hyp=HypothesisGenerator(llm_hypothesis).run(report,event_store=event_store,round_id=round_id); cand=MutationDesigner().run(hyp,measured_variants=measured_variants,budget=budget,event_store=event_store,round_id=round_id); scored=FitnessEvaluator(predictor).run(cand,event_store=event_store,round_id=round_id); accepted, critiques=ScientificCritic(llm_critic, no_knowledge=no_knowledge).run(scored,event_store=event_store,round_id=round_id); return PipelineResult(report=report,hypothesis=hyp,candidates=scored,accepted=accepted,critiques=critiques)
 
 def _variant_from_row(row: dict[str, Any]) -> str:

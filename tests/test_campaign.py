@@ -31,22 +31,12 @@ def landscape() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-@pytest.fixture(autouse=True)
-def _supply_complete_measured_space(monkeypatch):
-    """Give the pipeline the fixture's complete truth space independently of history.
-
-    Production GB1 has a 149,361-variant measurable set. This synthetic analogue
-    has 16 variants; bare ``_pool_records`` contains only cold-start history, so it
-    must be supplemented or measured-space filtering correctly removes every new
-    nomination.
-    """
-    original = campaign.run_pipeline
-    measured_space = [{"Variants": variant} for variant in landscape()["Variants"]]
-
-    def run_with_measured_space(pool, *args, **kwargs):
-        return original([*pool, *measured_space], *args, **kwargs)
-
-    monkeypatch.setattr(campaign, "run_pipeline", run_with_measured_space)
+# 曾经这里有一个 autouse 夹具,用 monkeypatch 给 run_pipeline 注入完整实测空间,
+# 以绕过「求交把每个新提名都滤掉」导致的 0 提名。那是在拿测试夹具遮盖一个**生产缺陷**:
+# evolution/campaign.py 当时把 train(已测过的)当成可测集合传进 pipeline,真实 campaign 的
+# 两条 agent 策略因此跑 0 轮、静默、退出码 0(fact F-C3A81F2E)。生产路径已改为显式传
+# measurable_variants=set(df.Variants),夹具随之删除——留着它会继续挡住这条回归。
+# 下面 test_four_strategies_share_oracle_and_budget 里的 n_nominated == [2, 2] 就是这条门。
 
 
 class _EventProbe:

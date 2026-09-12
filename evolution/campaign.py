@@ -209,12 +209,16 @@ def _agent_propose(strategy, df, measured, train, budget, event_store, round_id,
     det_fn, det_muts = _deterministic_hypothesis(train)
     hyp_fn = _llm_hypothesis(det_fn, det_muts, llm_state) if use_llm else det_fn
 
+    # train 是「已测过的」,df.Variants 是「oracle 能测的」全候选空间(GB1 149,361)。
+    # 必须把后者显式传进去:提名本来就还没被测过,若让 pipeline 从 train 推导可测集合,
+    # 求交会把每一个新提名都滤掉,该轮直接颗粒无收(且静默、退出码为 0)。
     result = run_pipeline(_pool_records(train), agent_predictor,
                           llm_hypothesis=hyp_fn,
                           llm_critic=_llm_critic(llm_state) if use_llm else None,
                           budget=LIBRARY_CAP, event_store=event_store,
                           round_id=round_id,
-                          no_knowledge=(strategy == "agent_no_knowledge"))
+                          no_knowledge=(strategy == "agent_no_knowledge"),
+                          measurable_variants=set(df.Variants))
 
     known = set(df.Variants)
     rows = []
