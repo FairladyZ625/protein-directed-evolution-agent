@@ -109,13 +109,24 @@ streamlit run app/demo.py     # or: make demo
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-make data                                            # validate the local GB1 csv
-make test                                            # unit tests
+# First command for a clean clone: no GB1 CSV, ESM cache, or API key required.
+make smoke                                           # synthetic small landscape -> tmp/smoke/
+make test                                            # self-contained tests (same set as CI)
+make data                                            # validate a locally supplied full GB1 CSV
 python -m models.evaluate_all                         # predictor ladder comparison -> reports/predictor_metrics.json
 python -m evolution.campaign --cold-start low_hd      # four-strategy campaign (hard regime)
 streamlit run app/demo.py                             # interactive demo
 cp .env.example .env                                  # optional: add an LLM pool key, then add --use-llm
 ```
+
+`make smoke` is the recommended first run. It executes the data → predictor → five-role
+agent → four-strategy campaign path on a fixed, synthetic 16-variant landscape and writes a
+labelled CSV, metrics, event stream, SQLite read projection, plot, and README to `tmp/smoke/`.
+It uses the offline deterministic LLM fallback. **Its synthetic small-scale numbers are only a
+reproducibility demonstration and must not be compared with the formal GB1 results.** For the
+full measured GB1 campaign, obtain `data/four_mutations_full_data.csv` as described in
+[`data/README.md`](data/README.md); `make campaign` will otherwise state this requirement and
+suggest `make smoke`.
 
 ## Layout
 
