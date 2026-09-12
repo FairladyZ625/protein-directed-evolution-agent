@@ -1,38 +1,14 @@
-# Closeout
-
-Replace this file's placeholder content before closeout; `ha task complete` rejects placeholder text. Closeout summarizes the verdict, but it does not replace the fact ledger or decision/relation records.
-
 ## Summary
-
-Summarize the completed behavior change.
+交付 Report v0.5：12页双栏PDF、Markdown、离线HTML、两张ImageGen架构图、三张程序化数据图与证据快照。交付提交 193c1947eac558b156bbc2c775282112d5a7ed02，分支codex/report-v05，工作树.worktrees/report-v05。文件均位于reports/final-report-v0.5。
+用户补充的研究者角色与预测器分工论证已纳入第7.6节（PDF第9页）。独立复核指出的两项问题已修订：API模型标注降格并明确逐次provenance未复核；第4.3节补明事件流的交付层职责与覆盖范围。
 
 ## Verification
-
-List passing applicable checks, the Review result, and any explicitly promoted
-`F-...` Facts. CI belongs here only when the resolved completion contract
-declares it; Facts remain optional `0..N` promotions (dec_mrg3z1we/CH4;
-ADR-0027 D7).
+python3 reports/final-report-v0.5/build/verify.py：12页、8章、30引用、5图、零空数据格、零页内溢出；GB1源数值、输入快照、数学渲染、PDF文本边界验证通过。
+已逐页目视12页，修正公式和第8页底部间距；两张生图已核对英文标签及流向，图5两次定向修改。
+源证据v07-peak-mechanism.md保持逐字节复制，包含源文件既有EOF空行；其他新增文件的git diff --check通过。没有重跑实验或全量代码CI。
 
 ## Residual Risk
-
-Record accepted non-blocking risks; if a risk affects later choices, create or relate a decision.
+文献沿用存档的出版元数据，未重新在线逐篇核对30篇全文。GB1预测表仍为旧汇总点估计，缺少误差分布并已明确标注；生成式概念图不作为实验或结构证据。其余边界详见第8.2节。
 
 ## Same Mechanism Elsewhere
-
-State what this task found as one sentence about a **mechanism**, with the
-caller, the resource type, and the symptom stripped out. Then search the
-repository for that sentence and write down what came back.
-
-A defect named after where it surfaced only ever finds itself. "The first paint
-is slow" searches the interface code and stops there. The same defect named
-after its mechanism — "one read request's downstream call count grows with the
-size of its result set" — finds the sibling sitting in the server.
-
-Answer all three parts: the mechanism sentence, how you searched for it, and
-what you found. "Nothing else" is a valid answer when it is the honest one, and
-it is worth more than silence because it says the search happened. If this task
-changed no behavior, say why the question does not apply here instead of
-deleting the section.
-
-This is a question, not a checkbox. Answering it with a tick mark defeats the
-only thing it is for.
+已在摘要、Agent定位、统计表、图注和结论统一处理同类过强断言、确定性重复误读、候选池最优混淆以及已实现与提案混写；保留AB缺测。未修改其他版本报告和业务代码。

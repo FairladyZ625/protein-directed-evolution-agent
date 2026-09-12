@@ -5,7 +5,7 @@ title: "Report v0.5：科学措辞校准、双栏重排与学术架构生图"
 parent: task_ee0e0b26e540664dac1e6c3f29
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: planned
+  status: done
 packageDisposition: active
 workKind: docs
 vertical: software/coding
@@ -28,7 +28,7 @@ Preset: docs-task/baseline
 
 ## Next
 
-Run `ha task complete task_44e5d782e29c9d9724d7dc314b`.
+Task complete.
 
 ## Gate Checks
 
