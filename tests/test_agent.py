@@ -10,6 +10,7 @@ import pytest
 
 from agent.pipeline import (
     AnalystReport,
+    CriticReview,
     Hypothesis,
     PipelineResult,
     ScoredCandidate,
@@ -73,9 +74,9 @@ def test_injectable_llm_ports_are_invoked():
             rule_ids=["R-GB1-SITES", "R-MAX-MUTATIONS"],
         )
 
-    def fake_critic(candidate: ScoredCandidate, rules: list[dict]) -> str:
+    def fake_critic(candidate: ScoredCandidate, rules: list[dict]) -> CriticReview:
         critic_calls.append((candidate, rules))
-        return "LLM critic: accepted"
+        return CriticReview(note="LLM critic: accepted")
 
     result = run_pipeline(
         _CONSERVATIVE_POOL,
@@ -137,7 +138,7 @@ def test_critic_rejects_non_conservative_substitution():
         return Hypothesis(mutations=["V39D"], rationale="aggressive probe", rule_ids=["R-GB1-SITES"])
 
     result = run_pipeline(
-        _CONSERVATIVE_POOL,
+        [*_CONSERVATIVE_POOL, {"mutations": ["V39D"], "fitness": 0.1}],
         _fake_predictor,
         llm_hypothesis=aggressive_hypothesis,
         budget=10,
@@ -154,3 +155,44 @@ def test_critic_rejects_non_conservative_substitution():
 def test_budget_caps_candidate_count():
     result = run_pipeline(_CONSERVATIVE_POOL, _fake_predictor, budget=2)
     assert len(result.candidates) <= 2
+
+
+def test_designer_rejects_variant_outside_measured_space():
+    """A plausible combination is not nominatable unless it occurs in the supplied truth set."""
+    measured = [
+        {"mutations": ["V39I"], "fitness": 2.0},
+        {"mutations": ["D40E"], "fitness": 1.8},
+    ]
+
+    def combination_hypothesis(report: AnalystReport) -> Hypothesis:
+        return Hypothesis(
+            mutations=["V39I", "D40E"],
+            rationale="Combine observed substitutions under R-GB1-SITES.",
+            rule_ids=["R-GB1-SITES"],
+        )
+
+    result = run_pipeline(measured, _fake_predictor, llm_hypothesis=combination_hypothesis, budget=10)
+    assert {candidate.sequence for candidate in result.candidates} == {"IDGV", "VEGV"}
+    assert "IEGV" not in {candidate.sequence for candidate in result.candidates}
+
+
+@pytest.mark.parametrize("failure", [ValueError("provider failed"), {"not": "a hypothesis"}])
+def test_hypothesis_port_failures_use_deterministic_fallback(failure):
+    def broken_hypothesis(report: AnalystReport):
+        if isinstance(failure, Exception):
+            raise failure
+        return failure
+
+    result = run_pipeline(_CONSERVATIVE_POOL, _fake_predictor, llm_hypothesis=broken_hypothesis)
+    assert result.hypothesis.rule_ids == ["R-GB1-SITES", "R-MAX-MUTATIONS"]
+    assert result.candidates
+
+
+def test_critic_non_schema_result_uses_deterministic_fallback():
+    result = run_pipeline(
+        _CONSERVATIVE_POOL,
+        _fake_predictor,
+        llm_critic=lambda candidate, rules: "not structured",
+    )
+    assert result.accepted
+    assert all(c.note == "accepted (deterministic critic fallback)" for c in result.critiques)
