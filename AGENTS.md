@@ -109,17 +109,25 @@ ha decision validate <id>
 ```
 > 若无实测证据,accept 可走 `--judgment-only "<理由>"` 兜底(样板决策即如此),但有证据优先。
 
-### 配方 3:closeout 一个任务(complete 由他人/GUI 做)
+### 配方 3:closeout 一个任务(2026-09-12 实测重写)
 ```
 ha task start <id>                       # 先拿 lease,否则 submit 报 lease_required
-# 写 closeout.md 四个精确小节(否则 complete 报 closeout_placeholder):
+# 写 closeout.md 四个精确小节(占位符未替换则报 closeout_placeholder):
 #   ## Summary / ## Verification / ## Residual Risk / ## Same Mechanism Elsewhere
-ha task submit <id> --json-input @- <<'J'
-{"completionClaim":"…","deliverables":["…"],"outputs":["F-…","REP-…"],
- "verificationNotes":["…"],"knownGaps":["…"],"residualRisks":["…"],"commitSha":"<git HEAD 40位>"}
+ha task submit <id>                      # 完成包从 closeout.md 派生,不接受 --json-input
+ha task review-execution <id> --review-id <rev-id> --json-input @- <<'J'
+{"verdict":"approved","reason":"…","evidenceChecked":["…"]}
 J
-# 任务需 ≥1 个 fact(配方1带 --task,或已有 produces 关系)。之后 GUI 做 review-execution+consent→complete。
+ha task review-consent <id> --review-id <rev-id>
+ha task complete <id>
 ```
+**`ha task submit` 早已不接受 `--json-input`**(旧配方里那个 JSON 完成包是过期写法,会报 `unknown_field`)。完成包现在**全部从 `closeout.md` 正文派生**:交付提交由"Summary 里出现的 40 位 sha"或"该执行 dispatch 绑定的 worktree HEAD"决定,deliverables 由 `base..commitSha` 的 diff 自动算出。任务仍需 ≥1 个 fact(配方 1 带 `--task`)。
+
+**四个实测坑**:
+1. **lease 接回**:worker 跑完后执行留在 active、无 lease,`ha task start <id>` 报 `lease_conflict` 或 `progress append` 报 `progress_lease_required` —— 用 `ha task start <id> --execution-id <exe_…>` 接回那个执行。反过来,执行处于 active 时用**新的** execution-id 起一个执行会被拒(`invalid_transition`)。
+2. **评审独立性**:自己提交的执行不能自审(`actor_unauthorized`)。派 reviewer 必须**一个被审任务派一次**:`ha runtime run <inst> --agent de-reviewer --role reviewer --task <被审任务>`。用"一个评审任务统管 N 个被审任务"的形态派工,worker 会把活全干完但写入时才报 `executor_binding_invalid`,整轮作废。
+3. **纯文档任务 + worktree = 提交死锁**(fact `F-B1B5EABC`):产出全在 gitignored 的 `/harness/` 里 → worker 的交付提交是空提交 → `document_invalid`。未绑 worktree 的同类任务走 privateDelivery 路径可正常提交。
+4. **本仓 standard-task 的 ci 门结构性不可满足**(fact `F-8ED77039`):`submit`/`complete` 必返回 `service_rejected`(`gh run list --workflow rewrite-ci.yml` HTTP 404)。**不得**新建 workflow、改 CI 配置或 `transition --force`;记录进度后停手,交 CEO。上游修复跟踪于 `task_7994263c6be22e8690ec8d5950`。
 
 ### 配方 4:把报告/工件登记为实体并挂到任务
 ```
