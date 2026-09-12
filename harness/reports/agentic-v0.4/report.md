@@ -2,6 +2,8 @@
 
 > **⚠️ 勘误(2026-09-12,fact F-8514C714)**:本报告称"确定性 gated-greedy 直达真峰 8.416 / 纯贪心把预算全押 top 预测直达真峰 / 自主性在利用步是 liability"——**此表述错误**。该"确定性"基线代码(`agent/auto_researcher.py:535`)实为 `mean/diverse` **交替**,8.4162 出现在**第 3 轮 diverse(探索)轮**;经 CEO 独立复现,**纯利用(真 greedy)6 轮封顶 7.829**,真峰 8.4162 在 cold-start surrogate 均值排名 **#2758(对利用隐形)**。**正确结论:纯贪心够不到真峰;达峰必须靠探索捞出隐形峰;LLM 的短板是探索质量而非利用不足。** 下文"确定性贪心>LLM自主/破顶来自表征"的解读以本勘误为准(表征换成上位感知确实把峰从 #2776 提到射程边缘,但最终达峰仍靠探索,非纯利用)。
 
+> ⚠️ **勘误(2026-09-12)**:本报告 v0.4 产物及复现命令曾显示模型别名 `gpt-5.6-sol`。按 `agent/llm.py` 的实际运行时解析，实验实际使用的是 `claude-sonnet-5`；本目录 metrics/manifest 的 provenance 标签已更正为该值。原始链式事件日志与以下历史文字保持不改，以保留当时记录；本勘误只更正模型归属，**不改变任何 fitness、指标或原结论文字**。历史 v0.4–v0.7 实验使用 `claude-sonnet-5`，该模型此后已在网关下架；2026-09-12 之后的复跑改用 `gpt-5.6-sol`。两者不是同一模型，LLM 侧结果不可直接比较。
+
 > 一句话:v0.3 证明 7.53 天花板是"加性 surrogate 表达力上限"(真峰因正上位对加性/自然度双重隐形)。实验三换上**上位感知(pairwise 交互,Potts 式)surrogate**——同池、同 288 预算、同门禁、同 seed,唯一变量是 surrogate——**确定性 gated-greedy 直达真峰 8.416,LLM agentic 达 7.829,双双突破 greedy/v0.2 的 7.53**。全程 answer-agnostic:surrogate 只学已测标签 + one-hot 特征 + CV 选 alpha,从不看测试峰。
 
 承接 [v0.3](../agentic-v0.3/report.md)(诊断:7.53 是表征×代理天花板)。本报告是**破顶报告**:v0.3 指出瓶颈是加性表达力,研究([plateau-breaking-methods.md](../../context/research/plateau-breaking-methods.md))指向"显式建模上位效应",实验三落地并验证。

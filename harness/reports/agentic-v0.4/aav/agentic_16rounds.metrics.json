@@ -20,7 +20,7 @@
   "surrogate": "epistasis",
   "llm_used": true,
   "llm_summary": "Tested all 56 remaining experiments: 30 exploitative and 26 exploratory candidates. Final budget: `0`.\n\nThe best final-round variants were:\n\n- `DEEEIRTTNPVATEQYGDVSENLQRGQR` — `5.146`\n- `DEEEIRTTNPVATEQYGDVSTNLQHGER` — `4.924`\n- `DEEEIRTTNPVATEGYGSVSENLQRANR` — `4.502`\n\nThe overall campaign best remained:\n\n- `DEEEIRTTNPVATEQYGSYSTNLQQGNR` — **`9.536`**\n\nOther leading measured variants were:\n\n- `DEEEIRTTNPVATEAYGSVSENLQRGNR` — `8.645`\n- `DEEEIRTTNPVATEQYGIVSDNLQRGNR` — `8.438`\n- `DEEEIRTTNPVATEWYGSVSTNLQRGNQ` — `8.390`\n- `DEEEIRTTNPVATEQYGSASENLQRGNR` — `8.078`\n- `DEEEIRTTNPVATEQYGDVSDNLQRGNR` — `7.836`\n- `DEEEIRTTNPVATEQYGEVSENLQHGNR` — `7.530`\n\nAcross the campaign, the landscape proved strongly epistatic. Conservative substitutions and individually enriched mutations such as `S17E`, `T20E",
-  "agent_model": "gpt-5.6-sol",
+  "agent_model": "claude-sonnet-5",
   "n_tool_calls": 145,
   "summary": {
     "final_cum_top10_max": 7.5301,
@@ -918,7 +918,7 @@
       "event_type": "agent.llm.model",
       "actor": "agent",
       "payload": {
-        "model": "gpt-5.6-sol",
+        "model": "claude-sonnet-5",
         "base_url": "https://token.qianbaner.top/v1"
       }
     },

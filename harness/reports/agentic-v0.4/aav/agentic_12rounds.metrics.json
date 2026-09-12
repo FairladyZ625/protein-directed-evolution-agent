@@ -20,7 +20,7 @@
   "surrogate": "epistasis",
   "llm_used": true,
   "llm_summary": "Round 12 completed with the final 48 measurements; budget exhausted.\n\n**Final outcome**\n- Best overall variant: `DEEEIRTTNPVATEQYGSYSTNLQQGNR` — fitness **9.536**.\n- Other strong measured variants included:\n  - `DEEEIRTTNPVATEAYGSVSENLQRGNR` — **8.645**\n  - `DEEEIRTTNPVATEQYGIVSDNLQRGNR` — **8.438**\n  - `DEEEIRTTNPVATEWYGSVSTNLQRGNQ` — **8.390**\n  - `DEEEIRTTNPVATEQYGSASENLQRGNR` — **8.078**\n  - `DEEEIRTTNPVATEQYGDVSDNLQRGNR` — **7.836**\n- Final-batch best was `DEEEIRTTNPVATEIWGSVSENLQRGNF` at **5.702**.\n\n**Campaign conclusion**\n- The most reliable beneficial substitutions were `S17E`, `T20E/D`, `R24Q/H`, and `R27Q/I/T`.\n- `SENLQ`, `GEV/DNL`, and selected `RGN*` terminal contexts produced secondary peaks.\n- The surrogate systematically overestimated many high-order candidates; direct testi",
-  "agent_model": "gpt-5.6-sol",
+  "agent_model": "claude-sonnet-5",
   "n_tool_calls": 66,
   "summary": {
     "final_cum_top10_max": 7.829,
@@ -684,7 +684,7 @@
       "event_type": "agent.llm.model",
       "actor": "agent",
       "payload": {
-        "model": "gpt-5.6-sol",
+        "model": "claude-sonnet-5",
         "base_url": "https://token.qianbaner.top/v1"
       }
     },

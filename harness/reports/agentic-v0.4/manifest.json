@@ -4,7 +4,7 @@
   "kind": "breakthrough (实验三:上位感知 surrogate)",
   "description": "门禁 + 上位感知(pairwise 交互,Potts 式)surrogate EpistasisRidgePredictor。唯一变量是 surrogate 从加性→上位感知,破 v0.2/greedy 的 7.53。全程 answer-agnostic。",
   "answer_agnostic": true,
-  "agent_model": "gpt-5.6-sol",
+  "agent_model": "claude-sonnet-5",
   "surrogate": "epistasis (one-hot degree-2 interaction + RidgeCV, sparse)",
   "datasets": {
     "aav": "同池27832/同cold-start10433/同288预算/同门禁/seed42;LLM agentic + 确定性 gated-greedy 两版 + 诊断"

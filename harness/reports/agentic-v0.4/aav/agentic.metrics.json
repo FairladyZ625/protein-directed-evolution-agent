@@ -20,7 +20,7 @@
   "surrogate": "epistasis",
   "llm_used": true,
   "llm_summary": "**Campaign Complete**\n\nThe full experimental budget is exhausted. Final status:\n\n- Total measured variants: `10,721`\n- Higher-order pool variants tested this campaign: `51`\n- Best measured variant: `DEEEIRTTNPVATEQYGSYSTNLQQGNR`\n- Best fitness: `9.536`\n\nStrongest new results from the final two rounds:\n\n- `DEQEIATTNPVATEQYGEVSDNLQRGNR` — `7.829`\n- `DEEEIRTTNPVATEQYGDVSEDLQNGNR` — `6.461`\n- `DEEEIRTTNPVATEAYGSVSENLQRGTR` — `5.832`\n- `DEEEIRTTNPVATEQYGDVSENLQGGNR` — `4.856`\n- `DEEEIRTTNPVATEQYGTVSENIQNGNR` — `4.601`\n- `DEEEIRTTNPVATEQYGVVSNNLQGNR` — `4.601`\n\nThe campaign identified strong but highly epistatic acidic C-terminal basins. Enrichment consistently favored `S17E`, `T20E/D`, and conservative substitutions at `R24/R27`. The validated incumbent-like `...QYGSY...` context remained super",
-  "agent_model": "gpt-5.6-sol",
+  "agent_model": "claude-sonnet-5",
   "n_tool_calls": 50,
   "summary": {
     "final_cum_top10_max": 7.829,
@@ -410,7 +410,7 @@
       "event_type": "agent.llm.model",
       "actor": "agent",
       "payload": {
-        "model": "gpt-5.6-sol",
+        "model": "claude-sonnet-5",
         "base_url": "https://token.qianbaner.top/v1"
       }
     },

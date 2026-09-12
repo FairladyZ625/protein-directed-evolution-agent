@@ -4,7 +4,7 @@ Uses a small but *complete* 2^4 = 16-variant landscape (each of the four GB1
 sites toggles between its WT residue and one alternative), so every candidate
 the agent designs is guaranteed to be measurable by the oracle.
 """
-from itertools import product
+from pathlib import Path
 
 import pandas as pd
 
@@ -15,18 +15,8 @@ _WT = "VDGV"
 
 
 def landscape() -> pd.DataFrame:
-    rows = []
-    for combo in product(*([wt, alt] for wt, alt in zip(_WT, _ALT.values()))):
-        seq = "".join(combo)
-        # Deterministic additive fitness with a mild pairwise interaction.
-        f = 1.0
-        f += 1.5 if seq[0] == "F" else 0.0
-        f += -0.3 if seq[1] == "A" else 0.0
-        f += 0.8 if seq[2] == "W" else 0.0
-        f += 0.5 if seq[3] == "I" else 0.0
-        f += 0.4 if (seq[0] == "F" and seq[2] == "W") else 0.0
-        rows.append({"Variants": seq, "HD": sum(a != b for a, b in zip(seq, _WT)), "Fitness": round(f, 3)})
-    return pd.DataFrame(rows)
+    """Load the committed, complete synthetic landscape used by ``make smoke``."""
+    return pd.read_csv(Path(__file__).parent / "fixtures" / "gb1_smoke_landscape.csv")
 
 
 class _EventProbe:
