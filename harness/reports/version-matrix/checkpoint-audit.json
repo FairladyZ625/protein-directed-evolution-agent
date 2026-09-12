@@ -1,0 +1,58 @@
+{
+  "checkpoint": "anchor-plus-v0.1-seed42",
+  "status": "stopped_on_model_route_failure",
+  "anchor": {
+    "round_counts": [48, 48, 48, 48, 48, 48],
+    "budget_spent": 288,
+    "cum_top10_max": 8.4162,
+    "strong": 151,
+    "event_count": 24,
+    "event_chain_verified": true
+  },
+  "v0.1_seed42": {
+    "round_counts": [48, 48, 48, 48, 48, 48],
+    "budget_spent": 288,
+    "cum_top10_max": 7.5301,
+    "strong": 57,
+    "delta_vs_original": {
+      "cum_top10_max": 1.5691,
+      "strong": 42
+    },
+    "driver_counts": {
+      "live_llm": 96,
+      "harness_fill": 192
+    },
+    "live_llm_rounds": 2,
+    "llm_round_errors": 4,
+    "resolved_model": "claude-sonnet-5",
+    "positive_heldout_spearman": 0.9087434833952881,
+    "shuffle_heldout_spearman": 0.05419095312898431,
+    "event_count": 57,
+    "event_chain_verified": true,
+    "ledger_audit": {
+      "nominations": 288,
+      "unique_nominations": 288,
+      "all_in_hd_gt_2_oracle_pool": true,
+      "hd_exact": true,
+      "fitness_exact": true,
+      "predictions_finite": true,
+      "metrics_recomputed": true
+    }
+  },
+  "unverified": [
+    "six-round fully-live v0.1 result",
+    "v0.1 seed variance",
+    "v0.2 and v0.4-LLM unified reruns",
+    "all-version artifact consolidation",
+    "final version ranking",
+    "canonical fact and task progress write"
+  ],
+  "governance": {
+    "harness_daemon_socket_present": false,
+    "harness_write_error": "daemon_start_runtime_forbidden",
+    "origin_main_fetched": "be62937a8b7a7bc3e6e9e7d67fba33e67e8f3bc2",
+    "task_head_before_commit": "cee742a3c57e53f803db41ff96f934054124c8a2",
+    "common_merge_base": null,
+    "rebase_performed": false
+  }
+}

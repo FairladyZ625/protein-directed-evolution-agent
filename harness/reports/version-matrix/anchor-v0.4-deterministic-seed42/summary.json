@@ -1,0 +1,16 @@
+{
+  "seed": 42,
+  "round_counts": [
+    48,
+    48,
+    48,
+    48,
+    48,
+    48
+  ],
+  "budget_spent": 288,
+  "cum_top10_max": 8.4162,
+  "strong": 151,
+  "event_count": 24,
+  "event_chain_verified": true
+}
