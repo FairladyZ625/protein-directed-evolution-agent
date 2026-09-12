@@ -1,0 +1,11 @@
+{
+  "line": "final-report",
+  "version": "v0.3",
+  "description": "Reconciled report delivery and its evidence bundle.",
+  "artifacts": {
+    "report.md": "446f79a69a3d482cfedc1b6169de6da2288baa457a6b704d5d56de5fc42f2f72",
+    "handoff.md": "bf903f2b6734dc3aed6b7c263f373c4c70083324770d93bf85d12b75436b2f6b",
+    "evidence/delivery-manifest.json": "e03baef1dcaa2c89a65fec3234f982f27515197812a828eba3a0ec6c1bd6c902",
+    "evidence/verification.log": "94c85eba892622e883f220684fadbc5fb957e087c065599d23e93072c76a1f54"
+  }
+}

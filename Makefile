@@ -1,4 +1,8 @@
-.PHONY: data baseline train campaign demo smoke test check-gb1-data
+.PHONY: install run-all data baseline train campaign demo smoke test check-gb1-data
+install:         ## 创建默认离线复现环境（加 --full 安装 ESM-2）
+	./scripts/install.sh
+run-all:         ## 运行 smoke；有 GB1 CSV 时继续训练和四策略闭环
+	./scripts/run_all.sh
 data:            ## 校验本地 GB1 数据（不下载）
 	python data/download_gb1.py
 check-gb1-data:

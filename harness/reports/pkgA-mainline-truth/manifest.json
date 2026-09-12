@@ -1,0 +1,6 @@
+{
+  "line": "package-record",
+  "version": "pkgA-mainline-truth",
+  "description": "Delivery package record, not a standalone experiment cycle.",
+  "artifacts": {"report.md": "8c306b51d9cbed559bbadd4467dae4e2588a180bd5a06a8c8badddd0e1f7d81e"}
+}
