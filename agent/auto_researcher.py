@@ -23,6 +23,7 @@ import json
 import os
 from pathlib import Path
 import re
+import threading
 
 import numpy as np
 import pandas as pd
@@ -61,6 +62,72 @@ budget is exhausted, briefly summarise the strategy."""
 
 _MUTATION_NOTATION = re.compile(r"^[A-Z]\d+[A-Z]$")
 _AMINO_ACIDS = frozenset("ACDEFGHIKLMNPQRSTVWY")
+
+BACKTRACK_PROMPT = """You are an autonomous protein-engineering researcher with a fixed experiment budget.
+Each turn is ONE round: analyze_measured, choose a full batch, test_composed_batch, then return.
+Default to strong exploitation using compose_batch (all predicted-mean by default).
+Aggregate held-out CV can be high while the surrogate severely underestimates rare high-fitness
+variants. Watch top10_max_history and rounds_since_improvement, which include ONLY newly tested
+variants, not cold-start incumbents. On stagnation consider switching acquisition to exploration.
+explore_batch stages a full exploratory batch: diverse = mean + 3*sqrt(var) + seeded uniform
+jitter; uncertainty = highest bootstrap variance; spread = UCB shortlist with soft sequence
+diversity. No mode sees unmeasured fitness. compose_batch accepts exploit_ratio in [0,1] and
+exploration to mix either amount. No high-CV or late-round exploitation floor applies here.
+Use evidence from measured outcomes to choose; do not invent unseen fitness or assume a known
+numeric ceiling. best_so_far includes cold-start and is NOT a discovery metric.
+Never transcribe sequences: test_composed_batch tests the staged batch exactly.
+"""
+
+
+def _rounds_since_improvement(history) -> int:
+    """Consecutive non-improving batches, excluding the initial cold-start incumbent."""
+    count, best = 0, -np.inf
+    for value in history:
+        if value > best:
+            best, count = float(value), 0
+        else:
+            count += 1
+    return count
+
+
+def _explore_batch_indices(mean, var, *, eligible_indices, n, rng,
+                           method="diverse", seqs=None, anchors=()):
+    """Acquisition uses predictions and sequence geometry only; never pool labels.
+
+    Diverse preserves the reference's UCB+jitter definition. Spread applies a soft
+    Hamming-distance bonus in a 10*n UCB shortlist, with no sequence exclusion rule.
+    """
+    if method not in ("diverse", "uncertainty", "spread"):
+        raise ValueError("exploration must be diverse, uncertainty, or spread")
+    mean, var = np.asarray(mean), np.asarray(var)
+    eligible = np.asarray(list(dict.fromkeys(eligible_indices)), dtype=int)
+    n = min(max(0, int(n)), len(eligible))
+    if not n:
+        return []
+    ucb = mean + 3.0 * np.sqrt(np.maximum(var, 0.0))
+    score = var if method == "uncertainty" else ucb
+    if method == "diverse":
+        score = score + rng.random(len(mean))
+    order = eligible[np.argsort(-score[eligible], kind="stable")]
+    if method != "spread":
+        return order[:n].tolist()
+    if seqs is None:
+        raise ValueError("spread requires pool sequences")
+    shortlist = order[:max(n, 10 * n)]
+    chars = np.asarray([list(seqs[i]) for i in shortlist])
+    distances = np.ones(len(shortlist))
+    for anchor in anchors:
+        distances = np.minimum(distances, np.mean(chars != np.asarray(list(anchor)), axis=1))
+    quality = ucb[shortlist]
+    quality = (quality - quality.min()) / max(float(np.ptp(quality)), 1e-12)
+    chosen = []
+    for _ in range(n):
+        utility = quality + distances
+        utility[chosen] = -np.inf
+        j = int(np.argmax(utility))
+        chosen.append(j)
+        distances = np.minimum(distances, np.mean(chars != chars[j], axis=1))
+    return shortlist[chosen].tolist()
 
 
 def _clean_seq(value: object) -> str:
@@ -161,7 +228,12 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                      seed: int = 42, event_store=None, llm: bool = True,
                      request_limit: int = 60, model: str | None = None,
                      guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0,
-                     surrogate: str = "ridge") -> dict:
+                     surrogate: str = "ridge", backtrack: str | None = None,
+                     reference: str = "alternating") -> dict:
+    if backtrack not in (None, "full", "semi"):
+        raise ValueError("backtrack must be full, semi, or None")
+    if reference not in ("alternating", "mean"):
+        raise ValueError("reference must be alternating or mean")
     fit_col = spec.fitness_col
     total_budget = budget * n_rounds
     strong_thr = float(np.quantile(spec.df[fit_col], 0.9))
@@ -179,6 +251,10 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         "pending_batch": None,
         "surrogate_status": None,
         "n_gate_rejected": 0,     # v0.2 Knowledge Gate: candidates blocked before spending budget
+        "top10_max_history": [],
+        "rounds_since_improvement": 0,
+        "pending_action": None,
+        "authorized_exploration": None,
     }
 
     # v0.2 Knowledge Guardrail: an unbypassable gate BEFORE budget is spent, rejecting
@@ -213,7 +289,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
     def emit(kind, actor, payload):
         state["trace"].append({"event_type": kind, "actor": actor, "payload": payload})
         if event_store is not None:
-            event_store.append(kind, round_id=len(state["batches"]) + 1,
+            event_store.append(kind, round_id=state["current_round"] or 1,
                                strategy="agentic", actor=actor, payload=payload)
 
     def _make_surrogate():
@@ -257,6 +333,12 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "confidence_level": confidence,
             "recommendation": recommendation,
         }
+        if backtrack:
+            out["recommendation"] = (
+                "Stagnation: explore underestimated regions; global CV does not calibrate the tail."
+                if state["rounds_since_improvement"] >= 2 else
+                "Default to predicted-mean exploitation; monitor newly measured progress."
+            )
         state["surrogate_status"] = out
         return out
 
@@ -279,7 +361,11 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                "current_round": f"{state['current_round']} / {n_rounds}",
                "best_measured": [[str(s), round(float(f), 3)] for s, f in zip(top.seq, top[fit_col])],
                "top_enriched_substitutions": [[k, round(v, 3)] for k, v in enriched],
-               "surrogate_status": _surrogate_status()}
+               "surrogate_status": _surrogate_status(),
+               "top10_max_history": list(state["top10_max_history"]),
+               "rounds_since_improvement": state["rounds_since_improvement"],
+               "stalled": state["rounds_since_improvement"] >= 2,
+               "exploration_required": _exploration_required()}
         emit("agent.tool.analyze_measured", "data_analyst", out)
         return out
 
@@ -319,20 +405,54 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
              {"by": by, "n": len(picks), "gated": gate_pass is not None})
         return picks
 
-    def compose_batch(exploit_ratio: float | None = None, n: int = 48) -> dict:
+    def _exploration_required():
+        return backtrack == "semi" and state["rounds_since_improvement"] >= 2
+
+    def explore_batch(n: int = 48, method: str = "diverse") -> dict:
+        """Stage a gate-safe exploration batch using diverse, uncertainty, or spread."""
+        if method not in ("diverse", "uncertainty", "spread"):
+            return {"status": "invalid_argument", "error": "unknown exploration method"}
+        if state["pool"].empty:
+            return {"status": "pool_exhausted", "candidates": []}
+        n = max(1, min(int(n), budget, total_budget - state["spent"]))
+        _, mean, var = _pool_scores()
+        seqs = state["pool"].seq.to_numpy()
+        eligible = [i for i, seq in enumerate(seqs) if gate_pass is None or seq in gate_pass]
+        picks = _explore_batch_indices(
+            mean, var, eligible_indices=eligible, n=n, rng=rng, method=method,
+            seqs=seqs, anchors=state["measured"].nlargest(10, fit_col).seq.tolist(),
+        )
+        candidates = [str(seqs[i]) for i in picks]
+        state["pending_batch"] = candidates
+        state["pending_action"] = {"mode": method, "n_exploit": 0, "n_explore": len(picks)}
+        state["authorized_exploration"] = candidates
+        out = {"status": "ok", "n": len(picks), "method": method,
+               "forced": _exploration_required(), "candidates": candidates}
+        emit("agent.tool.explore_batch", "hypothesis_generator",
+             {k: v for k, v in out.items() if k != "candidates"})
+        return out
+
+    def compose_batch(exploit_ratio: float | None = None, n: int = 48,
+                      exploration: str = "diverse") -> dict:
         """Compose a gate-safe batch from predicted-mean exploit and diverse explore picks.
 
         Omit exploit_ratio to use the answer-agnostic CV-quality/round annealing rule.
         """
         if state["pool"].empty:
             return {"status": "pool_exhausted", "candidates": []}
+        if backtrack and exploration not in ("diverse", "uncertainty", "spread"):
+            return {"status": "invalid_argument", "error": "unknown exploration method"}
+        if _exploration_required():
+            return explore_batch(n=n, method=exploration)
         n = int(max(1, min(int(n), 60)))
+        if backtrack:
+            n = min(n, budget, total_budget - state["spent"])
         model_obj, mean, var = _pool_scores()
         cv = getattr(model_obj, "val_spearman", None)
         adaptive_ratio = _adaptive_exploit_ratio(cv, state["current_round"], n_rounds)
         if exploit_ratio is None:
-            requested_ratio = adaptive_ratio
-            source = "adaptive_default"
+            requested_ratio = 1.0 if backtrack else adaptive_ratio
+            source = "mean_default" if backtrack else "adaptive_default"
         else:
             requested_ratio = float(exploit_ratio)
             if not np.isfinite(requested_ratio) or not 0.0 <= requested_ratio <= 1.0:
@@ -341,15 +461,32 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         ratio, policy_floor = _enforce_exploit_floor(
             requested_ratio, cv, state["current_round"], n_rounds,
         )
+        if backtrack:
+            ratio, policy_floor = requested_ratio, 0.0
         seqs = state["pool"].seq.to_numpy()
         eligible = np.arange(len(seqs))
         if gate_pass is not None:
             eligible = np.asarray([i for i in eligible if seqs[i] in gate_pass], dtype=int)
-        picks, n_exploit, n_explore = _compose_batch_indices(
-            mean, var, eligible_indices=eligible, exploit_ratio=ratio, n=n, rng=rng,
-        )
+        if backtrack:
+            count = min(n, len(eligible))
+            n_exploit = int(round(count * ratio))
+            exploit = eligible[np.argsort(-mean[eligible], kind="stable")][:n_exploit].tolist()
+            chosen = set(exploit)
+            explore = _explore_batch_indices(
+                mean, var, eligible_indices=[i for i in eligible if i not in chosen],
+                n=count - n_exploit, rng=rng, method=exploration, seqs=seqs,
+                anchors=state["measured"].nlargest(10, fit_col).seq.tolist(),
+            )
+            picks, n_explore = exploit + explore, len(explore)
+        else:
+            picks, n_exploit, n_explore = _compose_batch_indices(
+                mean, var, eligible_indices=eligible, exploit_ratio=ratio, n=n, rng=rng,
+            )
         candidates = [str(seqs[i]) for i in picks]
         state["pending_batch"] = candidates
+        state["authorized_exploration"] = None
+        state["pending_action"] = {"mode": exploration if n_explore else "predicted_mean",
+                                   "n_exploit": n_exploit, "n_explore": n_explore}
         out = {
             "status": "ok",
             "allocation_source": source,
@@ -390,6 +527,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         remaining = total_budget - state["spent"]
         if remaining <= 0:
             return {"status": "budget_exhausted", "budget_remaining": 0}
+        if _exploration_required() and variants != state["authorized_exploration"]:
+            return {"status": "exploration_required", "hint": "Stage explore_batch, then test_composed_batch."}
         requested = list(dict.fromkeys(variants))
         if guardrail:
             allowed, rejected = _gate(requested)
@@ -405,8 +544,24 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                                  f"and mean BLOSUM62>={blosum_min}). No budget spent. Propose lower-order, "
                                  f"conservative variants (e.g. from list_pool then check_knowledge).")}
             requested = allowed
-        chosen = requested[:remaining]
+        chosen = requested[:min(remaining, budget) if backtrack else remaining]
         rows = state["pool"][state["pool"].seq.isin(chosen)].copy()
+        # Freeze predictions/ranks BEFORE oracle lookup is consumed by training. The audit
+        # records every tested candidate, so post-hoc peak analysis cannot steer acquisition.
+        if len(rows):
+            _, mean, var = _pool_scores()
+            seqs = state["pool"].seq.tolist()
+            eligible = [i for i, seq in enumerate(seqs) if gate_pass is None or seq in gate_pass]
+            order = np.asarray(eligible)[np.argsort(-mean[eligible], kind="stable")]
+            ranks = {seqs[i]: rank for rank, i in enumerate(order, 1)}
+            idx = {seq: i for i, seq in enumerate(seqs)}
+            emit("agent.acquisition", "hypothesis_generator", {
+                "round": state["current_round"], "action": state["pending_action"],
+                "forced": _exploration_required(),
+                "candidates": [{"seq": seq, "mean_rank": ranks.get(seq),
+                                "mean": float(mean[idx[seq]]), "var": float(var[idx[seq]])}
+                               for seq in rows.seq],
+            })
         state["measured"] = pd.concat([state["measured"], rows], ignore_index=True)
         state["pool"] = state["pool"].drop(rows.index)
         state["pred_cache"] = None  # measured changed -> refit next time
@@ -414,6 +569,17 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         if len(rows):
             state["last_test_round"] = state["current_round"]
             state["batches"].append(rows[["seq", fit_col]].rename(columns={fit_col: "fitness"}))
+            previous = state["top10_max_history"][-1] if state["top10_max_history"] else -np.inf
+            state["top10_max_history"].append(max(previous, float(rows[fit_col].max())))
+            state["rounds_since_improvement"] = _rounds_since_improvement(state["top10_max_history"])
+            emit("agent.measurements", "experiment", {
+                "round": state["current_round"],
+                "results": [[str(s), float(f)] for s, f in zip(rows.seq, rows[fit_col])],
+                "top10_max_history": list(state["top10_max_history"]),
+                "rounds_since_improvement": state["rounds_since_improvement"],
+            })
+        state["pending_action"] = None
+        state["authorized_exploration"] = None
         best = state["measured"].nlargest(1, fit_col).iloc[0]
         results = [[str(s), round(float(f), 3)] for s, f in zip(rows.seq, rows[fit_col])]
         out = {"status": "ok", "n_measured_now": len(rows),
@@ -465,14 +631,25 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                          f"`compose_batch` and `list_pool` ALREADY return only gate-passing candidates. Test a full "
                          f"composed batch each round; do not hand-craft high-order variants (they are rejected without "
                          f"spending budget). Use the reported CV evidence and round annealing to set allocation.")
-            ag = Agent(oa, system_prompt=SYSTEM_PROMPT + gate_note)
+            if backtrack and guardrail:
+                gate_note = (f"\nKnowledge gate: HD<={max_hd}, mean BLOSUM62>={blosum_min}. "
+                             "Candidate tools prefilter it; measurement validates it again.")
+            policy_note = ("\nFULL: You decide when to explore and how much; no automatic redirect."
+                           if backtrack == "full" else
+                           "\nSEMI: After two consecutive non-improving batches, an entire exploration batch "
+                           "is required each round until improvement. You choose its method."
+                           if backtrack == "semi" else "")
+            ag = Agent(oa, system_prompt=(BACKTRACK_PROMPT if backtrack else SYSTEM_PROMPT)
+                       + gate_note + policy_note)
             agent_model = model_id
             emit("agent.llm.model", "agent", {"model": model_id, "base_url": cfg["base_url"]})
+            tool_lock = threading.RLock()
             def safe_tool(fn):
                 @functools.wraps(fn)
                 def wrapped(*args, **kwargs):
                     try:
-                        return fn(*args, **kwargs)
+                        with tool_lock:
+                            return fn(*args, **kwargs)
                     except Exception as exc:  # noqa: BLE001 - tool boundary must be recoverable
                         out = {"status": "tool_execution_error", "tool": fn.__name__,
                                "error_type": type(exc).__name__, "message": str(exc)[:200],
@@ -482,12 +659,13 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                 return wrapped
 
             for fn in (analyze_measured, predict, list_pool, compose_batch,
-                       check_knowledge, test, test_composed_batch, best_so_far):
+                       check_knowledge, test, test_composed_batch, best_so_far,
+                       *((explore_batch,) if backtrack else ())):
                 ag.tool_plain(safe_tool(fn))
             kwargs = {}
             try:
                 from pydantic_ai.usage import UsageLimits
-                kwargs["usage_limits"] = UsageLimits(request_limit=20)  # per-round cap
+                kwargs["usage_limits"] = UsageLimits(request_limit=min(request_limit, 20))
             except Exception:  # noqa: BLE001
                 pass
             # Bounded autonomous loop: each round the LLM MUST spend budget via `test`
@@ -508,17 +686,28 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                           f"Analysis alone makes no progress. Follow the >=80% high-CV exploitation rule and "
                           f">=90% exploitation rule in the final two rounds. "
                           f"After testing, note what you learned for the next round.")
+                if backtrack:
+                    prompt = (f"Round {rnd}/{n_rounds}; batch {this_batch}; remaining {remaining}. "
+                              f"Analyze measured evidence, then stage and test one full batch. "
+                              f"Default compose_batch(n={this_batch}) exploits; explore_batch or an explicit "
+                              f"compose ratio explores. Mode={backtrack}; exploration_required={_exploration_required()}. "
+                              f"Choose exploration method and allocation from evidence; return after testing.")
                 try:
                     result = ag.run_sync(prompt, message_history=history, **kwargs)
                     history = result.all_messages()
                     llm_summary = str(getattr(result, "output", ""))[:800]
+                    emit("agent.llm.round_summary", "agent", {"round": rnd, "summary": llm_summary})
                 except Exception as exc:  # noqa: BLE001
                     emit("agent.llm.round_error", "agent", {"round": rnd, "error": str(exc)[:200]})
                 # Guarantee progress: if the LLM analysed but did not test, the harness
                 # spends this round's budget on its own exploit pick (recorded honestly).
                 if state["spent"] == spent_before and not state["pool"].empty:
-                    emit("agent.llm.no_test", "agent", {"round": rnd, "note": "LLM skipped test; harness exploit fill"})
+                    emit("agent.llm.no_test", "agent", {"round": rnd,
+                         "note": "LLM skipped test; harness completes staged batch or policy fill"})
                     if state["pending_batch"] is not None:
+                        test_composed_batch()
+                    elif _exploration_required():
+                        explore_batch(this_batch)
                         test_composed_batch()
                     else:
                         test(list_pool(this_batch, "predicted_mean"))
@@ -532,11 +721,16 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             state["current_round"] = rnd + 1
             if state["pool"].empty or state["spent"] >= total_budget:
                 break
-            by = "predicted_mean" if rnd % 2 == 0 else "diverse"
+            by = "predicted_mean" if reference == "mean" or rnd % 2 == 0 else "diverse"
             analyze_measured()
-            picks = list_pool(budget, by)
-            check_knowledge(picks)
-            test(picks)
+            if _exploration_required():
+                explore_batch(budget)
+                test_composed_batch()
+            else:
+                picks = list_pool(budget, by)
+                state["pending_action"] = {"mode": by, "driver": "deterministic"}
+                check_knowledge(picks)
+                test(picks)
 
     # ---- assemble report (cumulative over all tested batches) ----------------
     rounds = []
@@ -558,6 +752,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "n_gate_rejected": state["n_gate_rejected"],
             "gate_pass_pool_size": len(gate_pass) if gate_pass is not None else None,
             "surrogate": surrogate,
+            "seed": seed, "backtrack": backtrack, "reference": reference,
+            "top10_max_history": state["top10_max_history"],
             "llm_used": llm_used, "llm_summary": llm_summary, "agent_model": agent_model,
             "n_tool_calls": len(state["trace"]),
             "summary": {"final_cum_top10_max": rounds[-1]["cum_top10_max"] if rounds else None,
@@ -578,8 +774,10 @@ def main(argv=None):
     p.add_argument("--n-rounds", type=int, default=3)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--no-llm", action="store_true", help="force the deterministic fallback")
-    p.add_argument("--model", default=os.environ.get("AGENTIC_LLM_MODEL", "gpt-5.6-sol"),
-                   help="LLM that drives the agent (default gpt-5.6-sol); workflow modes are unaffected")
+    p.add_argument("--model", default=os.environ.get("AGENTIC_LLM_MODEL"),
+                   help="LLM model override; otherwise resolve through agent.llm.llm_config")
+    p.add_argument("--backtrack", choices=("full", "semi"))
+    p.add_argument("--reference", choices=("alternating", "mean"), default="alternating")
     p.add_argument("--guardrail", action="store_true",
                    help="v0.2: unbypassable Knowledge Gate before test (HD<=max-hd + mean BLOSUM62>=0)")
     p.add_argument("--max-hd", type=int, default=4)
@@ -593,6 +791,8 @@ def main(argv=None):
     from evolution.results_layout import run_dir
     # folder by method generation: v0.5 = quality-aware agent + gate + epistasis surrogate.
     version = ("v0.5" if a.surrogate == "epistasis" else "v0.2") if a.guardrail else None
+    if a.backtrack:
+        version = "v0.7"
     out_dir = a.out_dir or run_dir("agentic", a.dataset, version=version)
     (out_dir / "figures").mkdir(parents=True, exist_ok=True)
     ev = out_dir / "agentic.events.jsonl"
@@ -602,7 +802,7 @@ def main(argv=None):
     rep = run_autoresearch(spec, budget=a.budget, n_rounds=a.n_rounds, seed=a.seed,
                            event_store=store, llm=not a.no_llm, model=a.model,
                            guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min,
-                           surrogate=a.surrogate)
+                           surrogate=a.surrogate, backtrack=a.backtrack, reference=a.reference)
     store.verify()
     out = out_dir / "agentic.metrics.json"
     fig = out_dir / "figures" / "agentic.png"
