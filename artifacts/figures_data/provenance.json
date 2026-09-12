@@ -1,0 +1,93 @@
+{
+  "gb1_llm": {
+    "source": "harness/reports/workflow-v1.0/gb1/campaign_llm.metrics.json",
+    "sha256": "ae2718d59c7d173dcb1fb0c6df18e34b8252c670c7434a386dbfc35c7a0c9ad1",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "a499e8688e2135c745429656a134d2133d0944e326e91459372f838fb5366cb3"
+  },
+  "gb1_easy": {
+    "source": "harness/reports/workflow-v1.0/gb1/campaign_easy.metrics.json",
+    "sha256": "771ea57ea6eb27fa643e79eddf4e846aa71740c7cebb5005e47d01c0c420ab0c",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "5cd40b40bd66b496444f460b81f576ce889b7f43ef1df0305beb1c1f198ecf84"
+  },
+  "aav_v01": {
+    "source": "harness/reports/agentic-v0.1/aav/agentic.metrics.json",
+    "sha256": "d76e20c134605f3b6af420e733a8318ed036fbb59a82230cb88443da7a6d11c5",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "7eeef28432d6c4d29a097b6cd4b8b6c8332aee332c6d00e2587cb8ba4bdb5d5e"
+  },
+  "aav_v02": {
+    "source": "harness/reports/agentic-v0.2/aav/agentic.metrics.json",
+    "sha256": "ed60ac4ffb7cd83b58ea676d2394aa050e92e146894ad0c2357c04f986a056a7",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "76f50a7a9f1bb958df577ded12f9b5e43c3e609b8c8decafc1a46d7bcc778ba6"
+  },
+  "aav_v04": {
+    "source": "harness/reports/agentic-v0.4/aav/agentic.metrics.json",
+    "sha256": "3f1fb10ba36a18287156f6e8dd52abb4d03a993d8c8656b87802ec49a3724612",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "3e24bd6002d04075113dd5b4b10011e1104fa6de495defd1a1f6e2f6d29229c8"
+  },
+  "aav_greedy": {
+    "source": "harness/reports/agentic-v0.4/aav/deterministic.metrics.json",
+    "sha256": "41ae9945a401c0d047c7b6bd81738f96e953fa638bc55c5b22d1cae7e0e144b0",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "3b0079b87dfa61938928d597fbed7d17002fcd1d1afcc81ea8507ae88feae2a7"
+  },
+  "aav_v05": {
+    "source": ".worktrees/t-v05/harness/reports/agentic-v0.5/aav/agentic.metrics.json",
+    "sha256": "a718c0b063bae3630812b606bfed5112556d595c08655f7e1bea89ee221d65ee",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "19c17ca8f9a2d0721e439e2f11258b60245feff4cba6083cb26c662273b1cc02"
+  },
+  "aav_mean_0": {
+    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/mean-seed0/metrics.json",
+    "sha256": "1a85d1e3243e90808b1f056dc508cca5662c1a84a7882aabedd4445c7b67dc71",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "a98b0ef26b29bed53a2558469cfcf484de840aea515b99a36e8da800e6c9516b"
+  },
+  "aav_mean_7": {
+    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/mean-seed7/metrics.json",
+    "sha256": "f322248e197f73bae840e24954037c5bc2765d3a55461c6476d358760f9d06a1",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "7e73eb4d19b8b153d66fa53b265a40f82cb92237d77477080d9de3ce3ef7e9fa"
+  },
+  "aav_mean_42": {
+    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/mean-seed42/metrics.json",
+    "sha256": "63bc6094bc56b33c54187fcb4d3ccc9cfa79635a2bfa6d705191767216c6cf04",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "dc75e395cd24b1265689e8f54b3b145757af29b250caddd9347a27bf42e99fc1"
+  },
+  "aav_alternating_0": {
+    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/alternating-seed0/metrics.json",
+    "sha256": "9922ee85144bb0fac7cdbcb0ef2f5d3fd4fafb96a45422fed29cd2f48dd3767b",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "b162cf79842beedc7480edcb857a919b290d1cfecf6047a331a6dd993ebeca9d"
+  },
+  "aav_alternating_7": {
+    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/alternating-seed7/metrics.json",
+    "sha256": "7f9b7474629040f0a2db54223010d83e9562f2b9cf07ffb672172487ad1030e6",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "c5edbfd2866564766fb7befedb86d35341ff6e1984998302927fb94da3e2fd22"
+  },
+  "aav_alternating_42": {
+    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/alternating-seed42/metrics.json",
+    "sha256": "a3c9a19f94fd6bf376151cc3d7039f2f4b4f750acb62d232c8f60c62d604727c",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start",
+    "snapshot_sha256": "d41e92170ee775594704b1f859508c622be944ff03523db88c783b9b162c737b"
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "schema_version": "t7.v2",
+  "candidate_space_size": 149361,
+  "cold_start": "random (5000 uniform variants; ~98% HD>=3: easy regime)",
+  "llm": "deterministic (pool LLM port available via --use-llm)",
+  "budget_per_round": 96,
+  "summary": {
+    "random": {
+      "final_cum_top10_max": 2.373537,
+      "final_cum_top10_mean": 1.376018,
+      "final_cum_n_strong": 0,
+      "total_beneficial_hits": 6,
+      "cum_top10_max_curve": [
+        1.61161,
+        2.373537,
+        2.373537
+      ]
+    },
+    "greedy": {
+      "final_cum_top10_max": 8.045152,
+      "final_cum_top10_mean": 6.71381,
+      "final_cum_n_strong": 81,
+      "total_beneficial_hits": 231,
+      "cum_top10_max_curve": [
+        7.282333,
+        8.045152,
+        8.045152
+      ]
+    },
+    "agent_no_knowledge": {
+      "final_cum_top10_max": 8.761966,
+      "final_cum_top10_mean": 7.045837,
+      "final_cum_n_strong": 89,
+      "total_beneficial_hits": 237,
+      "cum_top10_max_curve": [
+        7.282333,
+        8.045152,
+        8.761966
+      ]
+    },
+    "knowledge_agent": {
+      "final_cum_top10_max": 8.761966,
+      "final_cum_top10_mean": 7.033856,
+      "final_cum_n_strong": 88,
+      "total_beneficial_hits": 249,
+      "cum_top10_max_curve": [
+        7.282333,
+        8.761966,
+        8.761966
+      ]
+    }
+  },
+  "strategies": {
+    "random": {
+      "seed": 42,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "cum_top10_max": 1.61161,
+          "cum_n_strong": 0,
+          "spent_after": 96
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "cum_top10_max": 2.373537,
+          "cum_n_strong": 0,
+          "spent_after": 192
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "cum_top10_max": 2.373537,
+          "cum_n_strong": 0,
+          "spent_after": 288
+        }
+      ]
+    },
+    "greedy": {
+      "seed": 42,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "cum_top10_max": 7.282333,
+          "cum_n_strong": 10,
+          "spent_after": 96
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "cum_top10_max": 8.045152,
+          "cum_n_strong": 48,
+          "spent_after": 192
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "cum_top10_max": 8.045152,
+          "cum_n_strong": 81,
+          "spent_after": 288
+        }
+      ]
+    },
+    "agent_no_knowledge": {
+      "seed": 42,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "cum_top10_max": 7.282333,
+          "cum_n_strong": 13,
+          "spent_after": 96
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "cum_top10_max": 8.045152,
+          "cum_n_strong": 58,
+          "spent_after": 192
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 89,
+          "spent_after": 288
+        }
+      ]
+    },
+    "knowledge_agent": {
+      "seed": 42,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "cum_top10_max": 7.282333,
+          "cum_n_strong": 24,
+          "spent_after": 96
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 69,
+          "spent_after": 192
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 88,
+          "spent_after": 288
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "source": "harness/reports/workflow-v1.0/gb1/campaign_easy.metrics.json",
+    "sha256": "771ea57ea6eb27fa643e79eddf4e846aa71740c7cebb5005e47d01c0c420ab0c",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start"
+  }
+}

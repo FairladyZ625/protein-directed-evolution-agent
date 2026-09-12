@@ -1,0 +1,70 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "budget_per_round": 48,
+  "budget_spent": 288,
+  "seed": 7,
+  "summary": {
+    "final_cum_top10_max": 7.829,
+    "final_cum_top10_mean": 6.5317,
+    "final_cum_n_strong": 166,
+    "cum_top10_max_curve": [
+      7.391,
+      7.829,
+      7.829,
+      7.829,
+      7.829,
+      7.829
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 48,
+      "cum_top10_max": 7.391,
+      "cum_n_strong": 31,
+      "spent_after": 48
+    },
+    {
+      "round": 2,
+      "n_nominated": 48,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 55,
+      "spent_after": 96
+    },
+    {
+      "round": 3,
+      "n_nominated": 48,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 84,
+      "spent_after": 144
+    },
+    {
+      "round": 4,
+      "n_nominated": 48,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 116,
+      "spent_after": 192
+    },
+    {
+      "round": 5,
+      "n_nominated": 48,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 140,
+      "spent_after": 240
+    },
+    {
+      "round": 6,
+      "n_nominated": 48,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 166,
+      "spent_after": 288
+    }
+  ],
+  "provenance": {
+    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/mean-seed7/metrics.json",
+    "sha256": "f322248e197f73bae840e24954037c5bc2765d3a55461c6476d358760f9d06a1",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "budget_per_round": 48,
+  "budget_spent": 288,
+  "summary": {
+    "final_cum_top10_max": 7.829,
+    "final_cum_top10_mean": 6.2666,
+    "final_cum_n_strong": 108,
+    "cum_top10_max_curve": [
+      7.391,
+      7.391,
+      7.391,
+      7.829,
+      7.829,
+      7.829,
+      7.829
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 48,
+      "cum_top10_max": 7.391,
+      "cum_n_strong": 31,
+      "spent_after": 48
+    },
+    {
+      "round": 2,
+      "n_nominated": 47,
+      "cum_top10_max": 7.391,
+      "cum_n_strong": 47,
+      "spent_after": 95
+    },
+    {
+      "round": 3,
+      "n_nominated": 48,
+      "cum_top10_max": 7.391,
+      "cum_n_strong": 60,
+      "spent_after": 143
+    },
+    {
+      "round": 4,
+      "n_nominated": 48,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 75,
+      "spent_after": 191
+    },
+    {
+      "round": 5,
+      "n_nominated": 46,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 96,
+      "spent_after": 237
+    },
+    {
+      "round": 6,
+      "n_nominated": 42,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 107,
+      "spent_after": 279
+    },
+    {
+      "round": 7,
+      "n_nominated": 9,
+      "cum_top10_max": 7.829,
+      "cum_n_strong": 108,
+      "spent_after": 288
+    }
+  ],
+  "provenance": {
+    "source": "harness/reports/agentic-v0.4/aav/agentic.metrics.json",
+    "sha256": "3f1fb10ba36a18287156f6e8dd52abb4d03a993d8c8656b87802ec49a3724612",
+    "fields": "rounds.{round,n_nominated,cum_top10_max,cum_n_strong}; summary",
+    "metric": "cumulative maximum among newly queried variants; excludes cold start"
+  }
+}
