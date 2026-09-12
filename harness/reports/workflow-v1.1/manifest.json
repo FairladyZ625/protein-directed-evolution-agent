@@ -1,12 +1,154 @@
 {
   "line": "workflow",
   "version": "v1.1",
+  "dataset": "gb1",
   "description": "GB1 delivery-pipeline snapshot. Campaign regimes are produced by the CEO separately; this manifest records only files present when it was created.",
+  "git_commit": "2e0da067477e57a419286811912d7f421b703a9f",
+  "regimes": {
+    "easy": {
+      "cold_start": "random (5000 uniform variants; ~98% HD>=3: easy regime)",
+      "llm": "deterministic (pool LLM port available via --use-llm)",
+      "strategies": {
+        "random": {
+          "cum_top10_max": 2.373537,
+          "cum_n_strong": 0,
+          "beneficial_hits": 6,
+          "multi_seed_mean": 3.674173,
+          "multi_seed_std": 0.81997,
+          "n_seeds": 5
+        },
+        "greedy": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 81,
+          "beneficial_hits": 239
+        },
+        "agent_no_knowledge": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 95,
+          "beneficial_hits": 244
+        },
+        "knowledge_agent": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 86,
+          "beneficial_hits": 250
+        }
+      }
+    },
+    "hard": {
+      "cold_start": "low_hd (seed pool = all HD<=2, nominate HD>2: extrapolation regime)",
+      "llm": "deterministic (pool LLM port available via --use-llm)",
+      "strategies": {
+        "random": {
+          "cum_top10_max": 5.081244,
+          "cum_n_strong": 1,
+          "beneficial_hits": 7,
+          "multi_seed_mean": 4.611273,
+          "multi_seed_std": 1.850139,
+          "n_seeds": 5
+        },
+        "greedy": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 43,
+          "beneficial_hits": 178
+        },
+        "agent_no_knowledge": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 50,
+          "beneficial_hits": 182
+        },
+        "knowledge_agent": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 65,
+          "beneficial_hits": 204
+        }
+      }
+    },
+    "sparse": {
+      "cold_start": "low_hd (seed pool = all HD<=1, nominate HD>1: extrapolation regime)",
+      "llm": "deterministic (pool LLM port available via --use-llm)",
+      "strategies": {
+        "random": {
+          "cum_top10_max": 3.993242,
+          "cum_n_strong": 0,
+          "beneficial_hits": 9,
+          "multi_seed_mean": 4.046087,
+          "multi_seed_std": 0.72029,
+          "n_seeds": 5
+        },
+        "greedy": {
+          "cum_top10_max": 5.772032,
+          "cum_n_strong": 29,
+          "beneficial_hits": 180
+        },
+        "agent_no_knowledge": {
+          "cum_top10_max": 5.772032,
+          "cum_n_strong": 27,
+          "beneficial_hits": 213
+        },
+        "knowledge_agent": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 33,
+          "beneficial_hits": 202
+        }
+      }
+    },
+    "llm": {
+      "cold_start": "low_hd (seed pool = all HD<=2, nominate HD>2: extrapolation regime)",
+      "llm": "pool gpt-5.6-sol via injectable hypothesis port",
+      "strategies": {
+        "random": {
+          "cum_top10_max": 5.081244,
+          "cum_n_strong": 1,
+          "beneficial_hits": 7,
+          "multi_seed_mean": 4.611273,
+          "multi_seed_std": 1.850139,
+          "n_seeds": 5
+        },
+        "greedy": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 43,
+          "beneficial_hits": 178
+        },
+        "agent_no_knowledge": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 32,
+          "beneficial_hits": 88
+        },
+        "knowledge_agent": {
+          "cum_top10_max": 8.761966,
+          "cum_n_strong": 59,
+          "beneficial_hits": 140
+        }
+      }
+    }
+  },
+  "citation_caveats": [
+    "随机基线要引 strategies.random.multi_seed 的均值±标准差,不要引 summary.random.final_cum_top10_max(那只是 seed 42 单次,三个 regime 之间会读出一个统计上不存在的趋势)。",
+    "greedy / agent_no_knowledge / knowledge_agent 目前只有单 seed(42),策略之间的差值没有误差棒。",
+    "llm 档的 LLM Critic 每轮有调用预算上限,且约半数请求在 90 秒超时后回退;引用时必须写明成功率,不能笼统说「由 LLM 评审」。",
+    "events.jsonl 以 .gz 归档,EventStore 读逻辑 .jsonl 路径时透明回退。"
+  ],
   "artifacts": {
     "agent_combination_rationales.json": "5c9e4bc827dc27829374b68dc11b920e6903a939d05809c788330179d8cf0ecc",
-    "gb1/predictor_metrics.json": "d7fe3d7f81786bd0e2e3e13439b73ff091a92bf1a975bca56fa30f7739e9843b",
+    "gb1/campaign_easy.events.jsonl.gz": "7367ecea390e8cbac2db67edd73fd255aa4724b0f5cc3550c533103c053793ce",
     "gb1/campaign_easy.metrics.json": "eca6511871d1800c7a6ac3f9b53597140a900e5030f5aa0c2b0e1c537c5763f3",
-    "gb1/campaign_easy.events.jsonl": "a469df4bdf0d009e79356027de0f6b6deddad9eae4443c5e5f42b360a3cc0ada",
-    "gb1/figures/campaign_easy.png": "1cc0296c25ba266c996fb4fc04aa970e505d926216df5943a58ff69d39a145ad"
+    "gb1/campaign_hard.events.jsonl.gz": "4f1a5dfadeb1a189ad2ab5ad9f0e46f06202b404bb95c74a0c02250e3da9741d",
+    "gb1/campaign_hard.metrics.json": "12a82fbfe29a72568828dedb4170119c7b23dc0fe5282a58b1b1bd7a384e4107",
+    "gb1/campaign_llm.events.jsonl.gz": "70891d8a56613a089dfeb30ccde5457b09a4c2c6406132ab59301132c2d17dee",
+    "gb1/campaign_llm.metrics.json": "ca9ec8ad9183be6779c323d2a851aa1ee5da8421cc303d87c6e2424f4d1901ac",
+    "gb1/campaign_sparse.events.jsonl.gz": "649ba3b3e200b485d28f5bdab1925408cccf1dd004eec6455bb4c7b0da7e6786",
+    "gb1/campaign_sparse.metrics.json": "b74d06678ce65ce7ea0c8cb3f4c97b34c7d1c9be8ad20acc6ee659be276b1477",
+    "gb1/figures/campaign_easy.png": "1cc0296c25ba266c996fb4fc04aa970e505d926216df5943a58ff69d39a145ad",
+    "gb1/figures/campaign_hard.png": "bccbdc6684f5d5eca9d41b7f4c77acea30287ecc97fa62c4793d487346add2d8",
+    "gb1/figures/campaign_llm.png": "ec6124e3f55c5bd5db936f1aaeee080ad812d2644cf23720f333430750389cef",
+    "gb1/figures/campaign_sparse.png": "a7749ea6755b8e1bedbcddb80505c81298f1afe44a5dac23ac81d36ac33319c8",
+    "gb1/figures/predictor_comparison.png": "54438d1152db80f87f9a743a8667df75c3688f62d1eab9aec916c53352e81817",
+    "gb1/models/one_hot-mlp.joblib": "ef7165f372b8ae2541599bfd8935c98980220aaa5d1ebae65eb0bb875e00024d",
+    "gb1/models/one_hot-ridge.joblib": "9b52002271fb1d331d744d2986e167e1fdd6dffe8b1df1d41148fc5f4d193b57",
+    "gb1/models/one_hot-xgboost.joblib": "b18738b637ad01e1c4b7fdc082001f4f32bdc8a52bda2675f32b2a8f83338eca",
+    "gb1/predictor_alpha_sweep.json": "61e28b71753ea62891fcd033f7c9af707f20fe5817fd07211bbd9cd227f42008",
+    "gb1/predictor_ladder_scaling_ablation.json": "eef6f9ccc93a06f8f974476b4e290b302f0aac0862c0b811a3e7598112c6e3de",
+    "gb1/predictor_metrics.json": "d7fe3d7f81786bd0e2e3e13439b73ff091a92bf1a975bca56fa30f7739e9843b",
+    "report.md": "2d52184c0a26c5956663f7356d3cba7641ad682e49e4587ec053b313ec307b93"
   }
 }
