@@ -54,7 +54,8 @@ exhausted, then briefly summarise the best variants you found and your strategy.
 def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                      seed: int = 42, event_store=None, llm: bool = True,
                      request_limit: int = 60, model: str | None = None,
-                     guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0) -> dict:
+                     guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0,
+                     surrogate: str = "ridge") -> dict:
     fit_col = spec.fitness_col
     total_budget = budget * n_rounds
     strong_thr = float(np.quantile(spec.df[fit_col], 0.9))
@@ -115,10 +116,18 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             event_store.append(kind, round_id=len(state["batches"]) + 1,
                                strategy="agentic", actor=actor, payload=payload)
 
+    def _make_surrogate():
+        # v0.4: 'epistasis' = pairwise-interaction (Potts-like) surrogate; captures the
+        # position×position epistasis the additive 'ridge' cannot express (see v0.3/v0.4 diagnostic).
+        if surrogate == "epistasis":
+            from models.train_ladder import EpistasisRidgePredictor
+            return EpistasisRidgePredictor()
+        return RidgePredictor(seeds=3)
+
     def _pool_scores():
         """Fit predictor on current measured set and score the whole pool; cached."""
         if state["pred_cache"] is None and not state["pool"].empty:
-            model = RidgePredictor(seeds=3).fit(
+            model = _make_surrogate().fit(
                 spec.feature_fn(state["measured"].seq.tolist()),
                 state["measured"][fit_col].to_numpy())
             mean, var = model.predict(spec.feature_fn(state["pool"].seq.tolist()))
@@ -335,6 +344,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "blosum_min": blosum_min if guardrail else None,
             "n_gate_rejected": state["n_gate_rejected"],
             "gate_pass_pool_size": len(gate_pass) if gate_pass is not None else None,
+            "surrogate": surrogate,
             "llm_used": llm_used, "llm_summary": llm_summary, "agent_model": agent_model,
             "n_tool_calls": len(state["trace"]),
             "summary": {"final_cum_top10_max": rounds[-1]["cum_top10_max"] if rounds else None,
@@ -361,12 +371,15 @@ def main(argv=None):
                    help="v0.2: unbypassable Knowledge Gate before test (HD<=max-hd + mean BLOSUM62>=0)")
     p.add_argument("--max-hd", type=int, default=4)
     p.add_argument("--blosum-min", type=float, default=0.0)
+    p.add_argument("--surrogate", default="ridge", choices=("ridge", "epistasis"),
+                   help="v0.4: 'epistasis' = pairwise-interaction (Potts-like) surrogate; use with --feature one_hot")
     p.add_argument("--out-dir", type=Path, default=None,
                    help="default: harness/reports/<agentic-version>/<dataset>/")
     a = p.parse_args(argv)
 
     from evolution.results_layout import run_dir
-    version = "v0.2" if a.guardrail else None   # v0.2 folder when the Knowledge Gate is on
+    # folder by method generation: v0.4 = gate + epistasis surrogate; v0.2 = gate only
+    version = ("v0.4" if a.surrogate == "epistasis" else "v0.2") if a.guardrail else None
     out_dir = a.out_dir or run_dir("agentic", a.dataset, version=version)
     (out_dir / "figures").mkdir(parents=True, exist_ok=True)
     ev = out_dir / "agentic.events.jsonl"
@@ -375,7 +388,8 @@ def main(argv=None):
     spec = load(a.dataset, a.feature)
     rep = run_autoresearch(spec, budget=a.budget, n_rounds=a.n_rounds, seed=a.seed,
                            event_store=store, llm=not a.no_llm, model=a.model,
-                           guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min)
+                           guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min,
+                           surrogate=a.surrogate)
     store.verify()
     out = out_dir / "agentic.metrics.json"
     fig = out_dir / "figures" / "agentic.png"
@@ -396,13 +410,14 @@ def main(argv=None):
           f"tool_calls={rep['n_tool_calls']} "
           f"cum_top10_max={rep['summary']['final_cum_top10_max']} strong={rep['summary']['final_cum_n_strong']}")
     _gflag = (f" --guardrail --max-hd {a.max_hd} --blosum-min {a.blosum_min}" if a.guardrail else "")
+    _sflag = (f" --surrogate {a.surrogate}" if a.surrogate != "ridge" else "")
     log_run("agentic",
             command=(f"python -m agent.auto_researcher --dataset {a.dataset} --feature {a.feature} "
-                     f"--budget {a.budget} --n-rounds {a.n_rounds} --seed {a.seed} --model {a.model}{_gflag}"),
+                     f"--budget {a.budget} --n-rounds {a.n_rounds} --seed {a.seed} --model {a.model}{_gflag}{_sflag}"),
             params={"dataset": a.dataset, "feature": a.feature, "budget": a.budget, "n_rounds": a.n_rounds,
                     "seed": a.seed, "llm": not a.no_llm, "model": a.model,
                     "guardrail": a.guardrail, "max_hd": a.max_hd if a.guardrail else None,
-                    "blosum_min": a.blosum_min if a.guardrail else None},
+                    "blosum_min": a.blosum_min if a.guardrail else None, "surrogate": a.surrogate},
             artifacts=[str(out.relative_to(ROOT)), str(ev.relative_to(ROOT))],
             summary={**rep["summary"], "llm_used": rep["llm_used"], "budget_spent": rep["budget_spent"]})
     return rep

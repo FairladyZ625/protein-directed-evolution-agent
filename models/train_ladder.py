@@ -57,6 +57,91 @@ class RidgePredictor(_Base):
         return Ridge(alpha=self.kwargs["alpha"])
 
 
+class EpistasisRidgePredictor(_Base):
+    """上位感知(Potts 式)surrogate:one-hot 的 degree-2 interaction 特征 + Ridge。
+
+    加性 Ridge/kNN 无法表达位点×位点残基交互,故对正上位峰系统性排低(实验二/三诊断:
+    加性把 AAV 真峰门内排 #2776,本模型 ~#447)。这里显式加二阶交互项:
+    - answer-agnostic 频次过滤:只保留训练集里出现 >= min_count 次的 one-hot 列(去极稀有,
+      控制特征规模;不使用测试峰信息)。
+    - alpha 由 RidgeCV(留一)在训练集上自选(answer-agnostic),不按目标峰调参。
+    - bootstrap 集成给 UCB 需要的方差;pool 预测分块,控内存。
+    接口同 _Base:fit(X,y).predict(X)->(mean,var)。X 为 one-hot 特征矩阵。
+    """
+    def __init__(self, alphas=(1.0, 10.0, 100.0, 300.0), min_count: int = 10,
+                 var_seeds: int = 3, chunk: int = 8000, **kwargs):
+        super().__init__(min_count=min_count, **kwargs)
+        self._alphas = tuple(alphas)
+        self._var_seeds = var_seeds
+        self._chunk = chunk
+        self._poly = None
+        self._keep = None
+        self._alpha = None
+        self._mean_model = None       # full-data model -> mean/ranking (no bootstrap degradation)
+
+    def _expand(self, X, fit: bool = False):
+        """degree-2 interaction on the kept one-hot columns, kept SPARSE (each AAV variant
+        has ~28 nonzeros -> ~378 pairwise nonzeros/row, so this stays tiny and fast)."""
+        import scipy.sparse as sp
+        from sklearn.preprocessing import PolynomialFeatures
+        Xs = sp.csr_matrix(np.asarray(X, dtype=float)[:, self._keep])
+        if fit or self._poly is None:
+            self._poly = PolynomialFeatures(degree=2, interaction_only=True, include_bias=False)
+            return self._poly.fit_transform(Xs)
+        return self._poly.transform(Xs)
+
+    def fit(self, X, y):
+        X = np.asarray(X, dtype=float)
+        y = np.asarray(y)
+        counts = (X > 0).sum(axis=0)
+        self._keep = counts >= self.kwargs.get("min_count", 10)
+        if self._keep.sum() == 0:                       # degenerate tiny data: keep all
+            self._keep = np.ones(X.shape[1], dtype=bool)
+        Xp = self._expand(X, fit=True)
+        self._scaler = StandardScaler(with_mean=False).fit(Xp)   # sparse-safe (no centering)
+        Xp = self._scaler.transform(Xp)
+        # answer-agnostic alpha selection: one 80/20 split, pick best held-out Spearman
+        # (NOT by target-peak rank). Falls back to median alpha on tiny/degenerate data.
+        self._alpha = self._select_alpha(Xp, y)
+        # mean/ranking from a single FULL-data fit (bootstrap would degrade the high-dim fit)
+        self._mean_model = Ridge(alpha=self._alpha, solver="sparse_cg").fit(Xp, y)
+        # small bootstrap ensemble ONLY for the exploration variance the agent's UCB needs
+        self.models = []
+        n = len(y)
+        for i in range(self._var_seeds):
+            rng = np.random.default_rng(i)
+            s = rng.integers(0, n, size=n)
+            self.models.append(Ridge(alpha=self._alpha, solver="sparse_cg").fit(Xp[s], y[s]))
+        return self
+
+    def _select_alpha(self, Xp, y):
+        from sklearn.model_selection import train_test_split
+        n = len(y)
+        if n < 20:
+            return float(self._alphas[len(self._alphas) // 2])
+        tr, va = train_test_split(np.arange(n), test_size=0.2, random_state=0)
+        best_a, best_s = None, -2.0
+        for a in self._alphas:
+            m = Ridge(alpha=a, solver="sparse_cg").fit(Xp[tr], y[tr])
+            s = spearmanr(m.predict(Xp[va]), y[va]).correlation
+            s = -2.0 if (s is None or np.isnan(s)) else float(s)
+            if s > best_s:
+                best_a, best_s = a, s
+        return float(best_a if best_a is not None else self._alphas[len(self._alphas) // 2])
+
+    def predict(self, X):
+        if self._mean_model is None:
+            raise RuntimeError("fit must be called before predict")
+        X = np.asarray(X, dtype=float)
+        means, variances = [], []
+        for start in range(0, len(X), self._chunk):
+            Xp = self._scaler.transform(self._expand(X[start:start + self._chunk]))
+            means.append(self._mean_model.predict(Xp))
+            vals = np.asarray([m.predict(Xp) for m in self.models], dtype=float)
+            variances.append(vals.var(axis=0))
+        return np.concatenate(means), np.concatenate(variances)
+
+
 class XGBoostPredictor(_Base):
     """Gradient boosting implementation; uses XGBoost when available."""
     def _make(self, seed):
