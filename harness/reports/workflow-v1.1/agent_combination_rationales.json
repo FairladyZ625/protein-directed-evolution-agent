@@ -1,0 +1,47 @@
+{
+  "round_id": 1,
+  "actor": "mutation_designer",
+  "event_type": "agent.role.completed",
+  "provenance": {
+    "empirical_position_gains": "DataAnalyst aggregation over measured fitness rows",
+    "deterministic_summary": "MutationDesigner code-generated narrative",
+    "llm_generated_text": false
+  },
+  "measured_rows": [
+    {"mutations": ["V39I"], "fitness": 2.0},
+    {"mutations": ["D40E"], "fitness": 1.8},
+    {"mutations": ["V54I"], "fitness": 1.5},
+    {"mutations": ["V39I", "D40E"], "fitness": 2.4},
+    {"mutations": ["V39I", "V54I"], "fitness": 2.2},
+    {"mutations": ["D40E", "V54I"], "fitness": 2.0}
+  ],
+  "combination_rationales": [
+    {
+      "selected_single_mutations": ["V39I", "D40E"],
+      "empirical_position_gains": {"39": 2.2, "40": 2.066666666666667},
+      "positions_non_conflicting": true,
+      "rule_ids": ["R-GB1-SITES", "R-MAX-MUTATIONS"],
+      "deterministic_summary": "Combined V39I, D40E using measured single-position gains (V39I position_gain=2.2, D40E position_gain=2.06667); positions are non-conflicting; rules: R-GB1-SITES, R-MAX-MUTATIONS.",
+      "evidence_source": "measured_data",
+      "narrative_source": "deterministic"
+    },
+    {
+      "selected_single_mutations": ["V39I", "V54I"],
+      "empirical_position_gains": {"39": 2.2, "54": 1.9000000000000001},
+      "positions_non_conflicting": true,
+      "rule_ids": ["R-GB1-SITES", "R-MAX-MUTATIONS"],
+      "deterministic_summary": "Combined V39I, V54I using measured single-position gains (V39I position_gain=2.2, V54I position_gain=1.9); positions are non-conflicting; rules: R-GB1-SITES, R-MAX-MUTATIONS.",
+      "evidence_source": "measured_data",
+      "narrative_source": "deterministic"
+    },
+    {
+      "selected_single_mutations": ["D40E", "V54I"],
+      "empirical_position_gains": {"40": 2.066666666666667, "54": 1.9000000000000001},
+      "positions_non_conflicting": true,
+      "rule_ids": ["R-GB1-SITES", "R-MAX-MUTATIONS"],
+      "deterministic_summary": "Combined D40E, V54I using measured single-position gains (D40E position_gain=2.06667, V54I position_gain=1.9); positions are non-conflicting; rules: R-GB1-SITES, R-MAX-MUTATIONS.",
+      "evidence_source": "measured_data",
+      "narrative_source": "deterministic"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema": "task-contract/v1",
+  "contractVersion": 1,
+  "taskId": "task_ecde325dcd104bf5171de0bc02",
+  "packagePath": "tasks/task_ecde325dcd104bf5171de0bc02-v0-8-b-ucb-3-llm-cold-start",
+  "title": "实验 v0.8-B:UCB β=3 达峰结论对 LLM/训练随机性与 cold-start 扰动的稳健性",
+  "taskClass": "standard",
+  "verticalId": "software/coding",
+  "presetId": "standard-task",
+  "profileId": "baseline",
+  "locale": "en-US",
+  "metadata": {
+    "fromLegacyId": null,
+    "idempotencyKey": null,
+    "moduleKey": null,
+    "parentTaskId": null,
+    "presetId": "standard-task",
+    "profileId": "baseline",
+    "riskTier": "medium",
+    "slug": "v0-8-b-ucb-3-llm-cold-start",
+    "surfaces": [],
+    "urgency": "medium",
+    "verticalId": "software/coding",
+    "workKind": "test"
+  },
+  "registerModule": null,
+  "completionGates": [
+    "ci",
+    "code-doc-reconciliation"
+  ],
+  "presetSnapshotDigest": "sha256:7a2f83d61b56907d1615e7f4836ab2e5258363b772adcf2c6bc9a39c06fb9473",
+  "scaffold": {
+    "baseVersion": "software-coding/v1",
+    "overlayDigest": null,
+    "resolvedSelectionDigest": "sha256:65cf03275542bf095048fe71564cd7137f899c6a401cd38cf255cc1f23e8d623"
+  },
+  "documents": [
+    {
+      "slot": "task.index",
+      "path": "INDEX.md",
+      "owner": "machine",
+      "materializeAs": "INDEX.md",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.contract",
+      "path": "task-contract.json",
+      "owner": "machine",
+      "materializeAs": "task-contract.json",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.plan",
+      "path": "task_plan.md",
+      "owner": "doc-sync",
+      "materializeAs": "task_plan.md",
+      "requiredAnchors": [
+        "## Brief",
+        "## Goal",
+        "## Context",
+        "## Required Reading",
+        "## Entry Conditions",
+        "## Dependencies",
+        "## Execution Surface",
+        "## Constraints",
+        "## Checkpoint",
+        "## CI/Gate Authority Stop Condition",
+        "## Implementation Plan",
+        "## Deliverable Contract",
+        "## Evidence Protocol",
+        "## Verification"
+      ],
+      "templateRef": "template://planning/task-plan@1",
+      "contentSha256": "7991175b3d953dbab7c9a3aa56a528b1026bc533a8211567b4063df03af13e72"
+    },
+    {
+      "slot": "task.closeout",
+      "path": "closeout.md",
+      "owner": "doc-sync",
+      "materializeAs": "closeout.md",
+      "requiredAnchors": [
+        "## Summary",
+        "## Verification",
+        "## Residual Risk"
+      ],
+      "templateRef": "template://planning/closeout@1",
+      "contentSha256": "47b4e51587f789d5eb33df9c8578927be3936ead63cfb66b4b4d4fe941517e6f"
+    },
+    {
+      "slot": "task.artifacts.keep",
+      "path": "artifacts/.gitkeep",
+      "owner": "doc-sync",
+      "materializeAs": "artifacts/.gitkeep",
+      "requiredAnchors": [],
+      "templateRef": "template://planning/keep-file@1",
+      "contentSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ],
+  "pinned": true
+}

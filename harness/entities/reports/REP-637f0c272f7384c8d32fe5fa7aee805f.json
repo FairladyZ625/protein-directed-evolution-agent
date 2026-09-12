@@ -1,0 +1,14 @@
+{
+  "schema": "schema://artifact-descriptor",
+  "typeIdentity": "entity-kind/KND-22c8d77f610481a7fac16512a855ad18",
+  "kindVersion": 1,
+  "entityId": "REP-637f0c272f7384c8d32fe5fa7aee805f",
+  "title": "workflow-v1.0:固定工作流+四策略主动学习基线(GB1+AAV)",
+  "locator": {
+    "kind": "repository-path",
+    "value": "harness/reports/workflow-v1.0"
+  },
+  "contentVersion": "sha256:a1457939aa27a2e71c914e94a49a145d1710fd8449778f83cc81aefd9f3fbf35",
+  "attributes": {},
+  "source": "repo:ai4s-directed-evolution-agent:harness/reports/workflow-v1.0"
+}

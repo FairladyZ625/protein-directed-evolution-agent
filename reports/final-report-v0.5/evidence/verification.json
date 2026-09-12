@@ -1,0 +1,11 @@
+{
+  "pages": 12,
+  "chapters": 8,
+  "references": 30,
+  "figures": 5,
+  "empty_table_cells": 0,
+  "layout_overflows": 0,
+  "user_researcher_rationale": "section 7.6",
+  "checks": "source snapshots, GB1 values, AAV source table retained, image paths, math rendering, text bounds",
+  "experiments_rerun": false
+}

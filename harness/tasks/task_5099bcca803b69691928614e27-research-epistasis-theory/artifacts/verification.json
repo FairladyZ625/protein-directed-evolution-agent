@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "seed": 5099,
+  "han_characters": 4583,
+  "dimensions": [
+    {
+      "order": 1,
+      "site_sets": 28,
+      "reference_parameters": 532,
+      "one_hot_columns": 560
+    },
+    {
+      "order": 2,
+      "site_sets": 378,
+      "reference_parameters": 136458,
+      "one_hot_columns": 151200
+    },
+    {
+      "order": 3,
+      "site_sets": 3276,
+      "reference_parameters": 22470084,
+      "one_hot_columns": 26208000
+    },
+    {
+      "order": 4,
+      "site_sets": 20475,
+      "reference_parameters": 2668322475,
+      "one_hot_columns": 3276000000
+    }
+  ],
+  "parameter_counts": {
+    "L4": 136991,
+    "L4_Tucker3": 143215,
+    "L4_Tucker34": 151407,
+    "CP234": 9093,
+    "L4_CP34": 145535
+  },
+  "dense_float32_GB": {
+    "order3": 937.721545488,
+    "order4": 111354.4335267
+  },
+  "dp_max_abs_error": 4.440892098500626e-15,
+  "tucker_max_abs_error": 1.1102230246251565e-16,
+  "pairwise_third_difference": 0.0,
+  "injected_third_difference": 2.5,
+  "hd_le_2_high_order_zero": true,
+  "scope": "Algebra and document checks only; no AAV model fit."
+}

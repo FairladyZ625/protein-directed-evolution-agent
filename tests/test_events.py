@@ -56,6 +56,23 @@ def test_append_fsyncs_before_returning(tmp_path, monkeypatch):
     assert len(synced) == 1
 
 
+def test_restart_discards_truncated_tail_before_appending(tmp_path):
+    path = tmp_path / "events.jsonl"
+    original = EventStore(path)
+    original.append("run.started", round_id=1, strategy="random", actor="campaign", payload={})
+    with path.open("ab") as stream:
+        stream.write(b'{"seq":2')
+
+    restarted = EventStore(path)
+    appended = restarted.append(
+        "run.finished", round_id=1, strategy="random", actor="campaign", payload={}
+    )
+
+    assert [event["seq"] for event in restarted.iter_events()] == [1, 2]
+    assert appended["seq"] == 2
+    assert restarted.verify() is None
+
+
 def test_tampering_is_detected_at_changed_event(tmp_path):
     path = tmp_path / "events.jsonl"
     store = EventStore(path)
@@ -104,3 +121,32 @@ def test_replay_cli_applies_round_and_strategy_filters(tmp_path):
 
     assert "proposal.validated" in result.stdout
     assert "thought.created" not in result.stdout
+
+
+def test_compressed_archive_reads_transparently_and_refuses_writes(tmp_path):
+    """一次 campaign 轮次现在设计上千条候选,每个角色事件都带整个文库:未压缩流约 80MB、
+    gzip 后约 3MB。归档流因此以 .gz 保存,读者仍传逻辑 .jsonl 路径。这条测试钉住三件事:
+    透明回退读到的链与原始流逐事件一致、self.path 指向真正读的文件(证据链不撒谎)、
+    以及往压缩档写入会被拒绝而不是静默破坏哈希链。"""
+    import gzip
+
+    raw = tmp_path / "stream.events.jsonl"
+    writer = EventStore(raw)
+    for index in range(3):
+        writer.append("probe.event", round_id=index, strategy="probe", actor="test", payload={"i": index})
+    writer.verify()
+    baseline = list(writer.iter_events())
+    head = writer.head_hash
+
+    archive = tmp_path / "stream.events.jsonl.gz"
+    archive.write_bytes(gzip.compress(raw.read_bytes()))
+    raw.unlink()
+
+    reader = EventStore(raw)  # 逻辑路径,原文件已不在
+    assert reader.path == archive, "未透明回退到 .gz 归档"
+    reader.verify()
+    assert list(reader.iter_events()) == baseline
+    assert reader.head_hash == head
+
+    with pytest.raises(ValueError, match="compressed archive"):
+        reader.append("probe.event", round_id=9, strategy="probe", actor="test", payload={})

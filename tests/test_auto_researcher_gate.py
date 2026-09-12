@@ -139,6 +139,40 @@ def test_gate_on_does_not_starve_budget():
                 assert np.mean([bl(w, c) for w, c in subs]) >= 0.0
 
 
+def test_explicit_no_knowledge_ablation_disables_gate_and_graph():
+    rep = run_autoresearch(
+        _big_gated_spec(), budget=5, n_rounds=1, seed=0, llm=False,
+        no_knowledge=True, surrogate="ridge",
+    )
+    assert rep["strategy"] == "agent_no_knowledge"
+    assert rep["no_knowledge"] is True
+    assert rep["guardrail"] is False
+    assert rep["knowledge_graph_enabled"] is False
+    assert not [event for event in rep["tool_trace"]
+                if event["event_type"] == "agent.tool.knowledge_graph"]
+
+
+def test_knowledge_mode_queries_graph_in_critic_rationale():
+    rep = run_autoresearch(
+        _big_gated_spec(), budget=5, n_rounds=1, seed=0, llm=False,
+        guardrail=True, max_hd=4, blosum_min=0.0, surrogate="ridge",
+    )
+    critic = next(event for event in rep["tool_trace"]
+                  if event["event_type"] == "agent.tool.check_knowledge")
+    assert critic["payload"]["knowledge_enabled"] is True
+    assert critic["payload"]["rationales"]
+    rationale = critic["payload"]["rationales"][0]["rationale"]
+    assert rationale.startswith("KG:")
+    assert "Associations are not causal effects" in rationale
+
+
+def test_conflicting_knowledge_modes_are_rejected():
+    import pytest
+
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        run_autoresearch(_spec(), llm=False, guardrail=True, no_knowledge=True)
+
+
 def _blosum():
     from knowledge.validators import load_rules
     m = load_rules()["blosum62"]

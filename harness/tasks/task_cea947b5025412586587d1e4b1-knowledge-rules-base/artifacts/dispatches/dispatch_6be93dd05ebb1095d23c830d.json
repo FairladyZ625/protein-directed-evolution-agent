@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_6be93dd05ebb1095d23c830d",
+  "taskId": "task_cea947b5025412586587d1e4b1",
+  "executionId": "exe_7cc5a1dbb2c53daa1fc67fd7b4",
+  "agentId": "de-infra",
+  "agentName": "AI4S 基础设施工程师",
+  "instanceId": "codex-api",
+  "model": "gpt-5.6-terra",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t5-knowledge",
+  "missionRef": "tasks/task_cea947b5025412586587d1e4b1-knowledge-rules-base/artifacts/missions/dispatch_6be93dd05ebb1095d23c830d.md",
+  "runtimeSessionId": "runtime_e78690d4271df4aaca168c71",
+  "providerSessionId": "01a08e92-909c-7263-a0e3-f782de9af5dc",
+  "startedAt": "2026-09-11T03:46:04.641Z",
+  "endedAt": "2026-09-11T03:55:39.558Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/268dd6c1a83fba401a5f3a8f31025325faf2becf73a62315eb29aa979a0eda24",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_6be93dd05ebb1095d23c830d.jsonl",
+  "attemptGroupId": "dispatch_6be93dd05ebb1095d23c830d",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "codex-api",
+    "model": "gpt-5.6-terra"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

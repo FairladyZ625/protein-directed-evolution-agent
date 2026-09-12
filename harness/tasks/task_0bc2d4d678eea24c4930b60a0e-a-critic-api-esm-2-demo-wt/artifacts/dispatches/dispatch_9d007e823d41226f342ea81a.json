@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_9d007e823d41226f342ea81a",
+  "taskId": "task_0bc2d4d678eea24c4930b60a0e",
+  "executionId": "exe_8b7e420a7631eaf3236b28b05a",
+  "agentId": "de-agent",
+  "agentName": "AI4S Agent 流水线工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-sol",
+  "reasoningEffort": "high",
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-pkgA-mainline-truth",
+  "missionRef": "tasks/task_0bc2d4d678eea24c4930b60a0e-a-critic-api-esm-2-demo-wt/artifacts/missions/dispatch_9d007e823d41226f342ea81a.md",
+  "runtimeSessionId": "runtime_dc81901e3f9dd99ddb5bb5bf",
+  "providerSessionId": "01a09524-0b8e-7253-8c3e-3b4ca0f353ac",
+  "startedAt": "2026-09-12T10:22:42.137Z",
+  "endedAt": "2026-09-12T10:27:25.159Z",
+  "outcome": "unknown",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/c3095c1316f1167c2c37f9b6546bcb341bedbb1225acda89ff05c1c41206ad07",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_9d007e823d41226f342ea81a.jsonl",
+  "attemptGroupId": "dispatch_9d007e823d41226f342ea81a",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-sol"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker exited with uncommitted changes in its worktree."
+}

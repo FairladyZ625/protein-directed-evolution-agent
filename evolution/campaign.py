@@ -23,7 +23,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+# `python evolution/campaign.py`(即 make campaign)只把 evolution/ 放进 sys.path,不放仓库根,
+# 所以下面的 `from evolution...` / `from agent...` 会 ModuleNotFoundError。scripts/smoke.py 与
+# app/demo.py 早就各自做了这件事,唯独两个 make 主入口没有——于是 README 的两条主复现命令在任何
+# 干净 clone 上都跑不起来。这里补上同样的引导。
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 import numpy as np
 import pandas as pd
@@ -51,6 +60,7 @@ LIBRARY_CAP = 10000                   # designer enumerates the full hypothesis 
                                       # high enough to avoid truncating the library before the predictor can rank it
 LAMBDA_UCB = 0.75                     # exploration weight for the knowledge agent
 BETA_BLOSUM = 0.30                    # BLOSUM62 conservativeness prior weight
+RANDOM_SEEDS = (11, 23, 42, 67, 89)  # fixed independent baseline repetitions
 
 
 def _features(variants: list[str]) -> np.ndarray:
@@ -158,6 +168,39 @@ def _llm_hypothesis(fallback_fn, fallback_muts, state: dict):
     return fn
 
 
+def _llm_critic(state: dict):
+    """Optional live critic port; failures remain an explicit deterministic fallback.
+
+    The port must return something ``CriticReview`` accepts. It used to return a bare
+    ``str``, and ``agent.pipeline._structured_call`` validates the port's return value
+    against ``CriticReview`` — which requires a ``note`` field — so **every** call raised
+    ValidationError and silently degraded to the deterministic note. The symptom was a
+    live-LLM run whose critique list read "accepted (deterministic critic fallback)" for
+    15/15 candidates while the endpoint itself answered fine in 19 s. A dict keyed by the
+    field name is what crosses that boundary.
+    """
+    def fn(candidate, rules):
+        try:
+            prompt = ("Act as a GB1 scientific critic. Briefly assess this candidate and "
+                      f"its rule checks: candidate={candidate.model_dump()}, rules={rules}")
+            note = chat_json(prompt).strip()
+            # An empty reply validates against CriticReview just fine and would surface as a
+            # blank critique that looks like the LLM said nothing worth objecting to. Observed
+            # on the first call of a probe run. Treat it as a failed call so the fallback note
+            # is recorded instead of a blank one attributed to the model.
+            if not note:
+                raise ValueError("LLM critic returned an empty note")
+            state["critic_source"] = f"llm:{(llm_config() or {}).get('model', '?')}"
+            state["critic_llm_calls"] = state.get("critic_llm_calls", 0) + 1
+            return {"note": note}
+        except Exception as exc:  # noqa: BLE001 — campaign must remain runnable offline
+            state["critic_source"] = "fallback"
+            state["critic_error"] = str(exc)[:200]
+            state["critic_fallbacks"] = state.get("critic_fallbacks", 0) + 1
+            return {"note": "accepted by deterministic rule checks (LLM critic fallback)"}
+    return fn
+
+
 def _stats(batch: pd.DataFrame, cumulative: pd.DataFrame) -> dict:
     top = batch.nlargest(TOP_K, "Fitness", keep="first")
     ctop = cumulative.nlargest(TOP_K, "Fitness", keep="first")
@@ -192,9 +235,16 @@ def _agent_propose(strategy, df, measured, train, budget, event_store, round_id,
     det_fn, det_muts = _deterministic_hypothesis(train)
     hyp_fn = _llm_hypothesis(det_fn, det_muts, llm_state) if use_llm else det_fn
 
+    # train 是「已测过的」,df.Variants 是「oracle 能测的」全候选空间(GB1 149,361)。
+    # 必须把后者显式传进去:提名本来就还没被测过,若让 pipeline 从 train 推导可测集合,
+    # 求交会把每一个新提名都滤掉,该轮直接颗粒无收(且静默、退出码为 0)。
     result = run_pipeline(_pool_records(train), agent_predictor,
-                          llm_hypothesis=hyp_fn, budget=LIBRARY_CAP,
-                          event_store=event_store, round_id=round_id, no_knowledge=True)
+                          llm_hypothesis=hyp_fn,
+                          llm_critic=_llm_critic(llm_state) if use_llm else None,
+                          budget=LIBRARY_CAP, event_store=event_store,
+                          round_id=round_id,
+                          no_knowledge=(strategy == "agent_no_knowledge"),
+                          measurable_variants=set(df.Variants))
 
     known = set(df.Variants)
     rows = []
@@ -222,6 +272,109 @@ def _greedy_propose(df, measured, train, budget):
     return cand[order[:budget]]
 
 
+def _topk_concentration(rounds: list[dict]) -> dict:
+    """Residue concentration among all reported per-round Top-k nominations."""
+    variants = [variant for row in rounds for variant, _ in row["top10"]]
+    positions = {}
+    for index, site in enumerate(SITES):
+        counts: dict[str, int] = {}
+        for variant in variants:
+            counts[variant[index]] = counts.get(variant[index], 0) + 1
+        total = len(variants)
+        ordered = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+        positions[str(site)] = {
+            "residue_counts": dict(ordered),
+            "dominant_residue": ordered[0][0] if ordered else None,
+            "dominant_fraction": round(ordered[0][1] / total, 6) if total else 0.0,
+            "mutation_fraction": round(sum(n for aa, n in ordered if aa != WT[index]) / total, 6)
+                                 if total else 0.0,
+        }
+    return {"n_topk_observations": len(variants), "positions": positions}
+
+
+def _aggregate_random_runs(runs: list[dict]) -> dict:
+    """Attach across-seed mean/std curves computed from genuinely independent runs."""
+    metrics = ("top10_max", "top10_mean", "hit_rate_beneficial",
+               "cum_top10_max", "cum_top10_mean", "cum_n_strong")
+    aggregate = []
+    for index in range(len(runs[0]["rounds"])):
+        row = {"round": index + 1}
+        for metric in metrics:
+            values = np.asarray([run["rounds"][index][metric] for run in runs], dtype=float)
+            row[f"{metric}_mean"] = round(float(values.mean()), 6)
+            row[f"{metric}_std"] = round(float(values.std(ddof=0)), 6)
+        aggregate.append(row)
+    return {"seeds": [run["seed"] for run in runs], "n_runs": len(runs), "rounds": aggregate}
+
+
+def _run_strategy(strategy, df, *, seed, n_rounds, budget, pool_size, event_store,
+                  use_llm, cold_start, max_cold_hd, blosum_score):
+    rng = np.random.default_rng(seed)
+    if cold_start == "low_hd":
+        pool = df[df.HD <= max_cold_hd][["Variants", "HD", "Fitness"]].copy()
+    else:
+        pool = build_cold_start_pool(df, rng, pool_size)
+    measured = set(pool.Variants)
+    train = pool[["Variants", "Fitness"]].copy()
+    rounds, batches, sources = [], [], []
+    _event(event_store, "campaign.started", strategy, 0,
+           {"budget": budget, "pool_size": len(pool), "seed": seed})
+    oracle = df.set_index("Variants")
+    for round_id in range(1, n_rounds + 1):
+        llm_state: dict = {"source": "fallback"}
+        if strategy == "random":
+            cand = df.loc[~df.Variants.isin(measured), "Variants"].to_numpy()
+            picks = propose_random(cand, budget, rng)
+        elif strategy == "greedy":
+            picks = _greedy_propose(df, measured, train, budget)
+        else:
+            picks = _agent_propose(strategy, df, measured, train, budget,
+                                   event_store, round_id, blosum_score, use_llm, llm_state)
+        if len(picks) == 0:
+            break
+        _event(event_store, "campaign.propose.completed", strategy, round_id,
+               {"seed": seed, "n_candidates": len(picks), "variants": picks.tolist()})
+        batch = oracle.loc[picks].reset_index()
+        batch["Fitness"] = pd.to_numeric(batch["Fitness"], errors="raise").astype(float)
+        _event(event_store, "campaign.oracle.completed", strategy, round_id,
+               {"seed": seed, "oracle": "measured table lookup", "n_lookups": len(batch)})
+        measured.update(picks.tolist())
+        train = pd.concat([train, batch[["Variants", "Fitness"]]], ignore_index=True)
+        train["Fitness"] = pd.to_numeric(train["Fitness"], errors="raise").astype(float)
+        _event(event_store, "campaign.refill.completed", strategy, round_id,
+               {"seed": seed, "added": len(batch), "pool_size_after": len(train)})
+        if strategy != "random":
+            refreshed = _predictor_factory()
+            refreshed.fit(_features(train.Variants.tolist()), train.Fitness.to_numpy())
+        _event(event_store, "campaign.retrain.completed", strategy, round_id,
+               {"seed": seed, "training_rows": len(train),
+                "status": "not applicable" if strategy == "random" else "fitted",
+                "predictor": "none (random baseline)" if strategy == "random" else "5-seed Ridge ensemble"})
+        batches.append(batch)
+        cumulative = pd.concat(batches, ignore_index=True)
+        cumulative["Fitness"] = pd.to_numeric(cumulative["Fitness"], errors="raise").astype(float)
+        row = {"round": round_id, **_stats(batch, cumulative), "pool_size_after": len(train)}
+        if strategy in ("agent_no_knowledge", "knowledge_agent"):
+            row["llm_source"] = llm_state.get("source", "fallback")
+            row["llm_critic_source"] = llm_state.get("critic_source", "fallback")
+            sources.append(row["llm_source"])
+        rounds.append(row)
+        _event(event_store, "campaign.round.completed", strategy, round_id, row)
+    result = {
+        "strategy": strategy, "seed": seed, "n_rounds": len(rounds),
+        "budget_per_round": budget, "cold_start_pool_size": len(pool),
+        "acquisition": {"random": "uniform random",
+                        "greedy": "predicted mean over full unmeasured space",
+                        "agent_no_knowledge": "agent library, predicted mean",
+                        "knowledge_agent": f"agent library, mean + {LAMBDA_UCB}·√var + {BETA_BLOSUM}·BLOSUM62 prior"}[strategy],
+        "llm_sources": sources or None, "rounds": rounds,
+        "topk_concentration": _topk_concentration(rounds),
+    }
+    _event(event_store, "campaign.completed", strategy, len(rounds),
+           {"seed": seed, "rounds": rounds})
+    return result
+
+
 def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: int = N_ROUNDS,
                  budget: int = BUDGET, pool_size: int = POOL_SIZE, event_store=None,
                  use_llm: bool = False, cold_start: str = "random", max_cold_hd: int = 2) -> dict:
@@ -246,48 +399,15 @@ def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: in
     blosum_score = _blosum_lookup(load_rules())
     all_results: dict[str, dict] = {}
     for strategy in STRATEGIES:
-        rng = np.random.default_rng(seed)
-        if cold_start == "low_hd":
-            pool = df[df.HD <= max_cold_hd][["Variants", "HD", "Fitness"]].copy()
-        else:
-            pool = build_cold_start_pool(df, rng, pool_size)
-        measured = set(pool.Variants)
-        train = pool[["Variants", "Fitness"]].copy()
-        rounds, batches, sources = [], [], []
-        _event(event_store, "campaign.started", strategy, 0, {"budget": budget, "pool_size": pool_size})
-        for round_id in range(1, n_rounds + 1):
-            llm_state: dict = {"source": "deterministic"}
-            if strategy == "random":
-                cand = df.loc[~df.Variants.isin(measured), "Variants"].to_numpy()
-                picks = propose_random(cand, budget, rng)
-            elif strategy == "greedy":
-                picks = _greedy_propose(df, measured, train, budget)
-            else:
-                picks = _agent_propose(strategy, df, measured, train, budget,
-                                       event_store, round_id, blosum_score, use_llm, llm_state)
-            if len(picks) == 0:
-                break
-            batch = df.set_index("Variants").loc[picks].reset_index()
-            measured.update(picks.tolist())
-            train = pd.concat([train, batch[["Variants", "Fitness"]]], ignore_index=True)
-            batches.append(batch)
-            cumulative = pd.concat(batches, ignore_index=True)
-            row = {"round": round_id, **_stats(batch, cumulative), "pool_size_after": len(train)}
-            if strategy in ("agent_no_knowledge", "knowledge_agent"):
-                row["llm_source"] = llm_state.get("source", "deterministic")
-                sources.append(row["llm_source"])
-            rounds.append(row)
-            _event(event_store, "campaign.round.completed", strategy, round_id, row)
-        all_results[strategy] = {
-            "strategy": strategy, "seed": seed, "n_rounds": len(rounds),
-            "budget_per_round": budget, "cold_start_pool_size": len(pool),
-            "acquisition": {"random": "uniform random",
-                            "greedy": "predicted mean over full unmeasured space",
-                            "agent_no_knowledge": "agent library, predicted mean",
-                            "knowledge_agent": f"agent library, mean + {LAMBDA_UCB}·√var + {BETA_BLOSUM}·BLOSUM62 prior"}[strategy],
-            "llm_sources": sources or None,
-            "rounds": rounds}
-        _event(event_store, "campaign.completed", strategy, len(rounds), {"rounds": rounds})
+        strategy_seeds = RANDOM_SEEDS if strategy == "random" else (seed,)
+        runs = [_run_strategy(strategy, df, seed=run_seed, n_rounds=n_rounds,
+                              budget=budget, pool_size=pool_size, event_store=event_store,
+                              use_llm=use_llm, cold_start=cold_start,
+                              max_cold_hd=max_cold_hd, blosum_score=blosum_score)
+                for run_seed in strategy_seeds]
+        all_results[strategy] = runs[RANDOM_SEEDS.index(42)] if strategy == "random" else runs[0]
+        if strategy == "random":
+            all_results[strategy]["multi_seed"] = _aggregate_random_runs(runs)
     return {"schema_version": "t7.v2",
             "candidate_space_size": len(df),
             "missing_combinations": max(0, 160000 - len(df)),
@@ -328,6 +448,12 @@ def plot_campaign(report: dict, path: Path = OUT_FIG) -> None:
         if rounds:
             ax.plot([r["round"] for r in rounds], [r["cum_top10_max"] for r in rounds],
                     marker="o", label=strategy)
+            if strategy == "random":
+                aggregate = result["multi_seed"]["rounds"]
+                x = np.asarray([r["round"] for r in aggregate])
+                mean = np.asarray([r["cum_top10_max_mean"] for r in aggregate])
+                std = np.asarray([r["cum_top10_max_std"] for r in aggregate])
+                ax.fill_between(x, mean - std, mean + std, alpha=.2, label="random ±1 std")
     ax.set(xlabel="round", ylabel="cumulative top-10 max true fitness",
            title=f"GB1 four-strategy campaign (budget={report.get('budget_per_round')}/round)")
     ax.grid(axis="y", alpha=.25)

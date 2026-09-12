@@ -1,0 +1,232 @@
+{
+  "entries": [
+    {
+      "main_id": 1,
+      "entry": "YANG K K, WU Z, ARNOLD F H. Machine-learning-guided directed evolution for protein engineering[J]. Nature Methods, 2019, 16(8): 687-694.",
+      "url": "https://doi.org/10.1038/s41592-019-0496-6",
+      "metadata_file": "ref-01.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 2,
+      "entry": "STEMMER W P C. Rapid evolution of a protein in vitro by DNA shuffling[J]. Nature, 1994, 370(6488): 389-391.",
+      "url": "https://doi.org/10.1038/370389a0",
+      "metadata_file": "ref-02.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 3,
+      "entry": "REETZ M T, CARBALLEIRA J D. Iterative saturation mutagenesis (ISM) for rapid directed evolution of functional enzymes[J]. Nature Protocols, 2007, 2(4): 891-903.",
+      "url": "https://doi.org/10.1038/nprot.2007.72",
+      "metadata_file": "ref-03.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 4,
+      "entry": "WU N C, DAI L, OLSON C A, et al. Adaptation in protein fitness landscapes is facilitated by indirect paths[J]. eLife, 2016, 5: e16965.",
+      "url": "https://doi.org/10.7554/elife.16965",
+      "metadata_file": "ref-04.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 5,
+      "entry": "BRYANT D H, BASHIR A, SINAI S, et al. Deep diversification of an AAV capsid protein by machine learning[J]. Nature Biotechnology, 2021, 39(6): 691-696.",
+      "url": "https://doi.org/10.1038/s41587-020-00793-4",
+      "metadata_file": "ref-05.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 6,
+      "entry": "DALLAGO C, MOU J, JOHNSTON K E, et al. FLIP: Benchmark tasks in fitness landscape inference for proteins[C]//Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks. 2021, 1.",
+      "url": "https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/2b44928ae11fb9384c4cf38708677c48-Paper-round2.pdf",
+      "metadata_file": "ref-06.json",
+      "verification": "正式会议论文；FLIP 作者按PDF去除网页重复项"
+    },
+    {
+      "main_id": 7,
+      "entry": "NOTIN P, KOLLASCH A, RITTER D, et al. ProteinGym: Large-Scale Benchmarks for Protein Fitness Prediction and Design[C]//Advances in Neural Information Processing Systems. 2023, 36.",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/cac723e5ff29f65e3fcbb0739ae91bee-Abstract-Datasets_and_Benchmarks.html",
+      "metadata_file": "ref-07.json",
+      "verification": "正式会议论文；FLIP 作者按PDF去除网页重复项"
+    },
+    {
+      "main_id": 8,
+      "entry": "SARKISYAN K S, BOLOTIN D A, MEER M V, et al. Local fitness landscape of the green fluorescent protein[J]. Nature, 2016, 533(7603): 397-401.",
+      "url": "https://doi.org/10.1038/nature17995",
+      "metadata_file": "ref-08.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 9,
+      "entry": "HOERL A E, KENNARD R W. Ridge Regression: Biased Estimation for Nonorthogonal Problems[J]. Technometrics, 1970, 12(1): 55-67.",
+      "url": "https://doi.org/10.1080/00401706.1970.10488634",
+      "metadata_file": "ref-09.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 10,
+      "entry": "FRIEDMAN J H. Greedy function approximation: A gradient boosting machine[J]. The Annals of Statistics, 2001, 29(5): 1189-1232.",
+      "url": "https://doi.org/10.1214/aos/1013203451",
+      "metadata_file": "ref-10.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对；页码按 Project Euclid 正式条目补全"
+    },
+    {
+      "main_id": 11,
+      "entry": "WITTMANN B J, YUE Y, ARNOLD F H. Informed training set design enables efficient machine learning-assisted directed protein evolution[J]. Cell Systems, 2021, 12(11): 1026-1045.e7.",
+      "url": "https://doi.org/10.1016/j.cels.2021.07.008",
+      "metadata_file": "ref-11.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 12,
+      "entry": "RIVES A, MEIER J, SERCU T, et al. Biological structure and function emerge from scaling unsupervised learning to 250 million protein sequences[J]. Proceedings of the National Academy of Sciences, 2021, 118(15): e2016239118.",
+      "url": "https://doi.org/10.1073/pnas.2016239118",
+      "metadata_file": "ref-12.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 13,
+      "entry": "LIN Z, AKIN H, RAO R, et al. Evolutionary-scale prediction of atomic-level protein structure with a language model[J]. Science, 2023, 379(6637): 1123-1130.",
+      "url": "https://doi.org/10.1126/science.ade2574",
+      "metadata_file": "ref-13.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 14,
+      "entry": "BISWAS S, KHIMULYA G, ALLEY E C, et al. Low-N protein engineering with data-efficient deep learning[J]. Nature Methods, 2021, 18(4): 389-396.",
+      "url": "https://doi.org/10.1038/s41592-021-01100-y",
+      "metadata_file": "ref-14.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 15,
+      "entry": "FRAZER J, NOTIN P, DIAS M, et al. Disease variant prediction with deep generative models of evolutionary data[J]. Nature, 2021, 599(7883): 91-95.",
+      "url": "https://doi.org/10.1038/s41586-021-04043-8",
+      "metadata_file": "ref-15.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 16,
+      "entry": "HOPF T A, INGRAHAM J B, POELWIJK F J, et al. Mutation effects predicted from sequence co-variation[J]. Nature Biotechnology, 2017, 35(2): 128-135.",
+      "url": "https://doi.org/10.1038/nbt.3769",
+      "metadata_file": "ref-16.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 17,
+      "entry": "POELWIJK F J, SOCOLICH M, RANGANATHAN R. Learning the pattern of epistasis linking genotype and phenotype in a protein[J]. Nature Communications, 2019, 10(1): 4213.",
+      "url": "https://doi.org/10.1038/s41467-019-12130-8",
+      "metadata_file": "ref-17.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 18,
+      "entry": "SRINIVAS N, KRAUSE A, KAKADE S M, et al. Information-Theoretic Regret Bounds for Gaussian Process Optimization in the Bandit Setting[J]. IEEE Transactions on Information Theory, 2012, 58(5): 3250-3265.",
+      "url": "https://doi.org/10.1109/tit.2011.2182033",
+      "metadata_file": "ref-18.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 19,
+      "entry": "JONES D R, SCHONLAU M, WELCH W J. Efficient Global Optimization of Expensive Black-Box Functions[J]. Journal of Global Optimization, 1998, 13(4): 455-492.",
+      "url": "https://doi.org/10.1023/a:1008306431147",
+      "metadata_file": "ref-19.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 20,
+      "entry": "BRAN A M, COX S, SCHILTER O, et al. Augmenting large language models with chemistry tools[J]. Nature Machine Intelligence, 2024, 6(5): 525-535.",
+      "url": "https://doi.org/10.1038/s42256-024-00832-8",
+      "metadata_file": "ref-20.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对；Andres M. Bran 统一作 BRAN A M"
+    },
+    {
+      "main_id": 21,
+      "entry": "BOIKO D A, MACKNIGHT R, KLINE B, et al. Autonomous chemical research with large language models[J]. Nature, 2023, 624(7992): 570-578.",
+      "url": "https://doi.org/10.1038/s41586-023-06792-0",
+      "metadata_file": "ref-21.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 22,
+      "entry": "KING R D, ROWLAND J, OLIVER S G, et al. The Automation of Science[J]. Science, 2009, 324(5923): 85-89.",
+      "url": "https://doi.org/10.1126/science.1165620",
+      "metadata_file": "ref-22.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 23,
+      "entry": "HENIKOFF S, HENIKOFF J G. Amino acid substitution matrices from protein blocks[J]. Proceedings of the National Academy of Sciences, 1992, 89(22): 10915-10919.",
+      "url": "https://doi.org/10.1073/pnas.89.22.10915",
+      "metadata_file": "ref-23.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 24,
+      "entry": "JUMPER J, EVANS R, PRITZEL A, et al. Highly accurate protein structure prediction with AlphaFold[J]. Nature, 2021, 596(7873): 583-589.",
+      "url": "https://doi.org/10.1038/s41586-021-03819-2",
+      "metadata_file": "ref-24.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 25,
+      "entry": "DEB K, PRATAP A, AGARWAL S, et al. A fast and elitist multiobjective genetic algorithm: NSGA-II[J]. IEEE Transactions on Evolutionary Computation, 2002, 6(2): 182-197.",
+      "url": "https://doi.org/10.1109/4235.996017",
+      "metadata_file": "ref-25.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 26,
+      "entry": "DAUPARAS J, ANISHCHENKO I, BENNETT N, et al. Robust deep learning–based protein sequence design using ProteinMPNN[J]. Science, 2022, 378(6615): 49-56.",
+      "url": "https://doi.org/10.1126/science.add2187",
+      "metadata_file": "ref-26.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 27,
+      "entry": "WATSON J L, JUERGENS D, BENNETT N R, et al. De novo design of protein structure and function with RFdiffusion[J]. Nature, 2023, 620(7976): 1089-1100.",
+      "url": "https://doi.org/10.1038/s41586-023-06415-8",
+      "metadata_file": "ref-27.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 28,
+      "entry": "ANISHCHENKO I, PELLOCK S J, CHIDYAUSIKU T M, et al. De novo protein design by deep network hallucination[J]. Nature, 2021, 600(7889): 547-552.",
+      "url": "https://doi.org/10.1038/s41586-021-04184-w",
+      "metadata_file": "ref-28.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 29,
+      "entry": "MADANI A, KRAUSE B, GREENE E R, et al. Large language models generate functional protein sequences across diverse families[J]. Nature Biotechnology, 2023, 41(8): 1099-1106.",
+      "url": "https://doi.org/10.1038/s41587-022-01618-2",
+      "metadata_file": "ref-29.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    },
+    {
+      "main_id": 30,
+      "entry": "HÄSE F, ROCH L M, ASPURU-GUZIK A. Next-Generation Experimentation with Self-Driving Laboratories[J]. Trends in Chemistry, 2019, 1(3): 282-291.",
+      "url": "https://doi.org/10.1016/j.trechm.2019.02.007",
+      "metadata_file": "ref-30.json",
+      "verification": "Crossref 出版方登记元数据；标题/前三作者/年卷期/定位符核对"
+    }
+  ],
+  "supplement_to_main": {
+    "1": 1,
+    "2": 11,
+    "3": 19,
+    "4": 16,
+    "5": 17,
+    "6": 18,
+    "7": 20,
+    "8": 21,
+    "9": 22,
+    "10": 24,
+    "11": 25,
+    "12": 26,
+    "13": 27,
+    "14": 28,
+    "15": 29,
+    "16": 30
+  }
+}

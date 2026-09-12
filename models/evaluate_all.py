@@ -51,19 +51,25 @@ def main() -> None:
         "esm2__hd_extrapolation": (train_hd, test_hd, "esm2"),
     }
 
+    # 每个组合跑两遍,唯一变量是特征是否标准化。不跑这个对照就不能说「ESM 不如 one-hot」:
+    # one-hot 是 0/1、本身已是单位尺度,ESM-2 是连续非单位尺度的 1280 维,同一个 Ridge(alpha=1)
+    # 对两者的正则化强度实际上不同,单跑 raw 一档等于把预处理伪影读成了特征质量差异。
     result: dict[str, dict] = {}
     for name, (train, test, kind) in combos.items():
         x_train = features(train, kind)
         x_test = features(test, kind)
         y_train = train["Fitness"].to_numpy()
         y_test = test["Fitness"].to_numpy()
-        result[name] = evaluate_ladder(x_train, y_train, x_test, y_test)
-        result[name]["_meta"] = {"n_train": int(len(train)), "n_test": int(len(test)), "feature": kind}
-        spearmans = {m: round(result[name][m]["spearman"], 3) for m in ("ridge", "xgboost", "mlp")}
-        print(name, "n_train", len(train), "n_test", len(test), "spearman", spearmans, flush=True)
+        entry: dict[str, dict] = {}
+        for scaling, standardize in (("raw", False), ("standardized", True)):
+            entry[scaling] = evaluate_ladder(x_train, y_train, x_test, y_test, standardize=standardize)
+            spearmans = {m: round(entry[scaling][m]["spearman"], 4) for m in ("ridge", "xgboost", "mlp")}
+            print(name, scaling, "n_train", len(train), "n_test", len(test), "spearman", spearmans, flush=True)
+        entry["_meta"] = {"n_train": int(len(train)), "n_test": int(len(test)), "feature": kind}
+        result[name] = entry
 
     from evolution.results_layout import run_dir
-    out = run_dir("workflow", "gb1") / "predictor_ladder.json"
+    out = run_dir("workflow", "gb1") / "predictor_ladder_scaling_ablation.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, indent=2, ensure_ascii=False))
     print("written", out, flush=True)

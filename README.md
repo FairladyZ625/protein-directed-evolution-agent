@@ -7,7 +7,20 @@ agent propose successive rounds of mutations, using the real measured landscape 
 knowledge-enhanced-agent** strategies over several rounds and analyses where they
 succeed and fail.
 
-The full experimental report (8 sections, PDF) is at **[`reports/report.pdf`](reports/report.pdf)**.
+The full experimental report is at
+**[`reports/final-report-v0.5/scientific_report_v0.5_two_column.pdf`](reports/final-report-v0.5/scientific_report_v0.5_two_column.pdf)**
+(markdown source: [`reports/final-report-v0.5/report.md`](reports/final-report-v0.5/report.md)).
+
+Two trees, two jobs — this separation is deliberate:
+
+- **`reports/`** is the *report authoring* tree: `final-report-v0.x/` holds each report version's
+  markdown, figures, build scripts and rendered PDF.
+- **`harness/reports/`** is the *experiment artifact* tree: one self-contained folder per research
+  cycle, named `<line>-v<version>/` (see `evolution/results_layout.py`, which is the single source
+  of truth for this layout). Three method lines are current: `workflow-v1.1` (the delivery pipeline
+  on GB1), `agentic-v0.7` (the autonomous researcher on AAV), `analysis-v0.1` (read-only analyses
+  over already-measured data). A revision digest for the report writer lives at
+  [`harness/reports/REPORT-HANDOFF.md`](harness/reports/REPORT-HANDOFF.md).
 
 ## Dataset
 
@@ -88,15 +101,50 @@ exploration (`mean + λ·√var`) plus a BLOSUM62 conservativeness prior; `--no-
 
 `events/` is an append-only, chained-SHA-256 event log (+ SQLite projection + replay CLI): every
 campaign step and agent role is recorded and `verify()`-able. Separately, **every experiment run**
-appends an immutable entry to the master ledger `reports/experiment_log.jsonl` (command, params, git
-commit, artifact SHA-256, summary) — a complete, tamper-evident history.
+appends an immutable entry to the master ledger
+[`harness/reports/experiment_log.jsonl`](harness/reports/experiment_log.jsonl) (command, params, git
+commit, artifact SHA-256, summary).
+
+**Honest scope note:** that ledger currently covers the main closed-loop experiments (15 entries).
+It does not yet cover every historical run — the `analysis-v0.1` line and some early `agentic`
+versions are not registered in it. Treat it as a partial, append-only spine rather than a complete
+index; each version folder's own `manifest.json` and the per-run `metrics.json` are authoritative
+for that run.
 
 ## Interactive demo
 
-`app/demo.py` — a single-file **Streamlit** dashboard (read-only): ① four-strategy comparison with a
-cold-start regime selector, ② five-role reasoning replay from the event stream (with in-page hash-chain
-verification), ③ a live playground that scores any 4-site variant and runs one agent round to recommend
-top-k mutations.
+`app/demo.py` — a single-file **Streamlit** dashboard (read-only), five tabs:
+
+- **① four-strategy comparison** with a cold-start regime selector, reading the versioned
+  `harness/reports/workflow-v1.*/gb1/campaign_*.metrics.json`.
+- **② five-role reasoning replay** from the T4 event stream, with in-page hash-chain verification.
+- **③ live playground** that accepts a four-site GB1 wild type (V39/D40/G41/V54), recomputes
+  its single-substitution menu, and recommends Top-k mutations with the existing Ridge
+  predictor. Predictions are labelled as model output (not measurements), and an unmeasured
+  input WT gets an explicit warning. The standard-GB1 one-round campaign trace is held only in
+  memory.
+- **④ key-position concentration & combination rationales** (read-only, from
+  `harness/reports/workflow-v1.1/`): per-strategy top-k residue distributions per position
+  (`topk_concentration`: `residue_counts` / `dominant_residue` / `dominant_fraction` /
+  `mutation_fraction` — answers "do the recommended mutations concentrate on key positions"),
+  and the agent's mutation-combination rationales with measured single-position gains
+  (`evidence_source` vs `narrative_source` shown separately; the deterministic fallback
+  narrative is never presented as LLM reasoning).
+- **⑤ mutation order · conservation · alpha sweep** (read-only, from `analysis-v0.1` and
+  `workflow-v1.0`): mutation-order comparison across distribution / additive extrapolation /
+  epistasis / lower-order coverage (bonus item ③), including the mandated caveats — the AAV
+  `0..2→3` row's same-order holdout 0.9094 vs cross-order test 0.6155 (holdouts systematically
+  overestimate cross-order extrapolation), and the lower-order completeness collapse
+  1.000 → 0.312 → 0.022 that makes high-order peaks structurally hard to learn; ESM-2
+  per-position conservation with its **negative result** framing (entropy is a naturalness
+  prior used post-hoc only, never wired into acquisition or screening; true-peak sites sit at
+  conservation ranks D0Q #1, V18A #4, S17E #26 — a conservation gate would discard the true
+  peak); and the Ridge alpha sweep explaining why no fixed alpha is admissible (fixed alpha
+  flips esm2 raw 0.4911 vs standardized 0.2944 with preprocessing; per-feature selection
+  converges to 0.4893 / 0.4916).
+
+Every panel degrades honestly: a missing artifact shows which file is absent and the exact
+command that regenerates it — never a silent blank, never a crash.
 
 ```bash
 streamlit run app/demo.py     # or: make demo
@@ -104,16 +152,45 @@ streamlit run app/demo.py     # or: make demo
 
 ## Setup & run
 
+For a clean Linux or macOS clone, the recommended first run is two commands:
+
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-make data                                            # validate the local GB1 csv
-make test                                            # unit tests
-python -m models.evaluate_all                         # predictor ladder comparison -> reports/predictor_metrics.json
+./scripts/install.sh       # Python 3.11+, offline smoke/demo/test tier; no torch or data download
+./scripts/run_all.sh       # always runs smoke; runs predictor + GB1 campaign when the CSV is present
+```
+
+The first command creates `.venv` and installs the same scientific stack used by the
+self-contained CI tests, plus the offline agent runtime required by the smoke path.
+It deliberately does not install PyTorch or download data. Use
+`./scripts/install.sh --full` to add PyTorch and fair-esm for local ESM-2 extraction;
+the GB1 CSV remains a separate, explicit download described in
+[`data/README.md`](data/README.md). `run_all.sh` prints a clear downgrade notice and
+finishes after smoke when that CSV is absent.
+
+Manual entry points remain available:
+
+```bash
+# First command for a clean clone: no GB1 CSV, ESM cache, or API key required.
+make smoke                                           # synthetic small landscape -> tmp/smoke/
+make test                                            # self-contained tests (same set as CI)
+make data                                            # validate a locally supplied full GB1 CSV
+python -m models.evaluate_all                         # predictor ladder + standardisation ablation
+                                                      #   -> harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json
+python -m models.alpha_sweep                          # answer-agnostic alpha selection per feature
+                                                      #   -> harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json
 python -m evolution.campaign --cold-start low_hd      # four-strategy campaign (hard regime)
 streamlit run app/demo.py                             # interactive demo
 cp .env.example .env                                  # optional: add an LLM pool key, then add --use-llm
 ```
+
+`make smoke` is the recommended first run. It executes the data → predictor → five-role
+agent → four-strategy campaign path on a fixed, synthetic 16-variant landscape and writes a
+labelled CSV, metrics, event stream, SQLite read projection, plot, and README to `tmp/smoke/`.
+It uses the offline deterministic LLM fallback. **Its synthetic small-scale numbers are only a
+reproducibility demonstration and must not be compared with the formal GB1 results.** For the
+full measured GB1 campaign, obtain `data/four_mutations_full_data.csv` as described in
+[`data/README.md`](data/README.md); `make campaign` will otherwise state this requirement and
+suggest `make smoke`.
 
 ## Layout
 
@@ -126,7 +203,8 @@ evolution/    mutation parsing, random baseline, four-strategy campaign, experim
 knowledge/    mutation rules + knowledge graph + validators
 events/       auditable event-stream kernel
 app/          Streamlit interactive demo
-reports/      metrics, figures, event streams, experiment ledger, report.pdf
+reports/      report authoring tree (final-report-v0.x: markdown, figures, build, PDF)
+harness/reports/  experiment artifacts, one folder per cycle (<line>-v<version>) + experiment ledger
 tests/        unit tests
 ```
 

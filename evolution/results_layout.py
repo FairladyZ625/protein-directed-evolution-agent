@@ -28,7 +28,17 @@ LEDGER = REPORTS / "experiment_log.jsonl"
 CACHE = REPORTS / "cache"
 
 # Current version of each method line. Bump on every iteration; past folders are kept.
-VERSIONS = {"workflow": "v1.0", "agentic": "v0.1"}
+#
+# 三条线的语义边界(2026-09-12 定,决策见 decisions/ 的版本口径裁定):
+#   workflow  —— 交付主线:数据管线 → 预测器 → 五角色 Agent → 四策略 campaign → demo。跑 GB1。
+#   agentic   —— 自主 agentic researcher 线,跑 AAV。每次 agent 自主性机制的改动 bump 一版。
+#   analysis  —— 只读分析线:不跑新实验,只在已测数据上做分析(突变阶数、保守性等)。
+#                加数据集或加分析维度时 bump。
+#
+# ⚠️ agentic 线的 v0.6 与 v0.7 是**兄弟不是递进**(fact F-84AE8976):两者都从 v0.5(ccbfce6)
+# 分出,v0.7 不含 v0.6 的 471536b。版本号在这里不表示线性演进,报告里不得写成单调递进的
+# 消融链。三版的代码分别固定在 tag agentic-v0.5 / agentic-v0.6 / agentic-v0.7 上。
+VERSIONS = {"workflow": "v1.1", "agentic": "v0.7", "analysis": "v0.1"}
 
 
 def report_dir(line: str, *, version: str | None = None) -> Path:

@@ -1,0 +1,1156 @@
+{
+  "Pin": {
+    "additionalProperties": false,
+    "properties": {
+      "ref": {
+        "minLength": 1,
+        "title": "Ref",
+        "type": "string"
+      },
+      "digest": {
+        "pattern": "^[0-9a-f]{64}$",
+        "title": "Digest",
+        "type": "string"
+      }
+    },
+    "required": [
+      "ref",
+      "digest"
+    ],
+    "title": "Pin",
+    "type": "object"
+  },
+  "Cost": {
+    "additionalProperties": false,
+    "properties": {
+      "assays": {
+        "minimum": 0,
+        "title": "Assays",
+        "type": "integer"
+      },
+      "cpu_seconds": {
+        "minimum": 0,
+        "title": "Cpu Seconds",
+        "type": "number"
+      },
+      "gpu_seconds": {
+        "minimum": 0,
+        "title": "Gpu Seconds",
+        "type": "number"
+      },
+      "tokens": {
+        "minimum": 0,
+        "title": "Tokens",
+        "type": "integer"
+      },
+      "money": {
+        "minimum": 0,
+        "title": "Money",
+        "type": "number"
+      }
+    },
+    "required": [
+      "assays",
+      "cpu_seconds",
+      "gpu_seconds",
+      "tokens",
+      "money"
+    ],
+    "title": "Cost",
+    "type": "object"
+  },
+  "Envelope": {
+    "$defs": {
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "schema_version": {
+        "const": "causal/1",
+        "default": "causal/1",
+        "title": "Schema Version",
+        "type": "string"
+      },
+      "request_id": {
+        "minLength": 1,
+        "title": "Request Id",
+        "type": "string"
+      },
+      "idempotency_key": {
+        "minLength": 1,
+        "title": "Idempotency Key",
+        "type": "string"
+      },
+      "task_ref": {
+        "minLength": 1,
+        "title": "Task Ref",
+        "type": "string"
+      },
+      "actor": {
+        "minLength": 1,
+        "title": "Actor",
+        "type": "string"
+      },
+      "capability": {
+        "$ref": "#/$defs/Pin"
+      },
+      "generation": {
+        "minimum": 0,
+        "title": "Generation",
+        "type": "integer"
+      },
+      "ledger_cut": {
+        "$ref": "#/$defs/Pin"
+      },
+      "policy": {
+        "$ref": "#/$defs/Pin"
+      },
+      "environment": {
+        "$ref": "#/$defs/Pin"
+      },
+      "reservation": {
+        "minLength": 1,
+        "title": "Reservation",
+        "type": "string"
+      },
+      "deadline_unix_ms": {
+        "exclusiveMinimum": 0,
+        "title": "Deadline Unix Ms",
+        "type": "integer"
+      },
+      "expected_registry_version": {
+        "minimum": 0,
+        "title": "Expected Registry Version",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "request_id",
+      "idempotency_key",
+      "task_ref",
+      "actor",
+      "capability",
+      "generation",
+      "ledger_cut",
+      "policy",
+      "environment",
+      "reservation",
+      "deadline_unix_ms",
+      "expected_registry_version"
+    ],
+    "title": "Envelope",
+    "type": "object"
+  },
+  "Estimate": {
+    "$defs": {
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "value": {
+        "title": "Value",
+        "type": "number"
+      },
+      "lower": {
+        "title": "Lower",
+        "type": "number"
+      },
+      "upper": {
+        "title": "Upper",
+        "type": "number"
+      },
+      "method": {
+        "$ref": "#/$defs/Pin"
+      },
+      "independent_blocks": {
+        "exclusiveMinimum": 0,
+        "title": "Independent Blocks",
+        "type": "integer"
+      },
+      "alpha": {
+        "exclusiveMaximum": 1,
+        "exclusiveMinimum": 0,
+        "title": "Alpha",
+        "type": "number"
+      }
+    },
+    "required": [
+      "value",
+      "lower",
+      "upper",
+      "method",
+      "independent_blocks",
+      "alpha"
+    ],
+    "title": "Estimate",
+    "type": "object"
+  },
+  "Metric": {
+    "additionalProperties": false,
+    "properties": {
+      "value": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Value"
+      },
+      "unavailable_reason": {
+        "anyOf": [
+          {
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Unavailable Reason"
+      }
+    },
+    "required": [
+      "value"
+    ],
+    "title": "Metric",
+    "type": "object"
+  },
+  "Features": {
+    "$defs": {
+      "Metric": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "unavailable_reason": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Unavailable Reason"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "title": "Metric",
+        "type": "object"
+      },
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "source": {
+        "$ref": "#/$defs/Pin"
+      },
+      "crossfit_protocol": {
+        "$ref": "#/$defs/Pin"
+      },
+      "n_valid": {
+        "minimum": 0,
+        "title": "N Valid",
+        "type": "integer"
+      },
+      "residual_graph_correlation": {
+        "$ref": "#/$defs/Metric"
+      },
+      "residual_batch_correlation": {
+        "$ref": "#/$defs/Metric"
+      },
+      "hamming_reference_counts": {
+        "items": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "title": "Hamming Reference Counts",
+        "type": "array"
+      },
+      "nearest_measured_counts": {
+        "items": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "title": "Nearest Measured Counts",
+        "type": "array"
+      },
+      "pairwise_distance_counts": {
+        "items": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "title": "Pairwise Distance Counts",
+        "type": "array"
+      },
+      "admissible_pool_counts": {
+        "items": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "title": "Admissible Pool Counts",
+        "type": "array"
+      },
+      "duplicate_fraction": {
+        "maximum": 1,
+        "minimum": 0,
+        "title": "Duplicate Fraction",
+        "type": "number"
+      },
+      "variance_snr": {
+        "$ref": "#/$defs/Metric"
+      },
+      "plateau": {
+        "enum": [
+          "suspected",
+          "not_detected",
+          "insufficient_data",
+          "unhealthy"
+        ],
+        "title": "Plateau",
+        "type": "string"
+      }
+    },
+    "required": [
+      "source",
+      "crossfit_protocol",
+      "n_valid",
+      "residual_graph_correlation",
+      "residual_batch_correlation",
+      "hamming_reference_counts",
+      "nearest_measured_counts",
+      "pairwise_distance_counts",
+      "admissible_pool_counts",
+      "duplicate_fraction",
+      "variance_snr",
+      "plateau"
+    ],
+    "title": "Features",
+    "type": "object"
+  },
+  "EvidenceNode": {
+    "$defs": {
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "minLength": 1,
+        "title": "Id",
+        "type": "string"
+      },
+      "sequence": {
+        "minimum": 0,
+        "title": "Sequence",
+        "type": "integer"
+      },
+      "kind": {
+        "enum": [
+          "observation",
+          "fact",
+          "hypothesis",
+          "intervention",
+          "patch",
+          "evaluation",
+          "decision",
+          "task",
+          "correction"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "parents": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Parents",
+        "type": "array"
+      },
+      "payload": {
+        "$ref": "#/$defs/Pin"
+      },
+      "split": {
+        "enum": [
+          "development",
+          "promotion",
+          "sealed_audit",
+          "public"
+        ],
+        "title": "Split",
+        "type": "string"
+      },
+      "issuer": {
+        "minLength": 1,
+        "title": "Issuer",
+        "type": "string"
+      },
+      "signature": {
+        "minLength": 1,
+        "title": "Signature",
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "sequence",
+      "kind",
+      "parents",
+      "payload",
+      "split",
+      "issuer",
+      "signature"
+    ],
+    "title": "EvidenceNode",
+    "type": "object"
+  },
+  "EvidenceDAG": {
+    "$defs": {
+      "EvidenceNode": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "sequence": {
+            "minimum": 0,
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "kind": {
+            "enum": [
+              "observation",
+              "fact",
+              "hypothesis",
+              "intervention",
+              "patch",
+              "evaluation",
+              "decision",
+              "task",
+              "correction"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "parents": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "title": "Parents",
+            "type": "array"
+          },
+          "payload": {
+            "$ref": "#/$defs/Pin"
+          },
+          "split": {
+            "enum": [
+              "development",
+              "promotion",
+              "sealed_audit",
+              "public"
+            ],
+            "title": "Split",
+            "type": "string"
+          },
+          "issuer": {
+            "minLength": 1,
+            "title": "Issuer",
+            "type": "string"
+          },
+          "signature": {
+            "minLength": 1,
+            "title": "Signature",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "kind",
+          "parents",
+          "payload",
+          "split",
+          "issuer",
+          "signature"
+        ],
+        "title": "EvidenceNode",
+        "type": "object"
+      },
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "nodes": {
+        "items": {
+          "$ref": "#/$defs/EvidenceNode"
+        },
+        "title": "Nodes",
+        "type": "array"
+      }
+    },
+    "required": [
+      "nodes"
+    ],
+    "title": "EvidenceDAG",
+    "type": "object"
+  },
+  "Intervention": {
+    "$defs": {
+      "Cost": {
+        "additionalProperties": false,
+        "properties": {
+          "assays": {
+            "minimum": 0,
+            "title": "Assays",
+            "type": "integer"
+          },
+          "cpu_seconds": {
+            "minimum": 0,
+            "title": "Cpu Seconds",
+            "type": "number"
+          },
+          "gpu_seconds": {
+            "minimum": 0,
+            "title": "Gpu Seconds",
+            "type": "number"
+          },
+          "tokens": {
+            "minimum": 0,
+            "title": "Tokens",
+            "type": "integer"
+          },
+          "money": {
+            "minimum": 0,
+            "title": "Money",
+            "type": "number"
+          }
+        },
+        "required": [
+          "assays",
+          "cpu_seconds",
+          "gpu_seconds",
+          "tokens",
+          "money"
+        ],
+        "title": "Cost",
+        "type": "object"
+      },
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "hypothesis_refs": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Hypothesis Refs",
+        "type": "array"
+      },
+      "estimand": {
+        "enum": [
+          "prediction_direct",
+          "closed_loop_total",
+          "factorial_interaction"
+        ],
+        "title": "Estimand",
+        "type": "string"
+      },
+      "surface": {
+        "enum": [
+          "model",
+          "coverage",
+          "acquisition",
+          "measurement",
+          "model_x_acquisition"
+        ],
+        "title": "Surface",
+        "type": "string"
+      },
+      "parent": {
+        "$ref": "#/$defs/Pin"
+      },
+      "treatment": {
+        "$ref": "#/$defs/Pin"
+      },
+      "visible_data": {
+        "$ref": "#/$defs/Pin"
+      },
+      "split_protocol": {
+        "$ref": "#/$defs/Pin"
+      },
+      "evaluation_protocol": {
+        "$ref": "#/$defs/Pin"
+      },
+      "seed_plan": {
+        "$ref": "#/$defs/Pin"
+      },
+      "budget_per_arm": {
+        "$ref": "#/$defs/Cost"
+      },
+      "max_candidates": {
+        "exclusiveMinimum": 0,
+        "title": "Max Candidates",
+        "type": "integer"
+      },
+      "minimum_effect": {
+        "title": "Minimum Effect",
+        "type": "number"
+      },
+      "falsifier": {
+        "minLength": 1,
+        "title": "Falsifier",
+        "type": "string"
+      },
+      "assumptions": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Assumptions",
+        "type": "array"
+      }
+    },
+    "required": [
+      "hypothesis_refs",
+      "estimand",
+      "surface",
+      "parent",
+      "treatment",
+      "visible_data",
+      "split_protocol",
+      "evaluation_protocol",
+      "seed_plan",
+      "budget_per_arm",
+      "max_candidates",
+      "minimum_effect",
+      "falsifier",
+      "assumptions"
+    ],
+    "title": "Intervention",
+    "type": "object"
+  },
+  "Attribution": {
+    "$defs": {
+      "Estimate": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "number"
+          },
+          "lower": {
+            "title": "Lower",
+            "type": "number"
+          },
+          "upper": {
+            "title": "Upper",
+            "type": "number"
+          },
+          "method": {
+            "$ref": "#/$defs/Pin"
+          },
+          "independent_blocks": {
+            "exclusiveMinimum": 0,
+            "title": "Independent Blocks",
+            "type": "integer"
+          },
+          "alpha": {
+            "exclusiveMaximum": 1,
+            "exclusiveMinimum": 0,
+            "title": "Alpha",
+            "type": "number"
+          }
+        },
+        "required": [
+          "value",
+          "lower",
+          "upper",
+          "method",
+          "independent_blocks",
+          "alpha"
+        ],
+        "title": "Estimate",
+        "type": "object"
+      },
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "intervention": {
+        "$ref": "#/$defs/Pin"
+      },
+      "status": {
+        "enum": [
+          "supported",
+          "rejected",
+          "unidentified",
+          "mixed"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "effect": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Estimate"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "scope": {
+        "minLength": 1,
+        "title": "Scope",
+        "type": "string"
+      },
+      "limitations": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Limitations",
+        "type": "array"
+      },
+      "evidence": {
+        "items": {
+          "$ref": "#/$defs/Pin"
+        },
+        "title": "Evidence",
+        "type": "array"
+      }
+    },
+    "required": [
+      "intervention",
+      "status",
+      "effect",
+      "scope",
+      "limitations",
+      "evidence"
+    ],
+    "title": "Attribution",
+    "type": "object"
+  },
+  "Patch": {
+    "$defs": {
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "parent": {
+        "$ref": "#/$defs/Pin"
+      },
+      "candidate": {
+        "$ref": "#/$defs/Pin"
+      },
+      "diff": {
+        "$ref": "#/$defs/Pin"
+      },
+      "dependency_lock": {
+        "$ref": "#/$defs/Pin"
+      },
+      "recipe": {
+        "$ref": "#/$defs/Pin"
+      },
+      "intervention": {
+        "$ref": "#/$defs/Pin"
+      },
+      "changed_paths": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Changed Paths",
+        "type": "array"
+      },
+      "rollback_snapshot": {
+        "$ref": "#/$defs/Pin"
+      },
+      "state_schema": {
+        "$ref": "#/$defs/Pin"
+      }
+    },
+    "required": [
+      "parent",
+      "candidate",
+      "diff",
+      "dependency_lock",
+      "recipe",
+      "intervention",
+      "changed_paths",
+      "rollback_snapshot",
+      "state_schema"
+    ],
+    "title": "Patch",
+    "type": "object"
+  },
+  "Certificate": {
+    "$defs": {
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "candidate": {
+        "$ref": "#/$defs/Pin"
+      },
+      "parent": {
+        "$ref": "#/$defs/Pin"
+      },
+      "policy": {
+        "$ref": "#/$defs/Pin"
+      },
+      "environment": {
+        "$ref": "#/$defs/Pin"
+      },
+      "split_protocol": {
+        "$ref": "#/$defs/Pin"
+      },
+      "evaluation_protocol": {
+        "$ref": "#/$defs/Pin"
+      },
+      "result": {
+        "$ref": "#/$defs/Pin"
+      },
+      "resource_receipt": {
+        "$ref": "#/$defs/Pin"
+      },
+      "issued_unix_ms": {
+        "exclusiveMinimum": 0,
+        "title": "Issued Unix Ms",
+        "type": "integer"
+      },
+      "expires_unix_ms": {
+        "exclusiveMinimum": 0,
+        "title": "Expires Unix Ms",
+        "type": "integer"
+      },
+      "issuer": {
+        "minLength": 1,
+        "title": "Issuer",
+        "type": "string"
+      },
+      "signature": {
+        "minLength": 1,
+        "title": "Signature",
+        "type": "string"
+      },
+      "verdict": {
+        "enum": [
+          "pass",
+          "reject",
+          "inconclusive",
+          "evaluator_failure"
+        ],
+        "title": "Verdict",
+        "type": "string"
+      }
+    },
+    "required": [
+      "candidate",
+      "parent",
+      "policy",
+      "environment",
+      "split_protocol",
+      "evaluation_protocol",
+      "result",
+      "resource_receipt",
+      "issued_unix_ms",
+      "expires_unix_ms",
+      "issuer",
+      "signature",
+      "verdict"
+    ],
+    "title": "Certificate",
+    "type": "object"
+  },
+  "Transaction": {
+    "$defs": {
+      "Pin": {
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "minLength": 1,
+            "title": "Ref",
+            "type": "string"
+          },
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "digest"
+        ],
+        "title": "Pin",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "minLength": 1,
+        "title": "Id",
+        "type": "string"
+      },
+      "phase": {
+        "enum": [
+          "prepared",
+          "canary",
+          "committed",
+          "rolling_back",
+          "rolled_back",
+          "halted"
+        ],
+        "title": "Phase",
+        "type": "string"
+      },
+      "parent": {
+        "$ref": "#/$defs/Pin"
+      },
+      "candidate": {
+        "$ref": "#/$defs/Pin"
+      },
+      "certificate": {
+        "$ref": "#/$defs/Pin"
+      },
+      "rollback_snapshot": {
+        "$ref": "#/$defs/Pin"
+      },
+      "expected_registry_version": {
+        "minimum": 0,
+        "title": "Expected Registry Version",
+        "type": "integer"
+      },
+      "fencing_token": {
+        "exclusiveMinimum": 0,
+        "title": "Fencing Token",
+        "type": "integer"
+      },
+      "last_event": {
+        "$ref": "#/$defs/Pin"
+      },
+      "deadline_unix_ms": {
+        "exclusiveMinimum": 0,
+        "title": "Deadline Unix Ms",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "id",
+      "phase",
+      "parent",
+      "candidate",
+      "certificate",
+      "rollback_snapshot",
+      "expected_registry_version",
+      "fencing_token",
+      "last_event",
+      "deadline_unix_ms"
+    ],
+    "title": "Transaction",
+    "type": "object"
+  }
+}

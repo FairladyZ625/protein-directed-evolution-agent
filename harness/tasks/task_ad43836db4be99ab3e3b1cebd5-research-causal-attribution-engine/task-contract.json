@@ -1,0 +1,101 @@
+{
+  "schema": "task-contract/v1",
+  "contractVersion": 1,
+  "taskId": "task_ad43836db4be99ab3e3b1cebd5",
+  "packagePath": "tasks/task_ad43836db4be99ab3e3b1cebd5-research-causal-attribution-engine",
+  "title": "Research: 知识库因果反事实归因状态机与影子沙箱自演进蓝图",
+  "taskClass": "standard",
+  "verticalId": "software/coding",
+  "presetId": "docs-task",
+  "profileId": "baseline",
+  "locale": "zh-CN",
+  "metadata": {
+    "fromLegacyId": null,
+    "idempotencyKey": null,
+    "moduleKey": null,
+    "parentTaskId": null,
+    "presetId": "docs-task",
+    "profileId": "baseline",
+    "riskTier": "low",
+    "slug": "research-causal-attribution-engine",
+    "surfaces": [],
+    "urgency": "high",
+    "verticalId": "software/coding",
+    "workKind": "docs"
+  },
+  "registerModule": null,
+  "completionGates": [],
+  "presetSnapshotDigest": "sha256:881444b70bdfab3c158466a86861184a6c1afeff2fd3999266912d980372e92c",
+  "scaffold": {
+    "baseVersion": "software-coding/v1",
+    "overlayDigest": null,
+    "resolvedSelectionDigest": "sha256:646c23def836360837eaa8b9cf5e6dc875f702718c6c2db2d4faf37ca754e322"
+  },
+  "documents": [
+    {
+      "slot": "task.index",
+      "path": "INDEX.md",
+      "owner": "machine",
+      "materializeAs": "INDEX.md",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.contract",
+      "path": "task-contract.json",
+      "owner": "machine",
+      "materializeAs": "task-contract.json",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.plan",
+      "path": "task_plan.md",
+      "owner": "doc-sync",
+      "materializeAs": "task_plan.md",
+      "requiredAnchors": [
+        "## Brief",
+        "## Goal",
+        "## Context",
+        "## Required Reading",
+        "## Entry Conditions",
+        "## Dependencies",
+        "## Execution Surface",
+        "## Constraints",
+        "## Checkpoint",
+        "## CI/Gate Authority Stop Condition",
+        "## Implementation Plan",
+        "## Deliverable Contract",
+        "## Evidence Protocol",
+        "## Verification"
+      ],
+      "templateRef": "template://planning/task-plan@1",
+      "contentSha256": "7b1668f9c76c1209ce59ef9482c851a823a6bea844c27a485e907ac04b513cfa"
+    },
+    {
+      "slot": "task.closeout",
+      "path": "closeout.md",
+      "owner": "doc-sync",
+      "materializeAs": "closeout.md",
+      "requiredAnchors": [
+        "## Summary",
+        "## Verification",
+        "## Residual Risk"
+      ],
+      "templateRef": "template://planning/closeout@1",
+      "contentSha256": "54fe38a08c370c1d160068406d365c53238c1ec374c1778e160253aae7f5c6d5"
+    },
+    {
+      "slot": "task.artifacts.keep",
+      "path": "artifacts/.gitkeep",
+      "owner": "doc-sync",
+      "materializeAs": "artifacts/.gitkeep",
+      "requiredAnchors": [],
+      "templateRef": "template://planning/keep-file@1",
+      "contentSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ],
+  "pinned": true
+}

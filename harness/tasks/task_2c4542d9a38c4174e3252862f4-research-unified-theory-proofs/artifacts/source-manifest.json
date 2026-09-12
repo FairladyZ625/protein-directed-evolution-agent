@@ -1,0 +1,31 @@
+{
+  "task": "task_2c4542d9a38c4174e3252862f4",
+  "date": "2026-09-12",
+  "sources": [
+    {
+      "path": "reports/theoretical_foundations/01_higher_order_epistasis_theory.md",
+      "read_from": "canonical repository (worker copy absent)",
+      "sha256": "4e424dde0f068f46f6d55985b4ca1ae5c32eb1559bcc1e1ededd803ecab3e4b9"
+    },
+    {
+      "path": "reports/theoretical_foundations/02_exploration_tax_and_voi_formalization.md",
+      "read_from": "canonical repository (worker copy absent)",
+      "sha256": "a5eec86ac65eee34e5a757dc77cbbc0fc050219c53497e8aa36eaecaf42adfac"
+    },
+    {
+      "path": "reports/theoretical_foundations/03_rsi_cybernetic_ai4s_system_spec.md",
+      "read_from": "canonical repository (worker copy absent)",
+      "sha256": "6fcf105990c0fc7f3ada17f02fd5a227210ffa4d90df385848a39ea10103ee58"
+    }
+  ],
+  "external_sources": [
+    {
+      "url": "https://arxiv.org/abs/0912.3995",
+      "use": "GP-UCB original scope, not proof of RSI dominance"
+    },
+    {
+      "url": "https://web.stanford.edu/~boyd/cvxbook/",
+      "use": "Classical Newton analysis provenance; proof supplied in whitepaper"
+    }
+  ]
+}

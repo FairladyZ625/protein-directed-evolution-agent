@@ -1,0 +1,5 @@
+{
+  "status": "aborted_specification_violation",
+  "reason": "SEMI allowed exploration before two non-improving batches; these are excluded from the compliant matrix, retained in full",
+  "batches": 2
+}

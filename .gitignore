@@ -14,7 +14,9 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
-/harness/
+# 台账树随交付一起公开;仅排除其嵌套 git 仓与大缓存
+harness/.git/
+harness/reports/cache/
 /.harness/
 .worktrees/
 
@@ -27,3 +29,7 @@ data/avgfp/*.zip
 # ESM 嵌入缓存(大,不入库)
 harness/reports/cache/
 features/cache/
+
+# 临时工作区与系统垃圾(2026-09-12 交付前整理)
+/tmp/
+.DS_Store

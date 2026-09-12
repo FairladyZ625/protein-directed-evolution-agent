@@ -1,0 +1,40 @@
+{
+  "architecture_title": "Controlled Five-Role Scientific Agent for Directed Evolution (SADE)",
+  "roles": [
+    {
+      "role": "Data Analyst",
+      "type": "deterministic_code",
+      "input": "measured_library",
+      "output": "single_site_gain_summary"
+    },
+    {
+      "role": "Hypothesis Generator",
+      "type": "controlled_llm_1",
+      "input": "summary + rules.yaml",
+      "output": "structured_hypotheses_with_rule_ids"
+    },
+    {
+      "role": "Mutation Designer",
+      "type": "deterministic_code",
+      "input": "hypotheses",
+      "output": "combinatorial_variants_hd4_dedup"
+    },
+    {
+      "role": "Fitness Evaluator",
+      "type": "deterministic_code",
+      "input": "variant_candidates",
+      "output": "mu_and_sigma2"
+    },
+    {
+      "role": "Scientific Critic",
+      "type": "controlled_llm_2_plus_hard_gate",
+      "input": "evaluated_candidates",
+      "output": "passed_batch_or_rejection"
+    }
+  ],
+  "guardrails": {
+    "entry_space_shaping": "list_pool: HD <= 4 and mean BLOSUM62 >= 0",
+    "exit_rigid_interception": "test: charge balance, steric clash rejection"
+  },
+  "audit_stream": "append-only JSONL with SHA-256 hash chaining, real-time fsync"
+}

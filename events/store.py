@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 import os
@@ -27,17 +28,59 @@ class EventStore:
     """The campaign-owned writer for a single JSONL event stream.
 
     Readers should use :meth:`iter_events`; projection and replay modules never append.
+    The instance lock makes calls on one ``EventStore`` thread-safe only.  Separate
+    instances and processes have no mutual-exclusion guarantee, so the campaign must
+    remain the stream's single writer.
     """
 
     def __init__(self, path: str | Path) -> None:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        # Archived streams are stored gzipped: one campaign round now designs a library of
+        # thousands of candidates and each role event carries the whole library, so a raw
+        # stream runs to ~80 MB while the same bytes gzip to ~3 MB (26x). Readers pass the
+        # logical `.jsonl` path and get the archived `.jsonl.gz` transparently when only
+        # that exists; `self.path` is then the file actually read, so provenance stays honest.
+        # Compressed streams are READ-ONLY: append() needs O_APPEND + fsync on a plain file,
+        # which gzip member framing cannot give, so writing to one is refused outright
+        # rather than silently corrupting a chain.
+        self._compressed = self.path.suffix == ".gz"
+        if not self._compressed and not self.path.exists():
+            archived = self.path.with_suffix(self.path.suffix + ".gz")
+            if archived.exists():
+                self.path = archived
+                self._compressed = True
+        self._discard_interrupted_tail()
         self._next_seq, self._last_hash = self._tail()
         # An agentic LLM turn can fire several tool calls at once; pydantic-ai runs the
         # sync tool functions in an anyio worker thread pool, so append() is called
         # concurrently. Serialise the read-tail / write / advance sequence or two events
         # collide on the same seq and prev_hash and break the chain.
         self._lock = threading.Lock()
+
+    def _discard_interrupted_tail(self) -> None:
+        """Remove an unterminated final record left by an interrupted append.
+
+        A record is durable only once its trailing newline has been written.  If a
+        process stops before then, retain the complete newline-terminated prefix and
+        remove the incomplete suffix before deriving the next sequence number.
+        """
+        if self._compressed or not self.path.exists():
+            return
+        with self.path.open("r+b") as stream:
+            stream.seek(0, os.SEEK_END)
+            end = stream.tell()
+            if end == 0:
+                return
+            stream.seek(end - 1)
+            if stream.read(1) == b"\n":
+                return
+            stream.seek(0)
+            contents = stream.read()
+            last_newline = contents.rfind(b"\n")
+            stream.truncate(last_newline + 1)
+            stream.flush()
+            os.fsync(stream.fileno())
 
     def _tail(self) -> tuple[int, str]:
         last: dict[str, Any] | None = None
@@ -62,6 +105,8 @@ class EventStore:
             raise ValueError("event_type is required")
         if not actor:
             raise ValueError("actor is required")
+        if self._compressed:
+            raise ValueError(f"refusing to append to a compressed archive: {self.path}")
         with self._lock:
             body: dict[str, Any] = {
                 "seq": self._next_seq,
@@ -90,7 +135,8 @@ class EventStore:
         """Yield complete JSONL records, tolerating an interrupted final write."""
         if not self.path.exists():
             return
-        with self.path.open("rb") as stream:
+        opener = gzip.open if self._compressed else (lambda path, mode: path.open(mode))
+        with opener(self.path, "rb") as stream:
             for line in stream:
                 if not line.endswith(b"\n"):
                     break

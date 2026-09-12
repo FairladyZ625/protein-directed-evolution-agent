@@ -19,11 +19,14 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+import contextlib
 import functools
 import json
 import math
 import os
 from pathlib import Path
+import signal
+import threading
 import re
 
 import numpy as np
@@ -31,7 +34,7 @@ import pandas as pd
 
 from evolution.pool_campaign import DatasetSpec, _stats
 from models.train_ladder import RidgePredictor
-from knowledge.validators import validate_candidate
+from knowledge.validators import build_knowledge_graph, query_mutation_context, validate_candidate
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -97,19 +100,44 @@ basin hop; lower `max_overlap` = a harder hop). The default acquisition stays pu
 exploitation. Where to redirect — and whether to redirect at all — is your judgment, based only on
 measured fitness and surrogate predictions."""
 
-
 _MUTATION_NOTATION = re.compile(r"^[A-Z]\d+[A-Z]$")
 _AMINO_ACIDS = frozenset("ACDEFGHIKLMNPQRSTVWY")
 
 # v0.6 meta-layer backtrack: hard stall rule shared by the semi-autonomous variant.
 STALL_THRESHOLD = 2  # consecutive rounds without a new cumulative top-10 max
 
-
 def _clean_seq(value: object) -> str:
     """Normalise an untrusted tool-supplied full sequence without guessing its meaning."""
     if not isinstance(value, str):
         return ""
     return "".join(value.split()).upper()
+
+
+@contextlib.contextmanager
+def _wall_clock_timeout(seconds: float):
+    """Bound a synchronous LLM round on Unix; always restore the prior alarm state."""
+    if seconds <= 0 or threading.current_thread() is not threading.main_thread():
+        yield
+        return
+    previous_handler = signal.getsignal(signal.SIGALRM)
+
+    def _raise_timeout(_signum, _frame):
+        raise TimeoutError(f"LLM round exceeded {seconds:g}s wall-clock limit")
+
+    signal.signal(signal.SIGALRM, _raise_timeout)
+    previous_timer = signal.setitimer(signal.ITIMER_REAL, float(seconds))
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, *previous_timer)
+        signal.signal(signal.SIGALRM, previous_handler)
+
+
+def _mutation_codes(sequence: str, wild_type: str) -> list[str]:
+    """Represent full-sequence substitutions with the campaign's zero-based positions."""
+    return [f"{wild}{position}{mutant}"
+            for position, (wild, mutant) in enumerate(zip(wild_type, sequence))
+            if wild != mutant]
 
 
 def _gate_variants(variants, *, wt: str, max_hd: int, blosum_min: float, blosum_fn):
@@ -265,7 +293,10 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                      seed: int = 42, event_store=None, llm: bool = True,
                      request_limit: int = 60, model: str | None = None,
                      guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0,
-                     surrogate: str = "ridge", backtrack: str | None = None) -> dict:
+                     surrogate: str = "ridge", no_knowledge: bool = False,
+                     backtrack: str | None = None) -> dict:
+    if guardrail and no_knowledge:
+        raise ValueError("guardrail and no_knowledge are mutually exclusive treatment modes")
     fit_col = spec.fitness_col
     total_budget = budget * n_rounds
     strong_thr = float(np.quantile(spec.df[fit_col], 0.9))
@@ -282,12 +313,15 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         "last_test_round": None,
         "pending_batch": None,
         "surrogate_status": None,
+        "knowledge_graph": None,   # measured-only snapshot; invalidated after every test
         "n_gate_rejected": 0,     # v0.2 Knowledge Gate: candidates blocked before spending budget
         # v0.6 meta-layer backtrack: stagnation tracking + redirect bookkeeping.
         "top10_max_history": [],  # cumulative top-10 max after each completed batch
         "redirect_rounds": [],    # rounds where redirect_batch staged the tested batch
         "stall_flag_rounds": [],  # rounds where the semi hard rule fired (semi only)
     }
+    knowledge_enabled = bool(guardrail and not no_knowledge)
+    tool_lock = threading.RLock()
 
     # v0.2 Knowledge Guardrail: an unbypassable gate BEFORE budget is spent, rejecting
     # biophysically implausible candidates (too high-order, or net non-conservative).
@@ -319,10 +353,43 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         gate_pass = set(_allowed)
 
     def emit(kind, actor, payload):
-        state["trace"].append({"event_type": kind, "actor": actor, "payload": payload})
+        strategy = "knowledge_agent" if knowledge_enabled else "agent_no_knowledge"
+        state["trace"].append({"event_type": kind, "round_id": len(state["batches"]) + 1,
+                               "strategy": strategy, "actor": actor, "payload": payload})
         if event_store is not None:
             event_store.append(kind, round_id=len(state["batches"]) + 1,
-                               strategy="agentic", actor=actor, payload=payload)
+                               strategy=strategy,
+                               actor=actor, payload=payload)
+
+    def _knowledge_graph():
+        """Build a graph exclusively from measurements available at this decision point."""
+        if state["knowledge_graph"] is None:
+            records = [
+                {"id": str(sequence), "mutations": _mutation_codes(str(sequence), spec.wt),
+                 "fitness": float(fitness)}
+                for sequence, fitness in zip(state["measured"].seq, state["measured"][fit_col])
+            ]
+            state["knowledge_graph"] = build_knowledge_graph(records)
+        return state["knowledge_graph"]
+
+    def _graph_rationale(variant: str) -> str:
+        contexts = [query_mutation_context(_knowledge_graph(), mutation)
+                    for mutation in _mutation_codes(variant, spec.wt)]
+        if not contexts:
+            return "KG: wild type; no mutation node queried."
+        clauses = []
+        for item in contexts:
+            mean = item["fitness_mean"]
+            evidence = ("unseen in measured graph" if mean is None else
+                        f"n={item['n_measured']}, measured-association mean={mean:.3f}, "
+                        f"max={item['fitness_max']:.3f}")
+            props = item["mutant_properties"]
+            clauses.append(
+                f"{item['mutation']} ({evidence}; target properties: "
+                f"charge={props.get('charge')}, size={props.get('size')}, "
+                f"polarity={props.get('polarity')})"
+            )
+        return "KG: " + "; ".join(clauses) + ". Associations are not causal effects."
 
     def _make_surrogate():
         # v0.4: 'epistasis' = pairwise-interaction (Potts-like) surrogate; captures the
@@ -483,18 +550,23 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "n": len(candidates),
             "candidates": candidates,
         }
+        if knowledge_enabled:
+            out["knowledge_graph_rationales"] = [
+                {"variant": variant, "rationale": _graph_rationale(variant)}
+                for variant in candidates[:3]
+            ]
+            emit("agent.tool.knowledge_graph", "scientific_critic", {
+                "stage": "compose_batch",
+                "measured_only": True,
+                "rationales": out["knowledge_graph_rationales"],
+            })
         emit("agent.tool.compose_batch", "hypothesis_generator",
-             {k: v for k, v in out.items() if k != "candidates"})
+             {k: v for k, v in out.items()
+              if k not in {"candidates", "knowledge_graph_rationales"}})
         return out
 
     def redirect_batch(n: int = 48, max_overlap: float = 0.5) -> dict:
-        """v0.6 meta-layer basin hop: stage a gate-safe batch of HIGH predicted-mean candidates
-        whose mutation composition DIFFERS from the best measured cluster (top-10 measured,
-        shared substitutions). A candidate is hop-eligible when at most `max_overlap` of its
-        substitutions lie inside that cluster signature; ranking is by predicted mean only.
-        Uses only measured labels and surrogate predictions — never true pool fitness.
-        Stages the batch exactly like compose_batch; test it with test_composed_batch().
-        """
+        """Stage a gate-safe, predicted-mean basin hop away from the best cluster."""
         if state["pool"].empty:
             return {"status": "pool_exhausted", "candidates": []}
         n = int(max(1, min(int(n), 60)))
@@ -514,31 +586,47 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         state["pending_batch"] = candidates
         state["redirect_rounds"].append(state["current_round"])
         overlaps = []
-        for c in candidates:
-            muts = _mutation_set(c, spec.wt)
-            overlaps.append((len(muts & signature) / len(muts)) if muts else 0.0)
-        out = {"status": "ok",
-               "n": len(candidates),
-               "max_overlap": float(max_overlap),
-               "signature_size": len(signature),
-               "n_hop_eligible": n_hop,
-               "n_fill": n_fill,
-               "picks_overlap_mean": round(float(np.mean(overlaps)), 4) if overlaps else None,
-               "predicted_mean_top": round(float(np.max(mean[picks])), 4) if len(picks) else None,
-               "candidates": candidates}
+        for candidate in candidates:
+            mutations = _mutation_set(candidate, spec.wt)
+            overlaps.append((len(mutations & signature) / len(mutations)) if mutations else 0.0)
+        out = {
+            "status": "ok", "n": len(candidates), "max_overlap": float(max_overlap),
+            "signature_size": len(signature), "n_hop_eligible": n_hop, "n_fill": n_fill,
+            "picks_overlap_mean": round(float(np.mean(overlaps)), 4) if overlaps else None,
+            "predicted_mean_top": round(float(np.max(mean[picks])), 4) if len(picks) else None,
+            "candidates": candidates,
+        }
         emit("agent.tool.redirect_batch", "hypothesis_generator",
-             {k: v for k, v in out.items() if k != "candidates"})
+             {key: value for key, value in out.items() if key != "candidates"})
         return out
 
     def check_knowledge(variants: list[str]) -> dict:
         """Knowledge-base assessment (mutation rules + BLOSUM62) for the given variants."""
         out = {}
-        for v in variants[:40]:
-            muts = [f"{w}{i}{c}" for i, (c, w) in enumerate(zip(v, spec.wt)) if c != w]
-            checks = validate_candidate(muts)
-            out[v] = {"ok": all(x["pass"] for x in checks),
-                      "fail": [x["rule_id"] for x in checks if not x["pass"]]}
-        emit("agent.tool.check_knowledge", "scientific_critic", {"n": len(out)})
+        for index, v in enumerate(variants[:40]):
+            if no_knowledge:
+                out[v] = {"ok": True, "fail": [], "knowledge": "disabled", "rationale": None}
+                continue
+            if knowledge_enabled:
+                allowed, rejected = _gate([v])
+                out[v] = {"ok": bool(allowed),
+                          "fail": rejected.get(v, []),
+                          "knowledge": "AAV HD/BLOSUM gate + measured-only knowledge graph",
+                          "rationale": _graph_rationale(v) if index < 3 else None}
+            else:
+                # Backwards-compatible GB1 validator path for callers that do not opt into
+                # either explicit AAV treatment.  AAV experiments always choose one mode.
+                muts = _mutation_codes(v, spec.wt)
+                checks = validate_candidate(muts)
+                out[v] = {"ok": all(x["pass"] for x in checks),
+                          "fail": [x["rule_id"] for x in checks if not x["pass"]],
+                          "rationale": None}
+        emit("agent.tool.check_knowledge", "scientific_critic", {
+            "n": len(out),
+            "knowledge_enabled": knowledge_enabled,
+            "rationales": [{"variant": variant, "rationale": row["rationale"]}
+                           for variant, row in out.items() if row.get("rationale")],
+        })
         return out
 
     def test(variants: list[str]) -> dict:
@@ -574,6 +662,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         state["measured"] = pd.concat([state["measured"], rows], ignore_index=True)
         state["pool"] = state["pool"].drop(rows.index)
         state["pred_cache"] = None  # measured changed -> refit next time
+        state["knowledge_graph"] = None
         state["spent"] += len(rows)
         if len(rows):
             state["last_test_round"] = state["current_round"]
@@ -609,6 +698,26 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
              {"n": len(variants), "status": out.get("status")})
         return out
 
+    def execute_research_round(n: int = 48, exploit_ratio: float | None = None) -> dict:
+        """Atomically analyse, compose, and test one batch with one LLM tool request.
+
+        This keeps the scientific transitions identical while avoiding several network
+        round trips that can exceed the bounded per-round wall-clock budget.
+        """
+        analysis = analyze_measured()
+        composition = compose_batch(exploit_ratio=exploit_ratio, n=n)
+        if composition.get("status") != "ok":
+            return {"status": composition.get("status"), "analysis": analysis,
+                    "composition": composition}
+        experiment = test_composed_batch()
+        return {
+            "status": experiment.get("status"),
+            "analysis": analysis,
+            "composition": {key: value for key, value in composition.items()
+                            if key not in {"candidates", "knowledge_graph_rationales"}},
+            "experiment": experiment,
+        }
+
     def best_so_far() -> list:
         """Return the single best variant measured so far as [sequence, fitness]."""
         best = state["measured"].nlargest(1, fit_col).iloc[0]
@@ -618,6 +727,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
     llm_used = False
     llm_summary = None
     agent_model = None
+    llm_round_timeout_seconds = None
     if llm:
         try:
             from pydantic_ai import Agent
@@ -626,12 +736,16 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             except ImportError:
                 from pydantic_ai.models.openai import OpenAIModel as OAModel
             from pydantic_ai.providers.openai import OpenAIProvider
+            from openai import AsyncOpenAI
             from agent.llm import llm_config
             cfg = llm_config()
             if cfg is None:
                 raise RuntimeError("no LLM credentials")
             model_id = model or cfg["model"]
-            oa = OAModel(model_id, provider=OpenAIProvider(base_url=cfg["base_url"], api_key=cfg["api_key"]))
+            llm_round_timeout_seconds = float(cfg["timeout"])
+            client = AsyncOpenAI(api_key=cfg["api_key"], base_url=cfg["base_url"],
+                                 timeout=cfg["timeout"], max_retries=0)
+            oa = OAModel(model_id, provider=OpenAIProvider(openai_client=client))
             gate_note = ("" if not guardrail else
                          f"\n\nKNOWLEDGE GATE (unbypassable): before `test` spends budget, every candidate must pass "
                          f"HD<={max_hd} substitutions AND mean BLOSUM62>={blosum_min} (net-conservative). To help you, "
@@ -652,17 +766,21 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             def safe_tool(fn):
                 @functools.wraps(fn)
                 def wrapped(*args, **kwargs):
-                    try:
-                        return fn(*args, **kwargs)
-                    except Exception as exc:  # noqa: BLE001 - tool boundary must be recoverable
-                        out = {"status": "tool_execution_error", "tool": fn.__name__,
-                               "error_type": type(exc).__name__, "message": str(exc)[:200],
-                               "hint": "Verify the tool arguments and retry in this round."}
-                        emit("agent.tool.error", "agent", out)
-                        return out
+                    # A model may request several stateful tools in one response.  Pydantic
+                    # executes those calls concurrently, so serialise each complete tool
+                    # transition to keep measured/pool/budget state deterministic.
+                    with tool_lock:
+                        try:
+                            return fn(*args, **kwargs)
+                        except Exception as exc:  # noqa: BLE001 - recoverable tool boundary
+                            out = {"status": "tool_execution_error", "tool": fn.__name__,
+                                   "error_type": type(exc).__name__, "message": str(exc)[:200],
+                                   "hint": "Verify the tool arguments and retry in this round."}
+                            emit("agent.tool.error", "agent", out)
+                            return out
                 return wrapped
 
-            tool_fns = [analyze_measured, predict, list_pool, compose_batch,
+            tool_fns = [execute_research_round, analyze_measured, predict, list_pool, compose_batch,
                         check_knowledge, test, test_composed_batch, best_so_far]
             if backtrack:
                 tool_fns.append(redirect_batch)
@@ -713,14 +831,15 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                                        "redirect decision is yours.")
                 else:
                     prompt = (f"Round {rnd} of {n_rounds}. Budget remaining: {remaining}. "
-                              f"Call `analyze_measured`, then call `compose_batch(n={this_batch})` (prefer its "
-                              f"CV/round adaptive default), then MUST call `test_composed_batch()` without "
-                              f"copying any sequences. "
-                              f"Analysis alone makes no progress. Follow the >=80% high-CV exploitation rule and "
+                              f"Call `execute_research_round(n={this_batch})` exactly once; prefer its "
+                              f"CV/round adaptive exploit ratio unless prior measured evidence justifies an override. "
+                              f"This atomic tool performs analysis, composition, and testing without sequence copying. "
+                              f"Follow the >=80% high-CV exploitation rule and "
                               f">=90% exploitation rule in the final two rounds. "
                               f"After testing, note what you learned for the next round.")
                 try:
-                    result = ag.run_sync(prompt, message_history=history, **kwargs)
+                    with _wall_clock_timeout(cfg["timeout"]):
+                        result = ag.run_sync(prompt, message_history=history, **kwargs)
                     history = result.all_messages()
                     llm_summary = str(getattr(result, "output", ""))[:800]
                 except Exception as exc:  # noqa: BLE001
@@ -728,11 +847,16 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                 # Guarantee progress: if the LLM analysed but did not test, the harness
                 # spends this round's budget on its own exploit pick (recorded honestly).
                 if state["spent"] == spent_before and not state["pool"].empty:
-                    emit("agent.llm.no_test", "agent", {"round": rnd, "note": "LLM skipped test; harness exploit fill"})
+                    emit("agent.llm.no_test", "agent", {
+                        "round": rnd,
+                        "note": "LLM skipped test; harness composed fill",
+                    })
                     if state["pending_batch"] is not None:
                         test_composed_batch()
                     else:
-                        test(list_pool(this_batch, "predicted_mean"))
+                        composition = compose_batch(n=this_batch)
+                        if composition.get("status") == "ok":
+                            test_composed_batch()
             llm_used = True
         except Exception as exc:  # noqa: BLE001 — degrade to deterministic driver
             emit("agent.llm.fallback", "agent", {"error": str(exc)[:200]})
@@ -757,15 +881,26 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         cum = pd.concat(seen, ignore_index=True)
         rounds.append({"round": i, **_stats(batch, cum, "fitness", strong_thr),
                        "spent_after": int(cum.shape[0])})
-    return {"schema_version": "pool.v1", "dataset": spec.name, "strategy": "agentic",
+    nominations = [
+        {"round": round_id,
+         "variants": [[str(sequence), float(fitness)]
+                      for sequence, fitness in zip(batch.seq, batch.fitness)]}
+        for round_id, batch in enumerate(state["batches"], 1)
+    ]
+    n_llm_no_test = sum(event["event_type"] == "agent.llm.no_test"
+                        for event in state["trace"])
+    return {"schema_version": "pool.v1", "dataset": spec.name,
+            "strategy": "knowledge_agent" if knowledge_enabled else "agent_no_knowledge",
             "nomination": "LLM-driven tool-calling active learning (pool-based)",
             "oracle": "measured table lookup", "wild_type": spec.wt,
             "candidate_pool_size": int((spec.df.hd > 2).sum()),
             "cold_start_size": int((spec.df.hd <= 2).sum()),
             "budget_per_round": budget, "n_rounds": len(rounds), "total_budget": total_budget,
             "budget_spent": state["spent"], "strong_threshold": round(strong_thr, 4),
-            "guardrail": guardrail, "max_hd": max_hd if guardrail else None,
-            "blosum_min": blosum_min if guardrail else None,
+            "guardrail": knowledge_enabled, "no_knowledge": no_knowledge,
+            "knowledge_graph_enabled": knowledge_enabled,
+            "max_hd": max_hd if knowledge_enabled else None,
+            "blosum_min": blosum_min if knowledge_enabled else None,
             "n_gate_rejected": state["n_gate_rejected"],
             "gate_pass_pool_size": len(gate_pass) if gate_pass is not None else None,
             "surrogate": surrogate,
@@ -775,12 +910,17 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "stall_flag_rounds": list(state["stall_flag_rounds"]),
             "top10_max_history": [round(float(v), 4) for v in state["top10_max_history"]],
             "llm_used": llm_used, "llm_summary": llm_summary, "agent_model": agent_model,
+            "llm_round_timeout_seconds": llm_round_timeout_seconds,
+            "llm_direct_test_rounds": max(0, len(rounds) - n_llm_no_test) if llm_used else 0,
+            "llm_no_test_rounds": n_llm_no_test,
+            "llm_round_errors": sum(event["event_type"] == "agent.llm.round_error"
+                                    for event in state["trace"]),
             "n_tool_calls": len(state["trace"]),
             "summary": {"final_cum_top10_max": rounds[-1]["cum_top10_max"] if rounds else None,
                         "final_cum_top10_mean": rounds[-1]["cum_top10_mean"] if rounds else None,
                         "final_cum_n_strong": rounds[-1]["cum_n_strong"] if rounds else None,
                         "cum_top10_max_curve": [r["cum_top10_max"] for r in rounds]},
-            "rounds": rounds, "tool_trace": state["trace"]}
+            "rounds": rounds, "nominations": nominations, "tool_trace": state["trace"]}
 
 
 def main(argv=None):
@@ -798,6 +938,8 @@ def main(argv=None):
                    help="LLM that drives the agent (default gpt-5.6-sol); workflow modes are unaffected")
     p.add_argument("--guardrail", action="store_true",
                    help="v0.2: unbypassable Knowledge Gate before test (HD<=max-hd + mean BLOSUM62>=0)")
+    p.add_argument("--no-knowledge", action="store_true",
+                   help="explicit AAV ablation: disable validation, graph queries, and the knowledge gate")
     p.add_argument("--max-hd", type=int, default=4)
     p.add_argument("--blosum-min", type=float, default=0.0)
     p.add_argument("--surrogate", default="ridge", choices=("ridge", "epistasis"),
@@ -829,7 +971,8 @@ def main(argv=None):
     rep = run_autoresearch(spec, budget=a.budget, n_rounds=a.n_rounds, seed=a.seed,
                            event_store=store, llm=not a.no_llm, model=a.model,
                            guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min,
-                           surrogate=a.surrogate, backtrack=a.backtrack)
+                           surrogate=a.surrogate, no_knowledge=a.no_knowledge,
+                           backtrack=a.backtrack)
     store.verify()
     out = out_dir / "agentic.metrics.json"
     fig = out_dir / "figures" / "agentic.png"
@@ -851,16 +994,18 @@ def main(argv=None):
           f"redirects={rep.get('redirect_rounds')} stall_flags={rep.get('stall_flag_rounds')} "
           f"cum_top10_max={rep['summary']['final_cum_top10_max']} strong={rep['summary']['final_cum_n_strong']}")
     _gflag = (f" --guardrail --max-hd {a.max_hd} --blosum-min {a.blosum_min}" if a.guardrail else "")
+    _kflag = " --no-knowledge" if a.no_knowledge else ""
     _sflag = (f" --surrogate {a.surrogate}" if a.surrogate != "ridge" else "")
     _bflag = (f" --backtrack {a.backtrack}" if a.backtrack else "")
     log_run("agentic",
             command=(f"python -m agent.auto_researcher --dataset {a.dataset} --feature {a.feature} "
                      f"--budget {a.budget} --n-rounds {a.n_rounds} --seed {a.seed} --model {a.model}"
-                     f"{_gflag}{_sflag}{_bflag}"),
+                     f"{_gflag}{_kflag}{_sflag}{_bflag}"),
             params={"dataset": a.dataset, "feature": a.feature, "budget": a.budget, "n_rounds": a.n_rounds,
                     "seed": a.seed, "llm": not a.no_llm, "model": a.model,
                     "guardrail": a.guardrail, "max_hd": a.max_hd if a.guardrail else None,
-                    "blosum_min": a.blosum_min if a.guardrail else None, "surrogate": a.surrogate,
+                    "blosum_min": a.blosum_min if a.guardrail else None,
+                    "no_knowledge": a.no_knowledge, "surrogate": a.surrogate,
                     "backtrack": a.backtrack},
             artifacts=[str(out.relative_to(ROOT)), str(ev.relative_to(ROOT))],
             summary={**rep["summary"], "llm_used": rep["llm_used"], "budget_spent": rep["budget_spent"]})

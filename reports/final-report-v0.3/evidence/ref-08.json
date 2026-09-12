@@ -1,0 +1,812 @@
+{
+  "source_url": "https://api.crossref.org/works/10.1038/nature17995",
+  "record": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          12
+        ]
+      ],
+      "date-time": "2026-09-12T08:04:13Z",
+      "timestamp": 1789200253315,
+      "version": "build-2803163510"
+    },
+    "reference-count": 30,
+    "publisher": "Springer Science and Business Media LLC",
+    "issue": "7603",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2016,
+              5,
+              1
+            ]
+          ],
+          "date-time": "2016-05-01T00:00:00Z",
+          "timestamp": 1462060800000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "http://www.springer.com/tdm"
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "link.springer.com"
+      ],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "Nature"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2016,
+          5
+        ]
+      ]
+    },
+    "DOI": "10.1038/nature17995",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2016,
+          5,
+          10
+        ]
+      ],
+      "date-time": "2016-05-10T11:16:22Z",
+      "timestamp": 1462878982000
+    },
+    "page": "397-401",
+    "update-policy": "https://doi.org/10.1007/springer_crossmark_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 640,
+    "title": [
+      "Local fitness landscape of the green fluorescent protein"
+    ],
+    "prefix": "10.1038",
+    "volume": "533",
+    "author": [
+      {
+        "given": "Karen S.",
+        "family": "Sarkisyan",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dmitry A.",
+        "family": "Bolotin",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Margarita V.",
+        "family": "Meer",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dinara R.",
+        "family": "Usmanova",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Alexander S.",
+        "family": "Mishin",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "George V.",
+        "family": "Sharonov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dmitry N.",
+        "family": "Ivankov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Nina G.",
+        "family": "Bozhanova",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mikhail S.",
+        "family": "Baranov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Onuralp",
+        "family": "Soylemez",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Natalya S.",
+        "family": "Bogatyreva",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Peter K.",
+        "family": "Vlasov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Evgeny S.",
+        "family": "Egorov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Maria D.",
+        "family": "Logacheva",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Alexey S.",
+        "family": "Kondrashov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dmitry M.",
+        "family": "Chudakov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ekaterina V.",
+        "family": "Putintseva",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ilgar Z.",
+        "family": "Mamedov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dan S.",
+        "family": "Tawfik",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Konstantin A.",
+        "family": "Lukyanov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Fyodor A.",
+        "family": "Kondrashov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "297",
+    "published-online": {
+      "date-parts": [
+        [
+          2016,
+          5,
+          11
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "BFnature17995_CR1",
+        "first-page": "356",
+        "volume": "1",
+        "author": "S Wright",
+        "year": "1932",
+        "unstructured": "Wright, S. The roles of mutation, inbreeding, crossbreeding and selection in evolution. Proc. Sixth Int. Congr. Genet. 1, 356–366 (1932)",
+        "journal-title": "Proc. Sixth Int. Congr. Genet."
+      },
+      {
+        "key": "BFnature17995_CR2",
+        "doi-asserted-by": "publisher",
+        "first-page": "480",
+        "DOI": "10.1038/nrg3744",
+        "volume": "15",
+        "author": "JAGM de Visser",
+        "year": "2014",
+        "unstructured": "de Visser, J. A. G. M. & Krug, J. Empirical fitness landscapes and the predictability of evolution. Nature Rev. Genet. 15, 480–490 (2014)",
+        "journal-title": "Nature Rev. Genet."
+      },
+      {
+        "key": "BFnature17995_CR3",
+        "doi-asserted-by": "publisher",
+        "first-page": "675",
+        "DOI": "10.1038/nrg2160",
+        "volume": "8",
+        "author": "AM Dean",
+        "year": "2007",
+        "unstructured": "Dean, A. M. & Thornton, J. W. Mechanistic approaches to the study of evolution: the functional synthesis. Nature Rev. Genet. 8, 675–688 (2007)",
+        "journal-title": "Nature Rev. Genet."
+      },
+      {
+        "key": "BFnature17995_CR4",
+        "doi-asserted-by": "publisher",
+        "first-page": "572",
+        "DOI": "10.1038/nrg2808",
+        "volume": "11",
+        "author": "M Soskine",
+        "year": "2010",
+        "unstructured": "Soskine, M. & Tawfik, D. S. Mutational effects and the evolution of new protein functions. Nature Rev. Genet. 11, 572–582 (2010)",
+        "journal-title": "Nature Rev. Genet."
+      },
+      {
+        "key": "BFnature17995_CR5",
+        "doi-asserted-by": "publisher",
+        "first-page": "700",
+        "DOI": "10.1016/j.gde.2013.10.007",
+        "volume": "23",
+        "author": "DM Weinreich",
+        "year": "2013",
+        "unstructured": "Weinreich, D. M., Lan, Y., Wylie, C. S. & Heckendorn, R. B. Should evolutionary geneticists worry about higher-order epistasis? Curr. Opin. Genet. Dev. 23, 700–707 (2013)",
+        "journal-title": "Curr. Opin. Genet. Dev."
+      },
+      {
+        "key": "BFnature17995_CR6",
+        "doi-asserted-by": "publisher",
+        "first-page": "22",
+        "DOI": "10.1038/nrg3627",
+        "volume": "15",
+        "author": "TFC Mackay",
+        "year": "2014",
+        "unstructured": "Mackay, T. F. C. Epistasis and quantitative traits: using model organisms to study gene-gene interactions. Nature Rev. Genet. 15, 22–33 (2014)",
+        "journal-title": "Nature Rev. Genet."
+      },
+      {
+        "key": "BFnature17995_CR7",
+        "doi-asserted-by": "publisher",
+        "first-page": "34",
+        "DOI": "10.1016/j.tig.2014.09.001",
+        "volume": "31",
+        "author": "MB Taylor",
+        "year": "2015",
+        "unstructured": "Taylor, M. B. & Ehrenreich, I. M. Higher-order genetic interactions and their contribution to complex traits. Trends Genet. 31, 34–40 (2015)",
+        "journal-title": "Trends Genet."
+      },
+      {
+        "key": "BFnature17995_CR8",
+        "doi-asserted-by": "publisher",
+        "first-page": "929",
+        "DOI": "10.1038/nature05385",
+        "volume": "444",
+        "author": "S Bershtein",
+        "year": "2006",
+        "unstructured": "Bershtein, S., Segal, M., Bekerman, R., Tokuriki, N. & Tawfik, D. S. Robustness-epistasis link shapes the fitness landscape of a randomly drifting protein. Nature 444, 929–932 (2006)",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "BFnature17995_CR9",
+        "doi-asserted-by": "publisher",
+        "first-page": "741",
+        "DOI": "10.1038/nmeth.1492",
+        "volume": "7",
+        "author": "DM Fowler",
+        "year": "2010",
+        "unstructured": "Fowler, D. M. et al. High-resolution mapping of protein sequence-function relationships. Nature Methods 7, 741–746 (2010)",
+        "journal-title": "Nature Methods"
+      },
+      {
+        "key": "BFnature17995_CR10",
+        "doi-asserted-by": "publisher",
+        "first-page": "1363",
+        "DOI": "10.1016/j.jmb.2013.01.032",
+        "volume": "425",
+        "author": "BP Roscoe",
+        "year": "2013",
+        "unstructured": "Roscoe, B. P., Thayer, K. M., Zeldovich, K. B., Fushman, D. & Bolon, D. N. Analyses of the effects of all ubiquitin point mutants on yeast growth rate. J. Mol. Biol. 425, 1363–1377 (2013)",
+        "journal-title": "J. Mol. Biol."
+      },
+      {
+        "key": "BFnature17995_CR11",
+        "doi-asserted-by": "publisher",
+        "first-page": "13067",
+        "DOI": "10.1073/pnas.1215206110",
+        "volume": "110",
+        "author": "H Jacquier",
+        "year": "2013",
+        "unstructured": "Jacquier, H. et al. Capturing the mutational landscape of the beta-lactamase TEM-1. Proc. Natl Acad. Sci. USA 110, 13067–13072 (2013)",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "BFnature17995_CR12",
+        "doi-asserted-by": "publisher",
+        "first-page": "1537",
+        "DOI": "10.1261/rna.040709.113",
+        "volume": "19",
+        "author": "D Melamed",
+        "year": "2013",
+        "unstructured": "Melamed, D., Young, D. L., Gamble, C. E., Miller, C. R. & Fields, S. Deep mutational scanning of an RRM domain of the Saccharomyces cerevisiae poly(A)-binding protein. RNA 19, 1537–1551 (2013)",
+        "journal-title": "RNA"
+      },
+      {
+        "key": "BFnature17995_CR13",
+        "doi-asserted-by": "publisher",
+        "first-page": "2643",
+        "DOI": "10.1016/j.cub.2014.09.072",
+        "volume": "24",
+        "author": "CA Olson",
+        "year": "2014",
+        "unstructured": "Olson, C. A., Wu, N. C. & Sun, R. A comprehensive biophysical description of pairwise epistasis throughout an entire protein domain. Curr. Biol. 24, 2643–2651 (2014)",
+        "journal-title": "Curr. Biol."
+      },
+      {
+        "key": "BFnature17995_CR14",
+        "doi-asserted-by": "publisher",
+        "first-page": "229",
+        "DOI": "10.1093/molbev/msu301",
+        "volume": "32",
+        "author": "C Bank",
+        "year": "2015",
+        "unstructured": "Bank, C., Hietpas, R. T., Jensen, J. D. & Bolon, D. N. A systematic survey of an intragenic epistatic landscape. Mol. Biol. Evol. 32, 229–238 (2015)",
+        "journal-title": "Mol. Biol. Evol."
+      },
+      {
+        "key": "BFnature17995_CR15",
+        "doi-asserted-by": "publisher",
+        "first-page": "1774",
+        "DOI": "10.1093/molbev/msv059",
+        "volume": "32",
+        "author": "MR Meini",
+        "year": "2015",
+        "unstructured": "Meini, M. R., Tomatis, P. E., Weinreich, D. M. & Vila, A. J. Quantitative description of a protein fitness landscape based on molecular features. Mol. Biol. Evol. 32, 1774–1787 (2015)",
+        "journal-title": "Mol. Biol. Evol."
+      },
+      {
+        "key": "BFnature17995_CR16",
+        "doi-asserted-by": "publisher",
+        "first-page": "14878",
+        "DOI": "10.1073/pnas.232565499",
+        "volume": "99",
+        "author": "AS Kondrashov",
+        "year": "2002",
+        "unstructured": "Kondrashov, A. S., Sunyaev, S. & Kondrashov, F. A. Dobzhansky–Muller incompatibilities in protein evolution. Proc. Natl Acad. Sci. USA 99, 14878–14883 (2002)",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "BFnature17995_CR17",
+        "doi-asserted-by": "publisher",
+        "first-page": "1581",
+        "DOI": "10.1093/molbev/msu081",
+        "volume": "31",
+        "author": "E Firnberg",
+        "year": "2014",
+        "unstructured": "Firnberg, E., Labonte, J. W., Gray, J. J. & Ostermeier, M. A comprehensive, high-resolution map of a gene’s fitness landscape. Mol. Biol. Evol. 31, 1581–1592 (2014)",
+        "journal-title": "Mol. Biol. Evol."
+      },
+      {
+        "key": "BFnature17995_CR18",
+        "doi-asserted-by": "publisher",
+        "first-page": "1546",
+        "DOI": "10.1093/molbev/msu113",
+        "volume": "31",
+        "author": "M Parera",
+        "year": "2014",
+        "unstructured": "Parera, M. & Martinez, M. A. Strong epistatic interactions within a single protein. Mol. Biol. Evol. 31, 1546–1553 (2014)",
+        "journal-title": "Mol. Biol. Evol."
+      },
+      {
+        "key": "BFnature17995_CR19",
+        "doi-asserted-by": "publisher",
+        "first-page": "3758",
+        "DOI": "10.1242/jeb.02431",
+        "volume": "209",
+        "author": "MM Coates",
+        "year": "2006",
+        "unstructured": "Coates, M. M., Garm, A., Theobald, J. C., Thompson, S. H. & Nilsson, D. E. The spectral sensitivity of the lens eyes of a box jellyfish, Tripedalia cystophora (Conant). J. Exp. Biol. 209, 3758–3765 (2006)",
+        "journal-title": "J. Exp. Biol."
+      },
+      {
+        "key": "BFnature17995_CR20",
+        "doi-asserted-by": "publisher",
+        "first-page": "678",
+        "DOI": "10.1038/nrg1672",
+        "volume": "6",
+        "author": "MA DePristo",
+        "year": "2005",
+        "unstructured": "DePristo, M. A., Weinreich, D. M. & Hartl, D. L. Missense meanderings in sequence space: a biophysical view of protein evolution. Nature Rev. Genet. 6, 678–687 (2005)",
+        "journal-title": "Nature Rev. Genet."
+      },
+      {
+        "key": "BFnature17995_CR21",
+        "doi-asserted-by": "crossref",
+        "first-page": "391",
+        "DOI": "10.1093/genetics/88.2.391",
+        "volume": "88",
+        "author": "R Milkman",
+        "year": "1978",
+        "unstructured": "Milkman, R. Selection differentials and selection coefficients. Genetics 88, 391–403 (1978)",
+        "journal-title": "Genetics"
+      },
+      {
+        "key": "BFnature17995_CR22",
+        "doi-asserted-by": "publisher",
+        "first-page": "6168",
+        "DOI": "10.1073/pnas.75.12.6168",
+        "volume": "75",
+        "author": "M Kimura",
+        "year": "1978",
+        "unstructured": "Kimura, M. & Crow, J. F. Effect of overall phenotypic selection on genetic change at individual loci. Proc. Natl Acad. Sci. USA 75, 6168–6171 (1978)",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "BFnature17995_CR23",
+        "doi-asserted-by": "publisher",
+        "first-page": "396",
+        "DOI": "10.1073/pnas.76.1.396",
+        "volume": "76",
+        "author": "JF Crow",
+        "year": "1979",
+        "unstructured": "Crow, J. F. & Kimura, M. Efficiency of truncation selection. Proc. Natl Acad. Sci. USA 76, 396–399 (1979)",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "BFnature17995_CR24",
+        "doi-asserted-by": "publisher",
+        "first-page": "e1004421",
+        "DOI": "10.1371/journal.pcbi.1004421",
+        "volume": "11",
+        "author": "L Rockah-Shmuel",
+        "year": "2015",
+        "unstructured": "Rockah-Shmuel, L., Tóth-Petróczy, Á. & Tawfik, D. S. Systematic mapping of protein mutational space by prolonged drift reveals the deleterious effects of seemingly neutral mutations. PLOS Comput. Biol. 11, e1004421 (2015)",
+        "journal-title": "PLOS Comput. Biol."
+      },
+      {
+        "key": "BFnature17995_CR25",
+        "doi-asserted-by": "publisher",
+        "first-page": "337",
+        "DOI": "10.1007/BF02134132",
+        "volume": "24",
+        "author": "WH Li",
+        "year": "1987",
+        "unstructured": "Li, W. H. Models of nearly neutral mutations with particular implications for nonrandom usage of synonymous codons. J. Mol. Evol. 24, 337–345 (1987)",
+        "journal-title": "J. Mol. Evol."
+      },
+      {
+        "key": "BFnature17995_CR26",
+        "doi-asserted-by": "crossref",
+        "first-page": "1067",
+        "DOI": "10.1093/genetics/139.2.1067",
+        "volume": "139",
+        "author": "H Akashi",
+        "year": "1995",
+        "unstructured": "Akashi, H. Inferring weak selection from patterns of polymorphism and divergence at ‘silent’ sites in Drosophila DNA. Genetics 139, 1067–1076 (1995)",
+        "journal-title": "Genetics"
+      },
+      {
+        "key": "BFnature17995_CR27",
+        "doi-asserted-by": "publisher",
+        "first-page": "922",
+        "DOI": "10.1038/nature09105",
+        "volume": "465",
+        "author": "IS Povolotskaya",
+        "year": "2010",
+        "unstructured": "Povolotskaya, I. S. & Kondrashov, F. A. Sequence space and the ongoing expansion of the protein universe. Nature 465, 922–926 (2010)",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "BFnature17995_CR28",
+        "doi-asserted-by": "publisher",
+        "first-page": "542",
+        "DOI": "10.1093/molbev/msu318",
+        "volume": "32",
+        "author": "DR Usmanova",
+        "year": "2015",
+        "unstructured": "Usmanova, D. R., Ferretti, L., Povolotskaya, I. S., Vlasov, P. K. & Kondrashov, F. A. A model of substitution trajectories in sequence space and long-term protein evolution. Mol. Biol. Evol. 32, 542–554 (2015)",
+        "journal-title": "Mol. Biol. Evol."
+      },
+      {
+        "key": "BFnature17995_CR29",
+        "doi-asserted-by": "publisher",
+        "first-page": "610",
+        "DOI": "10.1038/nrg2146",
+        "volume": "8",
+        "author": "A Eyre-Walker",
+        "year": "2007",
+        "unstructured": "Eyre-Walker, A. & Keightley, P. D. The distribution of fitness effects of new mutations. Nature Rev. Genet. 8, 610–618 (2007)",
+        "journal-title": "Nature Rev. Genet."
+      },
+      {
+        "key": "BFnature17995_CR30",
+        "doi-asserted-by": "publisher",
+        "first-page": "96",
+        "DOI": "10.1038/246096a0",
+        "volume": "246",
+        "author": "T Ohta",
+        "year": "1973",
+        "unstructured": "Ohta, T. Slightly deleterious mutant substitutions in evolution. Nature 246, 96–98 (1973)",
+        "journal-title": "Nature"
+      }
+    ],
+    "container-title": [
+      "Nature"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "http://www.nature.com/articles/nature17995.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "http://www.nature.com/articles/nature17995",
+        "content-type": "text/html",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "http://www.nature.com/articles/nature17995.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2023,
+          5,
+          18
+        ]
+      ],
+      "date-time": "2023-05-18T13:52:14Z",
+      "timestamp": 1684417934000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://www.nature.com/articles/nature17995"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2016,
+          5
+        ]
+      ]
+    },
+    "references-count": 30,
+    "journal-issue": {
+      "issue": "7603",
+      "published-print": {
+        "date-parts": [
+          [
+            2016,
+            5
+          ]
+        ]
+      }
+    },
+    "alternative-id": [
+      "BFnature17995"
+    ],
+    "URL": "https://doi.org/10.1038/nature17995",
+    "relation": {
+      "has-review": [
+        {
+          "id-type": "doi",
+          "id": "10.3410/f.726365992.793519768",
+          "asserted-by": "object"
+        }
+      ]
+    },
+    "ISSN": [
+      "0028-0836",
+      "1476-4687"
+    ],
+    "issn-type": [
+      {
+        "value": "0028-0836",
+        "type": "print"
+      },
+      {
+        "value": "1476-4687",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2016,
+          5
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "28 April 2015",
+        "order": 1,
+        "name": "received",
+        "label": "Received",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "7 April 2016",
+        "order": 2,
+        "name": "accepted",
+        "label": "Accepted",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "11 May 2016",
+        "order": 3,
+        "name": "first_online",
+        "label": "First Online",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "The authors declare no competing financial interests.",
+        "order": 1,
+        "name": "Ethics",
+        "group": {
+          "name": "EthicsHeading",
+          "label": "Competing interests"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "schema://artifact-descriptor",
+  "typeIdentity": "entity-kind/KND-3b7e2c9a1d5f6e8c0a4b2d3f5e7c9a16",
+  "kindVersion": 1,
+  "entityId": "RES-7c7c6909eb48d15ea183e04873fd3072",
+  "title": "pi SDK 与前端壳选型 Research",
+  "locator": {
+    "kind": "repository-path",
+    "value": "harness/context/research/pi-sdk-ui-research.md"
+  },
+  "contentVersion": "sha256:6dd6248eefd7580575ce68b9b0ab7184a9da9883fafa41b6d655fd70d2dde76d",
+  "attributes": {},
+  "source": "repo:ai4s-directed-evolution-agent:harness/context/research/pi-sdk-ui-research.md"
+}

@@ -19,7 +19,7 @@
 | `test` | **花预算**做真实测量（oracle = 已测表查询）——这是唯一的"真实验" |
 | `best_so_far` | 当前最佳 |
 
-**这是真自主性的铁证**——SOL 的完整工具调用轨迹（25 次调用，来自 `reports/pool_events_aav_agentic.jsonl`，事件链 SHA-256 校验通过）：
+**这是真自主性的铁证**——SOL 的完整工具调用轨迹（25 次调用，来自 `harness/reports/pool-campaign-aav-agentic/pool_events_aav_agentic.jsonl`，事件链 SHA-256 校验通过）：
 
 ```
 轮1: analyze → list_pool[uncertainty,diverse,predicted_mean,random,predicted_mean,uncertainty]

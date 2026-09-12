@@ -1,0 +1,1066 @@
+{
+  "schema_version": "t7.v2",
+  "candidate_space_size": 149361,
+  "missing_combinations": 10639,
+  "oracle": "measured table lookup",
+  "budget_per_round": 96,
+  "n_rounds": 3,
+  "cold_start": "low_hd (seed pool = all HD<=1, nominate HD>1: extrapolation regime)",
+  "llm": "deterministic (pool LLM port available via --use-llm)",
+  "summary": {
+    "random": {
+      "final_cum_top10_max": 3.993242,
+      "final_cum_top10_mean": 2.683367,
+      "final_cum_n_strong": 0,
+      "total_beneficial_hits": 9,
+      "cum_top10_max_curve": [
+        3.440218,
+        3.568475,
+        3.993242
+      ]
+    },
+    "greedy": {
+      "final_cum_top10_max": 5.772032,
+      "final_cum_top10_mean": 5.212539,
+      "final_cum_n_strong": 29,
+      "total_beneficial_hits": 180,
+      "cum_top10_max_curve": [
+        5.772032,
+        5.772032,
+        5.772032
+      ]
+    },
+    "agent_no_knowledge": {
+      "final_cum_top10_max": 5.772032,
+      "final_cum_top10_mean": 5.091522,
+      "final_cum_n_strong": 27,
+      "total_beneficial_hits": 213,
+      "cum_top10_max_curve": [
+        5.772032,
+        5.772032,
+        5.772032
+      ]
+    },
+    "knowledge_agent": {
+      "final_cum_top10_max": 8.761966,
+      "final_cum_top10_mean": 6.718218,
+      "final_cum_n_strong": 33,
+      "total_beneficial_hits": 202,
+      "cum_top10_max_curve": [
+        6.042078,
+        7.554663,
+        8.761966
+      ]
+    }
+  },
+  "strategies": {
+    "random": {
+      "strategy": "random",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 77,
+      "acquisition": "uniform random",
+      "llm_sources": null,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 3.440218,
+          "top10_mean": 0.573022,
+          "n_hit_beneficial": 2,
+          "hit_rate_beneficial": 0.020833,
+          "cum_top10_max": 3.440218,
+          "cum_top10_mean": 0.573022,
+          "cum_n_strong": 0,
+          "top10": [
+            [
+              "FWGC",
+              3.440218
+            ],
+            [
+              "IKGV",
+              1.368004
+            ],
+            [
+              "LSCT",
+              0.433299
+            ],
+            [
+              "LGGT",
+              0.248378
+            ],
+            [
+              "YKMV",
+              0.084788
+            ],
+            [
+              "MLND",
+              0.036544
+            ],
+            [
+              "QVFP",
+              0.033431
+            ],
+            [
+              "SSGQ",
+              0.032712
+            ],
+            [
+              "CQMI",
+              0.028476
+            ],
+            [
+              "RCHA",
+              0.024363
+            ]
+          ],
+          "pool_size_after": 173
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 3.568475,
+          "top10_mean": 0.740314,
+          "n_hit_beneficial": 2,
+          "hit_rate_beneficial": 0.020833,
+          "cum_top10_max": 3.568475,
+          "cum_top10_mean": 1.285894,
+          "cum_n_strong": 0,
+          "top10": [
+            [
+              "CYGC",
+              3.568475
+            ],
+            [
+              "WDLG",
+              3.087516
+            ],
+            [
+              "FDYG",
+              0.355063
+            ],
+            [
+              "KWFA",
+              0.163453
+            ],
+            [
+              "QECC",
+              0.109741
+            ],
+            [
+              "VFMS",
+              0.027139
+            ],
+            [
+              "LYGP",
+              0.02519
+            ],
+            [
+              "EKGG",
+              0.023363
+            ],
+            [
+              "DWLA",
+              0.022425
+            ],
+            [
+              "LFAF",
+              0.020773
+            ]
+          ],
+          "pool_size_after": 269
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 3.993242,
+          "top10_mean": 1.627741,
+          "n_hit_beneficial": 5,
+          "hit_rate_beneficial": 0.052083,
+          "cum_top10_max": 3.993242,
+          "cum_top10_mean": 2.683367,
+          "cum_n_strong": 0,
+          "top10": [
+            [
+              "FAGS",
+              3.993242
+            ],
+            [
+              "WYLT",
+              3.480858
+            ],
+            [
+              "MAAA",
+              3.457262
+            ],
+            [
+              "FHFG",
+              2.984768
+            ],
+            [
+              "FIMT",
+              1.020026
+            ],
+            [
+              "YYAM",
+              0.398667
+            ],
+            [
+              "EYFT",
+              0.254506
+            ],
+            [
+              "EGGC",
+              0.245087
+            ],
+            [
+              "ANAL",
+              0.232165
+            ],
+            [
+              "ASGV",
+              0.210833
+            ]
+          ],
+          "pool_size_after": 365
+        }
+      ],
+      "topk_concentration": {
+        "n_topk_observations": 30,
+        "positions": {
+          "39": {
+            "residue_counts": {
+              "F": 5,
+              "L": 4,
+              "E": 3,
+              "A": 2,
+              "C": 2,
+              "M": 2,
+              "Q": 2,
+              "W": 2,
+              "Y": 2,
+              "D": 1,
+              "I": 1,
+              "K": 1,
+              "R": 1,
+              "S": 1,
+              "V": 1
+            },
+            "dominant_residue": "F",
+            "dominant_fraction": 0.166667,
+            "mutation_fraction": 0.966667
+          },
+          "40": {
+            "residue_counts": {
+              "Y": 5,
+              "K": 3,
+              "S": 3,
+              "W": 3,
+              "A": 2,
+              "D": 2,
+              "F": 2,
+              "G": 2,
+              "C": 1,
+              "E": 1,
+              "H": 1,
+              "I": 1,
+              "L": 1,
+              "N": 1,
+              "Q": 1,
+              "V": 1
+            },
+            "dominant_residue": "Y",
+            "dominant_fraction": 0.166667,
+            "mutation_fraction": 0.933333
+          },
+          "41": {
+            "residue_counts": {
+              "G": 10,
+              "A": 4,
+              "F": 4,
+              "M": 4,
+              "L": 3,
+              "C": 2,
+              "H": 1,
+              "N": 1,
+              "Y": 1
+            },
+            "dominant_residue": "G",
+            "dominant_fraction": 0.333333,
+            "mutation_fraction": 0.666667
+          },
+          "54": {
+            "residue_counts": {
+              "T": 5,
+              "A": 4,
+              "C": 4,
+              "G": 4,
+              "V": 3,
+              "P": 2,
+              "S": 2,
+              "D": 1,
+              "F": 1,
+              "I": 1,
+              "L": 1,
+              "M": 1,
+              "Q": 1
+            },
+            "dominant_residue": "T",
+            "dominant_fraction": 0.166667,
+            "mutation_fraction": 0.9
+          }
+        }
+      },
+      "multi_seed": {
+        "seeds": [
+          11,
+          23,
+          42,
+          67,
+          89
+        ],
+        "n_runs": 5,
+        "rounds": [
+          {
+            "round": 1,
+            "top10_max_mean": 2.548152,
+            "top10_max_std": 0.543108,
+            "top10_mean_mean": 0.534108,
+            "top10_mean_std": 0.063656,
+            "hit_rate_beneficial_mean": 0.022916,
+            "hit_rate_beneficial_std": 0.004167,
+            "cum_top10_max_mean": 2.548152,
+            "cum_top10_max_std": 0.543108,
+            "cum_top10_mean_mean": 0.534108,
+            "cum_top10_mean_std": 0.063656,
+            "cum_n_strong_mean": 0.0,
+            "cum_n_strong_std": 0.0
+          },
+          {
+            "round": 2,
+            "top10_max_mean": 2.925678,
+            "top10_max_std": 1.286466,
+            "top10_mean_mean": 0.632814,
+            "top10_mean_std": 0.236636,
+            "hit_rate_beneficial_mean": 0.020833,
+            "hit_rate_beneficial_std": 0.006588,
+            "cum_top10_max_mean": 3.171358,
+            "cum_top10_max_std": 1.043698,
+            "cum_top10_mean_mean": 1.083438,
+            "cum_top10_mean_std": 0.271849,
+            "cum_n_strong_mean": 0.2,
+            "cum_n_strong_std": 0.4
+          },
+          {
+            "round": 3,
+            "top10_max_mean": 3.538322,
+            "top10_max_std": 0.760619,
+            "top10_mean_mean": 1.182505,
+            "top10_mean_std": 0.414317,
+            "hit_rate_beneficial_mean": 0.04375,
+            "hit_rate_beneficial_std": 0.024116,
+            "cum_top10_max_mean": 4.046087,
+            "cum_top10_max_std": 0.72029,
+            "cum_top10_mean_mean": 1.960394,
+            "cum_top10_mean_std": 0.392105,
+            "cum_n_strong_mean": 0.4,
+            "cum_n_strong_std": 0.489898
+          }
+        ]
+      }
+    },
+    "greedy": {
+      "strategy": "greedy",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 77,
+      "acquisition": "predicted mean over full unmeasured space",
+      "llm_sources": null,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 5.772032,
+          "top10_mean": 4.948515,
+          "n_hit_beneficial": 79,
+          "hit_rate_beneficial": 0.822917,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 4.948515,
+          "cum_n_strong": 15,
+          "top10": [
+            [
+              "IWGF",
+              5.772032
+            ],
+            [
+              "FYGA",
+              5.440615
+            ],
+            [
+              "VWGF",
+              5.390733
+            ],
+            [
+              "IWGM",
+              5.229246
+            ],
+            [
+              "LYGV",
+              5.075299
+            ],
+            [
+              "VWGM",
+              5.002808
+            ],
+            [
+              "IYGC",
+              4.48575
+            ],
+            [
+              "IYGV",
+              4.387745
+            ],
+            [
+              "FYGC",
+              4.365278
+            ],
+            [
+              "LYGC",
+              4.335643
+            ]
+          ],
+          "pool_size_after": 173
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 5.494876,
+          "top10_mean": 4.412274,
+          "n_hit_beneficial": 33,
+          "hit_rate_beneficial": 0.34375,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 5.212539,
+          "cum_n_strong": 22,
+          "top10": [
+            [
+              "FYGN",
+              5.494876
+            ],
+            [
+              "TYGM",
+              5.242722
+            ],
+            [
+              "FWGF",
+              4.755346
+            ],
+            [
+              "FWGN",
+              4.721708
+            ],
+            [
+              "FFGC",
+              4.366148
+            ],
+            [
+              "TWGM",
+              4.323042
+            ],
+            [
+              "IWAC",
+              4.106059
+            ],
+            [
+              "IWGL",
+              3.916937
+            ],
+            [
+              "YWGC",
+              3.755682
+            ],
+            [
+              "FWGC",
+              3.440218
+            ]
+          ],
+          "pool_size_after": 269
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 4.522375,
+          "top10_mean": 4.060242,
+          "n_hit_beneficial": 68,
+          "hit_rate_beneficial": 0.708333,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 5.212539,
+          "cum_n_strong": 29,
+          "top10": [
+            [
+              "TWGF",
+              4.522375
+            ],
+            [
+              "FFGN",
+              4.503279
+            ],
+            [
+              "CWGF",
+              4.087757
+            ],
+            [
+              "CYGV",
+              4.073126
+            ],
+            [
+              "TFGM",
+              4.062581
+            ],
+            [
+              "VFGM",
+              4.033624
+            ],
+            [
+              "LFGV",
+              4.029066
+            ],
+            [
+              "TYGL",
+              3.986517
+            ],
+            [
+              "VFGC",
+              3.703518
+            ],
+            [
+              "FFGV",
+              3.600576
+            ]
+          ],
+          "pool_size_after": 365
+        }
+      ],
+      "topk_concentration": {
+        "n_topk_observations": 30,
+        "positions": {
+          "39": {
+            "residue_counts": {
+              "F": 9,
+              "I": 6,
+              "T": 5,
+              "V": 4,
+              "L": 3,
+              "C": 2,
+              "Y": 1
+            },
+            "dominant_residue": "F",
+            "dominant_fraction": 0.3,
+            "mutation_fraction": 0.866667
+          },
+          "40": {
+            "residue_counts": {
+              "W": 13,
+              "Y": 10,
+              "F": 7
+            },
+            "dominant_residue": "W",
+            "dominant_fraction": 0.433333,
+            "mutation_fraction": 1.0
+          },
+          "41": {
+            "residue_counts": {
+              "G": 29,
+              "A": 1
+            },
+            "dominant_residue": "G",
+            "dominant_fraction": 0.966667,
+            "mutation_fraction": 0.033333
+          },
+          "54": {
+            "residue_counts": {
+              "C": 8,
+              "M": 6,
+              "F": 5,
+              "V": 5,
+              "N": 3,
+              "L": 2,
+              "A": 1
+            },
+            "dominant_residue": "C",
+            "dominant_fraction": 0.266667,
+            "mutation_fraction": 0.833333
+          }
+        }
+      }
+    },
+    "agent_no_knowledge": {
+      "strategy": "agent_no_knowledge",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 77,
+      "acquisition": "agent library, predicted mean",
+      "llm_sources": [
+        "fallback",
+        "fallback",
+        "fallback"
+      ],
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 5.772032,
+          "top10_mean": 5.010178,
+          "n_hit_beneficial": 87,
+          "hit_rate_beneficial": 0.90625,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 5.010178,
+          "cum_n_strong": 17,
+          "top10": [
+            [
+              "IWGF",
+              5.772032
+            ],
+            [
+              "FYGA",
+              5.440615
+            ],
+            [
+              "VWGF",
+              5.390733
+            ],
+            [
+              "IWGM",
+              5.229246
+            ],
+            [
+              "LYGV",
+              5.075299
+            ],
+            [
+              "VWGM",
+              5.002808
+            ],
+            [
+              "FWGA",
+              4.952273
+            ],
+            [
+              "IYGC",
+              4.48575
+            ],
+            [
+              "IYGV",
+              4.387745
+            ],
+            [
+              "FYGC",
+              4.365278
+            ]
+          ],
+          "pool_size_after": 173,
+          "llm_source": "fallback",
+          "llm_critic_source": "fallback"
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 4.755346,
+          "top10_mean": 3.738214,
+          "n_hit_beneficial": 33,
+          "hit_rate_beneficial": 0.34375,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 5.049185,
+          "cum_n_strong": 20,
+          "top10": [
+            [
+              "FWGF",
+              4.755346
+            ],
+            [
+              "FFGC",
+              4.366148
+            ],
+            [
+              "IWAC",
+              4.106059
+            ],
+            [
+              "FHGC",
+              3.978361
+            ],
+            [
+              "YWGC",
+              3.755682
+            ],
+            [
+              "FWLC",
+              3.407139
+            ],
+            [
+              "FWGM",
+              3.357521
+            ],
+            [
+              "FYAC",
+              3.319945
+            ],
+            [
+              "IYAC",
+              3.168569
+            ],
+            [
+              "YWGM",
+              3.167365
+            ]
+          ],
+          "pool_size_after": 269,
+          "llm_source": "fallback",
+          "llm_critic_source": "fallback"
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 4.77449,
+          "top10_mean": 4.162983,
+          "n_hit_beneficial": 93,
+          "hit_rate_beneficial": 0.96875,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 5.091522,
+          "cum_n_strong": 27,
+          "top10": [
+            [
+              "VHGM",
+              4.77449
+            ],
+            [
+              "TWGF",
+              4.522375
+            ],
+            [
+              "FFGA",
+              4.422675
+            ],
+            [
+              "TWGM",
+              4.323042
+            ],
+            [
+              "CWGF",
+              4.087757
+            ],
+            [
+              "VFGM",
+              4.033624
+            ],
+            [
+              "LFGV",
+              4.029066
+            ],
+            [
+              "CWGM",
+              3.994662
+            ],
+            [
+              "IHGM",
+              3.73862
+            ],
+            [
+              "VFGC",
+              3.703518
+            ]
+          ],
+          "pool_size_after": 365,
+          "llm_source": "fallback",
+          "llm_critic_source": "fallback"
+        }
+      ],
+      "topk_concentration": {
+        "n_topk_observations": 30,
+        "positions": {
+          "39": {
+            "residue_counts": {
+              "F": 10,
+              "I": 7,
+              "V": 5,
+              "C": 2,
+              "L": 2,
+              "T": 2,
+              "Y": 2
+            },
+            "dominant_residue": "F",
+            "dominant_fraction": 0.333333,
+            "mutation_fraction": 0.833333
+          },
+          "40": {
+            "residue_counts": {
+              "W": 15,
+              "Y": 7,
+              "F": 5,
+              "H": 3
+            },
+            "dominant_residue": "W",
+            "dominant_fraction": 0.5,
+            "mutation_fraction": 1.0
+          },
+          "41": {
+            "residue_counts": {
+              "G": 26,
+              "A": 3,
+              "L": 1
+            },
+            "dominant_residue": "G",
+            "dominant_fraction": 0.866667,
+            "mutation_fraction": 0.133333
+          },
+          "54": {
+            "residue_counts": {
+              "C": 10,
+              "M": 9,
+              "F": 5,
+              "A": 3,
+              "V": 3
+            },
+            "dominant_residue": "C",
+            "dominant_fraction": 0.333333,
+            "mutation_fraction": 0.9
+          }
+        }
+      }
+    },
+    "knowledge_agent": {
+      "strategy": "knowledge_agent",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 77,
+      "acquisition": "agent library, mean + 0.75·√var + 0.3·BLOSUM62 prior",
+      "llm_sources": [
+        "fallback",
+        "fallback",
+        "fallback"
+      ],
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 6.042078,
+          "top10_mean": 5.2504,
+          "n_hit_beneficial": 79,
+          "hit_rate_beneficial": 0.822917,
+          "cum_top10_max": 6.042078,
+          "cum_top10_mean": 5.2504,
+          "cum_n_strong": 18,
+          "top10": [
+            [
+              "IWAA",
+              6.042078
+            ],
+            [
+              "IWCA",
+              6.007627
+            ],
+            [
+              "IWGF",
+              5.772032
+            ],
+            [
+              "FYGA",
+              5.440615
+            ],
+            [
+              "IWGM",
+              5.229246
+            ],
+            [
+              "LYGV",
+              5.075299
+            ],
+            [
+              "IYCA",
+              5.073268
+            ],
+            [
+              "FWGA",
+              4.952273
+            ],
+            [
+              "IYGC",
+              4.48575
+            ],
+            [
+              "IYAA",
+              4.425813
+            ]
+          ],
+          "pool_size_after": 173,
+          "llm_source": "fallback",
+          "llm_critic_source": "fallback"
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 7.554663,
+          "top10_mean": 4.768056,
+          "n_hit_beneficial": 31,
+          "hit_rate_beneficial": 0.322917,
+          "cum_top10_max": 7.554663,
+          "cum_top10_mean": 5.92296,
+          "cum_n_strong": 24,
+          "top10": [
+            [
+              "FWCA",
+              7.554663
+            ],
+            [
+              "LWCA",
+              7.22866
+            ],
+            [
+              "FYCA",
+              5.618708
+            ],
+            [
+              "LYCA",
+              5.260676
+            ],
+            [
+              "FWGF",
+              4.755346
+            ],
+            [
+              "FYGV",
+              4.112764
+            ],
+            [
+              "FWGM",
+              3.357521
+            ],
+            [
+              "FYAC",
+              3.319945
+            ],
+            [
+              "IWAM",
+              3.281279
+            ],
+            [
+              "VWAM",
+              3.190994
+            ]
+          ],
+          "pool_size_after": 269,
+          "llm_source": "fallback",
+          "llm_critic_source": "fallback"
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 8.761966,
+          "top10_mean": 5.766884,
+          "n_hit_beneficial": 92,
+          "hit_rate_beneficial": 0.958333,
+          "cum_top10_max": 8.761966,
+          "cum_top10_mean": 6.718218,
+          "cum_n_strong": 33,
+          "top10": [
+            [
+              "FWAA",
+              8.761966
+            ],
+            [
+              "FYAA",
+              8.045152
+            ],
+            [
+              "VWAA",
+              6.123805
+            ],
+            [
+              "LWAA",
+              6.027489
+            ],
+            [
+              "VWCA",
+              5.359943
+            ],
+            [
+              "VYAA",
+              5.156918
+            ],
+            [
+              "VWGM",
+              5.002808
+            ],
+            [
+              "LYAA",
+              4.893728
+            ],
+            [
+              "FAGA",
+              4.54135
+            ],
+            [
+              "YWGC",
+              3.755682
+            ]
+          ],
+          "pool_size_after": 365,
+          "llm_source": "fallback",
+          "llm_critic_source": "fallback"
+        }
+      ],
+      "topk_concentration": {
+        "n_topk_observations": 30,
+        "positions": {
+          "39": {
+            "residue_counts": {
+              "F": 11,
+              "I": 8,
+              "L": 5,
+              "V": 5,
+              "Y": 1
+            },
+            "dominant_residue": "F",
+            "dominant_fraction": 0.366667,
+            "mutation_fraction": 0.833333
+          },
+          "40": {
+            "residue_counts": {
+              "W": 17,
+              "Y": 12,
+              "A": 1
+            },
+            "dominant_residue": "W",
+            "dominant_fraction": 0.566667,
+            "mutation_fraction": 1.0
+          },
+          "41": {
+            "residue_counts": {
+              "G": 12,
+              "A": 11,
+              "C": 7
+            },
+            "dominant_residue": "G",
+            "dominant_fraction": 0.4,
+            "mutation_fraction": 0.6
+          },
+          "54": {
+            "residue_counts": {
+              "A": 18,
+              "M": 5,
+              "C": 3,
+              "F": 2,
+              "V": 2
+            },
+            "dominant_residue": "A",
+            "dominant_fraction": 0.6,
+            "mutation_fraction": 0.933333
+          }
+        }
+      }
+    }
+  }
+}

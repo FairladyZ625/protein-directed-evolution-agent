@@ -1,0 +1,14 @@
+{
+  "schema": "schema://artifact-descriptor",
+  "typeIdentity": "entity-kind/KND-22c8d77f610481a7fac16512a855ad18",
+  "kindVersion": 1,
+  "entityId": "REP-ab4505191bf3efa4a035de7e1be67051",
+  "title": "final-report-v0.1:面向蛋白质定向进化的科学智能体研究报告(初稿)",
+  "locator": {
+    "kind": "repository-path",
+    "value": "harness/reports/final-report-v0.1"
+  },
+  "contentVersion": "sha256:7924d7ccb24e33e5c4ad640a8f4caa8c6830bd246a59aec1650ed340dcb0f014",
+  "attributes": {},
+  "source": "repo:ai4s-directed-evolution-agent:harness/reports/final-report-v0.1"
+}

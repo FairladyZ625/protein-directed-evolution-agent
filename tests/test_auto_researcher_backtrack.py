@@ -9,6 +9,8 @@ Covers the three primitives the full/semi variants share:
 """
 from __future__ import annotations
 
+import hashlib
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -192,6 +194,12 @@ def test_v06_backtrack_default_is_pure_exploitation_from_round_one():
 def test_v05_mode_keeps_the_adaptive_default_unchanged():
     ratio, source = _default_exploit_ratio(None, 0.9, 1, 6)
     assert (ratio, source) == (pytest.approx(0.86), "adaptive_default")
+
+
+def test_v05_default_system_prompt_is_byte_identical():
+    assert hashlib.sha256(SYSTEM_PROMPT.encode()).hexdigest() == (
+        "191ae4c066f2441a455cbedd127e518f18778bb49c5477e1609add028bed0409"
+    )
 
 
 def test_v06_prompt_swaps_acquisition_paragraph_and_keeps_v05_wording():

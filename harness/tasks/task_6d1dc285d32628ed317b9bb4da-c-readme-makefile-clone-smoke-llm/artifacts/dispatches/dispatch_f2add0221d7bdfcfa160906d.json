@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_f2add0221d7bdfcfa160906d",
+  "taskId": "task_6d1dc285d32628ed317b9bb4da",
+  "executionId": "exe_be2719292f0adc65faa7cc1baf",
+  "agentId": "de-infra",
+  "agentName": "AI4S 基础设施工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-terra",
+  "reasoningEffort": "medium",
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-pkgC-delivery",
+  "missionRef": "tasks/task_6d1dc285d32628ed317b9bb4da-c-readme-makefile-clone-smoke-llm/artifacts/missions/dispatch_f2add0221d7bdfcfa160906d.md",
+  "runtimeSessionId": "runtime_6003b8f9c9f33a4ae069637b",
+  "providerSessionId": "01a0958b-6e5a-7050-9383-105bc423758a",
+  "startedAt": "2026-09-12T12:15:37.544Z",
+  "endedAt": "2026-09-12T12:19:22.808Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/2f3293ab1650fc8294853ca034f10d7894dbcc302bfa3ac652b6fd3cc5785848",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_f2add0221d7bdfcfa160906d.jsonl",
+  "attemptGroupId": "dispatch_f2add0221d7bdfcfa160906d",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-terra"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

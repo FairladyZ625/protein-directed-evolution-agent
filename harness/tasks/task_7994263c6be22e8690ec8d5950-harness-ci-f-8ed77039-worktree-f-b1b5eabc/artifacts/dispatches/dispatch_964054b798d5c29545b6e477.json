@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_964054b798d5c29545b6e477",
+  "taskId": "task_7994263c6be22e8690ec8d5950",
+  "executionId": "exe_eb83e261a23f3fcb526cf0900b",
+  "agentId": "de-agent",
+  "agentName": "AI4S Agent 流水线工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-sol",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/stage",
+  "missionRef": "tasks/task_7994263c6be22e8690ec8d5950-harness-ci-f-8ed77039-worktree-f-b1b5eabc/artifacts/missions/dispatch_964054b798d5c29545b6e477.md",
+  "runtimeSessionId": "runtime_a5d7a8a10e3892651e3cb42e",
+  "providerSessionId": "01a095e4-aaef-7b91-a8b2-7ede601b57f4",
+  "startedAt": "2026-09-12T13:53:05.776Z",
+  "endedAt": "2026-09-12T13:56:32.136Z",
+  "outcome": "unknown",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/702e7dcd35a57afa4e96532ffe8a8067653ec30b6389f593c8ef6efea36838b9",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_964054b798d5c29545b6e477.jsonl",
+  "attemptGroupId": "dispatch_964054b798d5c29545b6e477",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-sol"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker exited with uncommitted changes in its worktree."
+}
