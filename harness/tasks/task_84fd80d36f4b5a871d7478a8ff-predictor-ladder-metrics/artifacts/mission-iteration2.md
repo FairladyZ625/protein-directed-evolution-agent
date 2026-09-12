@@ -40,3 +40,25 @@
 - 先 rebase 到最新 `origin/main`(05d6e4d),再动手;上面那几项 CEO 改动必须完整保留。
 - 独立 worktree。停止点 = 点名测试绿 + commit,不 push、不发 PR。
 - 发现 CEO 判断有误就带证据回报并停手。
+
+---
+
+# 重派(上一轮完全空转)
+
+上一轮这个任务派出去后,worker 的 clone `/private/tmp/ai4s-predictor-delivery` 的 HEAD
+仍是 `05d6e4d`,**连一处未提交改动都没有** —— 零产出。回执报 `succeeded` 但那是假回执。
+
+本轮 worktree 已备好:`.worktrees/t-predictor`(分支 `t-predictor`,基于最新 `origin/main`),
+`.venv`、`data/pools`、`features/cache` 已符号链接。**在这个 worktree 里干活,别自己开 clone。**
+
+上面 mission 的全部内容仍然有效。另外注意主线已前进,以下是**新增的、不得回退**的东西:
+
+- `models/alpha_sweep.py` 已在主线(answer-agnostic alpha 选择的参照实现)。
+- `evolution/results_layout.py` 的 `VERSIONS` 已改为
+  `{"workflow": "v1.1", "agentic": "v0.7", "analysis": "v0.1"}`,并注明 agentic v0.6/v0.7
+  是兄弟不是递进。你的指标表产物落 `workflow-v1.1`。
+- `agent/pipeline.py` 已被硬化(结构化角色 + 候选与实测集合求交);`knowledge/` 的规则
+  现在带 `enforcement: gate|advisory` 字段。这些都不要动。
+- `harness/reports/analysis-v0.1/` 下已有突变阶数分析的产物,其中的加性外推表用的正是
+  answer-agnostic alpha 选法(alpha* 实测为 0.01/1.0/10.0 各不同),可作为你补指标表时的
+  口径参照 —— **只读,不要改**。

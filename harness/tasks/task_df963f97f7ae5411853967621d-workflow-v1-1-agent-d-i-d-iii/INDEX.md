@@ -4,7 +4,7 @@ task_id: task_df963f97f7ae5411853967621d
 title: "workflow v1.1:Agent 推理过程显式化(位点重要性 + 突变组合理由)——结果展示 d-i/d-iii"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: planned
+  status: active
 packageDisposition: active
 vertical: software/coding
 preset: standard-task
@@ -26,7 +26,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task complete task_df963f97f7ae5411853967621d`.
+Run `ha task submit task_df963f97f7ae5411853967621d`.
 
 ## Gate Checks
 

@@ -7,7 +7,20 @@ agent propose successive rounds of mutations, using the real measured landscape 
 knowledge-enhanced-agent** strategies over several rounds and analyses where they
 succeed and fail.
 
-The full experimental report (8 sections, PDF) is at **[`reports/report.pdf`](reports/report.pdf)**.
+The full experimental report is at
+**[`reports/final-report-v0.5/scientific_report_v0.5_two_column.pdf`](reports/final-report-v0.5/scientific_report_v0.5_two_column.pdf)**
+(markdown source: [`reports/final-report-v0.5/report.md`](reports/final-report-v0.5/report.md)).
+
+Two trees, two jobs — this separation is deliberate:
+
+- **`reports/`** is the *report authoring* tree: `final-report-v0.x/` holds each report version's
+  markdown, figures, build scripts and rendered PDF.
+- **`harness/reports/`** is the *experiment artifact* tree: one self-contained folder per research
+  cycle, named `<line>-v<version>/` (see `evolution/results_layout.py`, which is the single source
+  of truth for this layout). Three method lines are current: `workflow-v1.1` (the delivery pipeline
+  on GB1), `agentic-v0.7` (the autonomous researcher on AAV), `analysis-v0.1` (read-only analyses
+  over already-measured data). A revision digest for the report writer lives at
+  [`harness/reports/REPORT-HANDOFF.md`](harness/reports/REPORT-HANDOFF.md).
 
 ## Dataset
 
@@ -88,8 +101,15 @@ exploration (`mean + λ·√var`) plus a BLOSUM62 conservativeness prior; `--no-
 
 `events/` is an append-only, chained-SHA-256 event log (+ SQLite projection + replay CLI): every
 campaign step and agent role is recorded and `verify()`-able. Separately, **every experiment run**
-appends an immutable entry to the master ledger `reports/experiment_log.jsonl` (command, params, git
-commit, artifact SHA-256, summary) — a complete, tamper-evident history.
+appends an immutable entry to the master ledger
+[`harness/reports/experiment_log.jsonl`](harness/reports/experiment_log.jsonl) (command, params, git
+commit, artifact SHA-256, summary).
+
+**Honest scope note:** that ledger currently covers the main closed-loop experiments (15 entries).
+It does not yet cover every historical run — the `analysis-v0.1` line and some early `agentic`
+versions are not registered in it. Treat it as a partial, append-only spine rather than a complete
+index; each version folder's own `manifest.json` and the per-run `metrics.json` are authoritative
+for that run.
 
 ## Interactive demo
 
@@ -113,7 +133,10 @@ pip install -r requirements.txt
 make smoke                                           # synthetic small landscape -> tmp/smoke/
 make test                                            # self-contained tests (same set as CI)
 make data                                            # validate a locally supplied full GB1 CSV
-python -m models.evaluate_all                         # predictor ladder comparison -> reports/predictor_metrics.json
+python -m models.evaluate_all                         # predictor ladder + standardisation ablation
+                                                      #   -> harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json
+python -m models.alpha_sweep                          # answer-agnostic alpha selection per feature
+                                                      #   -> harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json
 python -m evolution.campaign --cold-start low_hd      # four-strategy campaign (hard regime)
 streamlit run app/demo.py                             # interactive demo
 cp .env.example .env                                  # optional: add an LLM pool key, then add --use-llm
@@ -139,7 +162,8 @@ evolution/    mutation parsing, random baseline, four-strategy campaign, experim
 knowledge/    mutation rules + knowledge graph + validators
 events/       auditable event-stream kernel
 app/          Streamlit interactive demo
-reports/      metrics, figures, event streams, experiment ledger, report.pdf
+reports/      report authoring tree (final-report-v0.x: markdown, figures, build, PDF)
+harness/reports/  experiment artifacts, one folder per cycle (<line>-v<version>) + experiment ledger
 tests/        unit tests
 ```
 

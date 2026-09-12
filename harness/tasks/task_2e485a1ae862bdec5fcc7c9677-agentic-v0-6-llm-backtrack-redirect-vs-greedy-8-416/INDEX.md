@@ -26,7 +26,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task complete task_2e485a1ae862bdec5fcc7c9677 --consent`.
+Run `ha task complete task_2e485a1ae862bdec5fcc7c9677`.
 
 ## Gate Checks
 

@@ -10,9 +10,9 @@ Managed by `ha task review-execution`; legacy `review.md` is not authoritative.
 - Content digest: sha256:edf168eb51ee7cfb722d88ef2db748aacf51d68bcb2384aed5b5e027573fa79a
 - Submission digest: sha256:42981280c1ac94237d89b2add89be0804df9e075b566811fb3853520f75db579
 - Reviewed at: 2026-09-12T13:10:36.611Z
-- Consent: pending
-- Consent actor: pending
-- Consent source: pending
+- Consent: consent-2b149208a4ae372adab9736e
+- Consent actor: person-ai4s
+- Consent source: "local"
 
 ## Reason
 

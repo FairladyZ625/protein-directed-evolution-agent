@@ -1,77 +1,88 @@
-# Agent 推理过程显式化(位点重要性 + 突变组合理由)
+# Agent 推理过程:补「为什么组合某些突变」(结果展示 d-iii)
 
-产物版本:`workflow-v1.1` —— 交付主线下一版。
+产物版本:`workflow-v1.1`。
 
-## Objective
+## Brief
 
-### 依赖(重要:不要提前开工)
+试题「三、详细要求 → 结果展示 → d. 展示 Agent 的推理过程」四个子项里,本仓缺 iii
+「为什么组合某些突变」。范围**已由 CEO 复核后缩小**:i「发现哪些位点可能重要」已由包2
+交付(`AnalystReport.position_gains`,实测形如 `{39: 2.0, 40: 1.8, 41: 0.0, 54: 1.5}`),
+ii 已有(`Hypothesis.rationale` + `rule_ids`),iv 已有(critic 拒收 + 失败分析章节)。
+**本任务只做 iii。**
 
+## Goal
 
-本任务与 `task_d72b24d5452f2e96e6a94769b1`(包2:五角色流水线补三项硬约束)**改同一个文件**
-`agent/pipeline.py`。包2 在先,本任务必须在包2 的交付合入后、基于其结果开工,否则文件面冲突。
-派工由 CEO 在包2 落地后触发。
+`MutationDesigner` 组合单点成候选时,把组合理由结构化记录并落进事件流,
+使 `app/demo.py` 的五角色回放能展示「为什么把这几个突变组合在一起」。
 
-### 缺口(CEO 已核实)
+## Context
 
+依赖已解除:包2(task_d72b24d5452f2e96e6a94769b1)已合入主线。
+主线现在是 `origin/main` = `312ef0b`,自包含测试集合 42 passed。
 
-笔试题「三、详细要求 → 结果展示 → d. 展示 Agent 的推理过程」有四个子项,本仓**缺两个**:
+## Required Reading
 
-| 子项 | 状态 | 现状证据 |
-|---|---|---|
-| i. 发现哪些位点可能重要 | ❌ 缺 | 全仓 grep 无位点重要性输出 |
-| ii. 为什么选择某些氨基酸替换 | ✅ 有 | `Hypothesis.rationale` + `rule_ids` |
-| iii. 为什么组合某些突变 | ❌ 缺 | `MutationDesigner` 组合时不记理由 |
-| iv. 哪些推荐失败,原因可能是什么 | ✅ 有 | critic 拒收 + 失败分析章节 |
+- `agent/pipeline.py` 全文(尤其 `MutationDesigner` 与 `AnalystReport`)
+- `tests/test_agent.py`
+- `evolution/campaign.py:193` 附近(`_llm_hypothesis` 的 `state["source"]` fallback 记账法)
 
-## Scope
+## Entry Conditions
 
-### 要做什么
+worktree `.worktrees/t-reasoning` 已建好(分支 `t-reasoning`,基于 `origin/main`),
+`.venv` 与 `data/pools` 已符号链接。
 
+## Dependencies
 
-1. **位点重要性(子项 i)**:`DataAnalyst` 已经在统计替换频次,把它显式产出成
-   **位点重要性排序**——每个可变位点给一个重要性度量(至少两种口径:观测到的有益替换比例、
-   以及该位点上的最大实测增益),写进 `AnalystReport` 的结构化字段,并落进事件流。
-   不要只打印,要进 schema —— 前端要读它。
-2. **组合理由(子项 iii)**:`MutationDesigner` 把每个候选组合的**生成理由**记下来:
-   哪几个单点被选中、为什么组合它们(例如各自的单点增益、位点是否互不冲突、
-   是否命中某条规则)。理由要引 `rule_ids`,与现有 `Hypothesis.rationale` 的做法一致。
-   落进事件流,让模块②的五角色回放能展示出来。
-3. **前端可见**:`app/demo.py` 的五角色回放模块要能把上面两样展示出来。
-   注意 demo 另有 worker 在改(`task_2f3e8c6ef4a9fe116477c3b70c` 加 WT 输入),
-   本任务开工时那边应已合入;若仍在飞,**只改 pipeline 侧并把前端改动留成后续任务**,
-   不要和它抢同一个文件。
+包2 已合入,无剩余阻塞。注意 `Makefile`/`README.md` 与 `app/demo.py` 另有 worker 在飞。
 
-### 交付物
+## Execution Surface
 
+可动:`agent/pipeline.py`、`tests/test_agent.py`、`harness/reports/workflow-v1.1/` 下一份
+展示样例。**不要动** `evolution/campaign.py`、`models/`、`knowledge/`、`events/`、
+`app/demo.py`、`Makefile`、`README.md`。
 
-- 改造后的 `agent/pipeline.py`(位点重要性进 `AnalystReport`;组合理由进候选与事件流)。
-- `tests/test_agent.py` 补测试:断言位点重要性字段存在且数值与手算一致;
-  断言组合理由非空且引了 `rule_ids`;**阳性对照**——把重要性统计改坏后测试要红。
-- `harness/reports/workflow-v1.1/` 下一份展示样例(一轮的位点重要性表 + 若干组合理由)。
+## Constraints
 
-## Approach
+**不得回退**(包2 与集成收口刚做的):
+- `run_pipeline` 签名 `(pool, predictor, *, event_store, llm_hypothesis, llm_critic, budget,
+  round_id, no_knowledge)` —— `evolution/campaign.py` 在调它。
+- 候选与 149,361 实测集合**求交**的约束。
+- 知识规则的 `enforcement: gate|advisory` 分类,`ScientificCritic` 只对 gate 类求 `all()`。
+- `AnalystReport.position_gains`。
 
-### 诚实性约束
+**诚实性**:组合理由里的统计量(单点增益等)是**从实测数据算出来的,不是 LLM 说的**,
+字段命名与展示必须能区分「统计量」与「LLM 生成的自然语言」。LLM 不可用时走 fallback,
+`state["source"]` 如实记 `fallback`,**不许把 fallback 的理由展示成 LLM 的推理**。
 
+## Checkpoint
 
-- 「位点重要性」是**从实测数据统计出来的**,不是 LLM 说的。要在字段命名与报告里区分清楚
-  哪些是统计量、哪些是 LLM 生成的自然语言理由。
-- LLM 不可用时走 fallback,`state["source"]` 要如实记成 `fallback`(沿用现有机制),
-  **不许把 fallback 的理由展示成 LLM 的推理**。
+若发现 i 其实没交付完整、或组合理由无法在不改 `run_pipeline` 签名的前提下落进事件流,
+**带证据回报并停手**。
+
+## CI/Gate Authority Stop Condition
+
+停止点 = `pytest tests/test_agent.py tests/test_campaign.py` 绿 + commit。
+**不 push、不发 PR、不打 tag。** 不要跑全量矩阵(同机有其他 worker)。
+
+## Implementation Plan
+
+`MutationDesigner` 记录每个候选组合的理由,至少说明:哪几个单点被选中组合;
+**为什么组合它们**(引用各自单点增益、位点是否互不冲突、命中了哪条规则);并引 `rule_ids`,
+与现有 `Hypothesis.rationale` 做法一致。理由**进 schema**(不是只打印)并**落进事件流**。
+
+## Deliverable Contract
+
+- 改造后的 `agent/pipeline.py`。
+- `tests/test_agent.py` 新增测试。
+- `harness/reports/workflow-v1.1/` 下一份展示样例(一轮的若干组合理由)。
+
+## Evidence Protocol
+
+- 断言组合理由**非空**、**引了 `rule_ids`**、**能在事件流里找到**。
+- **阳性对照**:把理由生成改坏后测试必须变红。空结果不算通过。
+- 区分标注哪些字段是实测统计量、哪些是 LLM 文本。
 
 ## Verification
 
-### 验收(CEO 亲验)
-
-
-- `pytest tests/test_agent.py` 在冻结提交树上全绿,阳性对照真的能红。
-- 我会自己手算一个位点的重要性数值核对,并在事件流里 grep 组合理由。
-
-## Handoff
-
-### 边界
-
-
-- 独立 worktree,基于包2 合入后的 `origin/main`。
-- **只动** `agent/pipeline.py`、`tests/test_agent.py`、`harness/reports/workflow-v1.1/`。
-- 停止点 = 点名测试绿 + commit。**不 push、不发 PR。**
+- `pytest tests/test_agent.py tests/test_campaign.py` 在冻结提交树上全绿。
+- CEO 会自己在事件流里 grep 组合理由,并手算一个单点增益核对。
