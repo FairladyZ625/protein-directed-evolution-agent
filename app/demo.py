@@ -24,8 +24,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:  # streamlit run 不保证把仓库根加进 sys.path
     sys.path.insert(0, str(ROOT))
 
-from agent.llm import llm_available, llm_config  # noqa: E402
-from evolution.mutations import validate_variant, variant_to_mutations  # noqa: E402
+from agent.llm import llm_config  # noqa: E402
+from evolution.mutations import validate_variant  # noqa: E402
 
 from evolution.results_layout import run_dir  # noqa: E402
 _GB1 = run_dir("workflow", "gb1", create=False)
@@ -45,7 +45,8 @@ PREDICTOR_JSON = _GB1 / "predictor_ladder.json"
 TRAIN_POOL = ROOT / "data" / "pools" / "train_pool.csv"
 LANDSCAPE_CSV = ROOT / "data" / "four_mutations_full_data.csv"
 
-WT = "VDGV"  # V39 / D40 / G41 / V54
+REFERENCE_WT = "VDGV"  # GB1 dataset reference at V39 / D40 / G41 / V54
+MUTABLE_POSITIONS = (39, 40, 41, 54)
 STRATEGY_LABELS = {
     "random": "① random 随机基线",
     "greedy": "② greedy 贪心（Ridge 全空间打分）",
@@ -375,7 +376,7 @@ def render_role_chain(chain: dict[str, dict], strategy: str, round_id: int) -> N
                 with c1:
                     st.caption(f"观测池 {payload.get('n_observations', 0):,} 条")
                     if gains:
-                        labeled = {f"{WT[i]}{p}": v for i, (p, v) in enumerate(sorted(gains.items(), key=lambda kv: int(kv[0])))}
+                        labeled = {f"{REFERENCE_WT[i]}{p}": v for i, (p, v) in enumerate(sorted(gains.items(), key=lambda kv: int(kv[0])))}
                         st.bar_chart(pd.Series(labeled, name="位点平均增益"))
                 with c2:
                     subs = payload.get("substitutions", [])
@@ -468,8 +469,62 @@ def render_replay_module() -> None:
 # ---------------------------------------------------------------- 模块③：实时试玩 + 自动推荐
 
 
+def relative_mutations(variant: str, wild_type: str) -> tuple[str, ...]:
+    """Describe a four-site variant relative to the WT entered in this demo."""
+    normalized_variant = validate_variant(variant)
+    normalized_wt = validate_variant(wild_type)
+    return tuple(
+        f"{source}{position}{target}"
+        for source, position, target in zip(normalized_wt, MUTABLE_POSITIONS, normalized_variant)
+        if source != target
+    )
+
+
+def single_mutant_candidates(wild_type: str) -> tuple[str, ...]:
+    """The input-dependent menu: every one-step substitution from this WT."""
+    from evolution.mutations import AMINO_ACIDS
+
+    normalized_wt = validate_variant(wild_type)
+    return tuple(
+        normalized_wt[:site] + residue + normalized_wt[site + 1:]
+        for site, source in enumerate(normalized_wt)
+        for residue in AMINO_ACIDS
+        if residue != source
+    )
+
+
+def recommend_from_wild_type(wild_type: str, predictor, *, top_k: int = 10) -> list[dict]:
+    """Score the input WT's one-step menu with the existing one-hot Ridge model.
+
+    This deliberately does not use the campaign oracle: the displayed values are
+    predictions, so a WT absent from the measured landscape is never presented as
+    experimentally grounded.
+    """
+    from features.one_hot import encode_one_hot
+
+    normalized_wt = validate_variant(wild_type)
+    candidates = single_mutant_candidates(normalized_wt)
+    means, variances = predictor.predict(encode_one_hot(candidates))
+    wt_mean = float(predictor.predict(encode_one_hot([normalized_wt]))[0][0])
+    ranked = sorted(zip(candidates, means, variances), key=lambda row: (-float(row[1]), row[0]))[:top_k]
+    return [
+        {"variant": variant, "mutations": relative_mutations(variant, normalized_wt),
+         "predicted_fitness": float(mean), "predicted_variance": float(variance),
+         "predicted_gain_vs_wt": float(mean) - wt_mean}
+        for variant, mean, variance in ranked
+    ]
+
+
+def recommendation_disclaimer(wild_type: str, observed_variants: set[str]) -> str:
+    """Honest label for recommendations; never imply an unmeasured WT was assayed."""
+    normalized_wt = validate_variant(wild_type)
+    if normalized_wt not in observed_variants:
+        return f"`{normalized_wt}` 无实测基准；以下推荐的 fitness 为**模型预测值而非实测值**。"
+    return "以下推荐的 fitness 为**模型预测值，不是实测结果**。"
+
+
 def render_playground_module() -> None:
-    st.subheader("③ 实时试玩——输入变体秒级打分；一键跑一轮 agent 推荐")
+    st.subheader("③ 实时试玩——输入野生型后自动推荐突变方案")
     has_landscape = load_landscape() is not None
     has_pool = TRAIN_POOL.exists()
     if not has_pool:
@@ -478,27 +533,39 @@ def render_playground_module() -> None:
     if not has_landscape:
         st.info(
             "未找到 `data/four_mutations_full_data.csv`（46 MB 真值表，不入库）。"
-            "打分仍可用（one-hot + Ridge），但**真值校验、分位与自动推荐不可用**。"
+            "打分与模型推荐仍可用（one-hot + Ridge），但没有真值校验和分位。"
         )
+
+    raw_wild_type = st.text_input("野生型（4 个标准氨基酸，V39/D40/G41/V54）",
+                                  value=st.session_state.get("m3_wt", REFERENCE_WT), key="m3_wt_input")
+    try:
+        wild_type = validate_variant(raw_wild_type)
+    except ValueError as exc:
+        st.error(f"野生型输入无效：{exc}")
+        return
+    st.session_state["m3_wt"] = wild_type
+    _, truth = landscape_arrays()
+    disclaimer = recommendation_disclaimer(wild_type, set(truth))
+    if wild_type not in truth:
+        st.warning(disclaimer)
+    else:
+        st.caption(disclaimer)
 
     tab_a, tab_b = st.tabs(["(a) 变体打分", "(b) 自动推荐一轮"])
 
     with tab_a:
-        _render_scorer(has_landscape)
+        _render_scorer(has_landscape, wild_type)
     with tab_b:
-        if has_landscape:
-            _render_recommender()
-        else:
-            st.info("自动推荐需要真值表（oracle 查表），当前停等。")
+        _render_recommender(wild_type, has_landscape)
 
 
-def _render_scorer(has_landscape: bool) -> None:
+def _render_scorer(has_landscape: bool, wild_type: str) -> None:
     st.markdown(
-        f"输入 4 位点变体（位点 V39/D40/G41/V54，野生型 `{WT}`）→ one-hot 80 维 → "
+        f"输入 4 位点变体（位点 V39/D40/G41/V54，当前野生型 `{wild_type}`）→ one-hot 80 维 → "
         "Ridge 集成（`models.train_ladder.RidgePredictor`，在 `data/pools/train_pool.csv` 上拟合）"
         "输出预测 mean/var；有真值表时同时给出真实 fitness 与全表分位。"
     )
-    default = st.session_state.get("m3_variant", WT)
+    default = st.session_state.get("m3_variant", wild_type)
     variant = st.text_input("变体（4 个标准氨基酸）", value=default, key="m3_input").strip().upper()
     c1, c2, c3 = st.columns(3)
     c1.caption("试试已知名次：")
@@ -506,7 +573,7 @@ def _render_scorer(has_landscape: bool) -> None:
         st.session_state["m3_variant"] = "FWAA"
         st.rerun()
     if c3.button("VDGV（野生型）"):
-        st.session_state["m3_variant"] = WT
+        st.session_state["m3_variant"] = wild_type
         st.rerun()
 
     try:
@@ -525,7 +592,7 @@ def _render_scorer(has_landscape: bool) -> None:
 
     fitness_sorted, truth = landscape_arrays()
     true_fitness = truth.get(normalized)
-    muts = [str(m) for m in variant_to_mutations(normalized)] or ["（无突变 = 野生型）"]
+    muts = list(relative_mutations(normalized, wild_type)) or ["（无突变 = 野生型）"]
     st.markdown("突变记号：" + " · ".join(f"`{m}`" for m in muts))
 
     cols = st.columns(4)
@@ -541,8 +608,10 @@ def _render_scorer(has_landscape: bool) -> None:
     elif fitness_sorted is not None:
         pct = float((fitness_sorted < true_fitness).mean() * 100)
         rank = int((fitness_sorted > true_fitness).sum()) + 1
+        wt_fitness = truth.get(wild_type)
         cols[2].metric("真实 fitness", f"{float(true_fitness):.3f}",
-                       delta=f"{float(true_fitness) - 1.0:+.3f} vs WT", delta_color="normal")
+                       delta=(f"{float(true_fitness) - float(wt_fitness):+.3f} vs 输入 WT"
+                              if wt_fitness is not None else "输入 WT 无实测基准"), delta_color="normal")
         cols[3].metric("全表分位", f"{pct:.2f}%", delta=f"排名 #{rank:,} / 149,361", delta_color="off")
         if float(true_fitness) > 1.0:
             st.success(f"真实 fitness {float(true_fitness):.3f} > 1.0，为有益突变。")
@@ -560,16 +629,21 @@ def _render_scorer(has_landscape: bool) -> None:
         )
 
 
-def _strict_knowledge_check(variants: list[str]) -> pd.DataFrame | None:
+def _strict_knowledge_check(variants: list[str], wild_type: str) -> pd.DataFrame | None:
     """只读预演：用知识库规则（no_knowledge=False）复核推荐，展示「打架」案例。不写任何事件。"""
+    if wild_type != REFERENCE_WT:
+        return pd.DataFrame([{
+            "variant": "—", "mutations": "—", "verdict": "未运行",
+            "failed_rules": "现有知识规则锚定标准 GB1 WT VDGV；自定义 WT 仅展示 Ridge 模型预测。",
+        }])
     from knowledge.validators import validate_candidate
 
     rows = []
     for v in variants:
-        muts = [str(m) for m in variant_to_mutations(v)]
+        muts = list(relative_mutations(v, wild_type))
         checks = validate_candidate(muts, no_knowledge=False)
         failed = [c for c in checks if not c["pass"]]
-        rows.append({"variant": v, "mutations": " ".join(muts) or "WT",
+        rows.append({"variant": v, "mutations": " ".join(muts) or "输入 WT",
                      "verdict": "🚫 拒稿" if failed else "✅ 放行",
                      "failed_rules": "; ".join(f"{c['rule_id']}（{c['note']}）" for c in failed) or "—"})
     return pd.DataFrame(rows)
@@ -585,83 +659,63 @@ def _run_recommendation(strategy: str, budget: int, use_llm: bool):
     return result, recorder.events
 
 
-def _render_recommender() -> None:
+def _render_recommender(wild_type: str, has_landscape: bool) -> None:
     st.markdown(
-        "复用 T7 `evolution.campaign.run_campaign`（`n_rounds=1`）跑一轮闭环推荐：冷启动池 → "
-        "五角色流水线提名 → 模型打分 → acquisition 选 top-k → oracle 查表。"
-        "确定性模式秒级出结果；LLM 模式调用自有 API 池（异常自动降级并如实标注 `llm_source`）。"
-        "**所有事件只进内存录制器，本看板不向事件流写任何字节。**"
+        "以当前输入 WT 为中心枚举 76 个**单点**替换，用现有 one-hot Ridge 逐个打分并取 Top-k。"
+        "因此候选菜单、突变记号与“相对 WT 增益”都会随输入重算。表中的 fitness **均为模型预测值，不是实测结果**。"
+        "标准 `VDGV` 时额外复用 T7 `evolution.campaign.run_campaign` 跑一轮内存闭环以展示五角色回放；"
+        "该内核尚不接受自定义 WT 参数，故不会把其标准 WT oracle 结果冒充为自定义 WT 的实验结果。"
+        "**所有事件只进内存 recorder，本看板不向事件流写任何字节。**"
     )
-    c1, c2, c3 = st.columns(3)
+    c1, c2 = st.columns(2)
     with c1:
-        strategy = st.radio("策略", ["agent_no_knowledge", "knowledge_agent"],
-                            format_func=STRATEGY_LABELS.get, key="m3b_strategy")
+        top_k = st.slider("推荐数量（Top-k）", 3, 20, 10, key="m3b_top_k")
     with c2:
-        budget = st.slider("本轮预算（提名数）", 12, 96, 48, step=12, key="m3b_budget")
-    with c3:
-        can_llm = llm_available()
-        hint = "" if can_llm else "未检测到 .env（API_KEY），LLM 选项自动禁用"
-        use_llm = st.checkbox("用 LLM（较慢，可能降级）", value=False, disabled=not can_llm,
-                              help=hint or "Hypothesis Generator 走自有 API 池；失败自动回退确定性路径", key="m3b_llm")
         strict = st.checkbox("严格知识校验预演", value=True,
-                             help="对 top-k 逐个跑 knowledge/validators 规则（no_knowledge=False），"
-                                  "展示知识库会拦下哪些 agent 提名", key="m3b_strict")
+                             help="标准 VDGV 时对 Top-k 跑 knowledge/validators；自定义 WT 不套用固定 WT 规则。",
+                             key="m3b_strict")
 
-    if st.button("🚀 跑一轮推荐", type="primary", key="m3b_run"):
-        with st.spinner("运行中：确定性模式约 3 秒；LLM 模式取决于 API 池时延 …"):
-            result, events = _run_recommendation(strategy, budget, use_llm)
-        st.session_state["m3b_result"] = result
-        st.session_state["m3b_events"] = events
-        st.session_state["m3b_key"] = (strategy, budget, use_llm)
+    if st.button("🚀 自动推荐", type="primary", key="m3b_run"):
+        with st.spinner("用已缓存的 Ridge 对当前 WT 的单点菜单打分 …"):
+            recommendations = recommend_from_wild_type(wild_type, fit_predictor()[0], top_k=top_k)
+            trace = None
+            if wild_type == REFERENCE_WT and has_landscape:
+                # The campaign's standard-GB1 trace is useful provenance, but its
+                # oracle fitness is deliberately kept out of the prediction table.
+                trace = _run_recommendation("knowledge_agent", max(12, top_k), False)
+        st.session_state["m3b_recommendations"] = recommendations
+        st.session_state["m3b_trace"] = trace
+        st.session_state["m3b_key"] = (wild_type, top_k)
 
-    result = st.session_state.get("m3b_result")
-    events = st.session_state.get("m3b_events")
+    recommendations = st.session_state.get("m3b_recommendations")
+    trace = st.session_state.get("m3b_trace")
     key = st.session_state.get("m3b_key")
-    if result is None:
+    if recommendations is None:
         st.caption("点击上方按钮开始（尚未运行）。")
         return
-    if key and key[0] != strategy:
-        st.info("左侧策略已切换，重新点击「跑一轮推荐」查看该策略结果。")
-
-    chosen = result["strategies"][key[0]]
-    rounds = chosen.get("rounds", [])
-    if not rounds:
-        st.warning("该策略本轮没有产出（候选耗尽）。")
+    if key != (wild_type, top_k):
+        st.info("野生型或 Top-k 已变更，重新点击「自动推荐」更新结果。")
         return
-    payload = rounds[0]
-    llm_source = payload.get("llm_source", "deterministic")
-    st.success(
-        f"完成：提名 {payload['n_nominated']} 个 · 当轮 top10_max {payload['top10_max']:.3f} · "
-        f"累计 top10_max {payload['cum_top10_max']:.3f} · `llm_source={llm_source}`"
-    )
-    if use_llm and llm_source == "fallback":
-        st.warning("本轮 LLM 调用失败，已降级到确定性路径（llm_source=fallback）。")
-
-    # 预测（角色事件里的模型分）与 oracle 真值对照
-    pred = {}
-    for event in events:
-        if event["event_type"] == "agent.role.completed" and event["actor"] == "fitness_evaluator":
-            pred = {c["sequence"]: (c["mean"], c["variance"]) for c in event["payload"]["candidates"]}
-            break
-    rows = []
-    for variant, true_fitness in payload.get("top10", []):
-        p_mean, p_var = pred.get(variant, (None, None))
-        rows.append({"variant": variant, "真实 fitness": round(float(true_fitness), 3),
-                     "预测 mean": round(p_mean, 3) if p_mean is not None else "—",
-                     "预测 var": f"{p_var:.1e}" if p_var is not None else "—"})
-    st.markdown(f"**Top-10 推荐突变方案**（获取函数：{chosen.get('acquisition', '')}）")
+    st.success(f"完成：已对 `{wild_type}` 的 76 个单点候选打分，以下为预测 Top-{top_k}。")
+    rows = [{"推荐变体": row["variant"], "相对输入 WT 的突变": " ".join(row["mutations"]),
+             "预测 fitness（非实测）": round(row["predicted_fitness"], 3),
+             "预测增益 vs 输入 WT": round(row["predicted_gain_vs_wt"], 3),
+             "预测 var": f"{row['predicted_variance']:.1e}"}
+            for row in recommendations]
+    st.markdown(f"**Top-{top_k} 推荐突变方案（模型预测，非实测）**")
     st.dataframe(pd.DataFrame(rows), width='stretch', hide_index=True)
 
     if strict:
         st.markdown("**严格知识校验预演**（只读复核，不写事件流）")
-        st.dataframe(_strict_knowledge_check([v for v, _ in payload.get("top10", [])]),
+        st.dataframe(_strict_knowledge_check([r["variant"] for r in recommendations], wild_type),
                      width='stretch', hide_index=True)
 
-    st.markdown("**本轮五角色推理链**（与模块②同一渲染器；事件来自内存录制器）")
-    chains = role_chains(attribute_strategies(events))
-    chain = chains.get((key[0], payload["round"]))
-    if chain:
-        render_role_chain(chain, key[0], payload["round"])
+    if trace is not None:
+        result, events = trace
+        st.markdown("**标准 VDGV 的单轮五角色闭环追踪**（事件来自内存 recorder）")
+        chain = role_chains(attribute_strategies(events)).get(("knowledge_agent", 1))
+        if chain:
+            render_role_chain(chain, "knowledge_agent", 1)
 
 
 # ---------------------------------------------------------------- 入口
