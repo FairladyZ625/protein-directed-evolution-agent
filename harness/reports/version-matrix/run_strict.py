@@ -92,6 +92,7 @@ def run_strict(version: str, seed: int, out_dir: Path) -> dict[str, Any]:
         "request_id": 0,
         "llm_tool_calls": 0,
         "llm_round_errors": 0,
+        "live_llm_requests": 0,
         "live_llm_rounds": 0,
         "harness_fill_rounds": 0,
         "harness_fill_nominations": 0,
@@ -392,6 +393,7 @@ def run_strict(version: str, seed: int, out_dir: Path) -> dict[str, Any]:
     rounds: list[dict[str, Any]] = []
     cumulative_batches: list[pd.DataFrame] = []
     llm_summaries: list[str] = []
+    max_live_requests_per_round = 4
     for round_id in range(1, n_rounds + 1):
         state["round"] = round_id
         state["round_quota_remaining"] = budget
@@ -402,32 +404,54 @@ def run_strict(version: str, seed: int, out_dir: Path) -> dict[str, Any]:
             f"Round {round_id} of {n_rounds}. This round has exactly {budget} experiment slots. "
             "Analyse with the tools, then call test on candidates you choose. You may split the "
             "48 nominations across calls, but this round cannot borrow from another round. "
-            "Deliberately balance exploitation and exploration, then note what you learned."
+            "You must spend all 48 slots with live tool calls before returning. Deliberately "
+            "balance exploitation and exploration, then note what you learned."
         )
-        try:
-            result = agent.run_sync(prompt, message_history=history, **kwargs)
-            history = result.all_messages()
-            llm_summaries.append(str(getattr(result, "output", ""))[:800])
-            state["live_llm_rounds"] += 1
-        except Exception as exc:  # preserve the failure, then apply preregistered fill
-            state["llm_round_errors"] += 1
-            emit(
-                "agent.llm.round_error",
-                "agent",
-                {"round": round_id, "error": str(exc)[:400]},
+        for request_in_round in range(1, max_live_requests_per_round + 1):
+            try:
+                result = agent.run_sync(prompt, message_history=history, **kwargs)
+                state["live_llm_requests"] += 1
+                history = result.all_messages()
+                llm_summaries.append(
+                    {
+                        "round": round_id,
+                        "request_in_round": request_in_round,
+                        "output": str(getattr(result, "output", ""))[:800],
+                    }
+                )
+            except Exception as exc:
+                state["llm_round_errors"] += 1
+                emit(
+                    "agent.llm.round_error",
+                    "agent",
+                    {"round": round_id, "error": str(exc)[:400]},
+                )
+                raise RuntimeError(
+                    f"live LLM failed in round {round_id}; strict replay forbids fallback"
+                ) from exc
+            if state["round_quota_remaining"] == 0:
+                break
+            prompt = (
+                f"Round {round_id} is still active. You have "
+                f"{state['round_quota_remaining']} experiment slots left. Use the tools now and "
+                "call test on exactly that many valid unmeasured candidates before returning; "
+                "do not leave any slot for a harness fill."
             )
         if state["round_quota_remaining"]:
-            missing = state["round_quota_remaining"]
-            state["driver"] = "harness_fill"
-            state["harness_fill_rounds"] += 1
-            state["harness_fill_nominations"] += missing
             emit(
                 "agent.llm.underfilled_round",
                 "agent",
-                {"round": round_id, "missing": missing, "policy": "predicted_mean"},
+                {
+                    "round": round_id,
+                    "missing": state["round_quota_remaining"],
+                    "policy": "abort_without_fallback",
+                },
             )
-            fill = list_pool(missing, "predicted_mean")
-            test(fill)
+            raise RuntimeError(
+                f"live LLM underfilled round {round_id} after "
+                f"{max_live_requests_per_round} requests; strict replay forbids fallback"
+            )
+        state["live_llm_rounds"] += 1
         if state["round_quota_remaining"] != 0 or len(state["round_nominations"]) != budget:
             raise RuntimeError(
                 f"round {round_id} could not be filled: "
@@ -484,6 +508,7 @@ def run_strict(version: str, seed: int, out_dir: Path) -> dict[str, Any]:
         },
         "execution": {
             "live_llm_rounds": state["live_llm_rounds"],
+            "live_llm_requests": state["live_llm_requests"],
             "live_llm_tool_calls": state["llm_tool_calls"],
             "llm_round_errors": state["llm_round_errors"],
             "harness_fill_rounds": state["harness_fill_rounds"],

@@ -1,0 +1,28 @@
+{
+  "version": "v0.1",
+  "seed": 42,
+  "round_counts": [
+    48,
+    48,
+    48,
+    48,
+    48,
+    48
+  ],
+  "budget_spent": 288,
+  "cum_top10_max": 7.7497,
+  "strong": 55,
+  "model": "gpt-5.6-sol",
+  "live_llm_rounds": 6,
+  "live_llm_requests": 6,
+  "live_llm_tool_calls": 49,
+  "llm_round_errors": 0,
+  "harness_fill_rounds": 0,
+  "harness_fill_nominations": 0,
+  "fallback_count": 0,
+  "positive_heldout_spearman": 0.9087434833952881,
+  "shuffle_heldout_spearman": 0.05419095312898431,
+  "shuffle_abs_below_0_1": true,
+  "event_count": 49,
+  "event_chain_verified": true
+}

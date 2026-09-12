@@ -1,0 +1,22 @@
+{
+  "schema_version": "version-matrix.failure.v1",
+  "status": "failed_preregistered_live_quota",
+  "version": "v0.1",
+  "seed": 1,
+  "model": "gpt-5.6-sol",
+  "failed_round": 1,
+  "budget_per_round": 48,
+  "live_llm_requests_attempted": 4,
+  "requested_in_test_call": 47,
+  "duplicate_requests": 1,
+  "live_nominations_measured": 46,
+  "round_quota_remaining": 2,
+  "llm_round_errors": 0,
+  "harness_fill_nominations": 0,
+  "fallback_count": 0,
+  "event_count": 7,
+  "event_chain_verified": true,
+  "last_event": "agent.llm.underfilled_round",
+  "events_sha256": "2db6594669fb3509d27104d5d7dc5c61c2c299f0855ddaeaa1069f59c14a3675",
+  "disposition": "Stopped without retry or deterministic fill because the preregistered all-live acceptance gate was not met."
+}

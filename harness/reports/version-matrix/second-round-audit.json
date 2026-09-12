@@ -1,0 +1,122 @@
+{
+  "schema_version": "version-matrix.audit.v1",
+  "status": "stopped_on_preregistered_v0.1_seed_expansion_failure",
+  "successful_runs": [
+    {
+      "version": "v0.1",
+      "seed": 0,
+      "round_counts": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "nominations": 288,
+      "unique_nominations": 288,
+      "all_live": true,
+      "oracle_hd_fitness_exact": true,
+      "predictions_finite": true,
+      "cum_top10_max_recomputed": 5.961,
+      "strong_recomputed": 48,
+      "model": "gpt-5.6-sol",
+      "live_llm_requests": 6,
+      "shuffle_heldout_spearman": -0.02452182419357366,
+      "event_chain_verified": true,
+      "metrics_sha256": "9a23f4fbf99212bc487e06d721aa85a0e26b8310533a5f52ba296c9a6c0a4365",
+      "events_sha256": "9f8ac2a1e10aa53e891423bea25f8a406cb8ce256f33d127f4dc8388d9784128"
+    },
+    {
+      "version": "v0.1",
+      "seed": 7,
+      "round_counts": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "nominations": 288,
+      "unique_nominations": 288,
+      "all_live": true,
+      "oracle_hd_fitness_exact": true,
+      "predictions_finite": true,
+      "cum_top10_max_recomputed": 5.961,
+      "strong_recomputed": 36,
+      "model": "gpt-5.6-sol",
+      "live_llm_requests": 8,
+      "shuffle_heldout_spearman": 0.004800762867762849,
+      "event_chain_verified": true,
+      "metrics_sha256": "a25f1e519615d1779ba41be1923117fc93b569d0abe0f75fca8db10f27e2d061",
+      "events_sha256": "cb67d6c3feef375630554c337303cb94dbafd1d66dcd1cd190cb03585c842353"
+    },
+    {
+      "version": "v0.1",
+      "seed": 42,
+      "round_counts": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "nominations": 288,
+      "unique_nominations": 288,
+      "all_live": true,
+      "oracle_hd_fitness_exact": true,
+      "predictions_finite": true,
+      "cum_top10_max_recomputed": 7.7497,
+      "strong_recomputed": 55,
+      "model": "gpt-5.6-sol",
+      "live_llm_requests": 6,
+      "shuffle_heldout_spearman": 0.05419095312898431,
+      "event_chain_verified": true,
+      "metrics_sha256": "2ec209ceafdeaa4005a33203510f3ea6e7b0229e0644872eaaaff775ada822d3",
+      "events_sha256": "6469d0dd7d9657817182c70a1c53a2fb9fa788bfd6906fdd19d63c5bcdea2d26"
+    }
+  ],
+  "v0.1_three_seed": {
+    "seeds": [
+      0,
+      7,
+      42
+    ],
+    "cum_top10_max": [
+      5.961,
+      5.961,
+      7.7497
+    ],
+    "cum_top10_max_mean": 6.5572333333333335,
+    "cum_top10_max_sample_sd": 1.0327064264994834,
+    "strong": [
+      48,
+      36,
+      55
+    ],
+    "strong_mean": 46.333333333333336,
+    "strong_sample_sd": 9.60902353693305,
+    "expanded_by_preregistered_sd_gate": true
+  },
+  "failed_run": {
+    "version": "v0.1",
+    "seed": 1,
+    "status": "failed_preregistered_live_quota",
+    "failed_round": 1,
+    "live_nominations_measured": 46,
+    "round_quota_remaining": 2,
+    "harness_fill_nominations": 0,
+    "fallback_count": 0,
+    "event_chain_verified": true,
+    "events_sha256": "2db6594669fb3509d27104d5d7dc5c61c2c299f0855ddaeaa1069f59c14a3675"
+  },
+  "unverified": [
+    "v0.1 ten-seed endpoint distribution",
+    "v0.2 unified reruns",
+    "v0.4-LLM unified reruns",
+    "seven-version consolidated matrix",
+    "post-unification version ranking"
+  ]
+}
