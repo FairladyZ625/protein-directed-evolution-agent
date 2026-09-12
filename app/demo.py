@@ -208,6 +208,13 @@ def render_campaign_module(metrics: dict) -> None:
     st.pyplot(fig, width='stretch')
 
     finals = metrics.get("summary", {})
+    # 随机基线在产物里有两处数字:summary.* 是 seed 42 单次,strategies.random.multi_seed
+    # 是 5 个 seed 的均值±标准差。三个 regime 的单 seed 值看起来有明显大小关系,而多 seed
+    # 统计显示它们在 ±1σ 内完全重叠——引单 seed 会读出一个统计上不存在的趋势(fact
+    # F-6394AB50)。指标卡默认展示的就是读者会引用的数字,所以这里对随机基线直接把均值±σ
+    # 标出来,不把它藏在「选做」开关后面。
+    random_multi = strategies.get("random", {}).get("multi_seed") or {}
+    random_last = (random_multi.get("rounds") or [{}])[-1]
     cols = st.columns(4)
     for col, name in zip(cols, STRATEGY_LABELS):
         with col:
@@ -215,12 +222,24 @@ def render_campaign_module(metrics: dict) -> None:
             if not s:
                 st.metric(STRATEGY_LABELS[name], "—")
                 continue
-            st.metric(
-                STRATEGY_LABELS[name],
-                f"{s['final_cum_top10_max']:.3f}",
-                delta=f"top10_mean {s['final_cum_top10_mean']:.3f} · 强结合体 {s['final_cum_n_strong']}",
-                delta_color="off",
-            )
+            caption = (f"top10_mean {s['final_cum_top10_mean']:.3f} · "
+                       f"强结合体 {s['final_cum_n_strong']}")
+            if name == "random" and random_last.get("cum_top10_max_std") is not None:
+                caption = (f"{random_multi.get('n_runs', '?')} seed 均值 "
+                           f"{random_last['cum_top10_max_mean']:.3f} ± "
+                           f"{random_last['cum_top10_max_std']:.3f} · "
+                           f"上方数字是 seed 42 单次")
+            st.metric(STRATEGY_LABELS[name], f"{s['final_cum_top10_max']:.3f}",
+                      delta=caption, delta_color="off")
+    if random_last.get("cum_top10_max_std") is not None:
+        st.caption(
+            "口径:随机基线请引用 "
+            f"**{random_multi.get('n_runs', '?')} seed 均值 "
+            f"{random_last['cum_top10_max_mean']:.3f} ± {random_last['cum_top10_max_std']:.3f}**,"
+            "不要引卡片上那个 seed 42 单次值——三个 regime 的单 seed 值看似有大小关系,"
+            "而多 seed 统计显示它们在 ±1σ 内重叠,并无差异。"
+            "其余三个策略目前只有单 seed(42),策略之间的差值没有误差棒。"
+        )
 
     with st.expander("每轮明细（top10 当轮实测）"):
         name = st.selectbox("策略", list(STRATEGY_LABELS), format_func=STRATEGY_LABELS.get, key="m1_detail")
