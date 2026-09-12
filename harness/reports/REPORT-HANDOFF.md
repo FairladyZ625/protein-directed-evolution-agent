@@ -42,7 +42,9 @@
 | knowledge_agent | **8.761966** | 7.005510 | 86 |
 
 - 产物:`harness/reports/workflow-v1.1/gb1/campaign_easy.metrics.json`
-- 事件流:`harness/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl`(166 条,哈希链可验)
+- 事件流:`harness/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl.gz`(166 条,哈希链可验)。
+  注意后缀是 `.gz`:归档流已按仓库约定压缩(见 7.7),`EventStore` 传逻辑 `.jsonl` 路径会
+  透明回退到 `.gz`,但**在报告里写路径时要写实际存在的那个文件名**。
 - 曲线:`harness/reports/workflow-v1.1/gb1/figures/campaign_easy.png`
 - LLM 归属:`"deterministic (pool LLM port available via --use-llm)"`——**本轮未调商业 LLM**,
   报告里不得写成「LLM 驱动」。
