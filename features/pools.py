@@ -1,4 +1,10 @@
-"""Reproducible, disjoint GB1 train/query/holdout pools."""
+"""Reproducible GB1 pools and the model-selection evaluation protocol.
+
+The committed 5,000/50,000/94,361 pools remain the stable outer split.  Model
+selection subdivides the 5,000-row historical pool into fit and validation
+roles; query-test is available for iterative diagnostics, while holdout stays
+untouched until the final evaluation.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -14,6 +20,8 @@ DEFAULT_DIR = ROOT / "data" / "pools"
 TRAIN_SIZE = 5_000
 QUERY_SIZE = 50_000
 SEED = 42
+VALIDATION_SIZE = 1_000
+VALIDATION_SEED = 42
 
 
 @dataclass(frozen=True)
@@ -24,6 +32,63 @@ class PoolSplit:
 
     def sizes(self) -> dict[str, int]:
         return {"train_pool": len(self.train_pool), "query_pool": len(self.query_pool), "holdout": len(self.holdout)}
+
+
+@dataclass(frozen=True)
+class EvaluationProtocol:
+    """Four explicit roles layered over the stable three-pool split."""
+
+    train: pd.DataFrame
+    validation: pd.DataFrame
+    query_test: pd.DataFrame
+    holdout: pd.DataFrame
+
+    def sizes(self) -> dict[str, int]:
+        return {name: len(getattr(self, name)) for name in ("train", "validation", "query_test", "holdout")}
+
+
+def split_train_validation(
+    frame: pd.DataFrame,
+    *,
+    validation_size: int,
+    seed: int = VALIDATION_SEED,
+    keep_variants: tuple[str, ...] = (WT,),
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Split a historical frame without letting required controls enter validation."""
+    if validation_size <= 0 or validation_size >= len(frame):
+        raise ValueError("validation_size must leave non-empty train and validation sets")
+    required = set(keep_variants)
+    missing = required - set(frame["Variants"])
+    if missing:
+        raise ValueError(f"required train variants missing: {sorted(missing)}")
+    eligible = np.flatnonzero(~frame["Variants"].isin(required).to_numpy())
+    if validation_size > len(eligible):
+        raise ValueError("validation_size leaves no room for required train variants")
+    rng = np.random.default_rng(seed)
+    validation_indices = np.sort(rng.choice(eligible, size=validation_size, replace=False))
+    is_validation = np.zeros(len(frame), dtype=bool)
+    is_validation[validation_indices] = True
+    train = frame.iloc[np.flatnonzero(~is_validation)].reset_index(drop=True)
+    validation = frame.iloc[validation_indices].reset_index(drop=True)
+    return train, validation
+
+
+def build_evaluation_protocol(
+    split: PoolSplit,
+    *,
+    validation_size: int = VALIDATION_SIZE,
+    seed: int = VALIDATION_SEED,
+) -> EvaluationProtocol:
+    """Assign train/validation/query-test/holdout roles without changing outer pools."""
+    train, validation = split_train_validation(
+        split.train_pool, validation_size=validation_size, seed=seed
+    )
+    return EvaluationProtocol(
+        train=train,
+        validation=validation,
+        query_test=split.query_pool.copy(),
+        holdout=split.holdout.copy(),
+    )
 
 
 def build_hd_extrapolation_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:

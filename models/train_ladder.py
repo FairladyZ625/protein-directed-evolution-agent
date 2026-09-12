@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -10,6 +11,8 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.preprocessing import StandardScaler
 from scipy.stats import spearmanr, pearsonr
+
+RIDGE_ALPHAS = (0.01, 0.1, 1.0, 10.0, 100.0, 1000.0)
 
 
 class _Base:
@@ -171,21 +174,130 @@ def metrics(y_true, y_pred, *, top_k: float = .01) -> dict[str, float]:
             "top_k": float(len(set(pred_idx) & true_idx) / n)}
 
 
-def evaluate_ladder(X_train, y_train, X_test, y_test) -> dict[str, dict[str, float]]:
-    """Fit the three standard predictors and score an explicit split."""
+def select_ridge_alpha(
+    X_train,
+    y_train,
+    X_validation,
+    y_validation,
+    *,
+    alphas=RIDGE_ALPHAS,
+    standardize: bool = False,
+) -> dict[str, Any]:
+    """Select Ridge regularisation using validation Spearman only.
+
+    The holdout is intentionally absent from this API, making it impossible for
+    model selection to inspect final-evaluation labels by accident.
+    """
+    X_train = np.asarray(X_train, dtype=float)
+    y_train = np.asarray(y_train)
+    X_validation = np.asarray(X_validation, dtype=float)
+    y_validation = np.asarray(y_validation)
+    if not len(X_train) or not len(X_validation):
+        raise ValueError("train and validation must both be non-empty")
+    candidates = tuple(float(alpha) for alpha in alphas)
+    if not candidates or any(alpha <= 0 for alpha in candidates):
+        raise ValueError("alphas must contain positive values")
+    scaler = None
+    if standardize:
+        scaler = StandardScaler().fit(X_train)
+        X_train = scaler.transform(X_train)
+        X_validation = scaler.transform(X_validation)
+    scores: dict[str, float] = {}
+    best_alpha, best_score = candidates[0], -np.inf
+    for alpha in candidates:
+        pred = Ridge(alpha=alpha).fit(X_train, y_train).predict(X_validation)
+        score = spearmanr(y_validation, pred).statistic
+        score = -1.0 if score is None or np.isnan(score) else float(score)
+        scores[str(alpha)] = score
+        if score > best_score:
+            best_alpha, best_score = alpha, score
+    return {
+        "metric": "validation_spearman",
+        "selected_alpha": float(best_alpha),
+        "selected_score": float(best_score),
+        "candidate_scores": scores,
+    }
+
+
+@dataclass
+class FittedLadder:
+    models: dict[str, _Base]
+    selection: dict[str, dict[str, Any]]
+
+
+def fit_ladder(
+    X_train,
+    y_train,
+    X_validation,
+    y_validation,
+    *,
+    ridge_alphas=RIDGE_ALPHAS,
+    standardize: bool = False,
+) -> FittedLadder:
+    """Select on validation, then refit each model on train + validation."""
+    ridge_selection = select_ridge_alpha(
+        X_train,
+        y_train,
+        X_validation,
+        y_validation,
+        alphas=ridge_alphas,
+        standardize=standardize,
+    )
+    X_development = np.concatenate((np.asarray(X_train), np.asarray(X_validation)), axis=0)
+    y_development = np.concatenate((np.asarray(y_train), np.asarray(y_validation)), axis=0)
+    models: dict[str, _Base] = {
+        "ridge": RidgePredictor(alpha=ridge_selection["selected_alpha"], standardize=standardize),
+        "xgboost": XGBoostPredictor(standardize=standardize),
+        "mlp": MLPPredictor(standardize=standardize),
+    }
+    for model in models.values():
+        model.fit(X_development, y_development)
+    return FittedLadder(models=models, selection={"ridge": ridge_selection})
+
+
+def score_ladder(ladder: FittedLadder, X_test, y_test) -> dict[str, dict[str, float]]:
+    """Score already-fitted models; selection cannot observe this split."""
     result = {}
-    for name, cls in (("ridge", RidgePredictor), ("xgboost", XGBoostPredictor), ("mlp", MLPPredictor)):
-        model = cls().fit(X_train, y_train)
+    for name, model in ladder.models.items():
         pred, var = model.predict(X_test)
-        result[name] = {**metrics(y_test, pred), "variance_min": float(var.min()), "variance_max": float(var.max())}
+        result[name] = {
+            **metrics(y_test, pred),
+            "variance_min": float(var.min()),
+            "variance_max": float(var.max()),
+        }
     return result
+
+
+def evaluate_ladder(
+    X_train,
+    y_train,
+    X_validation,
+    y_validation,
+    X_test,
+    y_test,
+    *,
+    ridge_alphas=RIDGE_ALPHAS,
+    standardize: bool = False,
+) -> dict[str, Any]:
+    """Select on validation and score one explicit final split."""
+    ladder = fit_ladder(
+        X_train,
+        y_train,
+        X_validation,
+        y_validation,
+        ridge_alphas=ridge_alphas,
+        standardize=standardize,
+    )
+    return {"_selection": ladder.selection, **score_ladder(ladder, X_test, y_test)}
 
 
 def train_ladder(X, y, *, out: str | Path | None = None):
     if out is None:
         from evolution.results_layout import run_dir
         out = run_dir("workflow", "gb1") / "predictor_ladder.json"
-    n = len(y); cut1 = int(n * .6)
-    result = evaluate_ladder(X[:cut1], y[:cut1], X[cut1:], y[cut1:])
+    n = len(y); cut1 = int(n * .6); cut2 = int(n * .8)
+    result = evaluate_ladder(
+        X[:cut1], y[:cut1], X[cut1:cut2], y[cut1:cut2], X[cut2:], y[cut2:]
+    )
     path = Path(out); path.parent.mkdir(parents=True, exist_ok=True); path.write_text(json.dumps(result, indent=2))
     return result
