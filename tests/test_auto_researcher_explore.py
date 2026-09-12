@@ -68,7 +68,10 @@ def test_semi_forces_exploration_and_blocks_direct_test_bypass(monkeypatch):
             batch = t['compose_batch'](n=2, exploit_ratio=1.0, exploration='uncertainty')
             assert batch['method'] == 'uncertainty' and batch['forced']
         else:
-            t['compose_batch'](n=2)
+            assert t['explore_batch'](n=2)['status'] == 'exploitation_required'
+            assert t['test'](t['list_pool'](1))['status'] == 'exploitation_required'
+            batch = t['compose_batch'](n=1, exploit_ratio=0.0)
+            assert (batch['n_exploit'], batch['n_explore']) == (2, 0)
         assert t['test_composed_batch']()['n_measured_now'] == 2
         assert t['test'](t['list_pool'](2))['status'] == 'round_test_complete'
     _fake_agent(monkeypatch, action)
@@ -119,3 +122,42 @@ def test_withheld_labels_cannot_change_first_exploration_batch(monkeypatch, meth
     assert audit[0] == audit[1]
     assert len(audit[0][0]) == 4
     assert all(c['mean_rank'] >= 1 for c in audit[0][0])
+
+
+def test_semi_returns_to_exploitation_after_exploration_improves(monkeypatch):
+    import agent.auto_researcher as module
+    class FixedPredictor:
+        val_spearman = 0.9
+        def __init__(self, **kwargs):
+            pass
+        def fit(self, X, y):
+            return self
+        def predict(self, X):
+            return -np.arange(len(X), dtype=float), np.ones(len(X))
+    monkeypatch.setattr(module, 'RidgePredictor', FixedPredictor)
+    phases = []
+    def action(t, rnd):
+        phases.append(t['analyze_measured']()['exploration_required'])
+        t['compose_batch'](n=2, exploration='uncertainty')
+        t['test_composed_batch']()
+    _fake_agent(monkeypatch, action)
+    spec = _big_gated_spec()
+    pool = spec.df.index[spec.df.hd > 2]
+    spec.df.loc[pool, 'fitness'] = 3.0
+    spec.df.loc[pool[:6], 'fitness'] = 2.0
+    rep = run_autoresearch(spec, budget=2, n_rounds=5, backtrack='semi', guardrail=True)
+    assert phases == [False, False, False, True, False]
+    assert rep['budget_spent'] == 10
+    assert rep['top10_max_history'] == [2, 2, 2, 3, 3]
+
+
+def test_semi_offline_fallback_preserves_phase_and_budget():
+    spec = _big_gated_spec()
+    spec.df.loc[spec.df.hd > 2, 'fitness'] = 2
+    rep = run_autoresearch(spec, budget=2, n_rounds=4, backtrack='semi',
+                          guardrail=True, llm=False)
+    assert not rep['llm_used']
+    assert rep['budget_spent'] == 8
+    actions = [e['payload'] for e in rep['tool_trace'] if e['event_type']=='agent.acquisition']
+    assert [a['forced'] for a in actions] == [False, False, False, True]
+    assert [a['action']['n_exploit'] for a in actions] == [2, 2, 2, 0]

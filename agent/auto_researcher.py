@@ -410,11 +410,16 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
 
     def explore_batch(n: int = 48, method: str = "diverse") -> dict:
         """Stage a gate-safe exploration batch using diverse, uncertainty, or spread."""
+        if backtrack == "semi" and not _exploration_required():
+            return {"status": "exploitation_required",
+                    "hint": "SEMI exploits until two non-improving batches; call compose_batch."}
         if method not in ("diverse", "uncertainty", "spread"):
             return {"status": "invalid_argument", "error": "unknown exploration method"}
         if state["pool"].empty:
             return {"status": "pool_exhausted", "candidates": []}
         n = max(1, min(int(n), budget, total_budget - state["spent"]))
+        if backtrack == "semi":
+            n = min(budget, total_budget - state["spent"])
         _, mean, var = _pool_scores()
         seqs = state["pool"].seq.to_numpy()
         eligible = [i for i, seq in enumerate(seqs) if gate_pass is None or seq in gate_pass]
@@ -447,6 +452,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         n = int(max(1, min(int(n), 60)))
         if backtrack:
             n = min(n, budget, total_budget - state["spent"])
+        if backtrack == "semi":
+            n = min(budget, total_budget - state["spent"])
         model_obj, mean, var = _pool_scores()
         cv = getattr(model_obj, "val_spearman", None)
         adaptive_ratio = _adaptive_exploit_ratio(cv, state["current_round"], n_rounds)
@@ -463,6 +470,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         )
         if backtrack:
             ratio, policy_floor = requested_ratio, 0.0
+        if backtrack == "semi":
+            ratio, policy_floor, source = 1.0, 1.0, "semi_exploitation_phase"
         seqs = state["pool"].seq.to_numpy()
         eligible = np.arange(len(seqs))
         if gate_pass is not None:
@@ -529,6 +538,16 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             return {"status": "budget_exhausted", "budget_remaining": 0}
         if _exploration_required() and variants != state["authorized_exploration"]:
             return {"status": "exploration_required", "hint": "Stage explore_batch, then test_composed_batch."}
+        if backtrack == "semi" and not _exploration_required():
+            _, phase_mean, _ = _pool_scores()
+            phase_seqs = state["pool"].seq.to_numpy()
+            eligible = np.asarray([i for i, seq in enumerate(phase_seqs)
+                                   if gate_pass is None or seq in gate_pass], dtype=int)
+            order = eligible[np.argsort(-phase_mean[eligible], kind="stable")]
+            expected = set(phase_seqs[order[:min(budget, remaining)]])
+            if set(variants) != expected:
+                return {"status": "exploitation_required",
+                        "hint": "SEMI requires the full predicted-mean batch before stagnation; use compose_batch."}
         requested = list(dict.fromkeys(variants))
         if guardrail:
             allowed, rejected = _gate(requested)
@@ -636,8 +655,9 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                              "Candidate tools prefilter it; measurement validates it again.")
             policy_note = ("\nFULL: You decide when to explore and how much; no automatic redirect."
                            if backtrack == "full" else
-                           "\nSEMI: After two consecutive non-improving batches, an entire exploration batch "
-                           "is required each round until improvement. You choose its method."
+                           "\nSEMI: Before two consecutive non-improving batches, the entire batch MUST be "
+                           "predicted-mean exploitation. After that, an entire exploration batch is required "
+                           "each round until improvement. You choose its method, not the phase or amount."
                            if backtrack == "semi" else "")
             ag = Agent(oa, system_prompt=(BACKTRACK_PROMPT if backtrack else SYSTEM_PROMPT)
                        + gate_note + policy_note)
@@ -709,6 +729,9 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                     elif _exploration_required():
                         explore_batch(this_batch)
                         test_composed_batch()
+                    elif backtrack == "semi":
+                        compose_batch(n=this_batch)
+                        test_composed_batch()
                     else:
                         test(list_pool(this_batch, "predicted_mean"))
             llm_used = True
@@ -725,6 +748,9 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             analyze_measured()
             if _exploration_required():
                 explore_batch(budget)
+                test_composed_batch()
+            elif backtrack == "semi":
+                compose_batch(n=budget)
                 test_composed_batch()
             else:
                 picks = list_pool(budget, by)
