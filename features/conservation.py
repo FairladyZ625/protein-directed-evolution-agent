@@ -133,9 +133,13 @@ def _experimental_effects(sequences: pd.Series, fitness: pd.Series, wt: str,
         raise ValueError("dataset has no wild-type observation")
     wt_fitness = float(wt_rows.iloc[0])
     effects: list[dict[str, object]] = []
+    hamming_distance = sequences.map(lambda sequence: sum(a != b for a, b in zip(sequence, wt)))
     for position in range(len(wt)):
         measured = measured_positions is None or position in measured_positions
-        mask = sequences.str[position].ne(wt[position]) if measured else pd.Series(False, index=sequences.index)
+        mask = (
+            sequences.str[position].ne(wt[position]) & hamming_distance.eq(1)
+            if measured else pd.Series(False, index=sequences.index)
+        )
         values = fitness[mask]
         effects.append({
             "position": position + 1,
@@ -185,19 +189,24 @@ def analyze(dataset: str, data_path: Path, analyzer: ESM2ConservationAnalyzer) -
     for metric in ("beneficial_fraction", "max_fitness_gain"):
         result = spearmanr([row["conservation_rank"] for row in measured],
                            [row[metric] for row in measured])
-        correlations[f"spearman_rank_vs_{metric}"] = float(result.statistic)
-        correlations[f"spearman_rank_vs_{metric}_pvalue"] = float(result.pvalue)
+        correlations[f"spearman_rank_vs_{metric}"] = (
+            float(result.statistic) if np.isfinite(result.statistic) else None
+        )
+        correlations[f"spearman_rank_vs_{metric}_pvalue"] = (
+            float(result.pvalue) if np.isfinite(result.pvalue) else None
+        )
     peak_positions = [1, 18, 19] if dataset == "aav" else []
     return {
         "dataset": dataset,
         "model": MODEL_NAME,
         "entropy_definition": "Shannon entropy in nats over 20 standard amino acids from masked-token probabilities",
-        "effect_definition": "all observed variants differing from WT at the position; multi-mutant effects are descriptive and confounded",
+        "effect_definition": "measured single mutants differing from WT only at the position",
         "wild_type_sequence": wt,
         "positions": rows,
         "correlations": correlations,
         "true_peak_positions": [
-            {"position": pos, "wild_type": wt[pos - 1], "conservation_rank": int(ranks[pos - 1]),
+            {"position": pos, "position_zero_based": pos - 1,
+             "wild_type": wt[pos - 1], "conservation_rank": int(ranks[pos - 1]),
              "entropy_nats": float(entropy[pos - 1])} for pos in peak_positions
         ],
     }
@@ -233,7 +242,7 @@ def main() -> None:
     result = analyze(args.dataset, args.data, ESM2ConservationAnalyzer(device=args.device))
     args.output_dir.mkdir(parents=True, exist_ok=True)
     (args.output_dir / "conservation.json").write_text(
-        json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8"
     )
     _plot(result, args.output_dir / "figures" / "conservation.png")
 

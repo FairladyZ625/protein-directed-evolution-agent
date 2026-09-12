@@ -1,9 +1,15 @@
 import builtins
 
 import numpy as np
+import pandas as pd
 import pytest
 
-from features.conservation import ESM2ConservationAnalyzer, conservation_ranks, shannon_entropy
+from features.conservation import (
+    ESM2ConservationAnalyzer,
+    _experimental_effects,
+    conservation_ranks,
+    shannon_entropy,
+)
 
 
 def test_entropy_positive_controls() -> None:
@@ -52,3 +58,15 @@ def test_rejects_invalid_probability_distribution(tmp_path) -> None:
     )
     with pytest.raises(ValueError, match="sum to one"):
         analyzer.probabilities("ACD")
+
+
+def test_experimental_effects_use_only_single_mutants() -> None:
+    effects = _experimental_effects(
+        pd.Series(["AAA", "CAA", "ACA", "CCA"]),
+        pd.Series([1.0, 2.0, 3.0, 99.0]),
+        "AAA",
+    )
+    assert effects[0]["n_mutated_observations"] == 1
+    assert effects[0]["max_fitness_gain"] == 1.0
+    assert effects[1]["n_mutated_observations"] == 1
+    assert effects[1]["max_fitness_gain"] == 2.0
