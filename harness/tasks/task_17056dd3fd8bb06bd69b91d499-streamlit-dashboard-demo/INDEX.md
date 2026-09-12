@@ -5,7 +5,7 @@ title: "T8 Streamlit看板+demo：四策略曲线/Agent回放(读事件流)/任�
 parent: M4-delivery
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: done
 packageDisposition: active
 workKind: feat
 riskTier: medium
@@ -30,9 +30,9 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task review-execution task_17056dd3fd8bb06bd69b91d499 --execution-id <id> --review-id <id> --from-file <review.json>`.
+Task complete.
 
 ## Gate Checks
 
-- ci: blocked
-- code-doc-reconciliation: blocked
+- ci: pass
+- code-doc-reconciliation: pass

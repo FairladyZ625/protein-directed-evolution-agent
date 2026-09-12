@@ -31,4 +31,4 @@ Run `ha task submit task_15a869830b89becc036e08df76`.
 ## Gate Checks
 
 - ci: blocked
-- code-doc-reconciliation: blocked
+- code-doc-reconciliation: pass

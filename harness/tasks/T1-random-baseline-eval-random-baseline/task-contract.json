@@ -10,18 +10,18 @@
   "profileId": "baseline",
   "locale": "zh-CN",
   "metadata": {
+    "fromLegacyId": null,
     "idempotencyKey": null,
+    "moduleKey": null,
     "parentTaskId": "M1-baseline-eval",
-    "workKind": "feat",
-    "riskTier": "low",
-    "urgency": "high",
-    "verticalId": "software/coding",
     "presetId": "standard-task",
     "profileId": "baseline",
-    "moduleKey": null,
+    "riskTier": "low",
     "slug": "eval-random-baseline",
     "surfaces": [],
-    "fromLegacyId": null
+    "urgency": "high",
+    "verticalId": "software/coding",
+    "workKind": "feat"
   },
   "registerModule": null,
   "completionGates": [
@@ -99,5 +99,6 @@
       "templateRef": "template://planning/keep-file@1",
       "contentSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
     }
-  ]
+  ],
+  "pinned": false
 }

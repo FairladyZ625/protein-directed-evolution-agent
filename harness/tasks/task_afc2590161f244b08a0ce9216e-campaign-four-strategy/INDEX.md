@@ -5,7 +5,7 @@ title: "T7 campaign对比引擎+四策略×3轮：随机/模型贪心/Agent/知�
 parent: M3-closed-loop
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: active
 packageDisposition: active
 workKind: feat
 riskTier: high
@@ -30,7 +30,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task review-execution task_afc2590161f244b08a0ce9216e --execution-id <id> --review-id <id> --from-file <review.json>`.
+Run `ha task submit task_afc2590161f244b08a0ce9216e`.
 
 ## Gate Checks
 

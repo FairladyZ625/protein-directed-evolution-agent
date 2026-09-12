@@ -1,0 +1,32 @@
+# Review review-dispatch_9042959fa2d8eb78a0e01029
+
+Managed by `ha task review-execution`; legacy `review.md` is not authoritative.
+
+- Task: task_f50ce371b24c0c4396c76f8a4a
+- Execution: exe_8fd900a059b9d1baad11c65420
+- Verdict: changes_requested
+- Commit: 54821e70643b856b78176c13889208d67bb559b9
+- Iteration: 1
+- Content digest: sha256:9ad08eeaaed4c5706320d4e1fd56257ccc22a02b7f9183fdf719af50c0556f3f
+- Submission digest: sha256:6f35e98d0b222339b88d30d944e76d9f2f971ac59111eaa3456c86296da7a980
+- Reviewed at: 2026-09-12T11:49:53.770Z
+- Consent: pending
+- Consent actor: pending
+- Consent source: pending
+
+## Reason
+
+核心实现快照本身可运行：定向测试 6/6 通过，三池、149361x80 one-hot 与有序 5000x1280 train ESM 缓存均经冻结 blob 复核成立。但本次冻结 deliverables 未包含任何契约要求的 T2 核心路径，反而包含 1054 个越界变更、pytest 临时产物及 HARNESS-UX-FEEDBACK.md 删除，违反只允许 data/、evolution/mutations.py、features/ 和本任务 tests 的硬边界，也不能证明该 execution 交付了所声称的 T2 产物。须以仅含任务自有路径的 delivery cut amend/resubmit。
+
+## Evidence checked
+
+- Frozen submission digest sha256:6f35e98d0b222339b88d30d944e76d9f2f971ac59111eaa3456c86296da7a980 and delivery commit 54821e70643b856b78176c13889208d67bb559b9
+- git hash-object versus git rev-parse <frozen-commit>:<path>: every inspected T2 core file/cache matched its frozen blob
+- .venv/bin/pytest -q tests/test_data_pipeline.py: 6 passed in 0.94s
+- frozen gb1-all-one-hot.npz: variants (149361,), embeddings (149361,80) uint8
+- frozen keyed train ESM cache dbfd1ecc45bd4b72148d: ordered variants equal train pool; embeddings (5000,1280), finite and non-constant
+- cross-cache overlap integrity: 76 and 59 overlapping variants had max_abs 0.0 against the train cache
+- cache positive control: intact second read kept backend calls at 1; corrupted variant order increased calls to 2
+- frozen deliverables list contains no data/, features/, evolution/mutations.py, or tests/test_data_pipeline.py paths
+- commit delta inspection: 1054 changed paths, zero in the declared task surface; includes deletion HARNESS-UX-FEEDBACK.md and added pytest-of-root artifacts
+- closeout explicitly limits self-contained ESM evidence to committed batch cache and one-hot fallback; no live 650M comparison was independently verified in this run

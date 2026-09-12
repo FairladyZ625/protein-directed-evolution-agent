@@ -4,7 +4,7 @@ task_id: task_7994263c6be22e8690ec8d5950
 title: "上报并修复 Harness 两个框架缺陷:CI 见证不可配置(F-8ED77039)、纯文档任务 worktree 提交死锁(F-B1B5EABC)"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: planned
+  status: active
 packageDisposition: active
 workKind: fix
 riskTier: high
@@ -29,7 +29,7 @@ Preset: docs-task/baseline
 
 ## Next
 
-Run `ha task complete task_7994263c6be22e8690ec8d5950`.
+Run `ha task submit task_7994263c6be22e8690ec8d5950`.
 
 ## Gate Checks
 

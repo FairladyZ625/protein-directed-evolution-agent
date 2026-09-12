@@ -5,7 +5,7 @@ title: "T5 知识库/规则库：rules.yaml+validators+networkx图谱+ --no-know
 parent: M2-agent-pipeline
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: active
 packageDisposition: active
 workKind: feat
 riskTier: low
@@ -30,7 +30,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task review-execution task_cea947b5025412586587d1e4b1 --execution-id <id> --review-id <id> --from-file <review.json>`.
+Run `ha task submit task_cea947b5025412586587d1e4b1`.
 
 ## Gate Checks
 

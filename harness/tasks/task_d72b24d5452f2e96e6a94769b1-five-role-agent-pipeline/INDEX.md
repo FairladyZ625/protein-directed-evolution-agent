@@ -5,7 +5,7 @@ title: "T6 五角色Agent流水线：PydanticAI 五角色·LLM仅受控两处·r
 parent: M2-agent-pipeline
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: active
 packageDisposition: active
 workKind: feat
 riskTier: high
@@ -30,7 +30,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task review-execution task_d72b24d5452f2e96e6a94769b1 --execution-id <id> --review-id <id> --from-file <review.json>`.
+Run `ha task submit task_d72b24d5452f2e96e6a94769b1`.
 
 ## Gate Checks
 

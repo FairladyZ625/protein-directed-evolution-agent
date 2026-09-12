@@ -4,6 +4,8 @@
 
 事件流内核:append-only SHA-256 链式哈希 + fsync + SQLite 投影 + replay CLI,作为前端回放底座与可审计证据链。EventStore.append/verify/iter_events。
 
+交付提交:`d9a92049f00df67181922e4890649957e5bd6ab2`(可审计事件流内核)。
+
 ## Verification
 
 链完整性 verify() 全绿;新增 200 并发 append 回归测试(test_concurrent_appends_keep_chain_intact);campaign/agentic 事件流均通过链校验。促成 Fact F-3379A413。

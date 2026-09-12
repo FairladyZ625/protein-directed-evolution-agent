@@ -4,7 +4,7 @@ task_id: task_e57782279c8d2535f15290af4e
 title: "Milestone: Final Scientific Report 高严谨中文学术报告与引证体系"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: done
 packageDisposition: active
 workKind: docs
 riskTier: medium
@@ -29,7 +29,7 @@ Preset: docs-task/baseline
 
 ## Next
 
-Run `ha task complete task_e57782279c8d2535f15290af4e`.
+Task complete.
 
 ## Gate Checks
 

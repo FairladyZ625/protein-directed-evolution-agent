@@ -4,7 +4,7 @@ task_id: task_41142b2ccb60a72acfe70d133a
 title: "Agentic AutoResearch agent(真 tool-calling 自主 DBTL,双模式对比,AAV 主战场)"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: done
 packageDisposition: active
 vertical: software/coding
 preset: standard-task
@@ -26,9 +26,9 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task complete task_41142b2ccb60a72acfe70d133a`.
+Task complete.
 
 ## Gate Checks
 
-- ci: blocked
-- code-doc-reconciliation: blocked
+- ci: pass
+- code-doc-reconciliation: pass

@@ -4,6 +4,8 @@
 
 知识库/规则库:rules.yaml(突变规则+BLOSUM62)+ validators + networkx 关系图谱 + --no-knowledge 消融开关;供 agent 知识增强与消融对照。
 
+交付提交:`909ff0a2e4497c820f0d51ddabdddbd359b9fa32`(突变知识规则与图谱校验器)。
+
 ## Verification
 
 validators 单测通过;knowledge_agent 策略在 AAV strong 命中 86 vs greedy 85(BLOSUM 先验小幅增益);--no-knowledge 消融路径验证。促成 Fact F-415E0CB9、F-DB275358。

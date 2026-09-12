@@ -6,7 +6,7 @@ parent: M1-baseline-eval
 lifecycle:
   engine: kernel/task-lifecycle/v1
   status: in_review
-packageDisposition: active
+packageDisposition: archived
 workKind: feat
 riskTier: low
 urgency: high
@@ -30,7 +30,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task complete T1-random-baseline --execution-id <id> --ci <receipt-ref>`.
+Run `ha task complete T1-random-baseline`.
 
 ## Gate Checks
 

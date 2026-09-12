@@ -4,7 +4,7 @@ task_id: task_507fa9a9996a458a5b0abfe0d5
 title: "更难数据集接入:真实不确定性 + ESM + avGFP + 跨数据集诚实对比"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: active
 packageDisposition: active
 vertical: software/coding
 preset: standard-task
@@ -26,9 +26,9 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task review-execution task_507fa9a9996a458a5b0abfe0d5 --execution-id <id> --review-id <id> --from-file <review.json>`.
+Run `ha task submit task_507fa9a9996a458a5b0abfe0d5`.
 
 ## Gate Checks
 
-- ci: blocked
-- code-doc-reconciliation: blocked
+- ci: pass
+- code-doc-reconciliation: pass

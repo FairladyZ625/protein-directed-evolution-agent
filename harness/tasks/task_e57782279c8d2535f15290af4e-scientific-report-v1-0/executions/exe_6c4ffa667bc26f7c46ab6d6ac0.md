@@ -4,10 +4,10 @@ Managed by `ha task start/submit`; hand edits are rejected.
 
 - Task: task_e57782279c8d2535f15290af4e
 - Iteration: 0
-- State: submitted
+- State: accepted
 - Claimed: 2026-09-12T05:02:30.762Z
 - Submitted: 2026-09-12T05:02:37.667Z
-- Closed: open
+- Closed: 2026-09-12T12:25:03.080Z
 - Commit: 8a81ac3065e7f12edb94fa72e91ba2b4f186ce9d
 - Completion claim: 编制并交付了符合顶级计算生物学/AI4S 会议与期刊规范的《面向蛋白质定向进化的受控自演进科学智能体研究报告（v1.0）》（52KB，8 大章节）。
 1. **学术 De-AI 去油与表达重塑**：彻底清除了所有口语化、口号化、战争隐喻与应试词汇，补充了明确的 3 项科学研究问题（RQ1~RQ3）与 4 项核心贡献，关键词严格精简为 5 个；

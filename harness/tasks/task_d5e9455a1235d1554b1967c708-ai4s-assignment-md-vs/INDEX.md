@@ -4,7 +4,7 @@ task_id: task_d5e9455a1235d1554b1967c708
 title: "试题逐条覆盖度审计:AI4S-assignment.md 的每一条要求 vs 仓库现状,给差距清单"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: active
 packageDisposition: active
 workKind: docs
 riskTier: high
@@ -29,7 +29,7 @@ Preset: docs-task/baseline
 
 ## Next
 
-Run `ha task complete task_d5e9455a1235d1554b1967c708`.
+Run `ha task submit task_d5e9455a1235d1554b1967c708`.
 
 ## Gate Checks
 

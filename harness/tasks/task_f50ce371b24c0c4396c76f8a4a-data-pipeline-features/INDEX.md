@@ -30,9 +30,9 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task complete task_f50ce371b24c0c4396c76f8a4a --execution-id <id> --ci <receipt-ref>`.
+Run `ha task complete task_f50ce371b24c0c4396c76f8a4a`.
 
 ## Gate Checks
 
-- ci: blocked
-- code-doc-reconciliation: blocked
+- ci: pass
+- code-doc-reconciliation: pass

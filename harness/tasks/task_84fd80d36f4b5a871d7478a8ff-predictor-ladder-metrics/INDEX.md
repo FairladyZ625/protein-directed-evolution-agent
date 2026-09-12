@@ -5,7 +5,7 @@ title: "T3 预测模型阶梯+指标表：one-hot·ESM+XGB·MLP 三级 + 5seed�
 parent: M1-baseline-eval
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: in_review
+  status: active
 packageDisposition: active
 workKind: feat
 riskTier: medium
@@ -30,7 +30,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task review-execution task_84fd80d36f4b5a871d7478a8ff --execution-id <id> --review-id <id> --from-file <review.json>`.
+Run `ha task submit task_84fd80d36f4b5a871d7478a8ff`.
 
 ## Gate Checks
 

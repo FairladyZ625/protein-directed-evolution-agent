@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_27d8c43513d28b7a39ae001b",
+  "taskId": "task_d3dfe26bf702928b1c3784e60f",
+  "executionId": "exe_bd09499b500d047da316c44f88",
+  "agentId": "de-research-glm",
+  "agentName": "AI4S 文献研究员(GLM)",
+  "instanceId": "zcode-glm-5-3",
+  "model": "GLM-5.3",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent",
+  "missionRef": "tasks/task_d3dfe26bf702928b1c3784e60f-research/artifacts/missions/dispatch_27d8c43513d28b7a39ae001b.md",
+  "runtimeSessionId": "runtime_4676779f56de3cf8015b258b",
+  "providerSessionId": "sess_1424e237-4ac8-4b08-94c7-41d56789f6c1",
+  "startedAt": "2026-09-12T13:30:31.637Z",
+  "endedAt": "2026-09-12T13:30:35.942Z",
+  "outcome": "failed",
+  "exitCode": 1,
+  "resultRef": "artifact:runtime-result/sha256/a0b295777701327b1bda342b0e5df5b4a52861bca8f0fe53e7555b1770528430",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_27d8c43513d28b7a39ae001b.jsonl",
+  "attemptGroupId": "dispatch_27d8c43513d28b7a39ae001b",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "zcode-glm-5-3",
+    "model": "GLM-5.3"
+  },
+  "classification": "provider_fault",
+  "reason": "HTTP 429: 1308 [1308][已达到 5 小时的使用上限。您的限额将在 2026-09-12 22:26:15 重置。][2026091221303580e96eee97124cb1]"
+}

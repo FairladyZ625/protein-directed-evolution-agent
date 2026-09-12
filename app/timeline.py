@@ -718,7 +718,7 @@ h1, h2, h3, h4 {
 def render_hero():
     st.markdown('''<div class="hero-container">
   <div class="hero-eyebrow">🧬 AI4SCIENCE · 蛋白质定向进化科学智能体学术全景看板</div>
-  <div class="hero-title">从无约束探索到可验证的科学发现：AI 驱动蛋白质定向进化的诚实边界与工程范式</div>
+  <div class="hero-title">从无约束探索到可验证的科学发现：AI 驱动蛋白质定向进化的诚实边界与工程实践</div>
   <div class="hero-deck">
     基于真实湿实验基准（FLIP-AAV 适应度景观），全景记录 v0.1 到 v0.7 七代算法研发的<b>实证检验、因果归因、认知自证伪与系统演化</b>。<br>
     内环呈现蛋白质工程智能体的微观闭环实验证据链（严格带 SHA-256 密码学存证），外环展示科研专家与 Harness 系统的宏观决策流与方法论演进。
@@ -1039,12 +1039,12 @@ def render_panorama():
 
 
 # ---------------------------------------------------------------------------
-# 科研认知结晶与未来蓝图
+# 核心科研发现与未来方向
 # ---------------------------------------------------------------------------
 def render_research_insights():
     st.markdown('''<div class="chapter-box" style="border-left-color: #2563eb;">
   <div class="chapter-eyebrow">RESEARCH INSIGHTS & FUTURE BLUEPRINT</div>
-  <div class="chapter-title">💡 核心科研认知结晶与系统演化蓝图</div>
+  <div class="chapter-title">💡 核心科研发现与系统演进蓝图</div>
   <div class="chapter-story">
     系统性总结研发团队历经闭环实验演进、实证反思证伪与跨尺度理论推导沉淀出的四项核心计算生物学与 AI 交叉科研结论。
   </div>

@@ -4,6 +4,10 @@
 
 GB1 数据管线+特征:加载校验 149,361 个有真值变体、突变解析(WT=VDGV/4 位点)、train/holdout/query 三池切分(5,000 / 50,000 / 94,361,互不相交、并集 149,361、WT 在 train)、one-hot 与 ESM-2 特征(嵌入按批缓存)。为全链路提供统一数据与特征底座。
 
+交付提交:`149f69be904d8f9e37ac93b41960a9813fe231af`(GB1 三池与特征管线)。该提交是本任务契约面的完整交付:`data/gb1_manifest.json` 与 `data/pools/{train_pool,query_pool,holdout}.csv`(5,000 / 50,000 / 94,361 三池)、`evolution/mutations.py`(WT=VDGV 四位点突变解析)、`features/{pools,one_hot,esm2,build_cache}.py` 与 `features/cache/gb1-all-one-hot.npz`、以及定向测试 `tests/test_data_pipeline.py`。
+
+> 锚点更正(2026-09-12):本 closeout 先前钉在 `1563a756`(池式主动学习引擎 + 数据集 registry),那是另一个任务的交付面,不含本任务契约要求的 `data/`、`evolution/mutations.py`、`features/` 与本任务测试路径。独立评审据此打回是对的。
+
 ## Verification
 
 - **本任务定向单测**:`tests/test_data_pipeline.py` = **6 passed**(clean-env 可复现)。

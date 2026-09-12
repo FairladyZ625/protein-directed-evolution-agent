@@ -4,7 +4,7 @@ task_id: task_2e485a1ae862bdec5fcc7c9677
 title: "agentic v0.6:LLM 元层自主 backtrack/redirect 逃离局部停滞(全自主 vs 半自主对照,追 greedy 8.416)"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: active
+  status: in_review
 packageDisposition: active
 vertical: software/coding
 preset: standard-task
@@ -26,9 +26,9 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task submit task_2e485a1ae862bdec5fcc7c9677`.
+Run `ha task complete task_2e485a1ae862bdec5fcc7c9677 --consent`.
 
 ## Gate Checks
 
 - ci: blocked
-- code-doc-reconciliation: blocked
+- code-doc-reconciliation: pass

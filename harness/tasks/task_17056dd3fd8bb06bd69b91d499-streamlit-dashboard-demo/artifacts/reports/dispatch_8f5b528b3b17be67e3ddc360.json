@@ -1,0 +1,15 @@
+{
+  "verdict": "approved",
+  "reason": "冻结提交中的 app/demo.py 满足单文件三模块、149361 可测空间提示和只读事件流契约；隔离快照定向测试 8 passed，Streamlit health=ok，事件哈希链阳性通过且篡改阴性在 seq=26 被检出。无阻断缺陷；真实商业 LLM 调用未验证。",
+  "evidenceChecked": [
+    "git archive 4f456890ca43dfe007e4b17c63c06c3fa26f147f 隔离审查 app/demo.py",
+    "冻结快照 tests/test_demo_app.py: 8 passed in 5.54s",
+    "Streamlit headless 启动且 /_stcore/health 返回 ok",
+    "campaign_easy.events.jsonl 50 事件哈希链阳性通过",
+    "篡改事件 payload 后哈希链阴性对照在 seq=26 失败",
+    "6 条角色链全部包含五角色",
+    "冻结源码磁盘写入入口审计无命中，推荐事件仅写 _MemoryRecorder",
+    "requirements.txt 声明 streamlit==1.63.0",
+    "ha task show: submissionDigest sha256:59240f7656411f67802022acc85c12ce22b1fa53b4959ca082175b2784134a03, CI pass, code-doc witness present"
+  ]
+}
