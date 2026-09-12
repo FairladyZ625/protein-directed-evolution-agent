@@ -1,0 +1,12 @@
+{
+  "line": "workflow",
+  "version": "v1.1",
+  "description": "GB1 delivery-pipeline snapshot. Campaign regimes are produced by the CEO separately; this manifest records only files present when it was created.",
+  "artifacts": {
+    "agent_combination_rationales.json": "5c9e4bc827dc27829374b68dc11b920e6903a939d05809c788330179d8cf0ecc",
+    "gb1/predictor_metrics.json": "d7fe3d7f81786bd0e2e3e13439b73ff091a92bf1a975bca56fa30f7739e9843b",
+    "gb1/campaign_easy.metrics.json": "eca6511871d1800c7a6ac3f9b53597140a900e5030f5aa0c2b0e1c537c5763f3",
+    "gb1/campaign_easy.events.jsonl": "a469df4bdf0d009e79356027de0f6b6deddad9eae4443c5e5f42b360a3cc0ada",
+    "gb1/figures/campaign_easy.png": "1cc0296c25ba266c996fb4fc04aa970e505d926216df5943a58ff69d39a145ad"
+  }
+}

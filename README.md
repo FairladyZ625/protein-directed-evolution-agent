@@ -126,9 +126,24 @@ streamlit run app/demo.py     # or: make demo
 
 ## Setup & run
 
+For a clean Linux or macOS clone, the recommended first run is two commands:
+
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+./scripts/install.sh       # Python 3.11+, offline smoke/demo/test tier; no torch or data download
+./scripts/run_all.sh       # always runs smoke; runs predictor + GB1 campaign when the CSV is present
+```
+
+The first command creates `.venv` and installs the same scientific stack used by the
+self-contained CI tests, plus the offline agent runtime required by the smoke path.
+It deliberately does not install PyTorch or download data. Use
+`./scripts/install.sh --full` to add PyTorch and fair-esm for local ESM-2 extraction;
+the GB1 CSV remains a separate, explicit download described in
+[`data/README.md`](data/README.md). `run_all.sh` prints a clear downgrade notice and
+finishes after smoke when that CSV is absent.
+
+Manual entry points remain available:
+
+```bash
 # First command for a clean clone: no GB1 CSV, ESM cache, or API key required.
 make smoke                                           # synthetic small landscape -> tmp/smoke/
 make test                                            # self-contained tests (same set as CI)

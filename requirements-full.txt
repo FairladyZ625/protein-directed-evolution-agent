@@ -1,0 +1,4 @@
+# Optional local ESM-2 extraction tier. Install via ./scripts/install.sh --full.
+-r requirements.txt
+fair-esm==2.0.0
+torch==2.14.0
