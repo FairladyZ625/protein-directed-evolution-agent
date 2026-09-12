@@ -27,17 +27,45 @@ class EventStore:
     """The campaign-owned writer for a single JSONL event stream.
 
     Readers should use :meth:`iter_events`; projection and replay modules never append.
+    The instance lock makes calls on one ``EventStore`` thread-safe only.  Separate
+    instances and processes have no mutual-exclusion guarantee, so the campaign must
+    remain the stream's single writer.
     """
 
     def __init__(self, path: str | Path) -> None:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._discard_interrupted_tail()
         self._next_seq, self._last_hash = self._tail()
         # An agentic LLM turn can fire several tool calls at once; pydantic-ai runs the
         # sync tool functions in an anyio worker thread pool, so append() is called
         # concurrently. Serialise the read-tail / write / advance sequence or two events
         # collide on the same seq and prev_hash and break the chain.
         self._lock = threading.Lock()
+
+    def _discard_interrupted_tail(self) -> None:
+        """Remove an unterminated final record left by an interrupted append.
+
+        A record is durable only once its trailing newline has been written.  If a
+        process stops before then, retain the complete newline-terminated prefix and
+        remove the incomplete suffix before deriving the next sequence number.
+        """
+        if not self.path.exists():
+            return
+        with self.path.open("r+b") as stream:
+            stream.seek(0, os.SEEK_END)
+            end = stream.tell()
+            if end == 0:
+                return
+            stream.seek(end - 1)
+            if stream.read(1) == b"\n":
+                return
+            stream.seek(0)
+            contents = stream.read()
+            last_newline = contents.rfind(b"\n")
+            stream.truncate(last_newline + 1)
+            stream.flush()
+            os.fsync(stream.fileno())
 
     def _tail(self) -> tuple[int, str]:
         last: dict[str, Any] | None = None

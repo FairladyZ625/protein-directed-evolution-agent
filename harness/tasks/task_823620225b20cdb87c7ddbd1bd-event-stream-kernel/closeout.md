@@ -8,11 +8,11 @@
 
 ## Verification
 
-链完整性 verify() 全绿;新增 200 并发 append 回归测试(test_concurrent_appends_keep_chain_intact);campaign/agentic 事件流均通过链校验。促成 Fact F-3379A413。
+链完整性 verify() 全绿；200 并发 append 回归测试与重启后截断尾行恢复回归测试通过；campaign/agentic 事件流均通过链校验。促成 Fact F-3379A413。
 
 ## Residual Risk
 
-事件流写入非事务性跨进程,靠文件锁串行化;单机场景已验证,分布式非本项目范围。
+同一 EventStore 实例内线程安全；跨实例/跨进程不保证互斥，campaign 必须是唯一写者。截断尾行仅按“缺少换行即未提交记录”恢复；完整但损坏的记录仍由 verify() 报链损坏。
 
 ## Same Mechanism Elsewhere
 

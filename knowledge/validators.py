@@ -29,18 +29,36 @@ def _parse(item: Any) -> tuple[str, int, str]:
     return m.group(1).upper(), int(m.group(2)), m.group(3).upper()
 
 def _score(a: str, b: str, matrix: dict) -> int | None:
-    if a == b: return 4
-    return matrix.get(a, {}).get(b) or matrix.get(b, {}).get(a)
+    direct = matrix.get(a, {})
+    if b in direct:
+        return direct[b]
+    reverse = matrix.get(b, {})
+    if a in reverse:
+        return reverse[a]
+    return None
+
+def _mutation_key(item: Any) -> tuple[str, int, str]:
+    """Normalize mutation notation for exact historical-single matching."""
+    return _parse(item)
 
 def validate_mutations(mutations: Iterable[Any], *, no_knowledge: bool = False,
-                       rules: dict | None = None) -> list[dict]:
+                       rules: dict | None = None,
+                       historical_good: Iterable[Any] | None = None) -> list[dict]:
     """Return one result per applicable rule (or [] for the ablation)."""
     if no_knowledge:
         return []
     cfg = rules or load_rules()
     muts = [_parse(m) for m in mutations]
+    historical = {_mutation_key(m) for m in (historical_good or [])}
+    enforcement = {rule["id"]: rule.get("enforcement", "gate") for rule in cfg["rules"]}
     out = []
-    def add(rule_id, passed, note): out.append({"rule_id": rule_id, "pass": bool(passed), "note": note})
+    def add(rule_id, passed, note):
+        out.append({
+            "rule_id": rule_id,
+            "enforcement": enforcement[rule_id],
+            "pass": bool(passed),
+            "note": note,
+        })
     add("R-MAX-MUTATIONS", len(muts) <= 4, f"{len(muts)} substitutions (limit 4)")
     add("R-NO-STOP", all(a in AA and b in AA for a, _, b in muts), "standard amino-acid alphabet")
     for a, pos, b in muts:
@@ -49,11 +67,22 @@ def validate_mutations(mutations: Iterable[Any], *, no_knowledge: bool = False,
             add("R-BLOSUM-CONSERVATIVE", score >= 1, f"{a}{pos}{b}: BLOSUM62={score}")
             add("R-BLOSUM-AGGRESSIVE", score > -1, f"{a}{pos}{b}: BLOSUM62={score}")
         add("R-GB1-SITES", pos in {39, 40, 41, 54}, f"position {pos}")
+    matched = [f"{a}{pos}{b}" for a, pos, b in muts if (a, pos, b) in historical]
+    add(
+        "R-PRIORITIZE-HISTORICAL",
+        bool(matched),
+        "historically high-fitness single mutants: " + (", ".join(matched) if matched else "none"),
+    )
     return out
 
-def validate_candidate(candidate: Any, *, no_knowledge: bool = False) -> list[dict]:
+def validate_candidate(candidate: Any, *, no_knowledge: bool = False,
+                       historical_good: Iterable[Any] | None = None) -> list[dict]:
     if isinstance(candidate, str): candidate = [candidate]
-    return validate_mutations(candidate, no_knowledge=no_knowledge)
+    return validate_mutations(
+        candidate,
+        no_knowledge=no_knowledge,
+        historical_good=historical_good,
+    )
 
 def main(argv: list[str] | None = None) -> int:
     """CLI used by agents and demos: ``python -m knowledge.validators V39I``."""
