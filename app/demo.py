@@ -1,14 +1,20 @@
 """GB1 定向进化看板（T8 可交互 demo）——单文件、只读消费上游产物。
 
-三个模块（对应题目「可交互 demo」加分项 + 「输入野生型序列后自动推荐突变方案」）：
+五个模块（对应题目「可交互 demo」「结果分析与展示」加分项 + 「输入野生型序列后自动推荐突变方案」）：
   ① 四策略对比    读 reports/campaign_metrics.json（T7 产出，schema t7.v2）。
   ② 五角色回放    读 reports/campaign_events*.jsonl（T4 事件流，带 SHA-256 哈希链）。
   ③ 实时试玩      one-hot + Ridge（T3 模型）秒级打分；一键跑一轮 agent 推荐复用
                   evolution.campaign.run_campaign（事件只进内存录制器，供模块②同源展示）。
+  ④ 位点集中 & 组合理由  读 workflow-v1.1 的 campaign_easy.metrics.json（topk_concentration）
+                  与 agent_combination_rationales.json（证据/叙事来源分开标注）。
+  ⑤ 阶数·保守性·alpha    读 analysis-v0.1 的 mutation_order/conservation 与 workflow-v1.0 的
+                  predictor_alpha_sweep / scaling ablation；口径限制（同阶留出高估、
+                  保守性是未接入筛选的自然度先验、固定 alpha 的预处理反转）原样展示。
 
 纪律：本看板全程只读——@st.cache_data / @st.cache_resource 缓存加载，
 绝不 append 事件流、绝不覆盖 reports/ 下任何产物；模块③(b) 的推荐事件
-收集在内存 recorder 中，不落盘。运行：streamlit run app/demo.py（或 make demo）。
+收集在内存 recorder 中，不落盘。任一数据文件缺失时对应面板给出
+「缺哪个文件 + 跑哪条命令」的明确提示，不静默空白。运行：streamlit run app/demo.py（或 make demo）。
 """
 from __future__ import annotations
 
@@ -27,7 +33,7 @@ if str(ROOT) not in sys.path:  # streamlit run 不保证把仓库根加进 sys.p
 from agent.llm import llm_config  # noqa: E402
 from evolution.mutations import validate_variant  # noqa: E402
 
-from evolution.results_layout import run_dir  # noqa: E402
+from evolution.results_layout import report_dir, run_dir  # noqa: E402
 _GB1 = run_dir("workflow", "gb1", create=False)
 METRICS_JSON = _GB1 / "campaign_easy.metrics.json"
 METRICS_LLM_JSON = _GB1 / "campaign_llm.metrics.json"
@@ -44,6 +50,25 @@ BASELINE_JSON = _GB1 / "random_baseline.metrics.json"
 PREDICTOR_JSON = _GB1 / "predictor_ladder.json"
 TRAIN_POOL = ROOT / "data" / "pools" / "train_pool.csv"
 LANDSCAPE_CSV = ROOT / "data" / "four_mutations_full_data.csv"
+
+# ---- 模块④⑤（分析面板）的数据源：全部只读，见 harness/reports/ 的版本化产物树 ----
+RATIONALES_JSON = report_dir("workflow") / "agent_combination_rationales.json"
+ANALYSIS_DIR = {ds: run_dir("analysis", ds, create=False) for ds in ("gb1", "aav")}
+_V10_GB1 = run_dir("workflow", "gb1", version="v1.0", create=False)
+ALPHA_SWEEP_JSON = _V10_GB1 / "predictor_alpha_sweep.json"
+SCALING_ABLATION_JSON = _V10_GB1 / "predictor_ladder_scaling_ablation.json"
+# 数据缺失时的诚实降级提示：缺哪个文件、跑哪条命令能补回（阳极性对照由 tests 验证）
+HINTS = {
+    "metrics": "先跑 `make campaign`（即 `python evolution/campaign.py`）重新生成。",
+    "rationales": "该快照捕获自 `make campaign` 五角色事件流里 mutation_designer 的 "
+                  "`agent.role.completed` 事件（产出代码见 `agent/pipeline.py`；本快照由 commit "
+                  "`ed3b4f2` 固定入库）。",
+    "mutation_order": "先跑 `PYTHONPATH=. python analysis/mutation_order.py` 重新生成。",
+    "conservation": "先跑 `PYTHONPATH=. python features/conservation.py --dataset {ds} "
+                    "--data <对应 DMS 真值表 csv> --output-dir harness/reports/analysis-v0.1` 重新生成。",
+    "alpha_sweep": "先跑 `python -m models.alpha_sweep` 重新生成（该文件存档于 workflow-v1.0 周期目录）。",
+    "scaling": "先跑 `python -m models.evaluate_all` 重新生成（该文件存档于 workflow-v1.0 周期目录）。",
+}
 
 REFERENCE_WT = "VDGV"  # GB1 dataset reference at V39 / D40 / G41 / V54
 MUTABLE_POSITIONS = (39, 40, 41, 54)
@@ -720,21 +745,436 @@ def _render_recommender(wild_type: str, has_landscape: bool) -> None:
             render_role_chain(chain, "knowledge_agent", 1)
 
 
+# ---------------------------------------------------------------- 模块④⑤：分析面板（只读展示上游产物）
+
+
+def _missing_artifact(path: Path, how_to_regenerate: str) -> bool:
+    """诚实降级：缺文件给明确提示（哪个文件 + 哪条命令），不静默空白。
+
+    存在性检查刻意放在 @st.cache_data 之外——改名做阳性对照时，
+    即使同一进程里该路径曾命中缓存，也能立刻看到降级提示。
+    """
+    if path.exists():
+        return False
+    st.warning(f"缺数据文件 `{path.relative_to(ROOT)}`——{how_to_regenerate} 本面板停等，其余面板不受影响。")
+    return True
+
+
+def _analysis_axes(nrows: int = 1, ncols: int = 1, figsize: tuple[float, float] = (10.5, 4.2)):
+    """分析面板共用的 matplotlib 底版（图表内文字用英文，避免评测机缺中文字体）。"""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    ink, muted, grid, surface = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
+    fig, axes = plt.subplots(nrows, ncols, figsize=figsize)
+    fig.patch.set_facecolor(surface)
+    flat = np.atleast_1d(axes).ravel() if nrows * ncols > 1 else axes
+    for ax in np.atleast_1d(axes).ravel():
+        ax.set_facecolor(surface)
+        ax.grid(axis="y", color=grid, lw=0.8)
+        ax.set_axisbelow(True)
+        ax.spines[["top", "right"]].set_visible(False)
+        ax.spines[["left", "bottom"]].set_color(muted)
+        ax.tick_params(colors=muted, labelsize=8)
+    return fig, flat, ink, muted
+
+
+def render_concentration_panel() -> None:
+    """④-a 推荐突变是否集中在关键位点：按策略 × 位点展示 top-k 残基分布。"""
+    st.markdown("#### ④-a 推荐突变是否集中在关键位点——top-k 残基集中度")
+    st.caption(
+        "数据源：`harness/reports/workflow-v1.1/gb1/campaign_easy.metrics.json` 的 "
+        "`strategies.<策略>.topk_concentration`（easy 档 · 随机池冷启动）。只读展示，数字均为 JSON 原字段。"
+    )
+    if _missing_artifact(METRICS_JSON, HINTS["metrics"]):
+        return
+    metrics = load_metrics(str(METRICS_JSON)) or {}
+    available = [name for name in STRATEGY_LABELS
+                 if (metrics.get("strategies", {}).get(name, {}) or {}).get("topk_concentration")]
+    if not available:
+        st.warning("`campaign_easy.metrics.json` 中没有任何 `topk_concentration` 字段——该统计是后加的，请用带它的 campaign 版本重跑。")
+        return
+
+    default = available.index("knowledge_agent") if "knowledge_agent" in available else 0
+    strategy = st.selectbox("策略", available, index=default, format_func=STRATEGY_LABELS.get, key="m4a_strategy")
+    tc = metrics["strategies"][strategy]["topk_concentration"]
+    st.caption(f"`n_topk_observations` = {tc.get('n_topk_observations')}（该策略累计 top-k 观测数，JSON 原字段）")
+
+    cols = st.columns(4)
+    for col, (pos, wt) in zip(cols, zip(("39", "40", "41", "54"), "VDGV")):
+        info = tc["positions"].get(pos, {})
+        with col:
+            st.markdown(f"**{wt}{pos}**（WT 残基 `{wt}`）")
+            counts = info.get("residue_counts", {})
+            if counts:
+                st.bar_chart(pd.Series(counts, name="residue count in top-k"))
+            st.caption(
+                f"dominant_residue `{info.get('dominant_residue')}` · "
+                f"dominant_fraction `{info.get('dominant_fraction')}` · "
+                f"mutation_fraction `{info.get('mutation_fraction')}`"
+            )
+
+    rows = []
+    for name in available:
+        t = metrics["strategies"][name]["topk_concentration"]
+        for pos, wt in zip(("39", "40", "41", "54"), "VDGV"):
+            info = t["positions"].get(pos, {})
+            rows.append({
+                "strategy": name,
+                "position": f"{wt}{pos}",
+                "dominant_residue": info.get("dominant_residue"),
+                "dominant_fraction": info.get("dominant_fraction"),
+                "mutation_fraction": info.get("mutation_fraction"),
+                "residue_counts": " ".join(f"{k}:{v}" for k, v in (info.get("residue_counts") or {}).items()),
+            })
+    st.markdown("**四策略 × 四位点对照（字段名与 JSON 一致）**")
+    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    st.caption(
+        "读法：dominant_fraction 高 = 该策略 top-k 在此位点集中于单一残基；"
+        "mutation_fraction = top-k 中该位点偏离 WT 的比例。这直接回答试题「推荐突变是否集中在关键位点」。"
+    )
+
+
+def render_rationales_panel() -> None:
+    """④-b 为什么组合某些突变：实测增益（evidence）与叙事（narrative）分开标注。"""
+    st.markdown("#### ④-b 为什么组合这些突变——组合理由与实测增益")
+    st.caption("数据源：`harness/reports/workflow-v1.1/agent_combination_rationales.json`（workflow-v1.1 周期捕获）。")
+    if _missing_artifact(RATIONALES_JSON, HINTS["rationales"]):
+        return
+    data = load_metrics(str(RATIONALES_JSON)) or {}
+    prov = data.get("provenance", {})
+    st.caption(f"事件：`{data.get('event_type')}` · actor `{data.get('actor')}` · round {data.get('round_id')}")
+
+    rationales = data.get("combination_rationales", [])
+    narrative_sources = sorted({str(r.get("narrative_source")) for r in rationales})
+    llm_text = prov.get("llm_generated_text")
+    if narrative_sources == ["deterministic"]:
+        st.info(
+            "**证据与叙事分开看**：`evidence_source`（实测统计量从哪来）与 `narrative_source`（那句解释由谁生成）"
+            f"是两个独立字段。本快照 narrative_source=`deterministic`、provenance.llm_generated_text=`{llm_text}`——"
+            "**下面的组合理由是代码生成的确定性叙事，不是 LLM 推理**，不得当作 LLM 能力展示。"
+        )
+    else:
+        st.info(
+            f"evidence_source 与 narrative_source 分列展示（本文件 narrative_source 集合 = {narrative_sources}）。"
+            "叙事为 LLM 生成时会如实标注，fallback 的理由不会冒充 LLM 推理。"
+        )
+
+    measured = data.get("measured_rows", [])
+    if measured:
+        st.markdown("**实测行（`measured_rows`，组合依据的原始观测）**")
+        st.dataframe(
+            pd.DataFrame([{"mutations": " ".join(r.get("mutations", [])), "fitness": r.get("fitness")}
+                          for r in measured]),
+            width="stretch", hide_index=True,
+        )
+
+    if not rationales:
+        st.warning("`combination_rationales` 为空——没有任何组合理由可展示。")
+        return
+    st.markdown("**组合候选（`combination_rationales`）**")
+    st.dataframe(
+        pd.DataFrame([{
+            "组合": " + ".join(r.get("selected_single_mutations", [])),
+            "empirical_position_gains": "; ".join(f"pos{k}={v:.3f}" for k, v in (r.get("empirical_position_gains") or {}).items()),
+            "positions_non_conflicting": "✅" if r.get("positions_non_conflicting") else "❌",
+            "rule_ids": " ".join(r.get("rule_ids", [])),
+            "evidence_source": r.get("evidence_source"),
+            "narrative_source": r.get("narrative_source"),
+        } for r in rationales]),
+        width="stretch", hide_index=True,
+    )
+    for r in rationales:
+        st.markdown(
+            f"> **`{' + '.join(r.get('selected_single_mutations', []))}`**：{r.get('deterministic_summary', '')}\n\n"
+            f"`evidence_source=`{r.get('evidence_source')}` · `narrative_source=`{r.get('narrative_source')}`"
+        )
+
+
+def render_mutation_order_panel() -> None:
+    """⑤-a 单点/双点/多点突变对比：四层分析（分布/加性外推/上位/低阶覆盖）。"""
+    st.markdown("#### ⑤-a 单点 / 双点 / 多点突变的优化效果——突变阶数分析")
+    ds_labels = {"aav": "AAV（28 aa，阶数 0–28，加分项③主证据）", "gb1": "GB1（四位点，阶数 0–4）"}
+    ds = st.selectbox("数据集", ("aav", "gb1"), index=0, format_func=ds_labels.get, key="m5a_ds")
+    path = ANALYSIS_DIR[ds] / "mutation_order.json"
+    st.caption(f"数据源：`harness/reports/analysis-v0.1/{ds}/mutation_order.json`（只读分析线，不跑新实验）。")
+    if _missing_artifact(path, HINTS["mutation_order"]):
+        return
+    d = load_metrics(str(path)) or {}
+    st.caption(
+        f"`{d.get('dataset')}` · 可测变体 {d.get('n_measured_variants'):,} · "
+        f"WT `{d.get('wt_sequence')}` · wt_fitness `{d.get('wt_fitness')}`"
+    )
+
+    st.markdown("**① 各阶分布（`distribution_by_order`，全部实测）**")
+    dist = pd.DataFrame([
+        {"order": int(k), **{kk: vv for kk, vv in v.items() if kk != "source"}}
+        for k, v in (d.get("distribution_by_order") or {}).items()
+    ]).set_index("order").sort_index()
+    st.dataframe(dist, width="stretch")
+
+    st.markdown("**② 加性外推（`additive_extrapolation`）：只用 ≤k 阶训练，外推 k+1 阶**")
+    rows = []
+    for r in d.get("additive_extrapolation", []):
+        by_alpha = r.get("validation_spearman_by_alpha", {})
+        alpha = r.get("alpha_selected")
+        val = by_alpha.get(str(alpha), by_alpha.get(float(alpha), float("nan")))
+        rows.append({
+            "train_orders": r.get("train_orders"), "test_order": r.get("test_order"),
+            "n_train": r.get("n_train"), "n_test": r.get("n_test"),
+            "alpha_selected": alpha,
+            "validation_spearman@selected": round(float(val), 4),
+            "test_spearman": round(float(r.get("test_spearman", float("nan"))), 4),
+        })
+    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    for r in d.get("additive_extrapolation", []):
+        if str(r.get("train_orders")) != "0..2" or r.get("test_order") != 3:
+            continue
+        by_alpha = r.get("validation_spearman_by_alpha", {})
+        alpha = r.get("alpha_selected")
+        val = by_alpha.get(str(alpha), by_alpha.get(float(alpha), float("nan")))
+        st.warning(
+            f"⚠️ 跨阶外推被系统性高估（`{ds}` 的 0..2→3 行）：**留出验证 {float(val):.4f} vs 测试 "
+            f"{float(r.get('test_spearman', float('nan'))):.4f}**。留出集是从**同阶**训练数据里切出来的，"
+            "只反映阶内拟合，不反映跨阶外推；alpha 也是在这个同阶留出上选的，救不了这个落差。"
+        )
+
+    st.markdown("**③ 上位效应（`epistasis_by_order`：observed − (WT + Σ 实测单点效应)）**")
+    epi = pd.DataFrame([
+        {"order": int(k),
+         **{kk: vv for kk, vv in v.items() if kk not in ("source", "strongest_positive", "strongest_negative")}}
+        for k, v in (d.get("epistasis_by_order") or {}).items()
+    ]).set_index("order").sort_index()
+    st.dataframe(epi, width="stretch")
+
+    st.markdown("**④ 低阶完整覆盖率（`lower_order_coverage_by_order`）——高阶峰为什么学不到**")
+    cov_rows = pd.DataFrame([
+        {"order": int(k), "n_variants": v.get("n_variants"), "n_complete": v.get("n_complete"),
+         "complete_fraction": v.get("complete_fraction"), "mean_subset_coverage": v.get("mean_subset_coverage")}
+        for k, v in (d.get("lower_order_coverage_by_order") or {}).items()
+    ]).set_index("order").sort_index()
+    st.dataframe(cov_rows, width="stretch")
+    fig, ax, ink, muted = _analysis_axes(figsize=(10.5, 3.6))
+    ax.bar(cov_rows.index, cov_rows["complete_fraction"], color="#2a78d6", alpha=0.85)
+    ax.set_xlabel("mutation order", color=muted, fontsize=9)
+    ax.set_ylabel("complete_fraction", color=muted, fontsize=9)
+    ax.set_title("Lower-order completeness collapses with order (why high-order peaks are unlearnable)",
+                 color=ink, fontsize=11, loc="left")
+    fig.tight_layout()
+    st.pyplot(fig, width="stretch")
+    cov = d.get("lower_order_coverage_by_order") or {}
+    if all(str(k) in cov for k in (2, 3, 4)):
+        st.warning(
+            f"低阶支撑塌方（`{ds}`）：complete_fraction 2 阶 **{cov[str(2)]['complete_fraction']:.3f}** → "
+            f"3 阶 **{cov[str(3)]['complete_fraction']:.3f}** → 4 阶 **{cov[str(4)]['complete_fraction']:.3f}**。"
+            "高阶变体几乎找不到完整的低阶组合支撑，其组合效应只能靠外推——这是高阶真峰难学的结构性原因。"
+        )
+
+    peak = d.get("aav_peak_posthoc")
+    if peak:
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("真峰 order", peak.get("order"))
+        c2.metric("observed_fitness", f"{float(peak.get('observed_fitness', float('nan'))):.3f}")
+        c3.metric("additive_prediction", f"{float(peak.get('additive_prediction', float('nan'))):.3f}")
+        c4.metric("epistasis_residual", f"{float(peak.get('epistasis_residual', float('nan'))):.3f}")
+        loc = peak.get("lower_order_coverage", {})
+        st.caption(
+            f"真峰 `{peak.get('sequence')}` 的 lower_order_coverage：{loc.get('n_measured')} / {loc.get('n_required')} "
+            f"(fraction `{loc.get('fraction')}`，缺 `{', '.join(loc.get('missing_sequences', []))}`)"
+        )
+
+
+def render_conservation_panel() -> None:
+    """⑤-b 保守位点：ESM-2 熵 × 实测效应，负结果口径原样展示。"""
+    st.markdown("#### ⑤-b 保守位点分析——ESM-2 逐位置熵 vs 实测效应（负结果）")
+    st.warning(
+        "**口径（必读）**：ESM-2 熵是**自然度先验**，仅用于事后分析，**未接入采集或筛选路径**。"
+        "本仓真峰已被证明是反自然的；若把「避开保守位点」当门禁，会先把真峰组成位点挡掉（见下方名次）。"
+    )
+    ds_labels = {"aav": "AAV（28 aa，有真峰位点记录）", "gb1": "GB1（56 aa，四位点组合空间）"}
+    ds = st.selectbox("数据集", ("aav", "gb1"), index=0, format_func=ds_labels.get, key="m5b_ds")
+    path = ANALYSIS_DIR[ds] / "conservation.json"
+    st.caption(f"数据源：`harness/reports/analysis-v0.1/{ds}/conservation.json`（只读分析线）。")
+    if _missing_artifact(path, HINTS["conservation"].format(ds=ds)):
+        return
+    c = load_metrics(str(path)) or {}
+    st.caption(f"模型 `{c.get('model')}` · {c.get('entropy_definition')}")
+
+    positions = c.get("positions", [])
+    peaks = c.get("true_peak_positions") or []
+    # 真峰突变记号（D0Q/V18A/S17E）的数字是 0-based 位点，与 conservation-report.md 一致；
+    # 按 JSON 自带的 position_zero_based 键映射，名次/熵等数字全部取自 JSON 原字段。
+    peak_names = {0: "D0Q", 18: "V18A", 17: "S17E"}
+
+    def _peak_label(p: dict) -> str:
+        return peak_names.get(p.get("position_zero_based"), f"pos {p.get('position')}")
+
+    fig, ax, ink, muted = _analysis_axes(figsize=(10.5, 3.8))
+    ax.plot([p["position"] for p in positions], [p["entropy_nats"] for p in positions],
+            color="#52514e", lw=1.6)
+    if peaks:
+        ax.scatter([p["position"] for p in peaks], [p["entropy_nats"] for p in peaks],
+                   color="#eb6834", s=64, zorder=3, label="true peak positions")
+        for p in peaks:
+            ax.annotate(f"{_peak_label(p)} (rank {p['conservation_rank']})",
+                        (p["position"], p["entropy_nats"]), textcoords="offset points",
+                        xytext=(6, 8), fontsize=8.5, color="#eb6834")
+        ax.legend(fontsize=8.5, frameon=False, labelcolor=ink)
+    ax.set_xlabel("sequence position (1-based)", color=muted, fontsize=9)
+    ax.set_ylabel("ESM-2 entropy (nats)", color=muted, fontsize=9)
+    ax.set_title(f"Per-position masked-token entropy ({ds}); low = more conserved",
+                 color=ink, fontsize=11, loc="left")
+    fig.tight_layout()
+    st.pyplot(fig, width="stretch")
+
+    table = pd.DataFrame([{
+        "position": p.get("position"), "wild_type": p.get("wild_type"),
+        "entropy_nats": p.get("entropy_nats"), "conservation_rank": p.get("conservation_rank"),
+        "n_mutated_observations": p.get("n_mutated_observations"),
+        "beneficial_fraction": p.get("beneficial_fraction"),
+        "max_fitness_gain": p.get("max_fitness_gain"),
+        "effect_measured": p.get("effect_measured"),
+        "true_peak": any(q.get("position") == p.get("position") for q in peaks),
+    } for p in positions]).sort_values("conservation_rank")
+    st.dataframe(table, width="stretch", hide_index=True)
+    st.caption("名次按熵从低到高排：conservation_rank=1 是最保守位置；effect_measured=false 的位点无实测单突变。")
+
+    if peaks:
+        st.markdown("**真峰三位点的保守性名次（负结果，不美化）**")
+        for p in sorted(peaks, key=lambda q: q["conservation_rank"]):
+            st.markdown(
+                f"- `{_peak_label(p)}`（pos {p['position']}，WT `{p['wild_type']}`）→ conservation_rank "
+                f"**{p['conservation_rank']} / {len(positions)}** · entropy_nats `{p['entropy_nats']:.4f}`"
+            )
+        st.info(
+            "三个真峰组成位点中**两个落在高保守区**（最保守的第 1、第 4 位）。"
+            "若按「避开保守位点」的先验筛候选，会先丢掉 D0Q/V18A，把已知反自然真峰挡在门外——"
+            "保守性先验在这里是**负结果**，所以保持事后分析定位、绝不接入采集或筛选路径。"
+        )
+    else:
+        st.caption("`true_peak_positions` 为空——该数据集（GB1）的真峰是四位点组合结果，本分析未定义单峰位点，如实不展示。")
+
+    corr = c.get("correlations", {})
+    c1, c2 = st.columns(2)
+    c1.metric("ρ(名次, 单突变有益比例)",
+              f"{float(corr.get('spearman_rank_vs_beneficial_fraction', float('nan'))):.3f}",
+              f"p = {float(corr.get('spearman_rank_vs_beneficial_fraction_pvalue', float('nan'))):.3f}",
+              delta_color="off")
+    c2.metric("ρ(名次, 单突变最大增益)",
+              f"{float(corr.get('spearman_rank_vs_max_fitness_gain', float('nan'))):.3f}",
+              f"p = {float(corr.get('spearman_rank_vs_max_fitness_gain_pvalue', float('nan'))):.3f}",
+              delta_color="off")
+    if ds == "gb1":
+        st.caption("GB1 仅 4 个可变位点有实测对照，检验功效极低，不足以支持关联结论（原分析报告结论）。")
+
+
+def render_alpha_sweep_panel() -> None:
+    """⑤-c 为什么不能固定 Ridge alpha：固定 alpha 的预处理反转 + 逐特征选 alpha。"""
+    st.markdown("#### ⑤-c 为什么不能固定 Ridge alpha——逐特征 alpha 扫描")
+    st.caption(
+        "数据源：`harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`（曲线）与 "
+        "`predictor_ladder_scaling_ablation.json`（固定 alpha 消融）。"
+    )
+    sweep_missing = not ALPHA_SWEEP_JSON.exists()
+    scaling_missing = not SCALING_ABLATION_JSON.exists()
+    if sweep_missing:
+        st.warning(f"缺 `harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`——{HINTS['alpha_sweep']} 扫描曲线停等。")
+    if scaling_missing:
+        st.warning(f"缺 `harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json`——{HINTS['scaling']} 固定 alpha 对照停等。")
+    if sweep_missing and scaling_missing:
+        return
+    sweep = load_metrics(str(ALPHA_SWEEP_JSON)) if not sweep_missing else None
+    ablation = load_metrics(str(SCALING_ABLATION_JSON)) if not scaling_missing else None
+
+    if sweep and ablation:
+        raw_fix = ablation.get("esm2__random", {}).get("raw", {}).get("ridge", {}).get("spearman", float("nan"))
+        std_fix = ablation.get("esm2__random", {}).get("standardized", {}).get("ridge", {}).get("spearman", float("nan"))
+        raw_sel = (sweep.get("esm2__random__raw") or {}).get("test_spearman_at_selected", float("nan"))
+        std_sel = (sweep.get("esm2__random__standardized") or {}).get("test_spearman_at_selected", float("nan"))
+        st.warning(
+            f"**固定 alpha 的陷阱**：同一份数据、同一个 Ridge，固定默认 alpha 时 ESM-2（random 划分）"
+            f"raw **{float(raw_fix):.4f}** → standardized **{float(std_fix):.4f}**，结论随预处理**反向**；"
+            f"按验证集逐特征调过 alpha 后两侧收敛到 **{float(raw_sel):.4f} / {float(std_sel):.4f}**。"
+            "落差来自 alpha 与特征尺度耦合（one-hot 逐维方差 ≈0.25，GB1 的 ESM-2 ≈1e-4），"
+            "不是表征优劣——所以任何「固定 alpha 比表征」的结论都不成立。"
+        )
+
+    if ablation:
+        st.markdown("**固定默认 alpha 的标准化消融（`predictor_ladder_scaling_ablation.json` · ridge）**")
+        fix_rows = []
+        for combo, by_prep in ablation.items():
+            if not isinstance(by_prep, dict) or "raw" not in by_prep:
+                continue
+            raw_v = (by_prep.get("raw", {}).get("ridge", {}) or {}).get("spearman")
+            std_v = (by_prep.get("standardized", {}).get("ridge", {}) or {}).get("spearman")
+            fix_rows.append({"combo": combo, "raw_spearman": raw_v, "standardized_spearman": std_v,
+                             "flip": "🔁 |Δ|>0.1" if raw_v is not None and std_v is not None
+                             and abs(raw_v - std_v) > 0.1 else ""})
+        st.dataframe(pd.DataFrame(fix_rows), width="stretch", hide_index=True)
+
+    if not sweep:
+        return
+    st.markdown("**逐特征 alpha 扫描（`predictor_alpha_sweep.json`，8 个组合，标记选中 alpha）**")
+    st.caption("字段与 JSON 同名：`alpha_selected` / `val_spearman_at_selected` / `test_spearman_at_selected`。")
+    combos = sorted(sweep.keys())
+    st.dataframe(
+        pd.DataFrame([{
+            "combo": k,
+            "alpha_selected": sweep[k].get("alpha_selected"),
+            "val_spearman_at_selected": sweep[k].get("val_spearman_at_selected"),
+            "test_spearman_at_selected": sweep[k].get("test_spearman_at_selected"),
+        } for k in combos]),
+        width="stretch", hide_index=True,
+    )
+
+    fig, axes, ink, muted = _analysis_axes(2, 4, figsize=(13.5, 6.4))
+    for ax, combo in zip(axes, combos):
+        entry = sweep[combo]
+        by_alpha = entry.get("test_spearman_by_alpha", {})
+        xs = sorted(by_alpha, key=float)
+        ax.plot([float(x) for x in xs], [by_alpha[x] for x in xs], color="#2a78d6", lw=1.8, label="test")
+        val_alpha = entry.get("val_spearman_by_alpha", {})
+        if val_alpha:
+            ax.plot([float(x) for x in xs], [val_alpha.get(x, float("nan")) for x in xs],
+                    color="#8a8a86", lw=1.2, ls=(0, (4, 3)), label="val (selection)")
+        sel = entry.get("alpha_selected")
+        if str(sel) in by_alpha:
+            ax.scatter([float(sel)], [by_alpha[str(sel)]], color="#eb6834", s=48, zorder=3)
+        feature, split, prep = combo.split("__")
+        ax.set_xscale("log")
+        ax.set_title(f"{feature} · {split} · {prep}", fontsize=9, loc="left")
+    axes[0].legend(fontsize=7.5, frameon=False, labelcolor=ink)
+    for ax in axes:
+        ax.set_xlabel("ridge alpha (log)", fontsize=8)
+    axes[0].set_ylabel("spearman", fontsize=8)
+    axes[4].set_ylabel("spearman", fontsize=8)
+    fig.suptitle("Test Spearman vs alpha per (feature x split x preprocessing); orange dot = selected alpha",
+                 fontsize=11, color=ink, x=0.02, ha="left")
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    st.pyplot(fig, width="stretch")
+    st.caption("选法：训练集内 80/20 留出选 alpha（answer-agnostic，不看测试集），再在测试集上报分。")
+
+
 # ---------------------------------------------------------------- 入口
 
 
 def main() -> None:
     st.title("🧬 GB1 蛋白定向进化 · 科学智能体看板")
     st.markdown(
-        "四策略闭环对比 + 五角色 Agent 思考回放 + 实时试玩。数据：GB1 四位点组合空间"
+        "四策略闭环对比 + 五角色 Agent 思考回放 + 实时试玩 + 分析面板（位点集中 / 组合理由 / "
+        "突变阶数 / 保守位点 / alpha 扫描）。数据：GB1 四位点组合空间"
         "（V39/D40/G41/V54，野生型 `VDGV`），真值表 149,361 / 160,000。"
     )
     st.caption(
-        "本看板**只读**消费 T7/T4/T3 产物（`@st.cache_data` / `@st.cache_resource`），"
-        "不写事件流、不覆盖 `reports/`。运行：`streamlit run app/demo.py`（或 `make demo`）。"
+        "本看板**只读**消费 T7/T4/T3 产物与 `harness/reports/` 分析产物（`@st.cache_data` / `@st.cache_resource`），"
+        "不写事件流、不覆盖 `reports/` 或 `harness/reports/`。运行：`streamlit run app/demo.py`（或 `make demo`）。"
     )
 
-    tab1, tab2, tab3 = st.tabs(["① 四策略对比", "② Agent 思考回放", "③ 实时试玩"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(
+        ["① 四策略对比", "② Agent 思考回放", "③ 实时试玩", "④ 位点集中 & 组合理由", "⑤ 阶数 · 保守性 · alpha"]
+    )
     with tab1:
         available = {label: p for label, p in REGIMES.items() if p.exists()}
         if not available:
@@ -748,10 +1188,21 @@ def main() -> None:
         render_replay_module()
     with tab3:
         render_playground_module()
+    with tab4:
+        render_concentration_panel()
+        st.divider()
+        render_rationales_panel()
+    with tab5:
+        render_mutation_order_panel()
+        st.divider()
+        render_conservation_panel()
+        st.divider()
+        render_alpha_sweep_panel()
 
     st.divider()
     st.caption(
-        "ai4s-directed-evolution-agent · T8 demo · 上游：T7 campaign / T4 事件流 / T3 Ridge 预测器"
+        "ai4s-directed-evolution-agent · T8 demo · 上游：T7 campaign / T4 事件流 / T3 Ridge 预测器 / "
+        "analysis-v0.1 只读分析线"
     )
 
 

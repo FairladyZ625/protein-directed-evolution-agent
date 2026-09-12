@@ -113,12 +113,38 @@ for that run.
 
 ## Interactive demo
 
-`app/demo.py` — a single-file **Streamlit** dashboard (read-only): ① four-strategy comparison with a
-cold-start regime selector, ② five-role reasoning replay from the event stream (with in-page hash-chain
-verification), ③ a live playground that accepts a four-site GB1 wild type (V39/D40/G41/V54), recomputes
-its single-substitution menu, and recommends Top-k mutations with the existing Ridge predictor. Predictions
-are labelled as model output (not measurements), and an unmeasured input WT gets an explicit warning. The
-dashboard remains read-only: its standard-GB1 one-round campaign trace is held only in memory.
+`app/demo.py` — a single-file **Streamlit** dashboard (read-only), five tabs:
+
+- **① four-strategy comparison** with a cold-start regime selector, reading the versioned
+  `harness/reports/workflow-v1.*/gb1/campaign_*.metrics.json`.
+- **② five-role reasoning replay** from the T4 event stream, with in-page hash-chain verification.
+- **③ live playground** that accepts a four-site GB1 wild type (V39/D40/G41/V54), recomputes
+  its single-substitution menu, and recommends Top-k mutations with the existing Ridge
+  predictor. Predictions are labelled as model output (not measurements), and an unmeasured
+  input WT gets an explicit warning. The standard-GB1 one-round campaign trace is held only in
+  memory.
+- **④ key-position concentration & combination rationales** (read-only, from
+  `harness/reports/workflow-v1.1/`): per-strategy top-k residue distributions per position
+  (`topk_concentration`: `residue_counts` / `dominant_residue` / `dominant_fraction` /
+  `mutation_fraction` — answers "do the recommended mutations concentrate on key positions"),
+  and the agent's mutation-combination rationales with measured single-position gains
+  (`evidence_source` vs `narrative_source` shown separately; the deterministic fallback
+  narrative is never presented as LLM reasoning).
+- **⑤ mutation order · conservation · alpha sweep** (read-only, from `analysis-v0.1` and
+  `workflow-v1.0`): mutation-order comparison across distribution / additive extrapolation /
+  epistasis / lower-order coverage (bonus item ③), including the mandated caveats — the AAV
+  `0..2→3` row's same-order holdout 0.9094 vs cross-order test 0.6155 (holdouts systematically
+  overestimate cross-order extrapolation), and the lower-order completeness collapse
+  1.000 → 0.312 → 0.022 that makes high-order peaks structurally hard to learn; ESM-2
+  per-position conservation with its **negative result** framing (entropy is a naturalness
+  prior used post-hoc only, never wired into acquisition or screening; true-peak sites sit at
+  conservation ranks D0Q #1, V18A #4, S17E #26 — a conservation gate would discard the true
+  peak); and the Ridge alpha sweep explaining why no fixed alpha is admissible (fixed alpha
+  flips esm2 raw 0.4911 vs standardized 0.2944 with preprocessing; per-feature selection
+  converges to 0.4893 / 0.4916).
+
+Every panel degrades honestly: a missing artifact shows which file is absent and the exact
+command that regenerates it — never a silent blank, never a crash.
 
 ```bash
 streamlit run app/demo.py     # or: make demo
