@@ -1,0 +1,16 @@
+{
+  "line": "agentic",
+  "version": "v0.4",
+  "kind": "breakthrough (实验三:上位感知 surrogate)",
+  "description": "门禁 + 上位感知(pairwise 交互,Potts 式)surrogate EpistasisRidgePredictor。唯一变量是 surrogate 从加性→上位感知,破 v0.2/greedy 的 7.53。全程 answer-agnostic。",
+  "answer_agnostic": true,
+  "agent_model": "gpt-5.6-sol",
+  "surrogate": "epistasis (one-hot degree-2 interaction + RidgeCV, sparse)",
+  "datasets": {
+    "aav": "同池27832/同cold-start10433/同288预算/同门禁/seed42;LLM agentic + 确定性 gated-greedy 两版 + 诊断"
+  },
+  "key_result": "LLM agentic cum_top10_max 7.829(strong108,round4破7.53,链校验50事件);确定性gated-greedy 8.416=真峰(strong151,实际测到全局峰)。均破greedy/v0.2的7.53。诊断:pairwise把真峰门内排名从加性#2776拉到#447(6倍)。证实7.53=加性表达力上限,换上位感知表征即破;surrogate是关键杠杆(确定性贪心>LLM自主)。",
+  "status": "CEILING BROKEN — epistasis-aware representation reaches the true peak; representation expressivity is the decisive lever",
+  "date": "2026-09-12",
+  "next": "让LLM agent更好利用上位surrogate(缩小与确定性8.416的差距);或把该surrogate推广GB1/avGFP验普适"
+}
