@@ -73,17 +73,89 @@ def build_knowledge_graph(variants: Iterable[dict] | None = None, *, rules: dict
                 p = f"Property:{key}:{value}"; g.add_node(p, kind="Property", value=value)
                 g.add_edge(f"AminoAcid:{aa}", p, relation="has_property")
     for v in variants or []:
-        vid = str(v.get("id", v.get("variant", "variant"))); g.add_node(f"Variant:{vid}", kind="Variant")
+        vid = str(v.get("id", v.get("variant", "variant")))
+        fitness = None if v.get("fitness") is None else float(v["fitness"])
+        g.add_node(f"Variant:{vid}", kind="Variant", fitness=fitness)
         muts = v.get("mutations", v.get("mutation", [])); muts = [muts] if isinstance(muts, str) else muts
         for raw in muts:
-            a, pos, b = _parse(raw); mid = f"Mutation:{a}{pos}{b}"; g.add_node(mid, kind="Mutation")
+            a, pos, b = _parse(raw); mid = f"Mutation:{a}{pos}{b}"
+            g.add_node(mid, kind="Mutation", from_aa=a, position=pos, to_aa=b)
             g.add_node(f"Position:{pos}", kind="Position")
             g.add_edge(mid, f"Position:{pos}", relation="occurs_at")
             g.add_edge(f"Variant:{vid}", mid, relation="contains")
-            if v.get("fitness") is not None and float(v["fitness"]) > 1:
-                fid = f"Fitness:{v['fitness']}"; g.add_node(fid, kind="Fitness", value=float(v["fitness"]))
+            g.add_edge(mid, f"AminoAcid:{b}", relation="changes_to")
+            if fitness is not None and fitness > 1:
+                fid = f"Fitness:{fitness}"; g.add_node(fid, kind="Fitness", value=fitness)
                 g.add_edge(mid, fid, relation="improves")
     return g
+
+
+def query_amino_acid_properties(graph: nx.MultiDiGraph, amino_acid: str) -> dict:
+    """Return property nodes connected to an amino acid in a graph snapshot."""
+    aa = str(amino_acid).upper()
+    node = f"AminoAcid:{aa}"
+    if node not in graph:
+        return {"amino_acid": aa, "properties": {}}
+    properties = {}
+    for _, target, edge in graph.out_edges(node, data=True):
+        if edge.get("relation") != "has_property":
+            continue
+        _, key, value = target.split(":", 2)
+        properties[key] = graph.nodes[target].get("value", value)
+    return {"amino_acid": aa, "properties": properties}
+
+
+def query_position_mutations(graph: nx.MultiDiGraph, position: int, *, limit: int = 5) -> list[dict]:
+    """Summarise measured mutation/fitness associations at one position.
+
+    The graph must be built from already-measured variants.  Fitness values are
+    aggregated as associations, never interpreted as single-mutation causal effects.
+    """
+    position = int(position)
+    rows = []
+    for node, attrs in graph.nodes(data=True):
+        if attrs.get("kind") != "Mutation" or attrs.get("position") != position:
+            continue
+        observed = []
+        for variant, _, edge in graph.in_edges(node, data=True):
+            if edge.get("relation") != "contains":
+                continue
+            fitness = graph.nodes[variant].get("fitness")
+            if fitness is not None:
+                observed.append(float(fitness))
+        if observed:
+            rows.append({
+                "mutation": node.removeprefix("Mutation:"),
+                "n_measured": len(observed),
+                "fitness_mean": float(sum(observed) / len(observed)),
+                "fitness_max": float(max(observed)),
+            })
+    rows.sort(key=lambda row: (-row["fitness_mean"], -row["n_measured"], row["mutation"]))
+    return rows[:max(0, int(limit))]
+
+
+def query_mutation_context(graph: nx.MultiDiGraph, mutation: Any) -> dict:
+    """Query exact-mutation history plus the mutant amino acid's properties."""
+    source, position, target = _parse(mutation)
+    mid = f"Mutation:{source}{position}{target}"
+    observed = []
+    if mid in graph:
+        for variant, _, edge in graph.in_edges(mid, data=True):
+            if edge.get("relation") != "contains":
+                continue
+            fitness = graph.nodes[variant].get("fitness")
+            if fitness is not None:
+                observed.append(float(fitness))
+    return {
+        "mutation": f"{source}{position}{target}",
+        "position": position,
+        "n_measured": len(observed),
+        "fitness_mean": None if not observed else float(sum(observed) / len(observed)),
+        "fitness_max": None if not observed else float(max(observed)),
+        "mutant_properties": query_amino_acid_properties(graph, target)["properties"],
+        "position_leaders": query_position_mutations(graph, position),
+        "interpretation": "measured association; not a causal single-mutation effect",
+    }
 
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(main())
