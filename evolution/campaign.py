@@ -23,7 +23,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+# `python evolution/campaign.py`(即 make campaign)只把 evolution/ 放进 sys.path,不放仓库根,
+# 所以下面的 `from evolution...` / `from agent...` 会 ModuleNotFoundError。scripts/smoke.py 与
+# app/demo.py 早就各自做了这件事,唯独两个 make 主入口没有——于是 README 的两条主复现命令在任何
+# 干净 clone 上都跑不起来。这里补上同样的引导。
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 import numpy as np
 import pandas as pd
