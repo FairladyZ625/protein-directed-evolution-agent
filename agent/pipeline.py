@@ -28,7 +28,13 @@ class ScoredCandidate(Candidate):
     mean: float
     variance: float
 
+class CriticReview(BaseModel):
+    rationale: str
+    rule_ids: list[str] = Field(min_length=1)
+
 class CriticResult(BaseModel):
+    sequence: str
+    mutations: list[str]
     accepted: bool
     score: float
     rule_check: list[dict[str, Any]] = Field(default_factory=list)
@@ -114,8 +120,10 @@ class ScientificCritic:
         # no_knowledge=True is the ablation: validate_candidate returns [] so all(...) is True (no gating).
         accepted=[]; checks=[]
         for c in scored:
-            rules=validate_candidate(c.mutations, no_knowledge=self.no_knowledge); ok=all(x["pass"] for x in rules); note=self.llm(c,rules) if self.llm and ok else ("accepted" if ok else "rejected by knowledge rules")
-            result=CriticResult(accepted=ok, score=c.mean, rule_check=rules, note=note); checks.append(result)
+            rules=validate_candidate(c.mutations, no_knowledge=self.no_knowledge); ok=all(x["pass"] for x in rules)
+            failed_rule_ids = [x["rule_id"] for x in rules if not x["pass"]]
+            note=self.llm(c,rules) if self.llm and ok else ("accepted" if ok else f"rejected by knowledge rules: {', '.join(failed_rule_ids)}")
+            result=CriticResult(sequence=c.sequence, mutations=c.mutations, accepted=ok, score=c.mean, rule_check=rules, note=note); checks.append(result)
             if ok: accepted.append(c)
         _event(event_store, "agent.role.completed", "scientific_critic", {"critiques": [x.model_dump() for x in checks]}, round_id); return accepted, checks
 

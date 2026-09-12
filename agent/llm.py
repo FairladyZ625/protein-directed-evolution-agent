@@ -1,9 +1,8 @@
 """LLM access for the agent's injectable ports, backed by an OpenAI-compatible pool.
 
 Credentials come from a local ``.env`` file (see ``.env.example``) — never hard
-coded and never committed. When no key is configured or the pool errors, callers
-fall back to the deterministic path, so the project stays runnable without any
-network access or secret.
+coded and never committed. Structured-call failures are raised to the caller;
+the campaign layer is responsible for recording any explicit offline fallback.
 
 Env keys (``.env``):
   API_KEY     pool token (also accepts LLM_API_KEY)
@@ -13,10 +12,24 @@ Env keys (``.env``):
 """
 from __future__ import annotations
 
+from dataclasses import dataclass
 import os
 from pathlib import Path
+from typing import Generic, TypeVar
+
+from pydantic import BaseModel
 
 _DOTENV_LOADED = False
+OutputT = TypeVar("OutputT", bound=BaseModel)
+
+
+@dataclass(frozen=True)
+class StructuredLLMResult(Generic[OutputT]):
+    """Validated provider output plus response-side provenance."""
+
+    output: OutputT
+    model: str
+    requests: int
 
 
 def load_dotenv() -> None:
@@ -58,19 +71,54 @@ def llm_available() -> bool:
     return llm_config() is not None
 
 
-def chat_json(prompt: str, *, cfg: dict | None = None) -> str:
-    """One-shot deterministic (temperature 0) chat completion; returns raw text.
+def chat_structured(
+    prompt: str,
+    output_type: type[OutputT],
+    *,
+    cfg: dict | None = None,
+    temperature: float = 0.0,
+    max_tokens: int = 512,
+) -> StructuredLLMResult[OutputT]:
+    """Run one PydanticAI call whose only valid output is ``output_type``.
 
-    Raises on any failure so callers can fall back to a deterministic path.
+    PydanticAI registers the Pydantic model as the provider output-tool schema
+    and validates the returned tool arguments. ``retries=0`` makes a malformed
+    structured response fail this call immediately; this function never parses
+    free-form text and never falls back silently.
     """
     cfg = cfg or llm_config()
     if cfg is None:
         raise RuntimeError("no LLM credentials (set API_KEY in .env)")
-    from openai import OpenAI
-    client = OpenAI(api_key=cfg["api_key"], base_url=cfg["base_url"],
-                    timeout=cfg["timeout"], max_retries=0)
-    resp = client.chat.completions.create(
-        model=cfg["model"],
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0, max_tokens=512)
-    return resp.choices[0].message.content or ""
+    if not isinstance(output_type, type) or not issubclass(output_type, BaseModel):
+        raise TypeError("output_type must be a Pydantic BaseModel subclass")
+
+    from pydantic_ai import Agent
+    from pydantic_ai.models.openai import OpenAIChatModel
+    from pydantic_ai.providers.openai import OpenAIProvider
+    from openai import AsyncOpenAI
+
+    client = AsyncOpenAI(
+        api_key=cfg["api_key"],
+        base_url=cfg["base_url"],
+        timeout=cfg["timeout"],
+        max_retries=0,
+    )
+    provider = OpenAIProvider(openai_client=client)
+    model = OpenAIChatModel(cfg["model"], provider=provider)
+    agent = Agent(
+        model,
+        output_type=output_type,
+        model_settings={"temperature": temperature, "max_tokens": max_tokens},
+        retries=0,
+    )
+    result = agent.run_sync(prompt)
+    if not isinstance(result.output, output_type):
+        raise TypeError(f"provider output was not parsed as {output_type.__name__}")
+    actual_model = result.response.model_name
+    if not actual_model:
+        raise RuntimeError("provider response omitted model provenance")
+    return StructuredLLMResult(
+        output=result.output,
+        model=actual_model,
+        requests=int(result.usage.requests),
+    )

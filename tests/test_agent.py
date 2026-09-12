@@ -6,8 +6,12 @@ injectable-port contract are exercised in isolation.
 """
 from __future__ import annotations
 
-import pytest
+from types import SimpleNamespace
 
+import pytest
+from pydantic_ai import UnexpectedModelBehavior
+
+from agent.llm import chat_structured
 from agent.pipeline import (
     AnalystReport,
     Hypothesis,
@@ -154,3 +158,54 @@ def test_critic_rejects_non_conservative_substitution():
 def test_budget_caps_candidate_count():
     result = run_pipeline(_CONSERVATIVE_POOL, _fake_predictor, budget=2)
     assert len(result.candidates) <= 2
+
+
+def test_chat_structured_passes_pydantic_schema_and_records_response_model(monkeypatch):
+    captured = {}
+
+    class FakeAgent:
+        def __init__(self, model, **kwargs):
+            captured.update(kwargs)
+
+        def run_sync(self, prompt):
+            output = Hypothesis(
+                mutations=["V39I"],
+                rationale="Supported by R-GB1-SITES.",
+                rule_ids=["R-GB1-SITES"],
+            )
+            return SimpleNamespace(
+                output=output,
+                response=SimpleNamespace(model_name="claude-sonnet-5"),
+                usage=SimpleNamespace(requests=1),
+            )
+
+    monkeypatch.setattr("pydantic_ai.Agent", FakeAgent)
+    result = chat_structured(
+        "structured probe",
+        Hypothesis,
+        cfg={"api_key": "test", "base_url": "https://example.test/v1",
+             "model": "requested-alias", "timeout": 1.0},
+    )
+    assert captured["output_type"] is Hypothesis
+    assert captured["retries"] == 0
+    assert captured["model_settings"]["temperature"] == 0.0
+    assert result.output.mutations == ["V39I"]
+    assert result.model == "claude-sonnet-5"  # response-side, never requested alias
+
+
+def test_chat_structured_propagates_schema_parse_failure(monkeypatch):
+    class FailingAgent:
+        def __init__(self, model, **kwargs):
+            pass
+
+        def run_sync(self, prompt):
+            raise UnexpectedModelBehavior("invalid structured output")
+
+    monkeypatch.setattr("pydantic_ai.Agent", FailingAgent)
+    with pytest.raises(UnexpectedModelBehavior, match="invalid structured output"):
+        chat_structured(
+            "malformed probe",
+            Hypothesis,
+            cfg={"api_key": "test", "base_url": "https://example.test/v1",
+                 "model": "requested-alias", "timeout": 1.0},
+        )

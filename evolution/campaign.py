@@ -30,8 +30,8 @@ import pandas as pd
 
 from evolution.random_baseline import (BUDGET, N_ROUNDS, POOL_SIZE, TOP_K, WT,
                                         build_cold_start_pool, load_landscape, propose_random)
-from agent.pipeline import Hypothesis, run_pipeline
-from agent.llm import chat_json, llm_config
+from agent.pipeline import CriticReview, Hypothesis, run_pipeline
+from agent.llm import chat_structured
 from knowledge.validators import load_rules
 
 from evolution.results_layout import run_dir
@@ -51,6 +51,7 @@ LIBRARY_CAP = 10000                   # designer enumerates the full hypothesis 
                                       # high enough to avoid truncating the library before the predictor can rank it
 LAMBDA_UCB = 0.75                     # exploration weight for the knowledge agent
 BETA_BLOSUM = 0.30                    # BLOSUM62 conservativeness prior weight
+LLM_CRITIC_CALLS_PER_ROUND = 1        # bounded commercial review after deterministic rule gating
 
 
 def _features(variants: list[str]) -> np.ndarray:
@@ -136,25 +137,77 @@ def _llm_hypothesis(fallback_fn, fallback_muts, state: dict):
     allowed = set(fallback_muts)
 
     def fn(report):
+        state["hypothesis_llm_calls"] = state.get("hypothesis_llm_calls", 0) + 1
         try:
             prompt = ("You are the Hypothesis Generator of a GB1 directed-evolution agent. "
                       "GB1 has four mutable sites V39/D40/G41/V54 (wild type VDGV). "
                       f"Observed candidate substitutions: {menu}. "
                       "Pick the most promising substitutions to combine into a mutant library. "
-                      "Reply with a JSON array of substitution strings (e.g. [\"V39F\", \"D40A\"]) and nothing else.")
-            text = chat_json(prompt).strip()
-            text = text[text.find("["): text.rfind("]") + 1]
-            picks = [str(m) for m in json.loads(text) if str(m) in allowed]
+                      "Return mutations, a concise rationale that cites supplied T5 rule IDs, "
+                      "and rule_ids. Use only R-GB1-SITES and R-MAX-MUTATIONS.")
+            response = chat_structured(prompt, Hypothesis)
+            structured = response.output
+            picks = [str(m) for m in structured.mutations if str(m) in allowed]
             if not picks:
                 raise ValueError("LLM returned no usable substitutions")
-            state["source"] = f"llm:{(llm_config() or {}).get('model', '?')}"
-            return Hypothesis(mutations=picks,
-                              rationale="LLM-proposed substitutions grounded in R-GB1-SITES.",
-                              rule_ids=["R-GB1-SITES", "R-MAX-MUTATIONS"])
+            allowed_rules = {"R-GB1-SITES", "R-MAX-MUTATIONS"}
+            if not structured.rule_ids or not set(structured.rule_ids) <= allowed_rules:
+                raise ValueError("LLM returned unsupported rule_ids")
+            if not any(rule_id in structured.rationale for rule_id in structured.rule_ids):
+                raise ValueError("LLM rationale did not cite its T5 rule_ids")
+            state["source"] = f"llm:{response.model}"
+            state["hypothesis_llm_model"] = response.model
+            state["hypothesis_llm_requests"] = response.requests
+            return structured.model_copy(update={"mutations": picks})
         except Exception as exc:  # noqa: BLE001 — any failure degrades to the offline generator
             state["source"] = "fallback"
-            state["error"] = str(exc)[:200]
+            state["hypothesis_llm_failures"] = state.get("hypothesis_llm_failures", 0) + 1
+            state["hypothesis_llm_error"] = str(exc)[:200]
             return fallback_fn(report)
+    return fn
+
+
+def _llm_critic(state: dict, max_calls: int = LLM_CRITIC_CALLS_PER_ROUND):
+    """Return a bounded commercial-LLM review port for rule-passing candidates.
+
+    Deterministic rules remain the gate.  The LLM reviews at most ``max_calls``
+    candidates per round; later candidates retain an explicit budget-cap note.
+    Failures are recorded and surfaced as an explicit fallback rather than being
+    represented as a live review.
+    """
+    state.setdefault("critic_calls", 0)
+    state.setdefault("critic_failures", 0)
+
+    def fn(candidate, rules):
+        if state["critic_calls"] >= max_calls:
+            return "accepted by rules; LLM critic not called (per-round call cap)"
+        state["critic_calls"] += 1
+        prompt = (
+            "You are the Scientific Critic of a GB1 directed-evolution agent. "
+            f"Review candidate {candidate.sequence} with mutations {candidate.mutations}, "
+            f"predicted mean {candidate.mean:.6g}, variance {candidate.variance:.6g}, "
+            f"and passed rule checks {rules}. Return a concise rationale and the supplied "
+            "T5 rule IDs that support it."
+        )
+        try:
+            response = chat_structured(prompt, CriticReview)
+            review = response.output
+            supplied_rule_ids = {item["rule_id"] for item in rules}
+            if not set(review.rule_ids) <= supplied_rule_ids:
+                raise ValueError("LLM critic returned unsupported rule_ids")
+            if not any(rule_id in review.rationale for rule_id in review.rule_ids):
+                raise ValueError("LLM critic rationale did not cite its T5 rule_ids")
+            note = review.rationale.strip()
+            if not note:
+                raise ValueError("LLM critic returned an empty review")
+            state["critic_llm_model"] = response.model
+            state["critic_llm_requests"] = state.get("critic_llm_requests", 0) + response.requests
+            return note
+        except Exception as exc:  # noqa: BLE001 - explicit, measured offline fallback
+            state["critic_failures"] += 1
+            state["critic_error"] = str(exc)[:200]
+            return f"accepted by rules; LLM critic fallback ({type(exc).__name__})"
+
     return fn
 
 
@@ -192,13 +245,18 @@ def _agent_propose(strategy, df, measured, train, budget, event_store, round_id,
     det_fn, det_muts = _deterministic_hypothesis(train)
     hyp_fn = _llm_hypothesis(det_fn, det_muts, llm_state) if use_llm else det_fn
 
+    knowledge_enabled = strategy == "knowledge_agent"
+    critic_fn = _llm_critic(llm_state) if knowledge_enabled and use_llm else None
     result = run_pipeline(_pool_records(train), agent_predictor,
-                          llm_hypothesis=hyp_fn, budget=LIBRARY_CAP,
-                          event_store=event_store, round_id=round_id, no_knowledge=True)
+                          llm_hypothesis=hyp_fn, llm_critic=critic_fn,
+                          budget=LIBRARY_CAP, event_store=event_store,
+                          round_id=round_id, no_knowledge=not knowledge_enabled)
 
     known = set(df.Variants)
     rows = []
-    for c in result.candidates:
+    # For the knowledge arm the Critic is a real gate, not a decorative event.
+    # In the no-knowledge ablation every candidate is accepted by construction.
+    for c in result.accepted:
         seq = c.sequence
         if seq in measured or seq not in known:
             continue
@@ -275,6 +333,14 @@ def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: in
             row = {"round": round_id, **_stats(batch, cumulative), "pool_size_after": len(train)}
             if strategy in ("agent_no_knowledge", "knowledge_agent"):
                 row["llm_source"] = llm_state.get("source", "deterministic")
+                row["critic_llm_calls"] = llm_state.get("critic_calls", 0)
+                row["critic_llm_failures"] = llm_state.get("critic_failures", 0)
+                row["hypothesis_llm_calls"] = llm_state.get("hypothesis_llm_calls", 0)
+                row["hypothesis_llm_failures"] = llm_state.get("hypothesis_llm_failures", 0)
+                row["hypothesis_llm_model"] = llm_state.get("hypothesis_llm_model")
+                row["critic_llm_model"] = llm_state.get("critic_llm_model")
+                row["hypothesis_llm_error"] = llm_state.get("hypothesis_llm_error")
+                row["critic_llm_error"] = llm_state.get("critic_error")
                 sources.append(row["llm_source"])
             rounds.append(row)
             _event(event_store, "campaign.round.completed", strategy, round_id, row)
@@ -296,8 +362,8 @@ def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: in
             "cold_start": (f"low_hd (seed pool = all HD<={max_cold_hd}, nominate HD>{max_cold_hd}: extrapolation regime)"
                            if cold_start == "low_hd"
                            else f"random ({pool_size} uniform variants; ~98% HD>=3: easy regime)"),
-            "llm": (f"pool {(llm_config() or {}).get('model', '?')} via injectable hypothesis port"
-                    if use_llm else "deterministic (pool LLM port available via --use-llm)"),
+            "llm": ("commercial API via Pydantic output schemas; actual response models recorded per round"
+                    if use_llm else "deterministic (structured commercial LLM ports available via --use-llm)"),
             "summary": _summary(all_results),
             "strategies": all_results}
 
