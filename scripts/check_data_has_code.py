@@ -38,6 +38,17 @@ CODE_RE = re.compile(r"`((?:agent|analysis|app|data|evolution|events|features|kn
                      r"/[A-Za-z0-9_./-]+\.py)`")
 COMMIT_RE = re.compile(r"`([0-9a-f]{7,40})`")
 
+# 显式豁免。一份报告有时**必须**提到一个没合入主线的 commit —— 典型情形是事后更正:
+# 「当年记的出处是 X,X 从未合入,能力实际由 Y 和 Z 落地」。这种文字里不可避免会出现 X,
+# 而它恰恰是在修复问题而不是制造问题。
+#
+# 豁免是显式的、要写理由的、可 grep 的,不是把判据放松:
+#     <!-- check-data-has-code: allow-unmerged <commit> reason=<一句话> -->
+# 没有 reason 的豁免不生效 —— 否则它就退化成一个静音开关,
+# 而静音开关正是这个脚本存在的理由的反面。
+ALLOW_RE = re.compile(
+    r"<!--\s*check-data-has-code:\s*allow-unmerged\s+([0-9a-f]{7,40})\s+reason=(\S[^>]*?)\s*-->")
+
 
 def is_ancestor(ref: str) -> bool | None:
     """commit 是否在 HEAD 的祖先链上。None = 这个 commit 在本仓解析不了。"""
@@ -65,13 +76,25 @@ def main() -> int:
         blob = "\n".join(texts)
 
         missing_code = sorted({rel for rel in CODE_RE.findall(blob) if not (ROOT / rel).exists()})
+        # 一个豁免覆盖该 commit 的全部写法(短 sha 与全长 sha 指同一个对象)
+        allowed = {}
+        for ref, reason in ALLOW_RE.findall(blob):
+            full = subprocess.run(["git", "-C", str(ROOT), "rev-parse", ref],
+                                  capture_output=True, text=True).stdout.strip()
+            allowed[full or ref] = reason
         unmerged: list[str] = []
         for ref in sorted(set(COMMIT_RE.findall(blob))):
             if len(ref) not in (7, 8, 40):
                 continue
             state = is_ancestor(ref)
-            if state is False:
-                unmerged.append(ref)
+            if state is not False:
+                continue
+            full = subprocess.run(["git", "-C", str(ROOT), "rev-parse", ref],
+                                  capture_output=True, text=True).stdout.strip()
+            if full in allowed:
+                print(f"       (已显式豁免 {ref}:{allowed[full][:70]})")
+                continue
+            unmerged.append(ref)
 
         if missing_code or unmerged:
             print(f"  ❌ {version_dir.name}")

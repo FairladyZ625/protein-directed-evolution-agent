@@ -76,7 +76,17 @@
 - 点名测试（rebase 尝试安全中止后最终复验）：`.venv/bin/pytest -q tests/test_agent.py tests/test_campaign.py tests/test_demo_app.py` → `23 passed in 45.11s`。
 - 结构检查：`git diff --check` → 无输出。
 - 外部 API：实际 2 次；成功 1 次，严格结构化失败 1 次；成功响应模型为 `claude-sonnet-5`。
-- 本地提交：`1bcf2e9b05f594f6323e83bd3e02d057a58ea298`，作者 `ZeyuLi <zeyuli@users.noreply.github.com>`；未 push、未开 PR。
+- 本地提交：`1bcf2e9b05f594f6323e83bd3e02d057a58ea298`，作者 `ZeyuLi <zeyuli@users.noreply.github.com>`；**该 commit 从未合入 main**（当时因 rebase 风险停线，见下一条）。
+
+  **出处更正（2026-09-13，CEO 补）**：这条记录长期是一个指向不存在物的引用——读者按
+  `1bcf2e9` 去主线上查会什么也找不到。但它描述的能力**确实都在主线上**，只是后来通过
+  另一条路径落地的：`_llm_critic` 由 `2366506`（fix: make four-strategy campaign auditable）
+  引入，`CriticReview` 与结构化角色边界由 `1b1219f`（fix(agent): enforce structured roles
+  and measured-space nominations）引入；主线现在还多出 `_structured_call` / `FunctionModel` /
+  `chat_json` 三处 `1bcf2e9` 上没有的实现。**引用本报告时请引这两个已在主线的 commit，
+  不要引 `1bcf2e9`。** 本条由 `scripts/check_data_has_code.py` 抓出。
 - rebase 风险：`git fetch origin main` 成功，但 `origin/main` 与当前仓库历史无共同 merge-base（`git rev-list --left-right --count origin/main...HEAD` 为 `3 63`）。直接 rebase 会重放 56 个历史提交并在第一个骨架提交对 `.gitignore`、`README.md` 产生任务外 add/add 冲突，已用 `git rebase --abort` 安全中止；没有替仓库历史做跳过或冲突裁决。
 - 未验证：ESM-2 主力 campaign、ESM feature provenance、demo 收窄后的 UI 文案，均因第 3 项停线未实施。
 - 下一步需 CEO 裁决：是否先另行产出并治理 149,361 全表 ESM 缓存（预计远超当前提交体积），或修改 D2 为可交付的分层协议方案。裁决后才能继续第 3 项；第 4 项按“收窄 GB1 四位点文案”执行。
+
+<!-- check-data-has-code: allow-unmerged 1bcf2e9b05f594f6323e83bd3e02d057a58ea298 reason=报告在做事后出处更正,必须提到这个从未合入的 commit;能力已由 2366506 与 1b1219f 落地主线 -->
