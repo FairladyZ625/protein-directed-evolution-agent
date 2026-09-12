@@ -8,6 +8,7 @@ from itertools import product
 
 import pandas as pd
 import pytest
+from unittest import mock
 
 import evolution.campaign as campaign
 from evolution.campaign import RANDOM_SEEDS, plot_campaign, run_campaign
@@ -153,3 +154,80 @@ def test_object_fitness_is_coerced_and_random_band_is_drawn(tmp_path, monkeypatc
     plot_campaign(report, tmp_path / "curve.png")
     assert calls
     assert (tmp_path / "curve.png").is_file()
+
+
+def _probe_candidate():
+    """一个最小的合法 ScoredCandidate,给端口形状测试用。"""
+    from agent.pipeline import CombinationRationale, ScoredCandidate
+    return ScoredCandidate(
+        mutations=["V39I"], sequence="IDGV", mean=4.2, variance=0.1,
+        combination_rationale=CombinationRationale(
+            selected_single_mutations=["V39I"], empirical_position_gains={39: 3.1},
+            positions_non_conflicting=True, rule_ids=["R-GB1-SITES"],
+            deterministic_summary="probe"))
+
+def test_llm_critic_port_returns_a_shape_criticreview_accepts():
+    """`_llm_critic` 的返回值要能过 `CriticReview` 的校验。
+
+    它曾经返回裸字符串,而 `agent.pipeline._structured_call` 会拿返回值去
+    `CriticReview.model_validate()`——那需要一个带 `note` 字段的映射。于是每一次
+    LLM critic 调用都抛 ValidationError 并静默降级成确定性注释:一次真 LLM 跑出来的
+    critique 列表 15/15 全是「accepted (deterministic critic fallback)」,而端点本身
+    19 秒就能正常应答。这条测试不打网络,只钉住跨这个边界的形状契约。
+    """
+    from agent.pipeline import CriticReview
+    from evolution.campaign import _llm_critic
+
+    calls = []
+
+    def fake_chat(prompt):
+        calls.append(prompt)
+        return "  The candidate is chemically conservative and passes every gate.  "
+
+    state = {}
+    port = _llm_critic(state)
+    with mock.patch("evolution.campaign.chat_json", fake_chat):
+        review = CriticReview.model_validate(port(_probe_candidate(), []))
+    assert calls, "端口没有真的调用 chat_json"
+    assert review.note.startswith("The candidate is chemically conservative")
+    assert state["critic_source"].startswith("llm:")
+    assert state["critic_llm_calls"] == 1
+
+    # 空回复必须算调用失败,而不是变成一条署名给模型的空白 critique
+    state_empty = {}
+    with mock.patch("evolution.campaign.chat_json", lambda prompt: "   "):
+        empty = CriticReview.model_validate(_llm_critic(state_empty)(_probe_candidate(), []))
+    assert "fallback" in empty.note
+    assert state_empty["critic_source"] == "fallback"
+    assert state_empty["critic_fallbacks"] == 1
+
+
+def test_scientific_critic_caps_live_llm_critiques_but_gates_every_candidate():
+    """LLM 只写注释,门禁始终是确定性的且覆盖每一个候选。
+
+    修好 measurable_variants 之后一轮会设计上千个候选,而一次真 critique 约 19 秒;
+    不设上限,单轮要跑几小时。这条测试钉住:预算只限制 LLM 调用次数,
+    不减少被门禁检查的候选数。
+    """
+    from agent.pipeline import ScientificCritic, ScoredCandidate, CombinationRationale
+
+    def make(mutations, sequence, mean):
+        return ScoredCandidate(
+            mutations=mutations, sequence=sequence, mean=mean, variance=0.1,
+            combination_rationale=CombinationRationale(
+                selected_single_mutations=mutations, empirical_position_gains={},
+                positions_non_conflicting=True, rule_ids=["R-GB1-SITES"],
+                deterministic_summary="probe"))
+
+    scored = [make(["V39I"], "IDGV", 5.0), make(["D40E"], "VEGV", 4.0), make(["V54I"], "VDGI", 3.0)]
+    seen = []
+
+    def port(candidate, rules):
+        seen.append(candidate.sequence)
+        return {"note": "live"}
+
+    accepted, checks = ScientificCritic(port, llm_budget=1).run(scored)
+    assert len(checks) == 3, "门禁必须检查每一个候选"
+    assert len(seen) == 1, f"LLM 调用应被预算限制为 1 次,实际 {len(seen)} 次"
+    assert checks[0].note == "live" and checks[1].note == "accepted"
+    assert len(accepted) == 3

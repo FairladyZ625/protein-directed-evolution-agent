@@ -169,18 +169,35 @@ def _llm_hypothesis(fallback_fn, fallback_muts, state: dict):
 
 
 def _llm_critic(state: dict):
-    """Optional live critic port; failures remain an explicit deterministic fallback."""
+    """Optional live critic port; failures remain an explicit deterministic fallback.
+
+    The port must return something ``CriticReview`` accepts. It used to return a bare
+    ``str``, and ``agent.pipeline._structured_call`` validates the port's return value
+    against ``CriticReview`` — which requires a ``note`` field — so **every** call raised
+    ValidationError and silently degraded to the deterministic note. The symptom was a
+    live-LLM run whose critique list read "accepted (deterministic critic fallback)" for
+    15/15 candidates while the endpoint itself answered fine in 19 s. A dict keyed by the
+    field name is what crosses that boundary.
+    """
     def fn(candidate, rules):
         try:
             prompt = ("Act as a GB1 scientific critic. Briefly assess this candidate and "
                       f"its rule checks: candidate={candidate.model_dump()}, rules={rules}")
             note = chat_json(prompt).strip()
+            # An empty reply validates against CriticReview just fine and would surface as a
+            # blank critique that looks like the LLM said nothing worth objecting to. Observed
+            # on the first call of a probe run. Treat it as a failed call so the fallback note
+            # is recorded instead of a blank one attributed to the model.
+            if not note:
+                raise ValueError("LLM critic returned an empty note")
             state["critic_source"] = f"llm:{(llm_config() or {}).get('model', '?')}"
-            return note
+            state["critic_llm_calls"] = state.get("critic_llm_calls", 0) + 1
+            return {"note": note}
         except Exception as exc:  # noqa: BLE001 — campaign must remain runnable offline
             state["critic_source"] = "fallback"
             state["critic_error"] = str(exc)[:200]
-            return "accepted by deterministic rule checks (LLM critic fallback)"
+            state["critic_fallbacks"] = state.get("critic_fallbacks", 0) + 1
+            return {"note": "accepted by deterministic rule checks (LLM critic fallback)"}
     return fn
 
 

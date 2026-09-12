@@ -168,27 +168,43 @@ class FitnessEvaluator:
         _event(event_store, "agent.role.completed", "fitness_evaluator", {"candidates": [x.model_dump() for x in out]}, round_id); return out
 
 class ScientificCritic:
-    def __init__(self, llm: Callable[[ScoredCandidate, list[dict[str, Any]]], CriticReview] | None = None, *, no_knowledge: bool = False):
-        self.llm=llm; self.no_knowledge=no_knowledge
+    """Gates candidates on the knowledge rules, optionally narrating with an LLM.
+
+    ``llm_budget`` caps how many candidates get a live LLM critique per round. The gate
+    itself is always deterministic and applies to every candidate; the LLM only writes the
+    note. The cap exists because one round now designs thousands of candidates (after the
+    ``measurable_variants`` fix) while a live critique costs ~19 s — uncapped, a single
+    round would run for hours and the narration adds nothing past the top of the ranking.
+    Candidates are critiqued in the order given, so callers that rank before critiquing
+    spend the budget on the ones a reader will actually see.
+    """
+    def __init__(self, llm: Callable[[ScoredCandidate, list[dict[str, Any]]], CriticReview] | None = None, *,
+                 no_knowledge: bool = False, llm_budget: int = 10):
+        self.llm=llm; self.no_knowledge=no_knowledge; self.llm_budget=llm_budget
     def run(self, scored: list[ScoredCandidate], *, event_store=None, round_id=1) -> tuple[list[ScoredCandidate], list[CriticResult]]:
         # no_knowledge=True is the ablation: validate_candidate returns [] so all(...) is True (no gating).
-        accepted=[]; checks=[]
+        accepted=[]; checks=[]; llm_spent=0
         for c in scored:
             rules=validate_candidate(c.mutations, no_knowledge=self.no_knowledge)
             gate_rules = [rule for rule in rules if rule["enforcement"] == "gate"]
             ok=all(rule["pass"] for rule in gate_rules)
             note = "accepted" if ok else "rejected by knowledge rules"
-            if self.llm and ok:
+            if self.llm and ok and llm_spent < self.llm_budget:
+                llm_spent += 1
                 try:
                     note = _structured_call(self.llm, CriticReview, c, rules).note
                 except Exception:
                     note = "accepted (deterministic critic fallback)"
             result=CriticResult(accepted=ok, score=c.mean, rule_check=rules, note=note); checks.append(result)
             if ok: accepted.append(c)
-        _event(event_store, "agent.role.completed", "scientific_critic", {"critiques": [x.model_dump() for x in checks]}, round_id); return accepted, checks
+        _event(event_store, "agent.role.completed", "scientific_critic",
+               {"critiques": [x.model_dump() for x in checks],
+                "llm_critique_budget": self.llm_budget if self.llm else 0,
+                "llm_critiques_spent": llm_spent}, round_id)
+        return accepted, checks
 
 def run_pipeline(pool, predictor, *, event_store=None, llm_hypothesis=None, llm_critic=None, budget=10,
-                 round_id=1, no_knowledge=False, measurable_variants=None):
+                 round_id=1, no_knowledge=False, measurable_variants=None, llm_critique_budget=10):
     """Run the five roles for one round.
 
     ``pool`` is what已经 measured — rows carrying fitness labels, i.e. the training set.
@@ -205,7 +221,7 @@ def run_pipeline(pool, predictor, *, event_store=None, llm_hypothesis=None, llm_
         {str(v) for v in measurable_variants} if measurable_variants is not None
         else {_variant_from_row(row) for row in rows}
     )
-    report=DataAnalyst().run(rows,event_store=event_store,round_id=round_id); hyp=HypothesisGenerator(llm_hypothesis).run(report,event_store=event_store,round_id=round_id); cand=MutationDesigner().run(hyp,report,measured_variants=measured_variants,budget=budget,event_store=event_store,round_id=round_id); scored=FitnessEvaluator(predictor).run(cand,event_store=event_store,round_id=round_id); accepted, critiques=ScientificCritic(llm_critic, no_knowledge=no_knowledge).run(scored,event_store=event_store,round_id=round_id); return PipelineResult(report=report,hypothesis=hyp,candidates=scored,accepted=accepted,critiques=critiques)
+    report=DataAnalyst().run(rows,event_store=event_store,round_id=round_id); hyp=HypothesisGenerator(llm_hypothesis).run(report,event_store=event_store,round_id=round_id); cand=MutationDesigner().run(hyp,report,measured_variants=measured_variants,budget=budget,event_store=event_store,round_id=round_id); scored=FitnessEvaluator(predictor).run(cand,event_store=event_store,round_id=round_id); accepted, critiques=ScientificCritic(llm_critic, no_knowledge=no_knowledge, llm_budget=llm_critique_budget).run(scored,event_store=event_store,round_id=round_id); return PipelineResult(report=report,hypothesis=hyp,candidates=scored,accepted=accepted,critiques=critiques)
 
 def _variant_from_row(row: dict[str, Any]) -> str:
     explicit = row.get("Variants", row.get("variant", row.get("sequence")))
