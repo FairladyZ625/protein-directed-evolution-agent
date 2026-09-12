@@ -171,11 +171,18 @@ def metrics(y_true, y_pred, *, top_k: float = .01) -> dict[str, float]:
             "top_k": float(len(set(pred_idx) & true_idx) / n)}
 
 
-def evaluate_ladder(X_train, y_train, X_test, y_test) -> dict[str, dict[str, float]]:
-    """Fit the three standard predictors and score an explicit split."""
+def evaluate_ladder(X_train, y_train, X_test, y_test, *, standardize: bool = False) -> dict[str, dict[str, float]]:
+    """Fit the three standard predictors and score an explicit split.
+
+    ``standardize`` is forwarded to every rung. It defaults to False so existing one-hot
+    numbers stay byte-identical, but a *comparison* between one-hot and ESM-2 must pass the
+    same value on both sides: leaving it off silently compares a scaled feature (one-hot is
+    already 0/1) against an unscaled one (ESM-2), which is a feature-quality claim resting on
+    a preprocessing artefact. See the note on `_Base.__init__`.
+    """
     result = {}
     for name, cls in (("ridge", RidgePredictor), ("xgboost", XGBoostPredictor), ("mlp", MLPPredictor)):
-        model = cls().fit(X_train, y_train)
+        model = cls(standardize=standardize).fit(X_train, y_train)
         pred, var = model.predict(X_test)
         result[name] = {**metrics(y_test, pred), "variance_min": float(var.min()), "variance_max": float(var.max())}
     return result
