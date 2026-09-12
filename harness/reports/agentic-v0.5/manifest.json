@@ -1,0 +1,31 @@
+{
+  "line": "agentic",
+  "version": "v0.5",
+  "kind": "negative result (surrogate-quality-aware adaptive acquisition)",
+  "description": "C+A+B 联动：工具防御、held-out surrogate 质量透传、CV/round 自适应 compose_batch。严格同池/同 cold-start/同 oracle/同门禁/同预算/同 seed/同上位 surrogate。",
+  "answer_agnostic": true,
+  "agent_model": "gpt-5.6-sol",
+  "surrogate": "EpistasisRidgePredictor (one-hot degree-2 interaction)",
+  "dataset": "aav",
+  "protocol": {
+    "candidate_pool_size": 27832,
+    "cold_start_size": 10433,
+    "budget_per_round": 48,
+    "n_rounds": 6,
+    "total_budget": 288,
+    "seed": 42,
+    "guardrail": "HD<=4 and mean BLOSUM62>=0"
+  },
+  "key_result": "cum_top10_max=6.5309, cum_top10_mean=6.1922, strong=163, budget=288/288; v0.4 LLM=7.829 and deterministic greedy=8.4162, so the adaptive formula was harmful for peak discovery.",
+  "mechanism": "CV remained 0.9002-0.9059 and allocation annealed 42/6 -> 44/4 -> 46/2 -> 48/0 -> 48/0 -> 48/0. Post-run counterfactual showed the initial pure-mean top-48 maximum 7.391 sat at mean rank #45 and was displaced when compose retained only top-42.",
+  "robustness": "25-event hash chain verified; 0 tool errors, 0 LLM round errors, 0 no-test fallback, 0 gate rejects; shuffled-label negative control val_spearman=-0.119960.",
+  "fact_id": "F-F7BC7554",
+  "status": "GOAL NOT MET — C/A succeeded operationally; B degraded the primary extreme-fitness objective and triggered the task's evidence-backed challenge condition.",
+  "date": "2026-09-12",
+  "artifacts": {
+    "metrics": "aav/agentic.metrics.json",
+    "events": "aav/agentic.events.jsonl",
+    "figure": "aav/figures/agentic.png"
+  },
+  "next": "CEO ruling required before a pre-registered C+A plus CV>=0.90 pure-exploit ablation; do not tune against the observed rank-45 oracle outcome."
+}

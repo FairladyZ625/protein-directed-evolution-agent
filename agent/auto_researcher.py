@@ -18,9 +18,11 @@ fallback runs instead (recorded as llm_used=False), so the module never hard-fai
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import os
 from pathlib import Path
+import re
 
 import numpy as np
 import pandas as pd
@@ -38,17 +40,121 @@ fitness. You start with a set of already-measured low-order variants; a large po
 higher-order variants is UNMEASURED and can only be evaluated by spending budget via the
 `test` tool (that is the real experiment; its result is ground truth).
 
-Important: a surrogate predictor is available via `predict`/`list_pool`, but it is IMPERFECT
-(rank correlation only ~0.6 and it systematically underrates high-order epistatic peaks).
-Do NOT blindly test its top predictions every round. Think like a scientist: inspect what is
-measured, form hypotheses about which positions/substitutions matter, and BALANCE exploiting
-predicted-good variants against EXPLORING high-uncertainty or knowledge-plausible variants the
-predictor may underrate. Adapt after each batch of results.
+SURROGATE EVIDENCE CALIBRATION: never rely on a static belief about predictor quality. Call
+`analyze_measured` each round and use its `surrogate_status.cv_spearman` evidence:
+- CV Spearman >= 0.80: allocate at least 80% of the batch to predicted-mean exploitation.
+- CV Spearman < 0.65: the surrogate is struggling, so allocate 40-50% to structured exploration.
+- In the final two rounds, allocate at least 90% to exploitation because late exploration cannot
+  be harvested within this campaign.
+Use `compose_batch` as the primary acquisition tool. Its answer-agnostic default computes the
+exploit ratio from held-out CV quality and campaign round, then combines predicted-mean and
+diverse candidates without duplicates. Prefer that default unless measured evidence justifies an
+explicit ratio; do not hand-pick dozens of sequence strings.
 
-Workflow each cycle: call `analyze_measured` and `best_so_far` to see the state; use
-`list_pool` (try different `by` strategies) and `predict`/`check_knowledge` to choose
-candidates; then `test` a batch to spend budget and learn. Repeat until the budget is
-exhausted, then briefly summarise the best variants you found and your strategy."""
+Workflow for each agent turn: call `analyze_measured` and `best_so_far`, call `compose_batch` for
+one full batch, optionally inspect its preview, then call `test_composed_batch` with no arguments.
+Never copy the long sequence list into `test`: transcription can corrupt candidates. After that
+single successful test, immediately return control to the campaign harness; never start another
+cycle in the same turn. The harness will invoke the next round with updated evidence. When the
+budget is exhausted, briefly summarise the strategy."""
+
+
+_MUTATION_NOTATION = re.compile(r"^[A-Z]\d+[A-Z]$")
+_AMINO_ACIDS = frozenset("ACDEFGHIKLMNPQRSTVWY")
+
+
+def _clean_seq(value: object) -> str:
+    """Normalise an untrusted tool-supplied full sequence without guessing its meaning."""
+    if not isinstance(value, str):
+        return ""
+    return "".join(value.split()).upper()
+
+
+def _gate_variants(variants, *, wt: str, max_hd: int, blosum_min: float, blosum_fn):
+    """Validate untrusted full sequences and apply the knowledge gate without indexing risk."""
+    allowed: list[str] = []
+    rejected: dict[str, list[str]] = {}
+    for raw in variants:
+        key = raw if isinstance(raw, str) else repr(raw)
+        variant = _clean_seq(raw)
+        reasons: list[str] = []
+        if _MUTATION_NOTATION.fullmatch(variant):
+            reasons.append(
+                f"mutation_notation: {variant!r} is a mutation code, not a full {len(wt)}-aa "
+                "sequence; retrieve full candidates with compose_batch or list_pool"
+            )
+        elif len(variant) != len(wt):
+            reasons.append(
+                f"length_mismatch: sequence has {len(variant)} aa; wild type requires exactly "
+                f"{len(wt)} aa"
+            )
+        else:
+            invalid = sorted(set(variant) - _AMINO_ACIDS)
+            if invalid:
+                reasons.append(f"invalid_residue: unsupported characters {''.join(invalid)!r}")
+
+        if reasons:
+            rejected[key] = reasons
+            continue
+
+        # zip makes the comparison safe even if validation changes in a future refactor.
+        substitutions = [(wild, mutant) for wild, mutant in zip(wt, variant) if mutant != wild]
+        if len(substitutions) > max_hd:
+            reasons.append(f"HD {len(substitutions)} > {max_hd}")
+        if substitutions:
+            mean_blosum = float(np.mean([blosum_fn(wild, mutant)
+                                        for wild, mutant in substitutions]))
+            if mean_blosum < blosum_min:
+                reasons.append(
+                    f"mean BLOSUM62 {mean_blosum:.1f} < {blosum_min} (non-conservative)"
+                )
+        if reasons:
+            rejected[key] = reasons
+        else:
+            allowed.append(variant)
+    return allowed, rejected
+
+
+def _adaptive_exploit_ratio(val_spearman: float | None, round_number: int,
+                            n_rounds: int) -> float:
+    """Answer-agnostic CV-quality/round annealing rule used by ``compose_batch``."""
+    rho = 0.0 if val_spearman is None or not np.isfinite(val_spearman) else float(val_spearman)
+    progress = max(0.0, min(1.0, float(round_number) / max(1, int(n_rounds))))
+    return min(1.0, max(0.4, rho ** 2 + progress * 0.3))
+
+
+def _enforce_exploit_floor(ratio: float, val_spearman: float | None, round_number: int,
+                           n_rounds: int) -> tuple[float, float]:
+    """Apply the prompt's high-CV and final-two-round allocation invariants."""
+    cv = None if val_spearman is None or not np.isfinite(val_spearman) else float(val_spearman)
+    floor = 0.0
+    if cv is not None and cv >= 0.80:
+        floor = 0.80
+    if int(round_number) >= max(1, int(n_rounds) - 1):
+        floor = max(floor, 0.90)
+    return max(float(ratio), floor), floor
+
+
+def _compose_batch_indices(mean, var, *, eligible_indices, exploit_ratio: float, n: int, rng):
+    """Return de-duplicated exploit-first indices and the realised allocation counts."""
+    mean = np.asarray(mean, dtype=float)
+    var = np.asarray(var, dtype=float)
+    eligible = np.asarray(list(eligible_indices), dtype=int)
+    n = max(0, min(int(n), len(eligible)))
+    n_exploit = int(round(n * float(exploit_ratio)))
+    n_exploit = max(0, min(n, n_exploit))
+
+    mean_order = eligible[np.argsort(-mean[eligible], kind="stable")]
+    exploit = mean_order[:n_exploit].tolist()
+    chosen = set(exploit)
+    diverse_score = mean + 3.0 * np.sqrt(np.maximum(var, 0.0)) + rng.random(len(mean))
+    diverse_order = eligible[np.argsort(-diverse_score[eligible], kind="stable")]
+    explore = [int(i) for i in diverse_order if int(i) not in chosen][:n - n_exploit]
+    chosen.update(explore)
+    # If the diverse ranking is ever exhausted, fill deterministically by predicted mean.
+    fill = [int(i) for i in mean_order if int(i) not in chosen][:n - len(exploit) - len(explore)]
+    picks = exploit + explore + fill
+    return picks, len(exploit), len(explore) + len(fill)
 
 
 def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
@@ -68,6 +174,10 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         "batches": [],            # each test() batch as a DataFrame(seq, fitness)
         "trace": [],
         "pred_cache": None,       # (model, mean, var) valid until measured changes
+        "current_round": 0,
+        "last_test_round": None,
+        "pending_batch": None,
+        "surrogate_status": None,
         "n_gate_rejected": 0,     # v0.2 Knowledge Gate: candidates blocked before spending budget
     }
 
@@ -86,18 +196,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
 
     def _gate(variants: list[str]):
         """Return (allowed, rejected{seq: [reasons]}). Reject HD>max_hd or mean BLOSUM62<blosum_min."""
-        allowed, rejected = [], {}
-        for v in variants:
-            subs = [(spec.wt[i], c) for i, c in enumerate(v) if c != spec.wt[i]]
-            reasons = []
-            if len(subs) > max_hd:
-                reasons.append(f"HD {len(subs)} > {max_hd}")
-            if subs:
-                mb = float(np.mean([_blosum(w, c) for w, c in subs]))
-                if mb < blosum_min:
-                    reasons.append(f"mean BLOSUM62 {mb:.1f} < {blosum_min} (non-conservative)")
-            (rejected.setdefault(v, reasons) if reasons else allowed.append(v))
-        return allowed, rejected
+        return _gate_variants(variants, wt=spec.wt, max_hd=max_hd,
+                              blosum_min=blosum_min, blosum_fn=_blosum)
 
     # v0.2: precompute which unmeasured-pool variants pass the gate, so candidate
     # GENERATION (list_pool, and the harness exploit-fill that calls it) surfaces only
@@ -131,8 +231,34 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                 spec.feature_fn(state["measured"].seq.tolist()),
                 state["measured"][fit_col].to_numpy())
             mean, var = model.predict(spec.feature_fn(state["pool"].seq.tolist()))
-            state["pred_cache"] = (np.asarray(mean), np.asarray(var))
+            state["pred_cache"] = (model, np.asarray(mean), np.asarray(var))
         return state["pred_cache"]
+
+    def _surrogate_status() -> dict:
+        cached = _pool_scores()
+        model_obj = cached[0] if cached is not None else None
+        cv = getattr(model_obj, "val_spearman", None)
+        cv = None if cv is None or not np.isfinite(cv) else float(cv)
+        if cv is None:
+            confidence = "UNKNOWN"
+            recommendation = "No held-out CV score is exposed; use the conservative adaptive default."
+        elif cv >= 0.80:
+            confidence = "VERY_HIGH" if cv >= 0.90 else "HIGH"
+            recommendation = "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        elif cv < 0.65:
+            confidence = "LOW"
+            recommendation = "Allocate 40-50% to structured diverse exploration."
+        else:
+            confidence = "MODERATE"
+            recommendation = "Use the CV/round adaptive allocation and monitor measured results."
+        out = {
+            "architecture": type(model_obj).__name__ if model_obj is not None else None,
+            "cv_spearman": None if cv is None else round(cv, 4),
+            "confidence_level": confidence,
+            "recommendation": recommendation,
+        }
+        state["surrogate_status"] = out
+        return out
 
     # ---- tools ---------------------------------------------------------------
     def analyze_measured() -> dict:
@@ -150,8 +276,10 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                           key=lambda t: -t[1])[:12]
         out = {"n_measured": len(m), "n_pool_unmeasured": len(state["pool"]),
                "budget_remaining": total_budget - state["spent"],
+               "current_round": f"{state['current_round']} / {n_rounds}",
                "best_measured": [[str(s), round(float(f), 3)] for s, f in zip(top.seq, top[fit_col])],
-               "top_enriched_substitutions": [[k, round(v, 3)] for k, v in enriched]}
+               "top_enriched_substitutions": [[k, round(v, 3)] for k, v in enriched],
+               "surrogate_status": _surrogate_status()}
         emit("agent.tool.analyze_measured", "data_analyst", out)
         return out
 
@@ -161,7 +289,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         if scores is None:
             return []
         idx = {s: i for i, s in enumerate(state["pool"].seq)}
-        mean, var = scores
+        _model, mean, var = scores
         out = [[round(float(mean[idx[v]]), 3), round(float(var[idx[v]]), 6)] if v in idx else [0.0, 0.0]
                for v in variants]
         emit("agent.tool.predict", "fitness_evaluator", {"n": len(variants)})
@@ -174,7 +302,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             return []
         n = int(max(1, min(n, 60)))
         scores = _pool_scores()
-        mean, var = scores
+        _model, mean, var = scores
         if by == "predicted_mean":
             order = np.argsort(-mean)
         elif by == "uncertainty":
@@ -191,6 +319,53 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
              {"by": by, "n": len(picks), "gated": gate_pass is not None})
         return picks
 
+    def compose_batch(exploit_ratio: float | None = None, n: int = 48) -> dict:
+        """Compose a gate-safe batch from predicted-mean exploit and diverse explore picks.
+
+        Omit exploit_ratio to use the answer-agnostic CV-quality/round annealing rule.
+        """
+        if state["pool"].empty:
+            return {"status": "pool_exhausted", "candidates": []}
+        n = int(max(1, min(int(n), 60)))
+        model_obj, mean, var = _pool_scores()
+        cv = getattr(model_obj, "val_spearman", None)
+        adaptive_ratio = _adaptive_exploit_ratio(cv, state["current_round"], n_rounds)
+        if exploit_ratio is None:
+            requested_ratio = adaptive_ratio
+            source = "adaptive_default"
+        else:
+            requested_ratio = float(exploit_ratio)
+            if not np.isfinite(requested_ratio) or not 0.0 <= requested_ratio <= 1.0:
+                return {"status": "invalid_argument", "error": "exploit_ratio must be within [0, 1]"}
+            source = "agent_requested"
+        ratio, policy_floor = _enforce_exploit_floor(
+            requested_ratio, cv, state["current_round"], n_rounds,
+        )
+        seqs = state["pool"].seq.to_numpy()
+        eligible = np.arange(len(seqs))
+        if gate_pass is not None:
+            eligible = np.asarray([i for i in eligible if seqs[i] in gate_pass], dtype=int)
+        picks, n_exploit, n_explore = _compose_batch_indices(
+            mean, var, eligible_indices=eligible, exploit_ratio=ratio, n=n, rng=rng,
+        )
+        candidates = [str(seqs[i]) for i in picks]
+        state["pending_batch"] = candidates
+        out = {
+            "status": "ok",
+            "allocation_source": source,
+            "requested_exploit_ratio": round(float(requested_ratio), 4),
+            "exploit_ratio": round(float(ratio), 4),
+            "adaptive_default_ratio": round(float(adaptive_ratio), 4),
+            "policy_min_ratio": round(float(policy_floor), 4),
+            "n_exploit": n_exploit,
+            "n_explore": n_explore,
+            "n": len(candidates),
+            "candidates": candidates,
+        }
+        emit("agent.tool.compose_batch", "hypothesis_generator",
+             {k: v for k, v in out.items() if k != "candidates"})
+        return out
+
     def check_knowledge(variants: list[str]) -> dict:
         """Knowledge-base assessment (mutation rules + BLOSUM62) for the given variants."""
         out = {}
@@ -206,6 +381,12 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         """Spend budget: measure the true fitness of these pool variants (real experiment).
         Only variants present in the unmeasured pool can be measured. Returns results,
         remaining budget, and the running best. When budget is exhausted, stop."""
+        if state["current_round"] > 0 and state["last_test_round"] == state["current_round"]:
+            return {"status": "round_test_complete", "budget_remaining": total_budget - state["spent"],
+                    "hint": "One successful test is allowed per round; return control to the harness now."}
+        if state["pending_batch"] is not None:
+            return {"status": "composed_batch_pending", "budget_remaining": total_budget - state["spent"],
+                    "hint": "Call test_composed_batch() without copying sequence strings."}
         remaining = total_budget - state["spent"]
         if remaining <= 0:
             return {"status": "budget_exhausted", "budget_remaining": 0}
@@ -231,6 +412,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         state["pred_cache"] = None  # measured changed -> refit next time
         state["spent"] += len(rows)
         if len(rows):
+            state["last_test_round"] = state["current_round"]
             state["batches"].append(rows[["seq", fit_col]].rename(columns={fit_col: "fitness"}))
         best = state["measured"].nlargest(1, fit_col).iloc[0]
         results = [[str(s), round(float(f), 3)] for s, f in zip(rows.seq, rows[fit_col])]
@@ -240,6 +422,18 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         emit("agent.tool.test", "experiment", {"requested": len(chosen), "measured": len(rows),
                                                "spent": state["spent"],
                                                "batch_max": round(float(rows[fit_col].max()), 3) if len(rows) else None})
+        return out
+
+    def test_composed_batch() -> dict:
+        """Test the exact batch staged by compose_batch, avoiding LLM sequence transcription."""
+        if state["pending_batch"] is None:
+            return {"status": "no_composed_batch", "budget_remaining": total_budget - state["spent"],
+                    "hint": "Call compose_batch first."}
+        variants = state["pending_batch"]
+        state["pending_batch"] = None
+        out = test(variants)
+        emit("agent.tool.test_composed_batch", "experiment",
+             {"n": len(variants), "status": out.get("status")})
         return out
 
     def best_so_far() -> list:
@@ -268,15 +462,28 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             gate_note = ("" if not guardrail else
                          f"\n\nKNOWLEDGE GATE (unbypassable): before `test` spends budget, every candidate must pass "
                          f"HD<={max_hd} substitutions AND mean BLOSUM62>={blosum_min} (net-conservative). To help you, "
-                         f"`list_pool` ALREADY returns only gate-passing candidates — so trust its output and `test` a "
-                         f"full batch each round; do not hand-craft high-order variants outside list_pool (they are "
-                         f"rejected WITHOUT spending budget and waste the round). Mix exploit (predicted_mean) with "
-                         f"explore (uncertainty/diverse) WITHIN this valid region; use check_knowledge/predict to rank.")
+                         f"`compose_batch` and `list_pool` ALREADY return only gate-passing candidates. Test a full "
+                         f"composed batch each round; do not hand-craft high-order variants (they are rejected without "
+                         f"spending budget). Use the reported CV evidence and round annealing to set allocation.")
             ag = Agent(oa, system_prompt=SYSTEM_PROMPT + gate_note)
             agent_model = model_id
             emit("agent.llm.model", "agent", {"model": model_id, "base_url": cfg["base_url"]})
-            for fn in (analyze_measured, predict, list_pool, check_knowledge, test, best_so_far):
-                ag.tool_plain(fn)
+            def safe_tool(fn):
+                @functools.wraps(fn)
+                def wrapped(*args, **kwargs):
+                    try:
+                        return fn(*args, **kwargs)
+                    except Exception as exc:  # noqa: BLE001 - tool boundary must be recoverable
+                        out = {"status": "tool_execution_error", "tool": fn.__name__,
+                               "error_type": type(exc).__name__, "message": str(exc)[:200],
+                               "hint": "Verify the tool arguments and retry in this round."}
+                        emit("agent.tool.error", "agent", out)
+                        return out
+                return wrapped
+
+            for fn in (analyze_measured, predict, list_pool, compose_batch,
+                       check_knowledge, test, test_composed_batch, best_so_far):
+                ag.tool_plain(safe_tool(fn))
             kwargs = {}
             try:
                 from pydantic_ai.usage import UsageLimits
@@ -288,16 +495,18 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             # explore/exploit balance itself. Message history carries strategy across rounds.
             history = None
             for rnd in range(1, n_rounds + 1):
+                state["current_round"] = rnd
                 remaining = total_budget - state["spent"]
                 if remaining <= 0 or state["pool"].empty:
                     break
                 this_batch = min(budget, remaining)
                 spent_before = state["spent"]
                 prompt = (f"Round {rnd} of {n_rounds}. Budget remaining: {remaining}. "
-                          f"Analyse with the tools, then you MUST call `test` this round on a batch of about "
-                          f"{this_batch} pool variants — analysis alone makes no progress and wastes the round. "
-                          f"Deliberately mix exploitation (high predicted mean) with exploration "
-                          f"(high uncertainty / knowledge-plausible variants the surrogate may underrate). "
+                          f"Call `analyze_measured`, then call `compose_batch(n={this_batch})` (prefer its "
+                          f"CV/round adaptive default), then MUST call `test_composed_batch()` without "
+                          f"copying any sequences. "
+                          f"Analysis alone makes no progress. Follow the >=80% high-CV exploitation rule and "
+                          f">=90% exploitation rule in the final two rounds. "
                           f"After testing, note what you learned for the next round.")
                 try:
                     result = ag.run_sync(prompt, message_history=history, **kwargs)
@@ -309,7 +518,10 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                 # spends this round's budget on its own exploit pick (recorded honestly).
                 if state["spent"] == spent_before and not state["pool"].empty:
                     emit("agent.llm.no_test", "agent", {"round": rnd, "note": "LLM skipped test; harness exploit fill"})
-                    test(list_pool(this_batch, "predicted_mean"))
+                    if state["pending_batch"] is not None:
+                        test_composed_batch()
+                    else:
+                        test(list_pool(this_batch, "predicted_mean"))
             llm_used = True
         except Exception as exc:  # noqa: BLE001 — degrade to deterministic driver
             emit("agent.llm.fallback", "agent", {"error": str(exc)[:200]})
@@ -317,6 +529,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
     if not llm_used:
         # Deterministic fallback: alternate exploit / explore until budget is spent.
         for rnd in range(n_rounds):
+            state["current_round"] = rnd + 1
             if state["pool"].empty or state["spent"] >= total_budget:
                 break
             by = "predicted_mean" if rnd % 2 == 0 else "diverse"
@@ -378,8 +591,8 @@ def main(argv=None):
     a = p.parse_args(argv)
 
     from evolution.results_layout import run_dir
-    # folder by method generation: v0.4 = gate + epistasis surrogate; v0.2 = gate only
-    version = ("v0.4" if a.surrogate == "epistasis" else "v0.2") if a.guardrail else None
+    # folder by method generation: v0.5 = quality-aware agent + gate + epistasis surrogate.
+    version = ("v0.5" if a.surrogate == "epistasis" else "v0.2") if a.guardrail else None
     out_dir = a.out_dir or run_dir("agentic", a.dataset, version=version)
     (out_dir / "figures").mkdir(parents=True, exist_ok=True)
     ev = out_dir / "agentic.events.jsonl"
