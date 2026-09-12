@@ -56,6 +56,23 @@ def test_append_fsyncs_before_returning(tmp_path, monkeypatch):
     assert len(synced) == 1
 
 
+def test_restart_discards_truncated_tail_before_appending(tmp_path):
+    path = tmp_path / "events.jsonl"
+    original = EventStore(path)
+    original.append("run.started", round_id=1, strategy="random", actor="campaign", payload={})
+    with path.open("ab") as stream:
+        stream.write(b'{"seq":2')
+
+    restarted = EventStore(path)
+    appended = restarted.append(
+        "run.finished", round_id=1, strategy="random", actor="campaign", payload={}
+    )
+
+    assert [event["seq"] for event in restarted.iter_events()] == [1, 2]
+    assert appended["seq"] == 2
+    assert restarted.verify() is None
+
+
 def test_tampering_is_detected_at_changed_event(tmp_path):
     path = tmp_path / "events.jsonl"
     store = EventStore(path)
