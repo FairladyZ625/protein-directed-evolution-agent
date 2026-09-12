@@ -49,6 +49,7 @@ math[display="block"] {margin:2mm 0;}
 .refs {column-count:2;column-gap:8mm;font-family:"Times New Roman",serif;font-size:8.1pt;line-height:1.3;}
 .refs p {margin-bottom:2.1mm;text-align:left;break-inside:avoid;overflow-wrap:anywhere;}
 .refs a {font-size:8pt;}
+.page[data-page="4"] figure {margin-bottom:2mm;}
 .page[data-page="8"] td {padding-top:1.55mm;padding-bottom:1.55mm;}
 .page[data-page="9"] h3:nth-of-type(3) {break-before:column;}
 @media screen {body {background:#e8edf0;padding:12px 0;} .page {margin:0 auto 18px;box-shadow:0 2px 8px #0001;} }
