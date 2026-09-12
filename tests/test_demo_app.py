@@ -1,4 +1,4 @@
-"""T8 看板冒烟测试：三模块首屏渲染、模块③(a) 打分与越界提示、只读纪律。"""
+"""T8 看板冒烟测试：五 tab 首屏渲染、模块③(a) 打分与越界提示、分析面板口径标注、只读纪律。"""
 from __future__ import annotations
 
 import sys
@@ -37,6 +37,13 @@ def test_three_module_tabs_present(app: AppTest):
     assert labels[:3] == ["① 四策略对比", "② Agent 思考回放", "③ 实时试玩"]
 
 
+def test_analysis_tabs_present(app: AppTest):
+    labels = [t.label for t in app.tabs]  # AppTest 打平嵌套 tabs（③ 内含 (a)/(b) 两个子 tab）
+    assert "④ 位点集中 & 组合理由" in labels
+    assert "⑤ 阶数 · 保守性 · alpha" in labels
+    assert labels.index("④ 位点集中 & 组合理由") > labels.index("③ 实时试玩")
+
+
 def test_module1_renders_strategy_metrics(app: AppTest):
     body = _text(app)
     for needle in ("random", "greedy", "agent_no_knowledge", "knowledge_agent"):
@@ -53,6 +60,50 @@ def test_module2_renders_role_chain_and_chain_status(app: AppTest):
 def test_module3_scores_wt(app: AppTest):
     labels = " ".join(str(m.label) for m in app.metric)
     assert "预测 mean" in labels and "真实 fitness" in labels
+
+
+# ---------------------------------------------------------------- 模块④⑤：分析面板
+
+
+def test_concentration_panel_renders_topk_fields(app: AppTest):
+    """④-a：按 JSON 原字段名展示残基集中度（评委可拿字段名回源文件对数）。"""
+    body = _text(app)
+    for needle in ("topk_concentration", "n_topk_observations",
+                   "dominant_residue", "dominant_fraction", "mutation_fraction"):
+        assert needle in body, needle
+
+
+def test_rationales_panel_separates_evidence_from_narrative(app: AppTest):
+    """④-b：evidence_source 与 narrative_source 分开；确定性叙事不得冒充 LLM 推理。"""
+    body = _text(app) + " " + " ".join(i.value for i in app.info)
+    for needle in ("evidence_source", "narrative_source", "measured_rows", "不是 LLM 推理", "V39I"):
+        assert needle in body, needle
+
+
+def test_mutation_order_panel_shows_caveats_and_json_numbers(app: AppTest):
+    """⑤-a：口径标注 + 关键数字直接来自源 JSON（留出 0.9094 vs 测试 0.6155；覆盖 1.000→0.312→0.022）。"""
+    body = _text(app) + " " + " ".join(w.value for w in app.warning)
+    for needle in ("additive_extrapolation", "0.9094", "0.6155", "同阶",
+                   "complete_fraction", "1.000", "0.312", "0.022"):
+        assert needle in body, needle
+
+
+def test_conservation_panel_negative_result_framing(app: AppTest):
+    """⑤-b：未接入筛选的口径必在；真峰三位点名次（负结果）与相关系数展示。"""
+    body = _text(app) + " " + " ".join(i.value for i in app.info) + " " + " ".join(w.value for w in app.warning)
+    for needle in ("未接入采集或筛选路径", "conservation_rank", "D0Q", "V18A", "S17E", "负结果"):
+        assert needle in body, needle
+    # 名称↔位点↔名次 三元对应钉死（记号数字是 0-based：D0Q/V18A/S17E），与源 JSON 逐字段一致
+    assert "`D0Q`（pos 1，WT `D`）→ conservation_rank **1 / 28**" in body
+    assert "`V18A`（pos 19，WT `V`）→ conservation_rank **4 / 28**" in body
+    assert "`S17E`（pos 18，WT `S`）→ conservation_rank **26 / 28**" in body
+
+
+def test_alpha_sweep_panel_fixed_alpha_trap(app: AppTest):
+    """⑤-c：固定 alpha 的预处理反转数字（0.4911/0.2944）与调参后收敛值（0.4893/0.4916）均来自源 JSON。"""
+    body = _text(app) + " " + " ".join(w.value for w in app.warning)
+    for needle in ("alpha_selected", "0.4911", "0.2944", "0.4893", "0.4916"):
+        assert needle in body, needle
 
 
 def _find_missing_variant() -> str:
@@ -93,10 +144,35 @@ def test_recommender_button_runs_one_round_in_memory():
     at.run()
     assert not at.exception, [e.value for e in at.exception]
     success = " ".join(s.value for s in at.success)
-    assert "llm_source=" in success  # 如实标注本轮 LLM 来源（deterministic / fallback / llm:*）
+    # 8474b6e 起推荐为确定性 one-shot 打分（不再有 llm_source= 文案）；诚实标注保留：
+    # 表头写明「模型预测，非实测」，闭环追踪注明事件只进内存 recorder。
+    assert "76 个单点候选" in success
     body = _text(at)
     assert "Top-10 推荐突变方案" in body
-    assert "本轮五角色推理链" in body  # 内存录制事件与模块②同源渲染
+    assert "（模型预测，非实测）" in body or "模型预测" in body
+    assert "五角色闭环追踪" in body  # 内存录制事件与模块②同源渲染
+
+
+def test_conservation_panel_degrades_when_artifact_missing():
+    """阳性对照：临时改名 AAV conservation.json，面板必须给「缺哪个文件 + 跑哪条命令」的提示，
+    而不是空白或崩溃；口径标注（不依赖数据存在）仍在。结束后恢复原文件。"""
+    path = ROOT / "harness" / "reports" / "analysis-v0.1" / "aav" / "conservation.json"
+    if not path.exists():
+        pytest.skip("aav conservation.json not present")
+    backup = path.with_name("conservation.json.bak")
+    path.rename(backup)
+    try:
+        at = AppTest.from_file(str(APP), default_timeout=600)
+        at.run()
+        assert not at.exception, [e.value for e in at.exception]
+        warnings = " ".join(w.value for w in at.warning)
+        assert "conservation.json" in warnings  # 缺哪个文件说清楚
+        assert "features/conservation.py" in warnings  # 跑哪条命令能补回
+        body = _text(at) + " " + " ".join(i.value for i in at.info) + " " + " ".join(w.value for w in at.warning)
+        assert "未接入采集或筛选路径" in body  # 口径标注不随数据消失
+        assert "D0Q" not in body  # 数据不在时不得假装有名次表
+    finally:
+        backup.rename(path)
 
 
 def test_demo_module_is_read_only_source():
