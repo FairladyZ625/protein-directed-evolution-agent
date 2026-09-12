@@ -1,0 +1,1074 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "agentic",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 48,
+  "n_rounds": 6,
+  "total_budget": 288,
+  "budget_spent": 288,
+  "strong_threshold": 2.6159,
+  "guardrail": true,
+  "max_hd": 4,
+  "blosum_min": 0.0,
+  "n_gate_rejected": 0,
+  "gate_pass_pool_size": 9533,
+  "surrogate": "epistasis",
+  "llm_used": false,
+  "llm_summary": null,
+  "agent_model": null,
+  "n_tool_calls": 24,
+  "summary": {
+    "final_cum_top10_max": 8.4162,
+    "final_cum_top10_mean": 6.7906,
+    "final_cum_n_strong": 151,
+    "cum_top10_max_curve": [
+      7.391,
+      7.391,
+      7.829,
+      8.4162,
+      8.4162,
+      8.4162
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 48,
+      "top10_max": 7.391,
+      "top10_mean": 5.4285,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.4285,
+      "n_hit_strong": 31,
+      "cum_n_strong": 31,
+      "top10": [
+        [
+          "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+          7.391
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENIQRGNA",
+          5.9988
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+          5.9521
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQRGNM",
+          5.8127
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASENLQRGMR",
+          5.6302
+        ],
+        [
+          "DEEEIRPTNPVATEAYGSVSENLQRGTR",
+          5.4646
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+          5.1849
+        ],
+        [
+          "QEEEIATTNPVATEQYGEVSTNLQRGGR",
+          4.3829
+        ],
+        [
+          "DEEEICTTNPVATEQYGSASDNLQRGGR",
+          4.2691
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGDR",
+          4.1989
+        ]
+      ],
+      "spent_after": 48
+    },
+    {
+      "round": 2,
+      "n_nominated": 48,
+      "top10_max": 6.5309,
+      "top10_mean": 4.1977,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.7026,
+      "n_hit_strong": 19,
+      "cum_n_strong": 50,
+      "top10": [
+        [
+          "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+          6.5309
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSEVLQRGNN",
+          4.6759
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTNLQHGNF",
+          4.3844
+        ],
+        [
+          "DEQEICTTNPVATEQYGDVSTNLQYGNR",
+          4.093
+        ],
+        [
+          "DEEEIATTNPVATEVYGSVSTNIQRGGR",
+          4.0134
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQRFDR",
+          3.8687
+        ],
+        [
+          "KEEEIRTTNPVATEQYGSVSTNLQLGNM",
+          3.8592
+        ],
+        [
+          "DENEISTTNPVATEQYGSVSTNLQVGNQ",
+          3.7946
+        ],
+        [
+          "DEQEIRTTNPVATEQYGIVSDNLQRGNR",
+          3.4356
+        ],
+        [
+          "DEEEITTTNPVATECYGSVSTNLQRGNF",
+          3.3213
+        ]
+      ],
+      "spent_after": 96
+    },
+    {
+      "round": 3,
+      "n_nominated": 48,
+      "top10_max": 7.829,
+      "top10_mean": 5.1083,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.2368,
+      "n_hit_strong": 32,
+      "cum_n_strong": 82,
+      "top10": [
+        [
+          "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+          7.829
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVPTNLQRGGR",
+          5.9907
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSTNLQRGTL",
+          5.7677
+        ],
+        [
+          "DEEEIRTTNPVATEGYGSVSENLQHGGR",
+          5.1258
+        ],
+        [
+          "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+          4.601
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSNNLQQGNR",
+          4.601
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGGR",
+          4.5899
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVSDNLQRGNR",
+          4.4031
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+          4.0877
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQRGGR",
+          4.0875
+        ]
+      ],
+      "spent_after": 144
+    },
+    {
+      "round": 4,
+      "n_nominated": 48,
+      "top10_max": 8.4162,
+      "top10_mean": 4.9634,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.5833,
+      "n_hit_strong": 20,
+      "cum_n_strong": 102,
+      "top10": [
+        [
+          "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+          8.4162
+        ],
+        [
+          "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+          6.0791
+        ],
+        [
+          "DEEEIRTTNPVATEAYGSVSENLQRGTR",
+          5.8322
+        ],
+        [
+          "DEEEIRTTNPVATEGYGSVSETLQRGNR",
+          5.6437
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+          4.2182
+        ],
+        [
+          "DEQEIVTTNPVATEQYGEVSDNLQRGNR",
+          4.1509
+        ],
+        [
+          "DENEICTTNPVATEVYGSVSTNLQRGGR",
+          4.0496
+        ],
+        [
+          "DEEEIRATNPVATEQYGVVSTELQRGNR",
+          4.0363
+        ],
+        [
+          "DEQEIRTTNPVATEQYGNVSDNLQRGGR",
+          3.7833
+        ],
+        [
+          "DEHEIRTTNPVATEQYGSVSDNLQRGNQ",
+          3.4243
+        ]
+      ],
+      "spent_after": 192
+    },
+    {
+      "round": 5,
+      "n_nominated": 48,
+      "top10_max": 7.0807,
+      "top10_mean": 5.3221,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.7906,
+      "n_hit_strong": 31,
+      "cum_n_strong": 133,
+      "top10": [
+        [
+          "QEEEIATTNPVATEQYGEVSENLQRGNR",
+          7.0807
+        ],
+        [
+          "DEEEIRTTNPVAYEQYGSVSENLQRGNS",
+          6.4036
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSENLQHGNR",
+          6.1862
+        ],
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+          5.8728
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQFGER",
+          5.3254
+        ],
+        [
+          "DEEEIATTNPVATEQYGDVSDNLQRGNR",
+          4.9864
+        ],
+        [
+          "DEEEITTTNPVATEQYGEVSTNLQRGNF",
+          4.522
+        ],
+        [
+          "SEEEIRTTNPVATELYGSVSTNLQQGNR",
+          4.2975
+        ],
+        [
+          "DEQEIRTTNPVATEQYGEVSTNLQRGNM",
+          4.292
+        ],
+        [
+          "DEEEIRTTNPVATEVYGDVSDNLQRGNR",
+          4.2543
+        ]
+      ],
+      "spent_after": 240
+    },
+    {
+      "round": 6,
+      "n_nominated": 48,
+      "top10_max": 4.9355,
+      "top10_mean": 3.851,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.7906,
+      "n_hit_strong": 18,
+      "cum_n_strong": 151,
+      "top10": [
+        [
+          "MENEIRTTNPVATEQYGSVSTNLQNGNM",
+          4.9355
+        ],
+        [
+          "DEEEIATTNPVATEVYGEASTNLQRGNR",
+          4.4412
+        ],
+        [
+          "DEEEIRTTNPVATEVYGSASTNLQHGNR",
+          4.0829
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQRGNF",
+          4.0682
+        ],
+        [
+          "DEEEIATTNPVATEQYGSVCENLQRGNR",
+          3.77
+        ],
+        [
+          "DEEEICTTNPVATEVYGEVSTNLQRGNR",
+          3.625
+        ],
+        [
+          "DEQEIATTNPVATEQYGEVSTNLQRGNR",
+          3.5344
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSTDWQFGNR",
+          3.4029
+        ],
+        [
+          "DEEEIRATNPVATEQYGSASTNLQHGNM",
+          3.3532
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASTNLQHGQQ",
+          3.2962
+        ]
+      ],
+      "spent_after": 288
+    }
+  ],
+  "tool_trace": [
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 288,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 48,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 48,
+        "batch_max": 7.391
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10481,
+        "n_pool_unmeasured": 27784,
+        "budget_remaining": 240,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.832
+          ],
+          [
+            "T20E",
+            2.781
+          ],
+          [
+            "R27Q",
+            2.504
+          ],
+          [
+            "R27I",
+            2.34
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.301
+          ],
+          [
+            "R27M",
+            2.268
+          ],
+          [
+            "T20D",
+            2.257
+          ],
+          [
+            "R24Q",
+            2.252
+          ],
+          [
+            "R24H",
+            2.126
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.066
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 48,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 96,
+        "batch_max": 6.531
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10529,
+        "n_pool_unmeasured": 27736,
+        "budget_remaining": 192,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.832
+          ],
+          [
+            "T20E",
+            2.793
+          ],
+          [
+            "R27Q",
+            2.514
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.321
+          ],
+          [
+            "R27I",
+            2.318
+          ],
+          [
+            "R27M",
+            2.275
+          ],
+          [
+            "R24Q",
+            2.252
+          ],
+          [
+            "T20D",
+            2.245
+          ],
+          [
+            "R24H",
+            2.13
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.059
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 48,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 144,
+        "batch_max": 7.829
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10577,
+        "n_pool_unmeasured": 27688,
+        "budget_remaining": 144,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.973
+          ],
+          [
+            "T20E",
+            2.817
+          ],
+          [
+            "R27Q",
+            2.53
+          ],
+          [
+            "R27L",
+            2.371
+          ],
+          [
+            "T20D",
+            2.337
+          ],
+          [
+            "R27T",
+            2.321
+          ],
+          [
+            "R27I",
+            2.315
+          ],
+          [
+            "R27M",
+            2.275
+          ],
+          [
+            "R24Q",
+            2.267
+          ],
+          [
+            "R24H",
+            2.162
+          ],
+          [
+            "R24G",
+            2.097
+          ],
+          [
+            "R27N",
+            2.082
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 48,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 192,
+        "batch_max": 8.416
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10625,
+        "n_pool_unmeasured": 27640,
+        "budget_remaining": 96,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.029
+          ],
+          [
+            "T20E",
+            2.825
+          ],
+          [
+            "R27Q",
+            2.526
+          ],
+          [
+            "R27L",
+            2.371
+          ],
+          [
+            "T20D",
+            2.353
+          ],
+          [
+            "R27T",
+            2.316
+          ],
+          [
+            "R27I",
+            2.315
+          ],
+          [
+            "R24Q",
+            2.272
+          ],
+          [
+            "R27M",
+            2.269
+          ],
+          [
+            "R24H",
+            2.158
+          ],
+          [
+            "R24G",
+            2.097
+          ],
+          [
+            "R27N",
+            2.08
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 48,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 240,
+        "batch_max": 7.081
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10673,
+        "n_pool_unmeasured": 27592,
+        "budget_remaining": 48,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.118
+          ],
+          [
+            "T20E",
+            2.882
+          ],
+          [
+            "R27Q",
+            2.52
+          ],
+          [
+            "T20D",
+            2.391
+          ],
+          [
+            "R27L",
+            2.371
+          ],
+          [
+            "R27T",
+            2.347
+          ],
+          [
+            "R27I",
+            2.338
+          ],
+          [
+            "R24Q",
+            2.289
+          ],
+          [
+            "R27M",
+            2.268
+          ],
+          [
+            "R24H",
+            2.218
+          ],
+          [
+            "R24G",
+            2.088
+          ],
+          [
+            "R27S",
+            2.084
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 48,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 288,
+        "batch_max": 4.936
+      }
+    }
+  ]
+}

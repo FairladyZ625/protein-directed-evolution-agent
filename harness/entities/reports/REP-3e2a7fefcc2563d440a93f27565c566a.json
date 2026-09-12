@@ -1,0 +1,14 @@
+{
+  "schema": "schema://artifact-descriptor",
+  "typeIdentity": "entity-kind/KND-22c8d77f610481a7fac16512a855ad18",
+  "kindVersion": 1,
+  "entityId": "REP-3e2a7fefcc2563d440a93f27565c566a",
+  "title": "agentic-v0.1:真Agentic Agent在AAV诚实输给greedy及机制尸检",
+  "locator": {
+    "kind": "repository-path",
+    "value": "harness/reports/agentic-v0.1"
+  },
+  "contentVersion": "sha256:77b554fe363379d9bbbe7bb625e331273874f1d82c6e352d949221a42a434b85",
+  "attributes": {},
+  "source": "repo:ai4s-directed-evolution-agent:harness/reports/agentic-v0.1"
+}

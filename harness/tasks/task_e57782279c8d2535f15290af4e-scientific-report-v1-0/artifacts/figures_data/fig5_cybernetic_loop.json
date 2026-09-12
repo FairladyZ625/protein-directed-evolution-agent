@@ -1,0 +1,18 @@
+{
+  "framework": "Five-Machine Dual-Loop Cybernetic System for RSI",
+  "inner_loop": {
+    "name": "Operational DBTL Loop",
+    "machines": {
+      "Executor": "runs current best surrogate, deterministic batch generation",
+      "Verifier": "rigid biophysical rules + holdout benchmark, read-only immutable",
+      "Controller": "round orchestrator, budget enforcement"
+    }
+  },
+  "outer_loop": {
+    "name": "Meta-Scientific Evolutionary Loop",
+    "machines": {
+      "Memory": "Fact-Decision-Task ledger, causal event stream, failure paying rent",
+      "Improver": "plateau detector, code patch generator in isolated shadow sandbox"
+    }
+  }
+}

@@ -1,0 +1,922 @@
+{
+  "source_url": "https://api.crossref.org/works/10.1016/j.trechm.2019.02.007",
+  "record": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          11
+        ]
+      ],
+      "date-time": "2026-09-11T17:17:30Z",
+      "timestamp": 1789147050420,
+      "version": "build-2803163510"
+    },
+    "reference-count": 62,
+    "publisher": "Elsevier BV",
+    "issue": "3",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2019,
+              6,
+              1
+            ]
+          ],
+          "date-time": "2019-06-01T00:00:00Z",
+          "timestamp": 1559347200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2019,
+              6,
+              1
+            ]
+          ],
+          "date-time": "2019-06-01T00:00:00Z",
+          "timestamp": 1559347200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/legal/tdmrep-license"
+      }
+    ],
+    "funder": [
+      {
+        "name": "Tata Sons Limited − Alliance Agreement",
+        "award": [
+          "A32391"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "A32391"
+            ]
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "cell.com",
+        "elsevier.com",
+        "sciencedirect.com"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [
+      "Trends in Chemistry"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2019,
+          6
+        ]
+      ]
+    },
+    "DOI": "10.1016/j.trechm.2019.02.007",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2019,
+          3,
+          6
+        ]
+      ],
+      "date-time": "2019-03-06T09:04:32Z",
+      "timestamp": 1551863072000
+    },
+    "page": "282-291",
+    "update-policy": "https://doi.org/10.1016/elsevier_cm_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 377,
+    "title": [
+      "Next-Generation Experimentation with Self-Driving Laboratories"
+    ],
+    "prefix": "10.1016",
+    "volume": "1",
+    "author": [
+      {
+        "given": "Florian",
+        "family": "Häse",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Loïc M.",
+        "family": "Roch",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Alán",
+        "family": "Aspuru-Guzik",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "78",
+    "reference": [
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0005",
+        "series-title": "Materials for the 21st Century",
+        "author": "Segler",
+        "year": "2017"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0010",
+        "doi-asserted-by": "crossref",
+        "first-page": "16102",
+        "DOI": "10.1038/nenergy.2016.102",
+        "article-title": "A redox-flow battery with an alloxazine-based organic electrolyte",
+        "volume": "1",
+        "author": "Lin",
+        "year": "2016",
+        "journal-title": "Nat. Energy"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0015",
+        "doi-asserted-by": "crossref",
+        "first-page": "1120",
+        "DOI": "10.1038/nmat4717",
+        "article-title": "Design of efficient molecular organic light-emitting diodes by high-throughput virtual screening and experimental approach",
+        "volume": "15",
+        "author": "Gómez-Bombarelli",
+        "year": "2016",
+        "journal-title": "Nat. Mater."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0020",
+        "doi-asserted-by": "crossref",
+        "first-page": "16018",
+        "DOI": "10.1038/natrevmats.2016.18",
+        "article-title": "Materials for next-generation desalination and water purification membranes",
+        "volume": "1",
+        "author": "Werber",
+        "year": "2016",
+        "journal-title": "Nat. Rev. Mater."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0025",
+        "doi-asserted-by": "crossref",
+        "first-page": "1564",
+        "DOI": "10.1039/c3ee43385d",
+        "article-title": "A review of graphene and graphene oxide sponge: material synthesis and applications to energy and the environment",
+        "volume": "7",
+        "author": "Chabot",
+        "year": "2014",
+        "journal-title": "Energy Environ. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0030",
+        "doi-asserted-by": "crossref",
+        "first-page": "928",
+        "DOI": "10.1126/science.1212741",
+        "article-title": "Electrical energy storage for the grid: a battery of choices",
+        "volume": "334",
+        "author": "Dunn",
+        "year": "2011",
+        "journal-title": "Science"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0035",
+        "doi-asserted-by": "crossref",
+        "first-page": "375",
+        "DOI": "10.1016/j.respol.2005.12.006",
+        "article-title": "Commercializing generic technology: the case of advanced materials ventures",
+        "volume": "35",
+        "author": "Maine",
+        "year": "2006",
+        "journal-title": "Res. Policy"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0040",
+        "doi-asserted-by": "crossref",
+        "first-page": "5",
+        "DOI": "10.1038/s41578-018-0005-z",
+        "article-title": "Accelerating the discovery of materials for clean energy in the era of smart automation",
+        "volume": "3",
+        "author": "Tabor",
+        "year": "2018",
+        "journal-title": "Nat. Rev. Mater."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0045",
+        "doi-asserted-by": "crossref",
+        "first-page": "469",
+        "DOI": "10.1016/S0003-2670(01)83110-X",
+        "article-title": "Chemical process optimization by computer – a self-directed chemical synthesis system",
+        "volume": "103",
+        "author": "Winicov",
+        "year": "1978",
+        "journal-title": "Anal. Chim. Acta"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0050",
+        "doi-asserted-by": "crossref",
+        "first-page": "15",
+        "DOI": "10.1016/0169-7439(92)90025-B",
+        "article-title": "A retrospective on the automation of laboratory synthetic chemistry",
+        "volume": "17",
+        "author": "Lindsey",
+        "year": "1992",
+        "journal-title": "Chemom. Intell. Lab. Syst."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0055",
+        "first-page": "111",
+        "article-title": "Automation and optimization by simplex methods of 6-chlorohexanol synthesis",
+        "volume": "4",
+        "author": "Porte",
+        "year": "1996",
+        "journal-title": "J. Process Control"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0060",
+        "doi-asserted-by": "crossref",
+        "first-page": "28",
+        "DOI": "10.1021/op9800459",
+        "article-title": "Investigation of cocatalysis conditions using an automated microscale multireactor workstation: synthesis of meso-tetramesitylporphyrin",
+        "volume": "3",
+        "author": "Wagner",
+        "year": "1999",
+        "journal-title": "Org. Process Res. Dev."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0065",
+        "doi-asserted-by": "crossref",
+        "first-page": "129",
+        "DOI": "10.1039/C5RE00038F",
+        "article-title": "Online monitoring and analysis for autonomous continuous flow self-optimizing reactor systems",
+        "volume": "1",
+        "author": "Fabry",
+        "year": "2016",
+        "journal-title": "React. Chem. Eng."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0070",
+        "doi-asserted-by": "crossref",
+        "first-page": "341",
+        "DOI": "10.1002/ijch.201300080",
+        "article-title": "Self-optimizing reactor systems: algorithms, on-line analytics, setups, and strategies for accelerating continuous flow process optimization",
+        "volume": "54",
+        "author": "Fabry",
+        "year": "2014",
+        "journal-title": "Isr. J. Chem."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0075",
+        "doi-asserted-by": "crossref",
+        "first-page": "131",
+        "DOI": "10.1021/acscentsci.6b00015",
+        "article-title": "Enabling technologies for the future of chemical synthesis",
+        "volume": "2",
+        "author": "Fitzpatrick",
+        "year": "2016",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0080",
+        "doi-asserted-by": "crossref",
+        "first-page": "350",
+        "DOI": "10.1038/28575",
+        "article-title": "High-throughput screening of solid-state catalyst libraries",
+        "volume": "394",
+        "author": "Senkan",
+        "year": "1998",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0085",
+        "doi-asserted-by": "crossref",
+        "first-page": "6016",
+        "DOI": "10.1002/anie.200603675",
+        "article-title": "Combinatorial and high-throughput materials science",
+        "volume": "46",
+        "author": "Maier",
+        "year": "2007",
+        "journal-title": "Angew. Chem. Int. Ed."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0090",
+        "doi-asserted-by": "crossref",
+        "first-page": "188",
+        "DOI": "10.1038/nrd3368",
+        "article-title": "Impact of high-throughput screening in biomedical research",
+        "volume": "10",
+        "author": "Macarron",
+        "year": "2011",
+        "journal-title": "Nat. Rev. Drug Discov."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0095",
+        "doi-asserted-by": "crossref",
+        "first-page": "5006",
+        "DOI": "10.1021/ja4123939",
+        "article-title": "In silico design of porous polymer networks: high-throughput screening for methane storage materials",
+        "volume": "136",
+        "author": "Martin",
+        "year": "2014",
+        "journal-title": "J. Am. Chem. Soc."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0100",
+        "doi-asserted-by": "crossref",
+        "first-page": "283",
+        "DOI": "10.1021/jz502319n",
+        "article-title": "Accelerating electrolyte discovery for energy storage with high-throughput screening",
+        "volume": "6",
+        "author": "Cheng",
+        "year": "2015",
+        "journal-title": "J. Phys. Chem. Lett."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0105",
+        "doi-asserted-by": "crossref",
+        "first-page": "191",
+        "DOI": "10.1038/nmat3568",
+        "article-title": "The high-throughput highway to computational materials design",
+        "volume": "12",
+        "author": "Curtarolo",
+        "year": "2013",
+        "journal-title": "Nat. Mater."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0110",
+        "doi-asserted-by": "crossref",
+        "first-page": "882",
+        "DOI": "10.1038/nrd941",
+        "article-title": "Integration of virtual and high-throughput screening",
+        "volume": "1",
+        "author": "Bajorath",
+        "year": "2002",
+        "journal-title": "Nat. Rev. Drug Discov."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0115",
+        "doi-asserted-by": "crossref",
+        "first-page": "24",
+        "DOI": "10.1556/jfchem.2012.00019",
+        "article-title": "The effect of self-optimisation targets on the methylation of alcohols using dimethyl carbonate in supercritical CO2",
+        "volume": "2",
+        "author": "Jumbam",
+        "year": "2012",
+        "journal-title": "J. Flow Chem."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0120",
+        "doi-asserted-by": "crossref",
+        "first-page": "7076",
+        "DOI": "10.1002/anie.201002590",
+        "article-title": "An integrated microreactor system for self-optimization of a heck reaction: from micro- to mesoscale flow systems",
+        "volume": "49",
+        "author": "McMullen",
+        "year": "2010",
+        "journal-title": "Angew. Chem. Int. Ed."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0125",
+        "doi-asserted-by": "crossref",
+        "first-page": "1409",
+        "DOI": "10.1021/op300099x",
+        "article-title": "Automated multitrajectory method for reaction optimization in a microfluidic system using online IR analysis",
+        "volume": "16",
+        "author": "Moore",
+        "year": "2012",
+        "journal-title": "Org. Process Res. Dev."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0130",
+        "doi-asserted-by": "crossref",
+        "first-page": "13290",
+        "DOI": "10.1039/C5CC03651H",
+        "article-title": "Simultaneous solvent screening and reaction optimization in microliter slugs",
+        "volume": "51",
+        "author": "Reizmann",
+        "year": "2015",
+        "journal-title": "Chem. Commun."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0135",
+        "doi-asserted-by": "crossref",
+        "first-page": "1434",
+        "DOI": "10.1039/b711412e",
+        "article-title": "Intelligent routes to the controlled synthesis of nanoparticles",
+        "volume": "7",
+        "author": "Krishnadasan",
+        "year": "2007",
+        "journal-title": "Lab Chip"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0140",
+        "doi-asserted-by": "crossref",
+        "first-page": "5139",
+        "DOI": "10.1039/C5SC04786B",
+        "article-title": "Machine learning exciton dynamics",
+        "volume": "7",
+        "author": "Häse",
+        "year": "2016",
+        "journal-title": "Chem. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0145",
+        "doi-asserted-by": "crossref",
+        "first-page": "095003",
+        "DOI": "10.1088/1367-2630/15/9/095003",
+        "article-title": "Machine learning of molecular electronic properties in chemical compound space",
+        "volume": "15",
+        "author": "Montavon",
+        "year": "2013",
+        "journal-title": "New J. Phys."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0150",
+        "doi-asserted-by": "crossref",
+        "first-page": "3404",
+        "DOI": "10.1021/ct400195d",
+        "article-title": "Assessment and validation of machine learning methods for predicting molecular atomization energies",
+        "volume": "9",
+        "author": "Hansen",
+        "year": "2013",
+        "journal-title": "J. Chem. Theory Comput."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0155",
+        "doi-asserted-by": "crossref",
+        "first-page": "120",
+        "DOI": "10.1021/acscentsci.7b00512",
+        "article-title": "Generating focused molecule libraries for drug discovery with recurrent neural networks",
+        "volume": "4",
+        "author": "Segler",
+        "year": "2017",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0160",
+        "doi-asserted-by": "crossref",
+        "first-page": "268",
+        "DOI": "10.1021/acscentsci.7b00572",
+        "article-title": "Automatic chemical design using a data-driven continuous representation of molecules",
+        "volume": "4",
+        "author": "Gómez-Bombarelli",
+        "year": "2018",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0165",
+        "doi-asserted-by": "crossref",
+        "first-page": "283",
+        "DOI": "10.1021/acscentsci.6b00367",
+        "article-title": "Low data drug discovery with one-shot learning",
+        "volume": "3",
+        "author": "Tran",
+        "year": "2017",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0170",
+        "doi-asserted-by": "crossref",
+        "first-page": "1281",
+        "DOI": "10.1021/acs.accounts.8b00087",
+        "article-title": "Machine learning in computer-aided synthesis planning",
+        "volume": "51",
+        "author": "Coley",
+        "year": "2018",
+        "journal-title": "Acc. Chem. Res."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0175",
+        "doi-asserted-by": "crossref",
+        "first-page": "604",
+        "DOI": "10.1038/nature25978",
+        "article-title": "Planning chemical syntheses with deep neural networks and symbolic AI",
+        "volume": "555",
+        "author": "Segler",
+        "year": "2018",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0180",
+        "first-page": "2607",
+        "article-title": "Predicting organic reaction outcomes with Weisfeiler-Lehman network",
+        "volume": "20",
+        "author": "Jin",
+        "year": "2017",
+        "journal-title": "Adv. Neural Inform. Proces. Syst."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0185",
+        "doi-asserted-by": "crossref",
+        "first-page": "1103",
+        "DOI": "10.1021/acscentsci.7b00303",
+        "article-title": "Retrosynthetic reaction prediction using neural sequence-to-sequence models",
+        "volume": "3",
+        "author": "Liu",
+        "year": "2017",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0190",
+        "doi-asserted-by": "crossref",
+        "first-page": "725",
+        "DOI": "10.1021/acscentsci.6b00219",
+        "article-title": "Neural networks for the prediction of organic chemistry reactions",
+        "volume": "2",
+        "author": "Wei",
+        "year": "2016",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0195",
+        "doi-asserted-by": "crossref",
+        "first-page": "1337",
+        "DOI": "10.1021/acscentsci.7b00492",
+        "article-title": "Optimizing chemical reactions with deep reinforcement learning",
+        "volume": "3",
+        "author": "Zhou",
+        "year": "2017",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0200",
+        "doi-asserted-by": "crossref",
+        "first-page": "1134",
+        "DOI": "10.1021/acscentsci.8b00307",
+        "article-title": "Phoenics: a Bayesian optimizer for chemistry",
+        "volume": "4",
+        "author": "Häse",
+        "year": "2018",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0205",
+        "doi-asserted-by": "crossref",
+        "first-page": "7642",
+        "DOI": "10.1039/C8SC02239A",
+        "article-title": "Chimera: enabling hierarchy based multi-objective optimization for self-driving laboratories",
+        "volume": "9",
+        "author": "Häse",
+        "year": "2018",
+        "journal-title": "Chem. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0210",
+        "doi-asserted-by": "crossref",
+        "first-page": "eaat5559",
+        "DOI": "10.1126/scirobotics.aat5559",
+        "article-title": "ChemOS: orchestrating autonomous experimentation",
+        "volume": "3",
+        "author": "Roch",
+        "year": "2018",
+        "journal-title": "Sci. Robotics"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0215",
+        "article-title": "ChemOS: an orchestration software to democratize autonomous discovery",
+        "author": "Roch",
+        "year": "2018",
+        "journal-title": "chemRxiv"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0220",
+        "doi-asserted-by": "crossref",
+        "first-page": "16031",
+        "DOI": "10.1038/npjcompumats.2016.31",
+        "article-title": "Autonomy in materials research: a case study in carbon nanotube growth",
+        "volume": "2",
+        "author": "Nikolaev",
+        "year": "2016",
+        "journal-title": "NPJ Comput. Mater."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0225",
+        "first-page": "668",
+        "article-title": "Autonomous experimentation applied to carbon nanotube synthesis",
+        "volume": "9",
+        "author": "Maruyama",
+        "year": "2017",
+        "journal-title": "Electrochem. Soc."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0230",
+        "doi-asserted-by": "crossref",
+        "first-page": "25890",
+        "DOI": "10.1038/srep25890",
+        "article-title": "Fast machine-learning online optimization of ultra-cold atom experiments",
+        "volume": "6",
+        "author": "Wigley",
+        "year": "2016",
+        "journal-title": "Sci. Rep."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0235",
+        "doi-asserted-by": "crossref",
+        "first-page": "10955",
+        "DOI": "10.1002/ange.201705721",
+        "article-title": "Human versus robots in the discovery and crystallization of gigantic polyoxometalates",
+        "volume": "129",
+        "author": "Duros",
+        "year": "2017",
+        "journal-title": "Angew. Chem. Int. Ed."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0240",
+        "doi-asserted-by": "crossref",
+        "first-page": "11241",
+        "DOI": "10.1038/ncomms11241",
+        "article-title": "Accelerated search for materials with targeted properties by adaptive design",
+        "volume": "7",
+        "author": "Xue",
+        "year": "2016",
+        "journal-title": "Nat. Commun."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0245",
+        "doi-asserted-by": "crossref",
+        "first-page": "377",
+        "DOI": "10.1038/s41586-018-0307-8",
+        "article-title": "Controlling an organic synthesis robot with machine learning to search for new reactivity",
+        "volume": "559",
+        "author": "Granda",
+        "year": "2018",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0250",
+        "doi-asserted-by": "crossref",
+        "first-page": "15733",
+        "DOI": "10.1038/ncomms15733",
+        "article-title": "An autonomous organic reaction search engine for chemical reactivity",
+        "volume": "8",
+        "author": "Dragone",
+        "year": "2017",
+        "journal-title": "Nat. Commun."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0255",
+        "doi-asserted-by": "crossref",
+        "first-page": "793",
+        "DOI": "10.1021/acscentsci.8b00176",
+        "article-title": "Designing algorithms to aid discovery by chemical robots",
+        "volume": "4",
+        "author": "Henson",
+        "year": "2018",
+        "journal-title": "ACS Cent. Sci."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0260",
+        "doi-asserted-by": "crossref",
+        "first-page": "1220",
+        "DOI": "10.1126/science.aat0650",
+        "article-title": "Reconfigurable system for automated optimization of diverse chemical reactions",
+        "volume": "361",
+        "author": "Bedard",
+        "year": "2018",
+        "journal-title": "Science"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0265",
+        "doi-asserted-by": "crossref",
+        "first-page": "3406",
+        "DOI": "10.1038/s41467-018-05828-8",
+        "article-title": "Networking chemical robots for reaction multitasking",
+        "volume": "9",
+        "author": "Caramelli",
+        "year": "2018",
+        "journal-title": "Nat. Commun."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0270",
+        "doi-asserted-by": "crossref",
+        "first-page": "386",
+        "DOI": "10.1021/acs.oprd.5b00313",
+        "article-title": "A novel Internet-based reaction monitoring, control and autonomous self-optimization platform for chemical synthesis",
+        "volume": "20",
+        "author": "Fitzpatrick",
+        "year": "2016",
+        "journal-title": "Org. Proc. Res. Dev."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0275",
+        "doi-asserted-by": "crossref",
+        "first-page": "1",
+        "DOI": "10.1038/nchem.2143",
+        "article-title": "Remote-controlled experiments with cloud chemistry",
+        "volume": "7",
+        "author": "Skilton",
+        "year": "2015",
+        "journal-title": "Nat. Chem."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0280",
+        "series-title": "Pattern Recognition and Neural Networks",
+        "author": "Ripley",
+        "year": "2007"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0285",
+        "doi-asserted-by": "crossref",
+        "first-page": "73",
+        "DOI": "10.1038/nature17439",
+        "article-title": "Machine-learning-assisted materials discovery using failed experiments",
+        "volume": "533",
+        "author": "Raccuglia",
+        "year": "2016",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0290",
+        "doi-asserted-by": "crossref",
+        "first-page": "1759",
+        "DOI": "10.1016/j.chempr.2018.07.008",
+        "article-title": "Catalyst: the metaphysics of chemical reactivity",
+        "volume": "4",
+        "author": "Cronin",
+        "year": "2018",
+        "journal-title": "Chem"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0295",
+        "doi-asserted-by": "crossref",
+        "first-page": "2087",
+        "DOI": "10.1021/acs.jctc.5b00099",
+        "article-title": "Big data meets quantum chemistry approximations: the δ-machine learning approach",
+        "volume": "11",
+        "author": "Ramakrishnan",
+        "year": "2015",
+        "journal-title": "J. Chem. Theory Comput."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0300",
+        "doi-asserted-by": "crossref",
+        "first-page": "2849",
+        "DOI": "10.1038/s41467-018-05271-9",
+        "article-title": "High-throughput discovery of organic cages and catenanes using computational screening fused with robotic synthesis",
+        "volume": "9",
+        "author": "Greenaway",
+        "year": "2018",
+        "journal-title": "Nat. Commun."
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0305",
+        "article-title": "The surprising creativity of digital evolution: a collection of anecdotes from the evolutionary computation and artificial life research communities",
+        "author": "Lehman",
+        "year": "2018",
+        "journal-title": "arXiv"
+      },
+      {
+        "key": "10.1016/j.trechm.2019.02.007_bib0310",
+        "doi-asserted-by": "crossref",
+        "first-page": "1189",
+        "DOI": "10.1016/j.chempr.2018.05.021",
+        "article-title": "Reaction: the near future of artificial intelligence in materials discovery",
+        "volume": "4",
+        "author": "Gómez-Bombarelli",
+        "year": "2018",
+        "journal-title": "Chem"
+      }
+    ],
+    "container-title": [
+      "Trends in Chemistry"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S258959741930019X?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S258959741930019X?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2025,
+          11,
+          11
+        ]
+      ],
+      "date-time": "2025-11-11T22:33:59Z",
+      "timestamp": 1762900439000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://linkinghub.elsevier.com/retrieve/pii/S258959741930019X"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2019,
+          6
+        ]
+      ]
+    },
+    "references-count": 62,
+    "journal-issue": {
+      "issue": "3",
+      "published-print": {
+        "date-parts": [
+          [
+            2019,
+            6
+          ]
+        ]
+      }
+    },
+    "alternative-id": [
+      "S258959741930019X"
+    ],
+    "URL": "https://doi.org/10.1016/j.trechm.2019.02.007",
+    "relation": {},
+    "ISSN": [
+      "2589-5974"
+    ],
+    "issn-type": [
+      {
+        "value": "2589-5974",
+        "type": "print"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2019,
+          6
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "Elsevier",
+        "name": "publisher",
+        "label": "This article is maintained by"
+      },
+      {
+        "value": "Next-Generation Experimentation with Self-Driving Laboratories",
+        "name": "articletitle",
+        "label": "Article Title"
+      },
+      {
+        "value": "Trends in Chemistry",
+        "name": "journaltitle",
+        "label": "Journal Title"
+      },
+      {
+        "value": "https://doi.org/10.1016/j.trechm.2019.02.007",
+        "name": "articlelink",
+        "label": "CrossRef DOI link to publisher maintained version"
+      },
+      {
+        "value": "article",
+        "name": "content_type",
+        "label": "Content Type"
+      },
+      {
+        "value": "© 2019 Elsevier Inc. All rights reserved.",
+        "name": "copyright",
+        "label": "Copyright"
+      }
+    ]
+  }
+}

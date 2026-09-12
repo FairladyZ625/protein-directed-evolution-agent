@@ -1,0 +1,1246 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "agentic",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 48,
+  "n_rounds": 6,
+  "total_budget": 288,
+  "budget_spent": 284,
+  "strong_threshold": 2.6159,
+  "guardrail": true,
+  "max_hd": 4,
+  "blosum_min": 0.0,
+  "n_gate_rejected": 1,
+  "gate_pass_pool_size": 9533,
+  "llm_used": true,
+  "llm_summary": " Round 6 completed with 48 real measurements. Budget remaining: 4. The six-round campaign is complete.\n\nBest measured variant remains:\n\n`DEEEIRTTNPVATEQYGSYSTNLQQGNR` with fitness `9.536`\n\nBest new results from the final round:\n\n- `DEEEIRTTNPVATEQYGSVSENLQYGNL`: `5.924`\n- `DEEEIRTTNPVATEQYGEASTNLQRGMR`: `3.770`\n- `DEEEIRTTNPVATEQYGEASTNLQRGNA`: `3.718`\n- `DEEEICTTNPVATEQYGEASDNLQRGNR`: `3.656`\n- `DEEEIRTTNPVATEQYGQVSNNLQRGND`: `3.463`\n- `DEEEIRTTNPVATEQYGSVSENEQVGNA`: `3.273`\n- `DEEEIRTTNPVATEQYGSVSDNLQYGNV`: `3.272`\n\nFinal lessons:\n\n- The campaign leader was not surpassed. It remains substantially ahead of all newly tested higher-order variants.\n- The strongest final-round discovery, `...GSVSENLQYGNL`, scored `5.924`, showing that the favorable `GSVSENL` branch can support high activity w",
+  "agent_model": "gpt-5.6-sol",
+  "n_tool_calls": 43,
+  "summary": {
+    "final_cum_top10_max": 7.5301,
+    "final_cum_top10_mean": 5.9779,
+    "final_cum_n_strong": 93,
+    "cum_top10_max_curve": [
+      5.6866,
+      7.5301,
+      7.5301,
+      7.5301,
+      7.5301,
+      7.5301
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 48,
+      "top10_max": 5.6866,
+      "top10_mean": 4.4262,
+      "cum_top10_max": 5.6866,
+      "cum_top10_mean": 4.4262,
+      "n_hit_strong": 16,
+      "cum_n_strong": 16,
+      "top10": [
+        [
+          "SEEEIRTTNPVATEQYGEVSYNHQRGNR",
+          5.6866
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASENLQRGMR",
+          5.6302
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGER",
+          5.4076
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGNS",
+          4.2598
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGNI",
+          4.1525
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSEDLQQGNT",
+          4.1408
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSSDLQRGNN",
+          4.0514
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGDH",
+          3.7581
+        ],
+        [
+          "DEQEIRTTNPVATEQWGSVSENLQRGNM",
+          3.6678
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQHGNV",
+          3.5075
+        ]
+      ],
+      "spent_after": 48
+    },
+    {
+      "round": 2,
+      "n_nominated": 47,
+      "top10_max": 7.5301,
+      "top10_mean": 4.9096,
+      "cum_top10_max": 7.5301,
+      "cum_top10_mean": 5.5017,
+      "n_hit_strong": 15,
+      "cum_n_strong": 31,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQHGNR",
+          7.5301
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQQGNT",
+          5.6321
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQIGNQ",
+          5.5903
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQNGNR",
+          5.4299
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSDNLQRGTH",
+          5.1899
+        ],
+        [
+          "DEEEIRCTNPVATEQYGEVATNLQRGNH",
+          4.595
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSDVLQRGGR",
+          4.3253
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQQGNL",
+          3.7692
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGNF",
+          3.5814
+        ],
+        [
+          "DEEEIRTVNPVATENYGSVSNNLQRGNM",
+          3.4526
+        ]
+      ],
+      "spent_after": 95
+    },
+    {
+      "round": 3,
+      "n_nominated": 47,
+      "top10_max": 6.5739,
+      "top10_mean": 4.2796,
+      "cum_top10_max": 7.5301,
+      "cum_top10_mean": 5.8605,
+      "n_hit_strong": 17,
+      "cum_n_strong": 48,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGEVSDNLQHGNR",
+          6.5739
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGER",
+          5.9341
+        ],
+        [
+          "SEEEIRTTNPVATEQYGTVSVNLQTGNR",
+          4.5105
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVSDNLQRGNR",
+          4.4031
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQRGNL",
+          3.9068
+        ],
+        [
+          "DEEEIATTNPTATEQYGSVSTNEQRGNI",
+          3.8948
+        ],
+        [
+          "SEEEIYTTNPVATEQYGEVSENLQRGNR",
+          3.579
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTNLQLGPF",
+          3.44
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQHGNL",
+          3.298
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQHGNQ",
+          3.2554
+        ]
+      ],
+      "spent_after": 142
+    },
+    {
+      "round": 4,
+      "n_nominated": 46,
+      "top10_max": 4.5343,
+      "top10_mean": 3.1545,
+      "cum_top10_max": 7.5301,
+      "cum_top10_mean": 5.8605,
+      "n_hit_strong": 12,
+      "cum_n_strong": 60,
+      "top10": [
+        [
+          "DEEEIRTTNPVGTEQYGQVSTNLQRGNT",
+          4.5343
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQRGNM",
+          3.707
+        ],
+        [
+          "DEEEIRTTNPTATEFYGSVSTNLQRGNV",
+          3.2638
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLQNGEL",
+          3.0878
+        ],
+        [
+          "DEEEIRTTNPVGTECYGWVSTNLQRGNQ",
+          2.964
+        ],
+        [
+          "SEEEIRTTNPVATEQYGTVSTNLQRGPQ",
+          2.9457
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+          2.8659
+        ],
+        [
+          "DEEEIATTNPVATEQYGDVSTNLQVGNQ",
+          2.7798
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSEDLQAGNQ",
+          2.7276
+        ],
+        [
+          "DEEEIRTTNPVATELYGWVSDNLQAGNR",
+          2.669
+        ]
+      ],
+      "spent_after": 188
+    },
+    {
+      "round": 5,
+      "n_nominated": 48,
+      "top10_max": 5.8484,
+      "top10_mean": 4.5614,
+      "cum_top10_max": 7.5301,
+      "cum_top10_mean": 5.9263,
+      "n_hit_strong": 19,
+      "cum_n_strong": 79,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGECSTNLQHGER",
+          5.8484
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTNLQRGDA",
+          5.4012
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQRGNA",
+          5.0311
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQRGNV",
+          4.795
+        ],
+        [
+          "DEEEIRTTNPVATEGYGSASENLQRANR",
+          4.5563
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGGR",
+          4.3269
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVSENLQRGNR",
+          4.1494
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTNLQHGNH",
+          4.0883
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQHGNM",
+          3.7196
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSENLQRGNT",
+          3.698
+        ]
+      ],
+      "spent_after": 236
+    },
+    {
+      "round": 6,
+      "n_nominated": 48,
+      "top10_max": 5.9238,
+      "top10_mean": 3.7498,
+      "cum_top10_max": 7.5301,
+      "cum_top10_mean": 5.9779,
+      "n_hit_strong": 14,
+      "cum_n_strong": 93,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQYGNL",
+          5.9238
+        ],
+        [
+          "DEEEIRTTNPVATEHYGSVSENLQHGNQ",
+          3.9453
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGMR",
+          3.7701
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGNA",
+          3.7184
+        ],
+        [
+          "DEEEICTTNPVATEQYGEASDNLQRGNR",
+          3.6558
+        ],
+        [
+          "DEEEIRTTNPVATEQYGQVSNNLQRGND",
+          3.4634
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENEQVGNA",
+          3.2731
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDNLQYGNV",
+          3.2722
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQNGNN",
+          3.2551
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQHGNH",
+          3.2211
+        ]
+      ],
+      "spent_after": 284
+    }
+  ],
+  "tool_trace": [
+    {
+      "event_type": "agent.llm.model",
+      "actor": "agent",
+      "payload": {
+        "model": "gpt-5.6-sol",
+        "base_url": "https://token.qianbaner.top/v1"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 288,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 12,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.predict",
+      "actor": "fitness_evaluator",
+      "payload": {
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.predict",
+      "actor": "fitness_evaluator",
+      "payload": {
+        "n": 12
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 48,
+        "batch_max": 5.687
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10481,
+        "n_pool_unmeasured": 27784,
+        "budget_remaining": 240,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.795
+          ],
+          [
+            "S17E",
+            2.749
+          ],
+          [
+            "R27Q",
+            2.479
+          ],
+          [
+            "R27I",
+            2.368
+          ],
+          [
+            "R27T",
+            2.325
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R24Q",
+            2.24
+          ],
+          [
+            "T20D",
+            2.184
+          ],
+          [
+            "R27M",
+            2.156
+          ],
+          [
+            "R24H",
+            2.132
+          ],
+          [
+            "R27S",
+            2.071
+          ],
+          [
+            "R24G",
+            2.068
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 12,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 47,
+        "measured": 47,
+        "spent": 95,
+        "batch_max": 7.53
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10528,
+        "n_pool_unmeasured": 27737,
+        "budget_remaining": 193,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGEVSENLQHGNR",
+            7.53
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.863
+          ],
+          [
+            "T20E",
+            2.767
+          ],
+          [
+            "R27Q",
+            2.512
+          ],
+          [
+            "R27T",
+            2.38
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.317
+          ],
+          [
+            "R24Q",
+            2.282
+          ],
+          [
+            "T20D",
+            2.214
+          ],
+          [
+            "R27M",
+            2.183
+          ],
+          [
+            "R24H",
+            2.164
+          ],
+          [
+            "R27H",
+            2.1
+          ],
+          [
+            "R27S",
+            2.065
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 12,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_gate",
+      "actor": "scientific_critic",
+      "payload": {
+        "n_rejected": 1,
+        "n_allowed": 47,
+        "max_hd": 4,
+        "blosum_min": 0.0
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 47,
+        "measured": 47,
+        "spent": 142,
+        "batch_max": 6.574
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10575,
+        "n_pool_unmeasured": 27690,
+        "budget_remaining": 146,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGEVSENLQHGNR",
+            7.53
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.915
+          ],
+          [
+            "T20E",
+            2.742
+          ],
+          [
+            "R27Q",
+            2.518
+          ],
+          [
+            "R27T",
+            2.371
+          ],
+          [
+            "R27L",
+            2.346
+          ],
+          [
+            "R27I",
+            2.331
+          ],
+          [
+            "R24Q",
+            2.282
+          ],
+          [
+            "T20D",
+            2.253
+          ],
+          [
+            "R24H",
+            2.213
+          ],
+          [
+            "R27M",
+            2.178
+          ],
+          [
+            "R27H",
+            2.1
+          ],
+          [
+            "R24G",
+            2.057
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 12,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 46,
+        "measured": 46,
+        "spent": 188,
+        "batch_max": 4.534
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10621,
+        "n_pool_unmeasured": 27644,
+        "budget_remaining": 100,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGEVSENLQHGNR",
+            7.53
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.902
+          ],
+          [
+            "T20E",
+            2.73
+          ],
+          [
+            "R27Q",
+            2.427
+          ],
+          [
+            "R27T",
+            2.385
+          ],
+          [
+            "R27I",
+            2.331
+          ],
+          [
+            "R27L",
+            2.287
+          ],
+          [
+            "T20D",
+            2.231
+          ],
+          [
+            "R24H",
+            2.218
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24Q",
+            2.188
+          ],
+          [
+            "R27H",
+            2.1
+          ],
+          [
+            "R27S",
+            2.053
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 12,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.predict",
+      "actor": "fitness_evaluator",
+      "payload": {
+        "n": 27
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 24
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 236,
+        "batch_max": 5.848
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10669,
+        "n_pool_unmeasured": 27596,
+        "budget_remaining": 52,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGEVSENLQHGNR",
+            7.53
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.99
+          ],
+          [
+            "T20E",
+            2.727
+          ],
+          [
+            "R27Q",
+            2.421
+          ],
+          [
+            "R27T",
+            2.388
+          ],
+          [
+            "R27I",
+            2.338
+          ],
+          [
+            "R27L",
+            2.287
+          ],
+          [
+            "R24H",
+            2.268
+          ],
+          [
+            "T20D",
+            2.243
+          ],
+          [
+            "R27M",
+            2.206
+          ],
+          [
+            "R24Q",
+            2.19
+          ],
+          [
+            "R27H",
+            2.137
+          ],
+          [
+            "R27S",
+            2.053
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 12,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 284,
+        "batch_max": 5.924
+      }
+    }
+  ]
+}

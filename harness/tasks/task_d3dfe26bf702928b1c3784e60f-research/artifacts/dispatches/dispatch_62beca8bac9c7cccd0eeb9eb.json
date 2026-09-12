@@ -1,0 +1,28 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_62beca8bac9c7cccd0eeb9eb",
+  "taskId": "task_d3dfe26bf702928b1c3784e60f",
+  "executionId": "exe_a41f6335621459a841dbcdc3ff",
+  "instanceId": "agy-li",
+  "model": "gemini-3.8-flash-high",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent",
+  "missionRef": "tasks/task_d3dfe26bf702928b1c3784e60f-research/artifacts/missions/dispatch_62beca8bac9c7cccd0eeb9eb.md",
+  "runtimeSessionId": "runtime_104762fba5c883d62d92731d",
+  "providerSessionId": "06efe574-3fc5-42da-bc1a-ba4d9166669f",
+  "startedAt": "2026-09-11T15:44:48.702Z",
+  "endedAt": "2026-09-11T15:49:57.191Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_62beca8bac9c7cccd0eeb9eb.jsonl",
+  "attemptGroupId": "dispatch_62beca8bac9c7cccd0eeb9eb",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "agy-li",
+    "model": "gemini-3.8-flash-high"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

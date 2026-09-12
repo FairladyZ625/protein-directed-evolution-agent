@@ -1,0 +1,707 @@
+{
+  "source_url": "https://api.crossref.org/works/10.1038/s41587-020-00793-4",
+  "record": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          10
+        ]
+      ],
+      "date-time": "2026-09-10T07:11:56Z",
+      "timestamp": 1789024316480,
+      "version": "build-2803163510"
+    },
+    "reference-count": 35,
+    "publisher": "Springer Science and Business Media LLC",
+    "issue": "6",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2021,
+              2,
+              11
+            ]
+          ],
+          "date-time": "2021-02-11T00:00:00Z",
+          "timestamp": 1613001600000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.springer.com/tdm"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2021,
+              2,
+              11
+            ]
+          ],
+          "date-time": "2021-02-11T00:00:00Z",
+          "timestamp": 1613001600000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://www.springer.com/tdm"
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "link.springer.com"
+      ],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "Nat Biotechnol"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2021,
+          6
+        ]
+      ]
+    },
+    "DOI": "10.1038/s41587-020-00793-4",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2021,
+          2,
+          11
+        ]
+      ],
+      "date-time": "2021-02-11T17:06:51Z",
+      "timestamp": 1613063211000
+    },
+    "page": "691-696",
+    "update-policy": "https://doi.org/10.1007/springer_crossmark_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 320,
+    "title": [
+      "Deep diversification of an AAV capsid protein by machine learning"
+    ],
+    "prefix": "10.1038",
+    "volume": "39",
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0001-7781-7033",
+        "authenticated-orcid": false,
+        "given": "Drew H.",
+        "family": "Bryant",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ali",
+        "family": "Bashir",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Sam",
+        "family": "Sinai",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Nina K.",
+        "family": "Jain",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Pierce J.",
+        "family": "Ogden",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-0797-0272",
+        "authenticated-orcid": false,
+        "given": "Patrick F.",
+        "family": "Riley",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-3535-2076",
+        "authenticated-orcid": false,
+        "given": "George M.",
+        "family": "Church",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-3148-0337",
+        "authenticated-orcid": false,
+        "given": "Lucy J.",
+        "family": "Colwell",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Eric D.",
+        "family": "Kelsic",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "297",
+    "published-online": {
+      "date-parts": [
+        [
+          2021,
+          2,
+          11
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "793_CR1",
+        "doi-asserted-by": "publisher",
+        "first-page": "481",
+        "DOI": "10.1126/science.1257481",
+        "volume": "346",
+        "author": "PS Huang",
+        "year": "2014",
+        "unstructured": "Huang, P. S. et al. High thermodynamic stability of parametrically designed helical bundles. Science 346, 481–485 (2014).",
+        "journal-title": "Science"
+      },
+      {
+        "key": "793_CR2",
+        "doi-asserted-by": "publisher",
+        "first-page": "415",
+        "DOI": "10.1038/nature25157",
+        "volume": "552",
+        "author": "GL Butterfield",
+        "year": "2017",
+        "unstructured": "Butterfield, G. L. et al. Evolution of a designed protein assembly encapsulating its own RNA genome. Nature 552, 415–420 (2017).",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "793_CR3",
+        "doi-asserted-by": "publisher",
+        "first-page": "205",
+        "DOI": "10.1038/s41586-019-1432-8",
+        "volume": "572",
+        "author": "RA Langan",
+        "year": "2019",
+        "unstructured": "Langan, R. A. et al. De novo design of bioactive protein switches. Nature 572, 205–210 (2019).",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "793_CR4",
+        "doi-asserted-by": "publisher",
+        "first-page": "111",
+        "DOI": "10.1126/science.1123539",
+        "volume": "312",
+        "author": "DM Weinreich",
+        "year": "2006",
+        "unstructured": "Weinreich, D. M., Delaney, N. F., DePristo, M. A. & Hartl, D. L. Darwinian evolution can follow only very few mutational paths to fitter proteins. Science 312, 111–114 (2006).",
+        "journal-title": "Science"
+      },
+      {
+        "key": "793_CR5",
+        "doi-asserted-by": "publisher",
+        "first-page": "774",
+        "DOI": "10.1016/j.cell.2009.07.038",
+        "volume": "138",
+        "author": "N Halabi",
+        "year": "2009",
+        "unstructured": "Halabi, N., Rivoire, O., Leibler, S. & Ranganathan, R. Protein sectors: evolutionary units of three-dimensional structure. Cell 138, 774–786 (2009).",
+        "journal-title": "Cell"
+      },
+      {
+        "key": "793_CR6",
+        "doi-asserted-by": "publisher",
+        "first-page": "466",
+        "DOI": "10.1038/s41437-018-0110-1",
+        "volume": "121",
+        "author": "L Ferretti",
+        "year": "2018",
+        "unstructured": "Ferretti, L., Weinreich, D., Tajima, F. & Achaz, G. Evolutionary constraints in fitness landscapes. Heredity 121, 466–481 (2018).",
+        "journal-title": "Heredity"
+      },
+      {
+        "key": "793_CR7",
+        "doi-asserted-by": "publisher",
+        "first-page": "389",
+        "DOI": "10.1038/370389a0",
+        "volume": "370",
+        "author": "WP Stemmer",
+        "year": "1994",
+        "unstructured": "Stemmer, W. P. Rapid evolution of a protein in vitro by DNA shuffling. Nature 370, 389–391 (1994).",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "793_CR8",
+        "doi-asserted-by": "publisher",
+        "first-page": "338",
+        "DOI": "10.1038/nbt1286",
+        "volume": "25",
+        "author": "RJ Fox",
+        "year": "2007",
+        "unstructured": "Fox, R. J. et al. Improving catalytic function by ProSAR-driven enzyme evolution. Nat. Biotechnol. 25, 338–344 (2007).",
+        "journal-title": "Nat. Biotechnol."
+      },
+      {
+        "key": "793_CR9",
+        "doi-asserted-by": "publisher",
+        "first-page": "681–698",
+        "DOI": "10.1038/nrd.2017.146",
+        "volume": "16",
+        "author": "AM Davis",
+        "year": "2017",
+        "unstructured": "Davis, A. M., Plowright, A. T. & Valeur, E. Directing evolution: the next revolution in drug discovery? Nat. Rev. Drug Discov. 16, 681–698 (2017).",
+        "journal-title": "Nat. Rev. Drug Discov."
+      },
+      {
+        "key": "793_CR10",
+        "doi-asserted-by": "publisher",
+        "first-page": "5887",
+        "DOI": "10.1128/JVI.00254-08",
+        "volume": "82",
+        "author": "D Grimm",
+        "year": "2008",
+        "unstructured": "Grimm, D. et al. In vitro and in vivo gene therapy vector evolution via multispecies interbreeding and retargeting of adeno-associated viruses. J. Virol. 82, 5887–5911 (2008).",
+        "journal-title": "J. Virol."
+      },
+      {
+        "key": "793_CR11",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Dalkara, D. et al. In vivo-directed evolution of a new adeno-associated virus for therapeutic outer retinal gene delivery from the vitreous. Sci. Transl. Med. 5, 189ra76 (2013).",
+        "DOI": "10.1126/scitranslmed.3005708"
+      },
+      {
+        "key": "793_CR12",
+        "doi-asserted-by": "publisher",
+        "first-page": "16858",
+        "DOI": "10.1073/pnas.1209751109",
+        "volume": "109",
+        "author": "CL Araya",
+        "year": "2012",
+        "unstructured": "Araya, C. L. et al. A fundamental protein property, thermodynamic stability, revealed solely from large-scale measurements of protein function. Proc. Natl Acad. Sci. USA 109, 16858–16863 (2012).",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "793_CR13",
+        "doi-asserted-by": "publisher",
+        "first-page": "397",
+        "DOI": "10.1038/nature17995",
+        "volume": "533",
+        "author": "KS Sarkisyan",
+        "year": "2016",
+        "unstructured": "Sarkisyan, K. S. et al. Local fitness landscape of the green fluorescent protein. Nature 533, 397–401 (2016).",
+        "journal-title": "Nature"
+      },
+      {
+        "key": "793_CR14",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Poelwijk, F. J., Socolich, M. & Ranganathan, R. Learning the pattern of epistasis linking genotype and phenotype in a protein. Nat. Commun. 10, 4213 (2019).",
+        "DOI": "10.1038/s41467-019-12130-8"
+      },
+      {
+        "key": "793_CR15",
+        "doi-asserted-by": "publisher",
+        "first-page": "E193",
+        "DOI": "10.1073/pnas.1215251110",
+        "volume": "110",
+        "author": "PA Romero",
+        "year": "2013",
+        "unstructured": "Romero, P. A., Krause, A. & Arnold, F. H. Navigating the protein fitness landscape with Gaussian processes. Proc. Natl Acad. Sci. USA 110, E193–E201 (2013).",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "793_CR16",
+        "doi-asserted-by": "publisher",
+        "first-page": "8852",
+        "DOI": "10.1073/pnas.1901979116",
+        "volume": "116",
+        "author": "Z Wu",
+        "year": "2019",
+        "unstructured": "Wu, Z., Kan, S. J., Lewis, R. D., Wittmann, B. J. & Arnold, F. H. Machine learning-assisted directed protein evolution with combinatorial libraries. Proc. Natl Acad. Sci. USA 116, 8852–8858 (2019).",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "793_CR17",
+        "doi-asserted-by": "publisher",
+        "first-page": "1315",
+        "DOI": "10.1038/s41592-019-0598-1",
+        "volume": "16",
+        "author": "EC Alley",
+        "year": "2019",
+        "unstructured": "Alley, E. C., Khimulya, G., Biswas, S., AlQuraishi, M. & Church, G. M. Unified rational protein engineering with sequence-based deep representation learning. Nat. Methods 16, 1315–1322 (2019).",
+        "journal-title": "Nat. Methods"
+      },
+      {
+        "key": "793_CR18",
+        "doi-asserted-by": "publisher",
+        "first-page": "523",
+        "DOI": "10.18609/cgti.2019.058",
+        "volume": "5",
+        "author": "ED Kelsic",
+        "year": "2019",
+        "unstructured": "Kelsic, E. D. & Church, G. M. Challenges and opportunities of machine-guided capsid engineering for gene therapy. Cell Gene Ther. Insights 5, 523–536 (2019).",
+        "journal-title": "Cell Gene Ther. Insights"
+      },
+      {
+        "key": "793_CR19",
+        "doi-asserted-by": "publisher",
+        "first-page": "1139",
+        "DOI": "10.1126/science.aaw2900",
+        "volume": "366",
+        "author": "PJ Ogden",
+        "year": "2019",
+        "unstructured": "Ogden, P. J., Kelsic, E. D., Sinai, S. & Church, G. M. Comprehensive AAV capsid fitness landscape reveals a viral gene and enables machine-guided design. Science 366, 1139–1143 (2019).",
+        "journal-title": "Science"
+      },
+      {
+        "key": "793_CR20",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Liu, G. et al. Antibody complementarity determining region design using high-capacity machine learning. Bioinformatics 36, 2126–2133 (2020).",
+        "DOI": "10.1093/bioinformatics/btz895"
+      },
+      {
+        "key": "793_CR21",
+        "unstructured": "Brookes, D. H., Park, H. & Listgarten, J. 2019. Conditioning by adaptive sampling for robust design. Proc. 36th Intl Conf. Machine Learning, PMLR 97, 773–782 (2019)."
+      },
+      {
+        "key": "793_CR22",
+        "doi-asserted-by": "publisher",
+        "first-page": "687",
+        "DOI": "10.1038/s41592-019-0496-6",
+        "volume": "16",
+        "author": "KK Yang",
+        "year": "2019",
+        "unstructured": "Yang, K. K., Wu, Z. & Arnold, F. H. Machine-learning-guided directed evolution for protein engineering. Nat. Methods 16, 687–694 (2019).",
+        "journal-title": "Nat. Methods"
+      },
+      {
+        "key": "793_CR23",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Russell, S. et al. Efficacy and safety of voretigene neparvovec (AAV2-hRPE65v2) in patients with RPE65-mediated inherited retinal dystrophy: a randomised, controlled, open-label, phase 3 trial. Lancet 390, 849–860 (2017).",
+        "DOI": "10.1016/S0140-6736(17)31868-8"
+      },
+      {
+        "key": "793_CR24",
+        "doi-asserted-by": "publisher",
+        "first-page": "eaan4672",
+        "DOI": "10.1126/science.aan4672",
+        "volume": "359",
+        "author": "CE Dunbar",
+        "year": "2018",
+        "unstructured": "Dunbar, C. E. et al. Gene therapy comes of age. Science 359, eaan4672 (2018).",
+        "journal-title": "Science"
+      },
+      {
+        "key": "793_CR25",
+        "doi-asserted-by": "publisher",
+        "first-page": "1713",
+        "DOI": "10.1056/NEJMoa1706198",
+        "volume": "377",
+        "author": "JR Mendell",
+        "year": "2017",
+        "unstructured": "Mendell, J. R. et al. Single-dose gene-replacement therapy for spinal muscular atrophy. New Engl. J. Med. 377, 1713–1722 (2017).",
+        "journal-title": "New Engl. J. Med."
+      },
+      {
+        "key": "793_CR26",
+        "doi-asserted-by": "publisher",
+        "first-page": "381",
+        "DOI": "10.1086/595830",
+        "volume": "199",
+        "author": "R Calcedo",
+        "year": "2009",
+        "unstructured": "Calcedo, R., Vandenberghe, L. H., Gao, G., Lin, J. & Wilson, J. M. Worldwide epidemiology of neutralizing antibodies to adeno-associated viruses. J. Infect. Dis. 199, 381–390 (2009).",
+        "journal-title": "J. Infect. Dis."
+      },
+      {
+        "key": "793_CR27",
+        "doi-asserted-by": "publisher",
+        "first-page": "E4812",
+        "DOI": "10.1073/pnas.1704766114",
+        "volume": "114",
+        "author": "LV Tse",
+        "year": "2017",
+        "unstructured": "Tse, L. V. et al. Structure-guided evolution of antigenically distinct adeno-associated virus variants for immune evasion. Proc. Natl Acad. Sci. USA 114, E4812–E4821 (2017).",
+        "journal-title": "Proc. Natl Acad. Sci. USA"
+      },
+      {
+        "key": "793_CR28",
+        "first-page": "9",
+        "volume": "5",
+        "author": "YS Tseng",
+        "year": "2014",
+        "unstructured": "Tseng, Y. S. & Agbandje-McKenna, M. Mapping the AAV capsid host antibody response toward the development of second generation gene delivery vectors. Front. Immunol. 5, 9 (2014).",
+        "journal-title": "Front. Immunol."
+      },
+      {
+        "key": "793_CR29",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1038/ncomms4075",
+        "volume": "5",
+        "author": "K Adachi",
+        "year": "2014",
+        "unstructured": "Adachi, K., Enoki, T., Kawano, Y., Veraz, M. & Nakai, H. Drawing a high-resolution functional map of adeno-associated virus capsid by massively parallel sequencing. Nat. Commun. 5, 3075 (2014).",
+        "journal-title": "Nat. Commun."
+      },
+      {
+        "key": "793_CR30",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Szubert, B. & Drozdov, I. ivis: dimensionality reduction in very large datasets using Siamese Networks. J. Open Source Softw. https://doi.org/10.21105/joss.01596 (2019).",
+        "DOI": "10.21105/joss.01596"
+      },
+      {
+        "key": "793_CR31",
+        "doi-asserted-by": "publisher",
+        "first-page": "7",
+        "DOI": "10.1186/1471-2105-15-7",
+        "volume": "15",
+        "author": "TJ Wheeler",
+        "year": "2014",
+        "unstructured": "Wheeler, T. J., Clements, J. & Finn, R. D. Skylign: a tool for creating informative, interactive logos representing sequence alignments and profile hidden Markov models. BMC Bioinformatics 15, 7 (2014).",
+        "journal-title": "BMC Bioinformatics"
+      },
+      {
+        "key": "793_CR32",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1186/s12859-015-0544-x",
+        "volume": "16",
+        "author": "F Pereira",
+        "year": "2015",
+        "unstructured": "Pereira, F. et al. Pydna: a simulation and documentation tool for DNA assembly strategies using python. BMC Bioinformatics 16, 142 (2015).",
+        "journal-title": "BMC Bioinformatics"
+      },
+      {
+        "key": "793_CR33",
+        "doi-asserted-by": "publisher",
+        "first-page": "973",
+        "DOI": "10.1038/sj.gt.3300938",
+        "volume": "6",
+        "author": "S Zolotukhin",
+        "year": "1999",
+        "unstructured": "Zolotukhin, S. et al. Recombinant adeno-associated virus purification using novel methods improves infectious titer and yield. Gene Ther. 6, 973–985 (1999).",
+        "journal-title": "Gene Ther."
+      },
+      {
+        "key": "793_CR34",
+        "doi-asserted-by": "publisher",
+        "first-page": "614",
+        "DOI": "10.1093/bioinformatics/btt593",
+        "volume": "30",
+        "author": "J Zhang",
+        "year": "2014",
+        "unstructured": "Zhang, J., Kobert, K., Flouri, T. & Stamatakis, A. PEAR: a fast and accurate Illumina Paired-End reAd mergeR. Bioinformatics 30, 614–620 (2014).",
+        "journal-title": "Bioinformatics"
+      },
+      {
+        "key": "793_CR35",
+        "doi-asserted-by": "publisher",
+        "first-page": "539",
+        "DOI": "10.1038/msb.2011.75",
+        "volume": "7",
+        "author": "F Sievers",
+        "year": "2011",
+        "unstructured": "Sievers, F. et al. Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Mol. Syst. Biol. 7, 539 (2011).",
+        "journal-title": "Mol. Syst. Biol."
+      }
+    ],
+    "container-title": [
+      "Nature Biotechnology"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "http://www.nature.com/articles/s41587-020-00793-4.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "http://www.nature.com/articles/s41587-020-00793-4",
+        "content-type": "text/html",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "http://www.nature.com/articles/s41587-020-00793-4.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2023,
+          5,
+          20
+        ]
+      ],
+      "date-time": "2023-05-20T22:14:58Z",
+      "timestamp": 1684620898000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://www.nature.com/articles/s41587-020-00793-4"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2021,
+          2,
+          11
+        ]
+      ]
+    },
+    "references-count": 35,
+    "journal-issue": {
+      "issue": "6",
+      "published-print": {
+        "date-parts": [
+          [
+            2021,
+            6
+          ]
+        ]
+      }
+    },
+    "alternative-id": [
+      "793"
+    ],
+    "URL": "https://doi.org/10.1038/s41587-020-00793-4",
+    "relation": {},
+    "ISSN": [
+      "1087-0156",
+      "1546-1696"
+    ],
+    "issn-type": [
+      {
+        "value": "1087-0156",
+        "type": "print"
+      },
+      {
+        "value": "1546-1696",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2021,
+          2,
+          11
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "7 March 2020",
+        "order": 1,
+        "name": "received",
+        "label": "Received",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "8 December 2020",
+        "order": 2,
+        "name": "accepted",
+        "label": "Accepted",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "11 February 2021",
+        "order": 3,
+        "name": "first_online",
+        "label": "First Online",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "E.D.K., P.J.O., N.K.J., S.S. and G.M.C. performed research while at Harvard University, and E.D.K. and S.S. also performed research while at Dyno Therapeutics. E.D.K., S.S. and G.M.C. hold equity at Dyno Therapeutics. A full list of G.M.C.’s tech transfer, advisory roles and funding sources can be found on the website: . Harvard University has filed a provisional patent application for inventions related to this work. D.H.B., A.B., L.J.C. and P.F.R. performed research as part of their employment at Google LLC. Google is a technology company that sells ML services as part of its business.",
+        "order": 1,
+        "name": "Ethics",
+        "group": {
+          "name": "EthicsHeading",
+          "label": "Competing interests"
+        }
+      }
+    ]
+  }
+}

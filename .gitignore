@@ -14,7 +14,9 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
-/harness/
+# 台账树随交付一起公开;仅排除其嵌套 git 仓与大缓存
+harness/.git/
+harness/reports/cache/
 /.harness/
 .worktrees/
 

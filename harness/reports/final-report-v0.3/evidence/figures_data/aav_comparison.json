@@ -1,0 +1,43 @@
+{
+  "status": "transcribed_from_historical_report_not_rerun",
+  "source": "harness/context/research/v07-multiseed-robustness.md",
+  "methods": [
+    {
+      "name": "mean",
+      "max": 7.829,
+      "strong": 166,
+      "hit_records": 0,
+      "records": 30,
+      "unique_trajectories": 1
+    },
+    {
+      "name": "ucb3",
+      "max": 8.4162,
+      "strong": 128,
+      "hit_records": 30,
+      "records": 30,
+      "unique_trajectories": 1,
+      "first_hit_batch": 3
+    },
+    {
+      "name": "alternating",
+      "max_mean": 7.8681,
+      "max_sd": 0.149,
+      "strong_mean": 148.73,
+      "strong_sd": 3.49,
+      "hits": 2,
+      "records": 30,
+      "unique_trajectories": 30
+    },
+    {
+      "name": "gaussian_ts",
+      "max_mean": 7.3017,
+      "max_sd": 0.6684,
+      "strong_mean": 140.03,
+      "strong_sd": 6.06,
+      "hits": 3,
+      "records": 30,
+      "unique_trajectories": 30
+    }
+  ]
+}

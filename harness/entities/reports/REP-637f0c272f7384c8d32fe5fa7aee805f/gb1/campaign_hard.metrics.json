@@ -1,0 +1,764 @@
+{
+  "schema_version": "t7.v2",
+  "candidate_space_size": 149361,
+  "missing_combinations": 10639,
+  "oracle": "measured table lookup",
+  "budget_per_round": 96,
+  "n_rounds": 3,
+  "cold_start": "low_hd (seed pool = all HD<=2, nominate HD>2: extrapolation regime)",
+  "llm": "deterministic (pool LLM port available via --use-llm)",
+  "summary": {
+    "random": {
+      "final_cum_top10_max": 5.081244,
+      "final_cum_top10_mean": 1.635804,
+      "final_cum_n_strong": 1,
+      "total_beneficial_hits": 7,
+      "cum_top10_max_curve": [
+        1.910588,
+        1.910588,
+        5.081244
+      ]
+    },
+    "greedy": {
+      "final_cum_top10_max": 8.761966,
+      "final_cum_top10_mean": 6.852635,
+      "final_cum_n_strong": 43,
+      "total_beneficial_hits": 154,
+      "cum_top10_max_curve": [
+        5.772032,
+        8.761966,
+        8.761966
+      ]
+    },
+    "agent_no_knowledge": {
+      "final_cum_top10_max": 8.761966,
+      "final_cum_top10_mean": 6.970103,
+      "final_cum_n_strong": 56,
+      "total_beneficial_hits": 187,
+      "cum_top10_max_curve": [
+        5.772032,
+        8.761966,
+        8.761966
+      ]
+    },
+    "knowledge_agent": {
+      "final_cum_top10_max": 8.761966,
+      "final_cum_top10_mean": 6.970103,
+      "final_cum_n_strong": 57,
+      "total_beneficial_hits": 190,
+      "cum_top10_max_curve": [
+        6.042078,
+        8.761966,
+        8.761966
+      ]
+    }
+  },
+  "strategies": {
+    "random": {
+      "strategy": "random",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 2168,
+      "acquisition": "uniform random",
+      "llm_sources": null,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 1.910588,
+          "top10_mean": 0.514957,
+          "n_hit_beneficial": 2,
+          "hit_rate_beneficial": 0.020833,
+          "cum_top10_max": 1.910588,
+          "cum_top10_mean": 0.514957,
+          "cum_n_strong": 0,
+          "top10": [
+            [
+              "YILV",
+              1.910588
+            ],
+            [
+              "TMGM",
+              1.048143
+            ],
+            [
+              "LFGQ",
+              0.620604
+            ],
+            [
+              "RVAA",
+              0.611602
+            ],
+            [
+              "LFFV",
+              0.499518
+            ],
+            [
+              "EQGF",
+              0.207319
+            ],
+            [
+              "VYCI",
+              0.126645
+            ],
+            [
+              "RRCT",
+              0.055121
+            ],
+            [
+              "NCEK",
+              0.036544
+            ],
+            [
+              "CNTA",
+              0.033485
+            ]
+          ],
+          "pool_size_after": 2264
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 1.392313,
+          "top10_mean": 0.379958,
+          "n_hit_beneficial": 2,
+          "hit_rate_beneficial": 0.020833,
+          "cum_top10_max": 1.910588,
+          "cum_top10_mean": 0.828655,
+          "cum_n_strong": 0,
+          "top10": [
+            [
+              "LHGS",
+              1.392313
+            ],
+            [
+              "ICGL",
+              1.037316
+            ],
+            [
+              "CYCA",
+              0.53794
+            ],
+            [
+              "NCGL",
+              0.421202
+            ],
+            [
+              "CEFV",
+              0.157757
+            ],
+            [
+              "ARFS",
+              0.11888
+            ],
+            [
+              "CPFT",
+              0.052403
+            ],
+            [
+              "YKAI",
+              0.035366
+            ],
+            [
+              "FDNA",
+              0.028214
+            ],
+            [
+              "RIAG",
+              0.018192
+            ]
+          ],
+          "pool_size_after": 2360
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 5.081244,
+          "top10_mean": 1.13699,
+          "n_hit_beneficial": 3,
+          "hit_rate_beneficial": 0.03125,
+          "cum_top10_max": 5.081244,
+          "cum_top10_mean": 1.635804,
+          "cum_n_strong": 1,
+          "top10": [
+            [
+              "YICA",
+              5.081244
+            ],
+            [
+              "YLCA",
+              2.629266
+            ],
+            [
+              "IPGC",
+              1.474379
+            ],
+            [
+              "MHMC",
+              0.552587
+            ],
+            [
+              "MDYG",
+              0.508756
+            ],
+            [
+              "VHSG",
+              0.258177
+            ],
+            [
+              "AMYG",
+              0.253781
+            ],
+            [
+              "CQGA",
+              0.25186
+            ],
+            [
+              "RHMG",
+              0.195395
+            ],
+            [
+              "TWGS",
+              0.16445
+            ]
+          ],
+          "pool_size_after": 2456
+        }
+      ]
+    },
+    "greedy": {
+      "strategy": "greedy",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 2168,
+      "acquisition": "predicted mean over full unmeasured space",
+      "llm_sources": null,
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 5.772032,
+          "top10_mean": 5.04582,
+          "n_hit_beneficial": 85,
+          "hit_rate_beneficial": 0.885417,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 5.04582,
+          "cum_n_strong": 17,
+          "top10": [
+            [
+              "IWGF",
+              5.772032
+            ],
+            [
+              "FYGA",
+              5.440615
+            ],
+            [
+              "LYCA",
+              5.260676
+            ],
+            [
+              "TYGM",
+              5.242722
+            ],
+            [
+              "IWGM",
+              5.229246
+            ],
+            [
+              "FWGA",
+              4.952273
+            ],
+            [
+              "LYAA",
+              4.893728
+            ],
+            [
+              "FWGF",
+              4.755346
+            ],
+            [
+              "IYGC",
+              4.48575
+            ],
+            [
+              "IYAA",
+              4.425813
+            ]
+          ],
+          "pool_size_after": 2264
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 8.761966,
+          "top10_mean": 5.420935,
+          "n_hit_beneficial": 21,
+          "hit_rate_beneficial": 0.21875,
+          "cum_top10_max": 8.761966,
+          "cum_top10_mean": 6.144068,
+          "cum_n_strong": 24,
+          "top10": [
+            [
+              "FWAA",
+              8.761966
+            ],
+            [
+              "FYAA",
+              8.045152
+            ],
+            [
+              "IWAA",
+              6.042078
+            ],
+            [
+              "LWAA",
+              6.027489
+            ],
+            [
+              "FYCA",
+              5.618708
+            ],
+            [
+              "IYCA",
+              5.073268
+            ],
+            [
+              "IWAC",
+              4.106059
+            ],
+            [
+              "LWLC",
+              3.846214
+            ],
+            [
+              "FWLC",
+              3.407139
+            ],
+            [
+              "IWAM",
+              3.281279
+            ]
+          ],
+          "pool_size_after": 2360
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 7.554663,
+          "top10_mean": 6.150399,
+          "n_hit_beneficial": 48,
+          "hit_rate_beneficial": 0.5,
+          "cum_top10_max": 8.761966,
+          "cum_top10_mean": 6.852635,
+          "cum_n_strong": 43,
+          "top10": [
+            [
+              "FWCA",
+              7.554663
+            ],
+            [
+              "LWCA",
+              7.22866
+            ],
+            [
+              "FFAA",
+              6.928257
+            ],
+            [
+              "VWAA",
+              6.123805
+            ],
+            [
+              "IWCA",
+              6.007627
+            ],
+            [
+              "MWCA",
+              5.806655
+            ],
+            [
+              "YWAA",
+              5.671913
+            ],
+            [
+              "FHAA",
+              5.665545
+            ],
+            [
+              "VWCA",
+              5.359943
+            ],
+            [
+              "VYAA",
+              5.156918
+            ]
+          ],
+          "pool_size_after": 2456
+        }
+      ]
+    },
+    "agent_no_knowledge": {
+      "strategy": "agent_no_knowledge",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 2168,
+      "acquisition": "agent library, predicted mean",
+      "llm_sources": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 5.772032,
+          "top10_mean": 5.04582,
+          "n_hit_beneficial": 85,
+          "hit_rate_beneficial": 0.885417,
+          "cum_top10_max": 5.772032,
+          "cum_top10_mean": 5.04582,
+          "cum_n_strong": 17,
+          "top10": [
+            [
+              "IWGF",
+              5.772032
+            ],
+            [
+              "FYGA",
+              5.440615
+            ],
+            [
+              "LYCA",
+              5.260676
+            ],
+            [
+              "TYGM",
+              5.242722
+            ],
+            [
+              "IWGM",
+              5.229246
+            ],
+            [
+              "FWGA",
+              4.952273
+            ],
+            [
+              "LYAA",
+              4.893728
+            ],
+            [
+              "FWGF",
+              4.755346
+            ],
+            [
+              "IYGC",
+              4.48575
+            ],
+            [
+              "IYAA",
+              4.425813
+            ]
+          ],
+          "pool_size_after": 2264,
+          "llm_source": "deterministic"
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 8.761966,
+          "top10_mean": 6.446567,
+          "n_hit_beneficial": 30,
+          "hit_rate_beneficial": 0.3125,
+          "cum_top10_max": 8.761966,
+          "cum_top10_mean": 6.649899,
+          "cum_n_strong": 27,
+          "top10": [
+            [
+              "FWAA",
+              8.761966
+            ],
+            [
+              "FYAA",
+              8.045152
+            ],
+            [
+              "FWCA",
+              7.554663
+            ],
+            [
+              "LWCA",
+              7.22866
+            ],
+            [
+              "IWAA",
+              6.042078
+            ],
+            [
+              "LWAA",
+              6.027489
+            ],
+            [
+              "IWCA",
+              6.007627
+            ],
+            [
+              "FYCA",
+              5.618708
+            ],
+            [
+              "IYCA",
+              5.073268
+            ],
+            [
+              "IWAC",
+              4.106059
+            ]
+          ],
+          "pool_size_after": 2360,
+          "llm_source": "deterministic"
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 6.981333,
+          "top10_mean": 5.955352,
+          "n_hit_beneficial": 72,
+          "hit_rate_beneficial": 0.75,
+          "cum_top10_max": 8.761966,
+          "cum_top10_mean": 6.970103,
+          "cum_n_strong": 56,
+          "top10": [
+            [
+              "YYAA",
+              6.981333
+            ],
+            [
+              "FFAA",
+              6.928257
+            ],
+            [
+              "VWAA",
+              6.123805
+            ],
+            [
+              "YWCA",
+              5.974719
+            ],
+            [
+              "MWCA",
+              5.806655
+            ],
+            [
+              "YWAA",
+              5.671913
+            ],
+            [
+              "FHAA",
+              5.665545
+            ],
+            [
+              "YFAA",
+              5.600912
+            ],
+            [
+              "YHAA",
+              5.44033
+            ],
+            [
+              "VYCA",
+              5.360054
+            ]
+          ],
+          "pool_size_after": 2456,
+          "llm_source": "deterministic"
+        }
+      ]
+    },
+    "knowledge_agent": {
+      "strategy": "knowledge_agent",
+      "seed": 42,
+      "n_rounds": 3,
+      "budget_per_round": 96,
+      "cold_start_pool_size": 2168,
+      "acquisition": "agent library, mean + 0.75·√var + 0.3·BLOSUM62 prior",
+      "llm_sources": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "rounds": [
+        {
+          "round": 1,
+          "n_nominated": 96,
+          "top10_max": 6.042078,
+          "top10_mean": 5.393413,
+          "n_hit_beneficial": 87,
+          "hit_rate_beneficial": 0.90625,
+          "cum_top10_max": 6.042078,
+          "cum_top10_mean": 5.393413,
+          "cum_n_strong": 21,
+          "top10": [
+            [
+              "IWAA",
+              6.042078
+            ],
+            [
+              "LWAA",
+              6.027489
+            ],
+            [
+              "IWGF",
+              5.772032
+            ],
+            [
+              "FYGA",
+              5.440615
+            ],
+            [
+              "LYCA",
+              5.260676
+            ],
+            [
+              "TYGM",
+              5.242722
+            ],
+            [
+              "IWGM",
+              5.229246
+            ],
+            [
+              "IYCA",
+              5.073268
+            ],
+            [
+              "FWGA",
+              4.952273
+            ],
+            [
+              "LYAA",
+              4.893728
+            ]
+          ],
+          "pool_size_after": 2264,
+          "llm_source": "deterministic"
+        },
+        {
+          "round": 2,
+          "n_nominated": 96,
+          "top10_max": 8.761966,
+          "top10_mean": 6.200497,
+          "n_hit_beneficial": 34,
+          "hit_rate_beneficial": 0.354167,
+          "cum_top10_max": 8.761966,
+          "cum_top10_mean": 6.649899,
+          "cum_n_strong": 30,
+          "top10": [
+            [
+              "FWAA",
+              8.761966
+            ],
+            [
+              "FYAA",
+              8.045152
+            ],
+            [
+              "FWCA",
+              7.554663
+            ],
+            [
+              "LWCA",
+              7.22866
+            ],
+            [
+              "IWCA",
+              6.007627
+            ],
+            [
+              "FYCA",
+              5.618708
+            ],
+            [
+              "LWLA",
+              5.153992
+            ],
+            [
+              "LWMA",
+              5.074865
+            ],
+            [
+              "IHAA",
+              4.713122
+            ],
+            [
+              "LWLC",
+              3.846214
+            ]
+          ],
+          "pool_size_after": 2360,
+          "llm_source": "deterministic"
+        },
+        {
+          "round": 3,
+          "n_nominated": 96,
+          "top10_max": 6.981333,
+          "top10_mean": 5.931255,
+          "n_hit_beneficial": 69,
+          "hit_rate_beneficial": 0.71875,
+          "cum_top10_max": 8.761966,
+          "cum_top10_mean": 6.970103,
+          "cum_n_strong": 57,
+          "top10": [
+            [
+              "YYAA",
+              6.981333
+            ],
+            [
+              "FFAA",
+              6.928257
+            ],
+            [
+              "VWAA",
+              6.123805
+            ],
+            [
+              "YWCA",
+              5.974719
+            ],
+            [
+              "MWCA",
+              5.806655
+            ],
+            [
+              "YWAA",
+              5.671913
+            ],
+            [
+              "FHAA",
+              5.665545
+            ],
+            [
+              "YHAA",
+              5.44033
+            ],
+            [
+              "VYCA",
+              5.360054
+            ],
+            [
+              "VWCA",
+              5.359943
+            ]
+          ],
+          "pool_size_after": 2456,
+          "llm_source": "deterministic"
+        }
+      ]
+    }
+  }
+}

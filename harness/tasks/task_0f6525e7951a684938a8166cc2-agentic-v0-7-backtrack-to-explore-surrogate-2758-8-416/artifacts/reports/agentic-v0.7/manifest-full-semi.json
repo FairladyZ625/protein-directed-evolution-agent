@@ -1,0 +1,34 @@
+{
+  "base_commit": "ccbfce6c98a8b9f247b37aee456819c8f703878f",
+  "implementation_sha256": "df173081cd4aaf06705a007c45f61562f8b5965054829957ad282c7413359a87",
+  "runner_sha256": "6a4fd5f0b43e8d9acff06df5f6c1c1da4a137ce9d65d8ef9d9c8b226466ab475",
+  "data_sha256": "520c7c6545e61d3c23b41616fbb6afe3396c3ca11da1fe14ead92846dfeffa77",
+  "python": "3.13.2",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.0",
+  "llm_config": {
+    "base_url": "https://token.qianbaner.top/v1",
+    "model": "claude-sonnet-5",
+    "timeout": 90.0
+  },
+  "budget": 48,
+  "n_rounds": 6,
+  "seeds": [
+    42,
+    0,
+    7
+  ],
+  "modes": [
+    "full",
+    "semi"
+  ],
+  "pool": 27832,
+  "cold": 10433,
+  "surrogate": "EpistasisRidgePredictor defaults: fixed split random_state=0, three bootstrap models",
+  "seed_scope": "Acquisition RNG only; cold-start and surrogate bootstrap seeds fixed; LLM randomness not seeded",
+  "guardrail": {
+    "max_hd": 4,
+    "blosum_min": 0.0
+  }
+}

@@ -1,0 +1,785 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "agentic",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 96,
+  "n_rounds": 6,
+  "total_budget": 288,
+  "budget_spent": 288,
+  "strong_threshold": 2.6159,
+  "llm_used": true,
+  "llm_summary": "Round 3 complete; all 288 experiments are exhausted.\n\n**Final findings**\n- The original best remains the campaign winner: `DEEEIRTTNPVATEQYGSYSTNLQQGNR` at `9.536`.\n- Strong final-round discoveries include:\n  - `DEEEIRTTNPVATEQYGDVSENLQHGQQ`: `5.961`\n  - `DEEEIRTTNPVATEQYGDVSEDLQTGNH`: `5.829`\n  - `DEAEIRTTNPVATEQYGVVSTNLQGGMQ`: `3.445`\n  - `DEDEIRTTNPVATEQYGGVSDTLQHGNT`: `4.177`\n  - `DEEEIRTTNPVATEQYGSVSENLQGGNY`: `3.730`\n- The validated high-fitness region consistently preserves the `DEEEIRTTNPVATEQY` scaffold and favors modified `DNL`, `HG`, `QG`, and `RG`-region residues.\n- Unrelated cysteine-rich, aromatic, and alternate structural families were repeatedly deleterious, usually below `-3`.\n- The surrogate underestimates some scaffold-preserving epistatic combinations but overestimates ",
+  "agent_model": "gpt-5.6-sol",
+  "n_tool_calls": 25,
+  "summary": {
+    "final_cum_top10_max": 5.961,
+    "final_cum_top10_mean": 4.728,
+    "final_cum_n_strong": 15,
+    "cum_top10_max_curve": [
+      1.8663,
+      4.5121,
+      4.823,
+      5.7887,
+      5.961,
+      5.961
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 80,
+      "top10_max": 1.8663,
+      "top10_mean": 1.2728,
+      "cum_top10_max": 1.8663,
+      "cum_top10_mean": 1.2728,
+      "n_hit_strong": 0,
+      "cum_n_strong": 0,
+      "top10": [
+        [
+          "DEEEIRTTNPTATEQYGEVSENEQQGDF",
+          1.8663
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSDDLQQGEV",
+          1.7096
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQQGNF",
+          1.6926
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGEN",
+          1.1064
+        ],
+        [
+          "DEEEIRTTNPVATECYGDVSENLQHEEN",
+          1.0945
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHEEL",
+          1.0941
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQNGEL",
+          1.0617
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENEQQGNF",
+          1.059
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQAEEM",
+          1.0277
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQNEEL",
+          1.0161
+        ]
+      ],
+      "spent_after": 80
+    },
+    {
+      "round": 2,
+      "n_nominated": 16,
+      "top10_max": 4.5121,
+      "top10_mean": 1.5274,
+      "cum_top10_max": 4.5121,
+      "cum_top10_mean": 2.0689,
+      "n_hit_strong": 2,
+      "cum_n_strong": 2,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGSVSTGVQRPTR",
+          4.5121
+        ],
+        [
+          "DEQEIRTTNPVATEQWGSVSENLQRGNM",
+          3.6678
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVVTILQNGNR",
+          2.3771
+        ],
+        [
+          "DEEEIATTNPVATEQYGSVSTNWQRGND",
+          1.5688
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNPQTGEM",
+          1.0165
+        ],
+        [
+          "DENEIATTNPVATEIYGSVSTNLQRGNR",
+          0.6885
+        ],
+        [
+          "DEEEIRTTNPVATECWGSVDTNLQIGTM",
+          0.5439
+        ],
+        [
+          "DENEIAQTNPCATEQYGSVSEDLQRGNA",
+          0.5185
+        ],
+        [
+          "DEEEIRTVNPVATETYGEVSTVLQRGNH",
+          0.3936
+        ],
+        [
+          "DENEIRTTNPVCTEQYGSVDTALQAGNA",
+          -0.0132
+        ]
+      ],
+      "spent_after": 96
+    },
+    {
+      "round": 3,
+      "n_nominated": 75,
+      "top10_max": 4.823,
+      "top10_mean": 2.0408,
+      "cum_top10_max": 4.823,
+      "cum_top10_mean": 2.8366,
+      "n_hit_strong": 2,
+      "cum_n_strong": 4,
+      "top10": [
+        [
+          "DEDEISTTNPVATEQYGVVSDNLQTGNH",
+          4.823
+        ],
+        [
+          "DEEEIATTNPVCTEQYGVVSDNLQSGNQ",
+          4.0279
+        ],
+        [
+          "SEEEIRATNPVATEMFGEVSENLQIGTQ",
+          1.9793
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDPDQNDNI",
+          1.7107
+        ],
+        [
+          "DEEEIATTNPVATEQYGVVSENLQFGDH",
+          1.515
+        ],
+        [
+          "SEEEIRTTNPVATEQYGEVSENLQSGDL",
+          1.3655
+        ],
+        [
+          "KEEEIRTTNPVATEQYGEVSTNLQQPMM",
+          1.3221
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSDELQVGNY",
+          1.2705
+        ],
+        [
+          "SEEEIRATNPVATEMFGEVSENWQIGTQ",
+          1.2482
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDPDQNGNI",
+          1.1455
+        ]
+      ],
+      "spent_after": 171
+    },
+    {
+      "round": 4,
+      "n_nominated": 21,
+      "top10_max": 5.7887,
+      "top10_mean": 2.0553,
+      "cum_top10_max": 5.7887,
+      "cum_top10_mean": 3.7474,
+      "n_hit_strong": 3,
+      "cum_n_strong": 7,
+      "top10": [
+        [
+          "QEDEICTTNPVATEQYGGVSDNLQRGNR",
+          5.7887
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSNNLQQGNR",
+          4.601
+        ],
+        [
+          "DEEEIATTNPVATEQFGSVSTNLQVGNR",
+          3.8313
+        ],
+        [
+          "CESEIRATNPVATEQYGEVSDILQRGNR",
+          1.518
+        ],
+        [
+          "DENEIATTNPVATEQYGAVSTNLQNGER",
+          1.4043
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTDLERGND",
+          1.0301
+        ],
+        [
+          "MENEIRTTNPVATEQYGSVSTDLQNGNM",
+          0.9207
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVDTADLTGEA",
+          0.6496
+        ],
+        [
+          "DEEEVRTTNPVATEQYGSVCNNLQRGNR",
+          0.4333
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLQVGEM",
+          0.3764
+        ]
+      ],
+      "spent_after": 192
+    },
+    {
+      "round": 5,
+      "n_nominated": 95,
+      "top10_max": 5.961,
+      "top10_mean": 3.7915,
+      "cum_top10_max": 5.961,
+      "cum_top10_mean": 4.728,
+      "n_hit_strong": 8,
+      "cum_n_strong": 15,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGQQ",
+          5.961
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSEDLQTGNH",
+          5.8286
+        ],
+        [
+          "DEDEIRTTNPVATEQYGGVSDTLQHGNT",
+          4.177
+        ],
+        [
+          "DEEEISTTNPVATEQYGSVSENLQGGNY",
+          3.7295
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDTLQHGNT",
+          3.5095
+        ],
+        [
+          "DEAEIRTTNPVATEQYGVVSTNLQGGMQ",
+          3.445
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSDNLQGGNV",
+          3.3036
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSDNLMQGNS",
+          2.9506
+        ],
+        [
+          "DEEEIATTNPVATEQYGDVSENLMHGQQ",
+          2.5438
+        ],
+        [
+          "DEEEIRTTNPVATEQWGIVSENEQQGNA",
+          2.4658
+        ]
+      ],
+      "spent_after": 287
+    },
+    {
+      "round": 6,
+      "n_nominated": 1,
+      "top10_max": 1.3029,
+      "top10_mean": 1.3029,
+      "cum_top10_max": 5.961,
+      "cum_top10_mean": 4.728,
+      "n_hit_strong": 0,
+      "cum_n_strong": 15,
+      "top10": [
+        [
+          "DEEEIRTTNPVAHEQYGEVSENDQHGNQ",
+          1.3029
+        ]
+      ],
+      "spent_after": 288
+    }
+  ],
+  "tool_trace": [
+    {
+      "event_type": "agent.llm.model",
+      "actor": "agent",
+      "payload": {
+        "model": "gpt-5.6-sol",
+        "base_url": "https://token.qianbaner.top/v1"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 288,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 32
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 24
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 56
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 80,
+        "measured": 80,
+        "spent": 80,
+        "batch_max": 1.866
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 16,
+        "measured": 16,
+        "spent": 96,
+        "batch_max": 4.512
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10529,
+        "n_pool_unmeasured": 27736,
+        "budget_remaining": 192,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.445
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R27Q",
+            2.295
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24Q",
+            2.05
+          ],
+          [
+            "R27S",
+            2.048
+          ],
+          [
+            "R27M",
+            1.918
+          ],
+          [
+            "R27H",
+            1.858
+          ],
+          [
+            "R27L",
+            1.838
+          ],
+          [
+            "R27V",
+            1.685
+          ],
+          [
+            "R24V",
+            1.651
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 32
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 32
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 75,
+        "measured": 75,
+        "spent": 171,
+        "batch_max": 4.823
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 21
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 21
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 21,
+        "measured": 21,
+        "spent": 192,
+        "batch_max": 5.789
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10625,
+        "n_pool_unmeasured": 27640,
+        "budget_remaining": 96,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "R27I",
+            2.284
+          ],
+          [
+            "R27T",
+            2.274
+          ],
+          [
+            "R27S",
+            2.031
+          ],
+          [
+            "R24G",
+            2.015
+          ],
+          [
+            "R24Q",
+            1.751
+          ],
+          [
+            "R27M",
+            1.689
+          ],
+          [
+            "R27V",
+            1.651
+          ],
+          [
+            "R24V",
+            1.648
+          ],
+          [
+            "R27L",
+            1.644
+          ],
+          [
+            "R27H",
+            1.627
+          ],
+          [
+            "R24L",
+            1.549
+          ],
+          [
+            "R27F",
+            1.539
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 56
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 32
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 32
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 96,
+        "measured": 95,
+        "spent": 287,
+        "batch_max": 5.961
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 1
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 1,
+        "measured": 1,
+        "spent": 288,
+        "batch_max": 1.303
+      }
+    }
+  ]
+}

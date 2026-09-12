@@ -1,0 +1,101 @@
+{
+  "schema": "task-contract/v1",
+  "contractVersion": 1,
+  "taskId": "task_dc290fc9d622b4e96ad1edc327",
+  "packagePath": "tasks/task_dc290fc9d622b4e96ad1edc327-research-exploration-tax-voi",
+  "title": "Research: 探索税动力学与信息论实验选择形式化",
+  "taskClass": "standard",
+  "verticalId": "software/coding",
+  "presetId": "docs-task",
+  "profileId": "baseline",
+  "locale": "zh-CN",
+  "metadata": {
+    "fromLegacyId": null,
+    "idempotencyKey": null,
+    "moduleKey": null,
+    "parentTaskId": null,
+    "presetId": "docs-task",
+    "profileId": "baseline",
+    "riskTier": "low",
+    "slug": "research-exploration-tax-voi",
+    "surfaces": [],
+    "urgency": "high",
+    "verticalId": "software/coding",
+    "workKind": "docs"
+  },
+  "registerModule": null,
+  "completionGates": [],
+  "presetSnapshotDigest": "sha256:881444b70bdfab3c158466a86861184a6c1afeff2fd3999266912d980372e92c",
+  "scaffold": {
+    "baseVersion": "software-coding/v1",
+    "overlayDigest": null,
+    "resolvedSelectionDigest": "sha256:646c23def836360837eaa8b9cf5e6dc875f702718c6c2db2d4faf37ca754e322"
+  },
+  "documents": [
+    {
+      "slot": "task.index",
+      "path": "INDEX.md",
+      "owner": "machine",
+      "materializeAs": "INDEX.md",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.contract",
+      "path": "task-contract.json",
+      "owner": "machine",
+      "materializeAs": "task-contract.json",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.plan",
+      "path": "task_plan.md",
+      "owner": "doc-sync",
+      "materializeAs": "task_plan.md",
+      "requiredAnchors": [
+        "## Brief",
+        "## Goal",
+        "## Context",
+        "## Required Reading",
+        "## Entry Conditions",
+        "## Dependencies",
+        "## Execution Surface",
+        "## Constraints",
+        "## Checkpoint",
+        "## CI/Gate Authority Stop Condition",
+        "## Implementation Plan",
+        "## Deliverable Contract",
+        "## Evidence Protocol",
+        "## Verification"
+      ],
+      "templateRef": "template://planning/task-plan@1",
+      "contentSha256": "3c1315fa45de591d846a6d096e9b367e06f80551a80282ac572e48bbc25e4d93"
+    },
+    {
+      "slot": "task.closeout",
+      "path": "closeout.md",
+      "owner": "doc-sync",
+      "materializeAs": "closeout.md",
+      "requiredAnchors": [
+        "## Summary",
+        "## Verification",
+        "## Residual Risk"
+      ],
+      "templateRef": "template://planning/closeout@1",
+      "contentSha256": "54fe38a08c370c1d160068406d365c53238c1ec374c1778e160253aae7f5c6d5"
+    },
+    {
+      "slot": "task.artifacts.keep",
+      "path": "artifacts/.gitkeep",
+      "owner": "doc-sync",
+      "materializeAs": "artifacts/.gitkeep",
+      "requiredAnchors": [],
+      "templateRef": "template://planning/keep-file@1",
+      "contentSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ],
+  "pinned": true
+}

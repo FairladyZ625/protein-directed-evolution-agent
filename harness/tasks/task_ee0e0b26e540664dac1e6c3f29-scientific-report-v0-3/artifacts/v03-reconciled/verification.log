@@ -1,0 +1,41 @@
+$ python /Users/lizeyu/Projects/ai4s-directed-evolution-agent/.skills/scientific-writing/scripts/verify_citations.py reports/final-report-v0.3/report.md
+=== 引用校验报告: report.md ===
+正文中出现的引用数量: 30 (最大编号: 30)
+参考文献表中的条目数量: 30 (最大编号: 30)
+✅ 正文中所有引用在参考文献表中均有对应条目。
+✅ 参考文献表中所有条目均在正文中被引用。
+🎉 完美！正文与文末参考文献实现 100% 严格 1:1 双向对齐！
+
+exit_code=0
+
+$ python /Users/lizeyu/Projects/ai4s-directed-evolution-agent/.skills/scientific-writing/scripts/verify_citations.py reports/final-report-v0.3/supplementary_thinking_report.md
+=== 引用校验报告: supplementary_thinking_report.md ===
+正文中出现的引用数量: 16 (最大编号: 16)
+参考文献表中的条目数量: 16 (最大编号: 16)
+✅ 正文中所有引用在参考文献表中均有对应条目。
+✅ 参考文献表中所有条目均在正文中被引用。
+🎉 完美！正文与文末参考文献实现 100% 严格 1:1 双向对齐！
+
+exit_code=0
+
+$ python reports/final-report-v0.3/evidence/verify_delivery.py
+PASS: exact eight numbered official sections
+PASS: report.md 30/30 references; first-appearance order; unique entries
+STAT: report.md: Han=3499; nonspace=13658; bytes=22892; sha256=4b861bf4aed71bfe84109866b6fde2739f96b82f73869473545da9a461f3a97f
+PASS: supplementary_thinking_report.md 16/16 references; first-appearance order; unique entries
+STAT: supplementary_thinking_report.md: Han=4747; nonspace=10826; bytes=22143; sha256=21d31755da1396249c99646b9a4b501e2a04b85f419f7e8dab2f106fbcb94b1a
+PASS: five paired figure anchors and captions (rendering not tested)
+PASS: 120 GB1 Top-10 rows reconstruct all four max curves; denominators and gap recomputed
+PASS: 30 bibliography metadata records present (existence is not full-text validation)
+PASS: both report bytes identical across worker, canonical authored copy, and both report mirrors
+UNVERIFIED: campaign reruns, wet lab, ESM retraining, full CI, figure rendering, PDF pagination
+
+exit_code=0
+
+$ git merge-base --is-ancestor origin/main HEAD
+
+exit_code=0
+
+$ git diff --stat origin/main HEAD
+
+exit_code=0

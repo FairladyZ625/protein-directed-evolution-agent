@@ -1,0 +1,358 @@
+{
+  "task_id": "task_0f6525e7951a684938a8166cc2",
+  "base_commit": "ccbfce6c98a8b9f247b37aee456819c8f703878f",
+  "delivery_commits": [
+    "b661c0d6f03861db84e134a723680906bb02d3e2",
+    "d2e3e767665c02d9eced8202f17973b4e6e7a3e2"
+  ],
+  "facts": [
+    "F-AFE22C14",
+    "F-B5AE4DDE"
+  ],
+  "matrix": {
+    "mean": [
+      {
+        "seed": 0,
+        "max": 7.829,
+        "strong": 166,
+        "hit": false
+      },
+      {
+        "seed": 42,
+        "max": 7.829,
+        "strong": 166,
+        "hit": false
+      },
+      {
+        "seed": 7,
+        "max": 7.829,
+        "strong": 166,
+        "hit": false
+      }
+    ],
+    "alternating": [
+      {
+        "seed": 0,
+        "max": 7.829,
+        "strong": 147,
+        "hit": false
+      },
+      {
+        "seed": 42,
+        "max": 8.4162,
+        "strong": 151,
+        "hit": true
+      },
+      {
+        "seed": 7,
+        "max": 7.829,
+        "strong": 151,
+        "hit": false
+      }
+    ],
+    "full": [
+      {
+        "seed": 0,
+        "max": 6.5309,
+        "strong": 132,
+        "hit": false
+      },
+      {
+        "seed": 42,
+        "max": 7.829,
+        "strong": 135,
+        "hit": false
+      },
+      {
+        "seed": 7,
+        "max": 7.829,
+        "strong": 125,
+        "hit": false
+      }
+    ],
+    "semi": [
+      {
+        "seed": 0,
+        "max": 8.4162,
+        "strong": 154,
+        "hit": true
+      },
+      {
+        "seed": 42,
+        "max": 7.829,
+        "strong": 138,
+        "hit": false
+      },
+      {
+        "seed": 7,
+        "max": 7.829,
+        "strong": 155,
+        "hit": false
+      }
+    ]
+  },
+  "inputs": {
+    "data/aav/full_data.csv": "520c7c6545e61d3c23b41616fbb6afe3396c3ca11da1fe14ead92846dfeffa77",
+    "evolution/datasets.py": "2eec16b752682b796dac816ac956489f682fdd794e40024643eaa937e0167ce8",
+    "models/train_ladder.py": "993f399f3797219e2b48900546229b264d5714372b47608d6802c50405ea5487",
+    "agent/auto_researcher.py": "16e5dbfa494fe684e3d0ba6a6786c3443e30d507eaab078399a5e89c04c756eb",
+    "tests/test_auto_researcher_explore.py": "cd222d2773975013e422e7366c1fdc6bd0b79988edb286b1713032711eab0054"
+  },
+  "runtime_versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.0",
+    "pydantic-ai-slim": "2.42.0",
+    "openai": "3.13.0"
+  },
+  "source_revisions": {
+    "reference_and_full": "df173081cd4aaf06705a007c45f61562f8b5965054829957ad282c7413359a87",
+    "compliant_semi_executed": "f68bab9b52a3e591537a37a531846d147370e355a75c8f479ea45e15a10ba91c",
+    "final": "16e5dbfa494fe684e3d0ba6a6786c3443e30d507eaab078399a5e89c04c756eb",
+    "explanation": "SEMI phase enforcement corrected before compliant runs. Final adds phase-aware offline/skip-test mean fallback; formal SEMI paths satisfy the same ranks/phase assertions. FULL/reference paths unchanged. All exact source snapshots retained."
+  },
+  "seeds_scope": "Shared candidate-tool RNG, including random previews; fixed cold-start and model split/bootstrap seeds; LLM not seeded.",
+  "model_requested": "claude-sonnet-5",
+  "controls": {
+    "kind": "controls",
+    "cv": 0.905917215486514,
+    "shuffle_cv": 0.01343817714646941,
+    "shuffle_alpha": 300.0,
+    "gate_pool_size": 9533,
+    "cold_max": 9.53645667061,
+    "pool_peak": 8.416205130560002,
+    "posthoc_peak_seq": "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+    "cold_peak_mean_rank": 426
+  },
+  "trials": [
+    {
+      "run": "alternating-seed0",
+      "metrics_sha256": "9922ee85144bb0fac7cdbcb0ef2f5d3fd4fafb96a45422fed29cd2f48dd3767b",
+      "events_sha256": "d0d6bde114c2ebebd2b132fed70b540ec308ce1e93df617005ec808e2fd21db8",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "alternating-seed42",
+      "metrics_sha256": "a3c9a19f94fd6bf376151cc3d7039f2f4b4f750acb62d232c8f60c62d604727c",
+      "events_sha256": "fe7ce555a9b1a6b35d42032cb0edeb782e8b59cd1a7f2c365ec239da44770408",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "alternating-seed7",
+      "metrics_sha256": "7f9b7474629040f0a2db54223010d83e9562f2b9cf07ffb672172487ad1030e6",
+      "events_sha256": "03d5ace69806b5f1c4d11e6874612fee73e86afc8979e090e4d1b6445a7e102f",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "full-seed0",
+      "metrics_sha256": "c89b5702708dff019cc74bc5a7a7c42184e2d638a0bd7826df7d62dd80018a15",
+      "events_sha256": "8bd2ad50c21e68deafb4e035d8b8070f233614982d81fb773a322649d765a6c1",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 2,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "full-seed42",
+      "metrics_sha256": "abbd2d1454ccee73929a6b032da762356114fb528cc83e20a1f46c800e285dc1",
+      "events_sha256": "2c43d614ae352b6cde01b35edb3ee2ad9d91533afd9f3075e9bcc9865fa70ee9",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 1,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "full-seed7",
+      "metrics_sha256": "9b1800bc71c8d20b166fa5c4663eab50fb1704707c2463843b19befc761bb37b",
+      "events_sha256": "3c911caa048b2b23bead2b768be4805243401434bfdbd69363d24e4783037886",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "mean-seed0",
+      "metrics_sha256": "1a85d1e3243e90808b1f056dc508cca5662c1a84a7882aabedd4445c7b67dc71",
+      "events_sha256": "af611e331fe03e5f4a3bab6bbcef98e5123e09b880f925da62138d6af3bfd9aa",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "mean-seed42",
+      "metrics_sha256": "63bc6094bc56b33c54187fcb4d3ccc9cfa79635a2bfa6d705191767216c6cf04",
+      "events_sha256": "784e0f834b85f10d8f4cdc3a72680b08e285af28476daf8d71207bee4e8ef6c8",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "mean-seed7",
+      "metrics_sha256": "f322248e197f73bae840e24954037c5bc2765d3a55461c6476d358760f9d06a1",
+      "events_sha256": "acd1f90a32d930672aa919e56ca63450a502295f5f8f66d06b7b12c320492418",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "semi-seed0",
+      "metrics_sha256": "b7d3274bd2cd1665602392f21509faf43cb2cd24913e695427a18ba6d0a6f8ce",
+      "events_sha256": "ed08d86f89088e989f212e6db8f6dc43398e1a6e35e7489bcfd437d318d7a65f",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "semi-seed42",
+      "metrics_sha256": "411b7435badf94146b997992e8475ed06a57e6d4ee7764f75d5f575a1948fe00",
+      "events_sha256": "1d8dcfeaa6ffaaf1d31ff19200d47381d0f73d3f9564ecf7ead165ce0c2c0bbb",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 0,
+        "agent.llm.fallback": 0
+      }
+    },
+    {
+      "run": "semi-seed7",
+      "metrics_sha256": "727f04dad7ef16b2470978617db67c36ac4639be0903ae5755fb5bdab08b3305",
+      "events_sha256": "00e89d375cb76505b69f0f7d49a55318ea125edbb67520a47cd13cf53477a4f4",
+      "errors": {
+        "agent.tool.error": 0,
+        "agent.llm.round_error": 0,
+        "agent.llm.no_test": 1,
+        "agent.llm.fallback": 0
+      }
+    }
+  ],
+  "aborted_pilots": [
+    "aav/pilot-semi-seed0",
+    "aav/pilot-semi-seed42",
+    "aav/pilot-semi-seed7"
+  ],
+  "git_verification": "git-handoff.json; non-shallow repository, fetched origin/main, merge-base exit1 (unrelated histories), clean worker tree; no push/PR/merge",
+  "handoff": "Task-bound artifacts/doc sync only; canonical root remains read-only. Owner must apply closeout receipt and perform independent review/consent. No claim of task complete.",
+  "artifact_sha256": {
+    "aav/alternating-seed0/events.jsonl": "d0d6bde114c2ebebd2b132fed70b540ec308ce1e93df617005ec808e2fd21db8",
+    "aav/alternating-seed0/metrics.json": "9922ee85144bb0fac7cdbcb0ef2f5d3fd4fafb96a45422fed29cd2f48dd3767b",
+    "aav/alternating-seed42/events.jsonl": "fe7ce555a9b1a6b35d42032cb0edeb782e8b59cd1a7f2c365ec239da44770408",
+    "aav/alternating-seed42/metrics.json": "a3c9a19f94fd6bf376151cc3d7039f2f4b4f750acb62d232c8f60c62d604727c",
+    "aav/alternating-seed7/events.jsonl": "03d5ace69806b5f1c4d11e6874612fee73e86afc8979e090e4d1b6445a7e102f",
+    "aav/alternating-seed7/metrics.json": "7f9b7474629040f0a2db54223010d83e9562f2b9cf07ffb672172487ad1030e6",
+    "aav/full-seed0/events.jsonl": "8bd2ad50c21e68deafb4e035d8b8070f233614982d81fb773a322649d765a6c1",
+    "aav/full-seed0/metrics.json": "c89b5702708dff019cc74bc5a7a7c42184e2d638a0bd7826df7d62dd80018a15",
+    "aav/full-seed0/scheduler.json": "903d88c51858cd4ebc96cd1eb1518d0e111cb2bc1322e20b21457f434e004e0c",
+    "aav/full-seed42/events.jsonl": "2c43d614ae352b6cde01b35edb3ee2ad9d91533afd9f3075e9bcc9865fa70ee9",
+    "aav/full-seed42/metrics.json": "abbd2d1454ccee73929a6b032da762356114fb528cc83e20a1f46c800e285dc1",
+    "aav/full-seed7/events.jsonl": "3c911caa048b2b23bead2b768be4805243401434bfdbd69363d24e4783037886",
+    "aav/full-seed7/metrics.json": "9b1800bc71c8d20b166fa5c4663eab50fb1704707c2463843b19befc761bb37b",
+    "aav/full-seed7/scheduler.json": "1c76f86d634e1d8fe455dce44bdcf7251e58d06ce341e4cd5ede99de70e42744",
+    "aav/mean-seed0/events.jsonl": "af611e331fe03e5f4a3bab6bbcef98e5123e09b880f925da62138d6af3bfd9aa",
+    "aav/mean-seed0/metrics.json": "1a85d1e3243e90808b1f056dc508cca5662c1a84a7882aabedd4445c7b67dc71",
+    "aav/mean-seed42/events.jsonl": "784e0f834b85f10d8f4cdc3a72680b08e285af28476daf8d71207bee4e8ef6c8",
+    "aav/mean-seed42/metrics.json": "63bc6094bc56b33c54187fcb4d3ccc9cfa79635a2bfa6d705191767216c6cf04",
+    "aav/mean-seed7/events.jsonl": "acd1f90a32d930672aa919e56ca63450a502295f5f8f66d06b7b12c320492418",
+    "aav/mean-seed7/metrics.json": "f322248e197f73bae840e24954037c5bc2765d3a55461c6476d358760f9d06a1",
+    "aav/pilot-semi-seed0/events.jsonl": "3fec1695c5abbb356c839ea2045e42c0abc31e0260777e86489f38f6a4c8eb9e",
+    "aav/pilot-semi-seed0/metrics.json": "61f2df1706f6f719253de18b7804946f2717d36d88120471e977ede7bb08ec6a",
+    "aav/pilot-semi-seed0/scheduler.json": "7c849b5c7affd5eaa5a0c1fcbc40431309ea8122c9ed7f0939d65c29530ecf3c",
+    "aav/pilot-semi-seed0/status.json": "67a9cebd8b250226f838f7a12c8211f49f7af135d5eff9ddbc09160dfb32c6ed",
+    "aav/pilot-semi-seed42/events.jsonl": "ef977cb00f836e4e4733b4424ecfafc4402267e1cc1216eb0a31214ed4c62bb2",
+    "aav/pilot-semi-seed42/status.json": "3ac76da67b3899f6943333b6cdc2caa22cba2bb31de90ce3a2420d0fccc543b2",
+    "aav/pilot-semi-seed7/events.jsonl": "084775b64415847352179e2cacf4edcf92803d013130d929968fd3b1c8e222ba",
+    "aav/pilot-semi-seed7/metrics.json": "44fd1decfe69a2c30a554123c8670d53c84bd581a6b807fdbab919d70cca024f",
+    "aav/pilot-semi-seed7/scheduler.json": "76c0bc205f194c9317175bc1d9d37606f6cee4e1e34ed224f8689f19551d582b",
+    "aav/pilot-semi-seed7/status.json": "67a9cebd8b250226f838f7a12c8211f49f7af135d5eff9ddbc09160dfb32c6ed",
+    "aav/semi-seed0/events.jsonl": "ed08d86f89088e989f212e6db8f6dc43398e1a6e35e7489bcfd437d318d7a65f",
+    "aav/semi-seed0/metrics.json": "b7d3274bd2cd1665602392f21509faf43cb2cd24913e695427a18ba6d0a6f8ce",
+    "aav/semi-seed0/scheduler.json": "de3dc0aed25bddbb1cfc8ac559f8f6d119710277be88deb900202310995646db",
+    "aav/semi-seed42/events.jsonl": "1d8dcfeaa6ffaaf1d31ff19200d47381d0f73d3f9564ecf7ead165ce0c2c0bbb",
+    "aav/semi-seed42/metrics.json": "411b7435badf94146b997992e8475ed06a57e6d4ee7764f75d5f575a1948fe00",
+    "aav/semi-seed42/scheduler.json": "c52e1fae7ceac05014dc5a7d6e57f0b7c2ceed93ad3f501bb3815503952763ab",
+    "aav/semi-seed7/events.jsonl": "00e89d375cb76505b69f0f7d49a55318ea125edbb67520a47cd13cf53477a4f4",
+    "aav/semi-seed7/metrics.json": "727f04dad7ef16b2470978617db67c36ac4639be0903ae5755fb5bdab08b3305",
+    "aav/semi-seed7/scheduler.json": "23b6e42b6ee2432d202a1ff8e653a7aa3703b04ba6296e1b0fbb3a23f2a67dd9",
+    "audit.log": "b45e48d5b7778cb516e43f46ba5497ff15e2161ff8df00e817cf845ca4ba95a1",
+    "closeout.md": "b0f256dd74fb8c3507c6921b8054444d9bc285fa5db0ade45055caccad200e5d",
+    "comparison.png": "950673d3cd63bddbd0dfcd88cd551a85dce878216d381f2c67125b58188d04ee",
+    "controls.json": "e6d9033a28ec9668b6c0b817a88329036efb0729ab5ec5f51a2317c2ec98228f",
+    "full-0-runner.log": "bbfd0b81bea3e162a3601ec92e452f89466dbc0f4b975429b1b1099cd2f1d44e",
+    "full-7-runner.log": "e6971b6d9f4bcad94db1b2b5f8685b8f8de1c9e47ec70bece72bc73bdbcebfb5",
+    "git-handoff.json": "df715d2fc8f697a46193b4ab76d6d0b7a7b1eb7f1f721052f49c27c2d93007de",
+    "implementation-correction.md": "65632c3d6dc4a6367ec2552c469e14949b348d06722ac749102057aec4d5ee20",
+    "implementation-final.py": "16e5dbfa494fe684e3d0ba6a6786c3443e30d507eaab078399a5e89c04c756eb",
+    "implementation-initial.py": "df173081cd4aaf06705a007c45f61562f8b5965054829957ad282c7413359a87",
+    "implementation-semi-executed.py": "f68bab9b52a3e591537a37a531846d147370e355a75c8f479ea45e15a10ba91c",
+    "llm-runner.log": "071af4fdc49f28ab95b0c0ebc8354ed737feba5fff7e67b49c2ccfe5046a59fd",
+    "manifest-full-semi.json": "452ff8b29ed7855c70f72b613a34f2c1a98fcb727a06b3f8ae79093ece2f8d73",
+    "manifest-mean-alternating.json": "50f9f5e2d3e03adce447250a29a10d556d5170e05400d4f6b6d1c400934d562e",
+    "manifest-semi.json": "1655ee5778343380ff2731661343a73870cee392b123e8940e65dbe5bf3c765d",
+    "manifest.json": "42f286fa1ebf37aa4d680fb208b14d2499ca38e4f1e0b806e1d95828fba9f909",
+    "matrix-summary-final.json": "1f560defde7662205359f0ddae353a59567421ec2a73d2c7743a03030c0e8ac3",
+    "matrix-summary.json": "84fd8a694f6a0a4dcc39b88778c68ca3402c204b8a60084b8c0082bd3e542206",
+    "mechanism-search.log": "f7423fa11531c14185a86b12f177b57a7aac2372232b13db03911954752da1de",
+    "pilot-semi-0-runner.log": "3b25c6f2c96c46fc83548efbeba7df6227580b4f978b61cfd3f30440ff02bbb2",
+    "pilot-semi-7-runner.log": "04540838790289f5a5a3cc06c2a7ad46ca4340923a2b2e0e03ef6877953c949d",
+    "pilot-semi-runner.log": "797d8d502437c074aa8c34f5638ee9658452496de2b20879c6ed86374ca43acf",
+    "plot_matrix.py": "d6b6a757125128884e7c2fb608aeb90ab7376edb244243f0911eef763be1b7fa",
+    "preregistration.md": "8757010cb5ca724412523c1d7f7acf54118ef9e1cc37aaaed1a2c3510562167d",
+    "reference-runner.log": "5a11cd090ee050e2dbf2937de0154518b2c3927bea69f758511b7579b636f894",
+    "report.md": "abeb1eb6cd1acf3b06276db3e0c5247c7186bf08245c4f2a32260a3aab8af8b3",
+    "run_matrix.py": "6a4fd5f0b43e8d9acff06df5f6c1c1da4a137ce9d65d8ef9d9c8b226466ab475",
+    "run_single.py": "314f2d0af399d159455cea249b5109deb06c213c382341639834ee05804ac884",
+    "scheduling-note.md": "e10b6085b4dd91bea35b1841da2fd41b644ba748d45094ae4dcfef7cbc2a2452",
+    "semi-0-runner.log": "42f6e37142859acdd67ea37050f8dc2763b97d5b3e94f8e31361250df72c4819",
+    "semi-42-runner.log": "e9aae6750539125138f881851a64f7296ca6cf387eb01e24c5f3bddcc7d56445",
+    "semi-7-runner.log": "2e3d68d990de42b00b432a5186875e76969e944ffb71879ea9a31a11fb0cd135",
+    "submission-receipt.json": "73dfeabce63b6e1048e5a667579b886cf764263f8071dab615f48d5ff416e0f9",
+    "summarize.py": "6c8a5edb3d7652147989806678faa90dd75e79c9352d778e757b14a8fda01cd9",
+    "tests-corrected.log": "0eac2a62d998e427863eb9b1a6d5fe08f986232a467067a3bba0f15df6591003",
+    "tests-final.log": "6890b97493f466281a4a856263f4350511315dd534f37c6b2a330cb59a23836a",
+    "tests.log": "7728ba48881943da684a477bad1901d3ca7c9314dea82aeca63594324f3c8c02",
+    "upload_artifacts.py": "af8e47a7504594d6b086d42ddc5e3e09779c1755239665e9bd1ac062eedafa41",
+    "write_report.py": "95385b04ec55e901afc8b0e39c845550e1e553996efcf533e77b8babcb409fe3"
+  },
+  "authoritative_artifacts": {
+    "matrix": "matrix-summary-final.json",
+    "manifest": "manifest-final.json",
+    "report": "report.md"
+  },
+  "supersedes": [
+    "matrix-summary.json",
+    "manifest.json"
+  ],
+  "metadata_correction": "Final driver attribution distinguishes staging after harness intervention: SEMI seed7 R6 is harness-policy-fill, not a pre-staged LLM batch. All measured sequences, metrics and error/fill counts unchanged. Older artifacts remain immutable."
+}

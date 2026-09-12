@@ -1,0 +1,24 @@
+schema: harness-anything/v1
+name: "ai4s-directed-evolution-agent"
+layout:
+  authoredRoot: harness
+  localRoot: .harness
+  contextRoot: harness/context
+  governanceRoot: harness/governance
+  milestonesRoot: harness/milestones
+settings:
+  defaultVertical: software/coding
+  defaultPreset: standard-task
+  defaultProfile: baseline
+  ci:
+    workflows: [ci]
+  walFlush:
+    adaptive: true
+    events: 256
+    bytes: 8388608
+    milliseconds: 3600000
+  tasks:
+    wipLimit: 30
+  scaffolds:
+    task: governance/task-scaffold.json
+    repository: governance/repository-scaffold.json
