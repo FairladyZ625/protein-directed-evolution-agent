@@ -8,7 +8,7 @@ Generated the five core scientific figures as 300 DPI PNG and vector SVG in `rep
 
 ## Residual Risk
 
-Figure 3 is an analytic schematic in arbitrary units, not a fitted AAV or physical spin-glass energy surface. Figure 5 is a proposed design. Version gaps are descriptive rather than isolated causal estimates; only one of three alternating seeds reaches 8.4162. Broader upstream report claims and references were not revalidated. A headless Chrome attempt produced a blank screenshot with macOS display-link errors; browser page visual review is not claimed. The latest HTML references additional upstream timeline screenshots not owned by this task. The shared daemon went offline before artifact/closeout registration and submission; a task runtime is forbidden from restarting it. This prepared closeout must be synchronized through Harness after operator recovery.
+Figure 3 is an analytic schematic in arbitrary units, not a fitted AAV or physical spin-glass energy surface. Figure 5 is a proposed design. Version gaps are descriptive rather than isolated causal estimates; only one of three alternating seeds reaches 8.4162. Broader upstream report claims and references were not revalidated. A headless Chrome attempt produced a blank screenshot with macOS display-link errors; browser page visual review is not claimed. The latest HTML references additional upstream timeline screenshots not owned by this task. A transient daemon outage recovered before handoff; task artifacts are registered. Independent execution review and owner consent remain outstanding.
 
 ## Same Mechanism Elsewhere
 
