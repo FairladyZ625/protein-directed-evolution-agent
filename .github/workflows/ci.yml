@@ -23,8 +23,18 @@ jobs:
       # 坏了很久都没人发现——没被门控的测试等于不存在(fact F-6B21C4E8)。下面按
       # 「不需要 44MB 地形、不需要 torch」这一条标准把所有自包含测试都列进来;
       # 新增自包含测试文件时必须同步加到这里,否则它同样会静默腐烂。
+      # 这份手写清单与 requirements.txt 漂移过一次,代价是 CI 连续多次 push 全红而没人发现:
+      # agent/pipeline.py 顶部 `from pydantic_ai import Agent`,清单里却没有 pydantic-ai,
+      # 于是 test_agent / test_campaign / test_demo 三个文件在 collection 阶段就 ImportError
+      # ——被「门控」的测试其实一个都没跑(同 fact F-6B21C4E8 的机制,只是换了一层)。
+      #
+      # 根治方向是让 CI 从仓库自己声明的依赖文件安装,而不是在这里维护第二份清单。
+      # 等轻量/完整依赖分档(requirements.txt / requirements-full.txt)合入后,
+      # 这一步应改成 `pip install -r requirements.txt`;在那之前手写清单必须与
+      # 被门控测试的实际 import 保持一致。torch / fair-esm 故意不装(2GB,且门控范围
+      # 不含需要它们的测试)。
       - name: Install dependencies
-        run: pip install pytest numpy pandas scipy scikit-learn PyYAML networkx pydantic streamlit matplotlib
+        run: pip install pytest numpy pandas scipy scikit-learn PyYAML networkx pydantic streamlit matplotlib "pydantic-ai-slim[openai]" openai
       - name: Run self-contained tests
         run: |
           pytest -q \
