@@ -95,8 +95,10 @@ commit, artifact SHA-256, summary) — a complete, tamper-evident history.
 
 `app/demo.py` — a single-file **Streamlit** dashboard (read-only): ① four-strategy comparison with a
 cold-start regime selector, ② five-role reasoning replay from the event stream (with in-page hash-chain
-verification), ③ a live playground that scores any 4-site variant and runs one agent round to recommend
-top-k mutations.
+verification), ③ a live playground that accepts a four-site GB1 wild type (V39/D40/G41/V54), recomputes
+its single-substitution menu, and recommends Top-k mutations with the existing Ridge predictor. Predictions
+are labelled as model output (not measurements), and an unmeasured input WT gets an explicit warning. The
+dashboard remains read-only: its standard-GB1 one-round campaign trace is held only in memory.
 
 ```bash
 streamlit run app/demo.py     # or: make demo
