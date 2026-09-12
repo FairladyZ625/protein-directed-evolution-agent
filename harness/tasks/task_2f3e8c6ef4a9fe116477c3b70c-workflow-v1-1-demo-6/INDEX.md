@@ -5,7 +5,7 @@ title: "workflow v1.1:demo 接受野生型序列输入并按输入重算位点�
 lifecycle:
   engine: kernel/task-lifecycle/v1
   status: active
-packageDisposition: active
+packageDisposition: archived
 vertical: software/coding
 preset: standard-task
 profile: baseline

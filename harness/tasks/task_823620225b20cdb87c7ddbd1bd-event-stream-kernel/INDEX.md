@@ -6,7 +6,7 @@ parent: M2-agent-pipeline
 lifecycle:
   engine: kernel/task-lifecycle/v1
   status: active
-packageDisposition: active
+packageDisposition: archived
 workKind: feat
 riskTier: medium
 urgency: high

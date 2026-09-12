@@ -5,7 +5,7 @@ title: "workflow v1.1:Agent 推理过程显式化(位点重要性 + 突变组合
 lifecycle:
   engine: kernel/task-lifecycle/v1
   status: active
-packageDisposition: active
+packageDisposition: archived
 vertical: software/coding
 preset: standard-task
 profile: baseline

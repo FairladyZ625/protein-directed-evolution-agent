@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_97857c96bf189146ec126d4c",
+  "taskId": "task_bf0ebe0ea2e3c185388fef29a8",
+  "executionId": "exe_e9ba0d3649fa72b3fe1abaab2c",
+  "agentId": "de-infra",
+  "agentName": "AI4S 基础设施工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-terra",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-delivery-scripts",
+  "missionRef": "tasks/task_bf0ebe0ea2e3c185388fef29a8-linux-macos-requirements-manifest/artifacts/missions/dispatch_97857c96bf189146ec126d4c.md",
+  "runtimeSessionId": "runtime_bbbd5a837ef9d1900472e13d",
+  "providerSessionId": "01a09632-e684-77f2-b065-c7d4146c5267",
+  "startedAt": "2026-09-12T15:18:32.695Z",
+  "endedAt": "2026-09-12T15:27:05.097Z",
+  "outcome": "unknown",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/77a355630ee2c0660721b8e5d8395ba2bf24a8f20cedab1bf620717c2732f67c",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_97857c96bf189146ec126d4c.jsonl",
+  "attemptGroupId": "dispatch_97857c96bf189146ec126d4c",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-terra"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker exited with uncommitted changes in its worktree."
+}

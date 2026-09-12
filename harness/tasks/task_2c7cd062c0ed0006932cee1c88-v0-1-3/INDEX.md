@@ -5,7 +5,7 @@ title: "分析线 v0.1:突变阶数效果比较(单点/双点/多点)——加�
 lifecycle:
   engine: kernel/task-lifecycle/v1
   status: active
-packageDisposition: active
+packageDisposition: archived
 vertical: software/coding
 preset: standard-task
 profile: baseline

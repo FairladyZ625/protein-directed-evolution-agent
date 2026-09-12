@@ -1,22 +1,18 @@
 ---
 schema: task-package/v2
-task_id: task_cea947b5025412586587d1e4b1
-title: "T5 知识库/规则库：rules.yaml+validators+networkx图谱+ --no-knowledge 消融"
-parent: M2-agent-pipeline
+task_id: task_498b2ca7094a2c824a59e90b7c
+title: "前端补齐:位点集中分析/组合理由/突变阶数/保守位点/alpha 扫描 五个已有数据未展示的面板"
 lifecycle:
   engine: kernel/task-lifecycle/v1
   status: active
-packageDisposition: archived
-workKind: feat
-riskTier: low
-urgency: medium
+packageDisposition: active
 vertical: software/coding
 preset: standard-task
 profile: baseline
-packagePath: tasks/task_cea947b5025412586587d1e4b1-knowledge-rules-base
+packagePath: tasks/task_498b2ca7094a2c824a59e90b7c-alpha
 owner: machine
 ---
-# T5 知识库/规则库：rules.yaml+validators+networkx图谱+ --no-knowledge 消融
+# 前端补齐:位点集中分析/组合理由/突变阶数/保守位点/alpha 扫描 五个已有数据未展示的面板
 
 Preset: standard-task/baseline
 
@@ -30,7 +26,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task submit task_cea947b5025412586587d1e4b1`.
+Run `ha task submit task_498b2ca7094a2c824a59e90b7c`.
 
 ## Gate Checks
 
