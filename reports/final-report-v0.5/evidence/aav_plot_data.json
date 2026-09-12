@@ -1,0 +1,58 @@
+[
+  [
+    "Pure mean",
+    7.829,
+    0,
+    166,
+    0,
+    "deterministic"
+  ],
+  [
+    "UCB 0.5",
+    6.5309,
+    0,
+    153,
+    0,
+    "deterministic"
+  ],
+  [
+    "UCB 1",
+    6.5309,
+    0,
+    151,
+    0,
+    "deterministic"
+  ],
+  [
+    "UCB 2",
+    6.5309,
+    0,
+    139,
+    0,
+    "deterministic"
+  ],
+  [
+    "UCB 3",
+    8.4162,
+    0,
+    128,
+    0,
+    "deterministic"
+  ],
+  [
+    "Alternating",
+    7.8681,
+    0.149,
+    148.73,
+    3.49,
+    "random"
+  ],
+  [
+    "Marginal TS",
+    7.3017,
+    0.6684,
+    140.03,
+    6.06,
+    "random"
+  ]
+]

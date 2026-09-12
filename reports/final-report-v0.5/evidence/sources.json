@@ -1,0 +1,22 @@
+[
+  {
+    "path": "reports/final-report-v0.3/evidence/gb1_summary.json",
+    "sha256": "7fb3cd5b76724649fd033f27b3d15ad4bf4b7c1fcd9ff99299798d39f7a5aaf9"
+  },
+  {
+    "path": "reports/final-report-v0.3/evidence/bibliography-audit.json",
+    "sha256": "d0a548388293b159018ea87e87e06eb7c495021390ee3660c1b5132a97328ca6"
+  },
+  {
+    "path": "reports/final-report-v0.3/evidence/figures_data/epistasis.json",
+    "sha256": "6cb883ba6f330b32454e34781464e82a7150b2c81163707b39cdf200fd3895d9"
+  },
+  {
+    "path": "harness/context/research/v07-multiseed-robustness.md",
+    "sha256": "c025bbd0bb7a7eecae092e3b3ca45d4cadf5e170ded3f5c3dbd7f2630c12ba24"
+  },
+  {
+    "path": "harness/context/research/v07-peak-mechanism.md",
+    "sha256": "f429610c1b191a83af9ed74aa07f819de035e73d09ac95365afd80dc11b70c48"
+  }
+]
