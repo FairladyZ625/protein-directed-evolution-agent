@@ -18,10 +18,22 @@ jobs:
       # Lightweight deps only. The data-pipeline / predictor tests need the 44 MB
       # GB1 landscape (intentionally not committed, see data/README.md) and ESM-2 /
       # torch, so they run locally; CI covers the self-contained modules.
+      #
+      # 门控范围以前只有三个文件(events / knowledge / agent),结果 tests/test_demo_app.py
+      # 坏了很久都没人发现——没被门控的测试等于不存在(fact F-6B21C4E8)。下面按
+      # 「不需要 44MB 地形、不需要 torch」这一条标准把所有自包含测试都列进来;
+      # 新增自包含测试文件时必须同步加到这里,否则它同样会静默腐烂。
       - name: Install dependencies
-        run: pip install pytest numpy pandas scipy scikit-learn PyYAML networkx pydantic
+        run: pip install pytest numpy pandas scipy scikit-learn PyYAML networkx pydantic streamlit matplotlib
       - name: Run self-contained tests
-        run: pytest tests/test_events.py tests/test_knowledge.py tests/test_agent.py -q
+        run: |
+          pytest -q \
+            tests/test_events.py \
+            tests/test_knowledge.py \
+            tests/test_agent.py \
+            tests/test_campaign.py \
+            tests/test_demo.py \
+            tests/test_predictor.py
 
       # 产出 Harness 任务完成门所需的 CI 见证。只在测试通过后运行,因此工件的存在
       # 本身就与绿色运行绑定;pass/fail 由 GitHub 运行的 conclusion 判定。

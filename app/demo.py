@@ -345,8 +345,10 @@ def render_critic(critiques: list[dict]) -> None:
     c2.metric("Critic 拒稿", len(rejected))
     if not rejected:
         st.info(
-            "本轮 Critic 无拒稿：campaign 中五角色以 `no_knowledge=True` 运行（策略间知识差异由 "
-            "acquisition 层的 UCB + BLOSUM62 先验承载），知识规则不在此处拦截。"
+            "本轮 Critic 无拒稿。注意两条策略在这里的行为并不相同：策略③ agent_no_knowledge 以 "
+            "`no_knowledge=True` 运行，知识规则被消融掉、确实不在此处拦截；策略④ knowledge_agent 以 "
+            "`no_knowledge=False` 运行，知识规则在此处**是生效的**，只是本轮恰好没有候选被拒。"
+            "两者的差异还额外体现在 acquisition 层（④ 有 UCB + BLOSUM62 先验）。"
             "想在页面上看知识规则「打架」，到模块③勾选「严格知识校验预演」。"
         )
         return
