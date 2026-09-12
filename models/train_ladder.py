@@ -78,6 +78,7 @@ class EpistasisRidgePredictor(_Base):
         self._keep = None
         self._alpha = None
         self._mean_model = None       # full-data model -> mean/ranking (no bootstrap degradation)
+        self.val_spearman: float | None = None
 
     def _expand(self, X, fit: bool = False):
         """degree-2 interaction on the kept one-hot columns, kept SPARSE (each AAV variant
@@ -118,6 +119,7 @@ class EpistasisRidgePredictor(_Base):
         from sklearn.model_selection import train_test_split
         n = len(y)
         if n < 20:
+            self.val_spearman = None
             return float(self._alphas[len(self._alphas) // 2])
         tr, va = train_test_split(np.arange(n), test_size=0.2, random_state=0)
         best_a, best_s = None, -2.0
@@ -127,6 +129,7 @@ class EpistasisRidgePredictor(_Base):
             s = -2.0 if (s is None or np.isnan(s)) else float(s)
             if s > best_s:
                 best_a, best_s = a, s
+        self.val_spearman = None if best_a is None else float(best_s)
         return float(best_a if best_a is not None else self._alphas[len(self._alphas) // 2])
 
     def predict(self, X):

@@ -53,6 +53,8 @@ def test_interface_shapes_and_nonneg_variance():
     assert mean.shape == (len(seqs),)
     assert var.shape == (len(seqs),)
     assert np.all(var >= -1e-9)
+    assert m.val_spearman is not None
+    assert m.val_spearman > 0.6
 
 
 def test_pairwise_beats_additive_on_pure_epistasis():
@@ -68,3 +70,11 @@ def test_pairwise_beats_additive_on_pure_epistasis():
     assert abs(sp_add) < 0.3, f"additive unexpectedly captured XOR: {sp_add}"
     assert sp_epi > 0.6, f"pairwise failed to capture XOR: {sp_epi}"
     assert sp_epi > sp_add + 0.3
+
+
+def test_shuffled_label_negative_control_collapses_validation_spearman():
+    seqs, y = _xor_dataset(600)
+    shuffled = np.random.default_rng(42).permutation(y)
+    model = EpistasisRidgePredictor(min_count=2, var_seeds=3).fit(_onehot(seqs), shuffled)
+    assert model.val_spearman is not None
+    assert abs(model.val_spearman) < 0.2

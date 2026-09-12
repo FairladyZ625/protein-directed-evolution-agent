@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 from evolution.pool_campaign import DatasetSpec
-from agent.auto_researcher import run_autoresearch
+from agent.auto_researcher import _gate_variants, run_autoresearch
 
 WT = "AAAAAAAA"  # 8-residue toy wild type
 
@@ -147,3 +147,31 @@ def _blosum():
             return 4
         return m.get(a, {}).get(b, m.get(b, {}).get(a, 0))
     return score
+
+
+def test_gate_cleans_whitespace_and_case_without_rejecting_valid_sequence():
+    allowed, rejected = _gate_variants(
+        [" sssa\n aaaa "], wt=WT, max_hd=4, blosum_min=0.0, blosum_fn=_blosum(),
+    )
+    assert allowed == ["SSSAAAAA"]
+    assert rejected == {}
+
+
+def test_gate_rejects_wrong_length_and_empty_as_structured_errors():
+    wt_28 = "A" * 28
+    too_long = wt_28 + "A"  # regression: the observed LLM failure supplied 29 aa for AAV's 28 aa
+    allowed, rejected = _gate_variants(
+        [too_long, "  \n"], wt=wt_28, max_hd=4, blosum_min=0.0, blosum_fn=_blosum(),
+    )
+    assert allowed == []
+    assert "length_mismatch" in rejected[too_long][0]
+    assert "length_mismatch" in rejected["  \n"][0]
+
+
+def test_gate_rejects_mutation_notation_with_actionable_hint():
+    allowed, rejected = _gate_variants(
+        ["D0Q"], wt=WT, max_hd=4, blosum_min=0.0, blosum_fn=_blosum(),
+    )
+    assert allowed == []
+    assert "mutation_notation" in rejected["D0Q"][0]
+    assert "compose_batch" in rejected["D0Q"][0]
