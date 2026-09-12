@@ -109,6 +109,46 @@ def test_events_emitted_for_all_five_roles():
     assert all(e["round_id"] == 7 for e in probe.events)
 
 
+def test_combination_rationale_is_structured_and_emitted():
+    """Measured evidence, rule citations, and the display text survive the event boundary."""
+    probe = _EventProbe()
+    pool = [
+        {"mutations": ["V39I"], "fitness": 2.0},
+        {"mutations": ["D40E"], "fitness": 1.8},
+        {"mutations": ["V39I", "D40E"], "fitness": 2.4},
+    ]
+
+    def combination_hypothesis(report: AnalystReport) -> Hypothesis:
+        return Hypothesis(
+            mutations=["V39I", "D40E"],
+            rationale="Combine observed substitutions under R-GB1-SITES.",
+            rule_ids=["R-GB1-SITES", "R-MAX-MUTATIONS"],
+        )
+
+    result = run_pipeline(
+        pool,
+        _fake_predictor,
+        event_store=probe,
+        llm_hypothesis=combination_hypothesis,
+        budget=10,
+    )
+    combined = next(candidate for candidate in result.candidates if candidate.sequence == "IEGV")
+    rationale = combined.combination_rationale
+    assert rationale.selected_single_mutations == ["V39I", "D40E"]
+    assert rationale.empirical_position_gains == {39: 2.2, 40: 2.1}
+    assert rationale.positions_non_conflicting is True
+    assert {"R-GB1-SITES", "R-MAX-MUTATIONS"} <= set(rationale.rule_ids)
+    assert rationale.deterministic_summary
+    assert rationale.evidence_source == "measured_data"
+    assert rationale.narrative_source == "deterministic"
+
+    designer_event = next(event for event in probe.events if event["actor"] == "mutation_designer")
+    event_candidate = next(
+        candidate for candidate in designer_event["payload"]["candidates"] if candidate["sequence"] == "IEGV"
+    )
+    assert event_candidate["combination_rationale"] == rationale.model_dump()
+
+
 def test_designer_filters_off_site_mutation():
     """An off-site hypothesis is dropped structurally: no candidate is ever built."""
 

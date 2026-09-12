@@ -24,9 +24,25 @@ class Hypothesis(BaseModel):
     rationale: str
     rule_ids: list[str] = Field(default_factory=list)
 
+class CombinationRationale(BaseModel):
+    """Deterministic evidence trail for composing observed single substitutions.
+
+    The natural-language hypothesis remains separately attributable to the LLM
+    (or its fallback).  Every field here is produced by pipeline code from the
+    measured-data report and structural/rule checks.
+    """
+    selected_single_mutations: list[str]
+    empirical_position_gains: dict[int, float]
+    positions_non_conflicting: bool
+    rule_ids: list[str]
+    deterministic_summary: str
+    evidence_source: str = "measured_data"
+    narrative_source: str = "deterministic"
+
 class Candidate(BaseModel):
     mutations: list[str]
     sequence: str
+    combination_rationale: CombinationRationale
 
 class ScoredCandidate(Candidate):
     mean: float
@@ -100,7 +116,7 @@ class MutationDesigner:
     site (WT kept otherwise), so every candidate is a well-formed GB1 variant.
     This replaces the earlier ``combinations``-based generator, which capped the
     hypothesis at four substitutions and could place two residues at one site."""
-    def run(self, hypothesis: Hypothesis, *, measured_variants: set[str], budget=10, event_store=None, round_id=1) -> list[Candidate]:
+    def run(self, hypothesis: Hypothesis, report: AnalystReport, *, measured_variants: set[str], budget=10, event_store=None, round_id=1) -> list[Candidate]:
         # Group WT-anchored substitutions by site; silently drop malformed or off-site notation.
         by_site: dict[int, list[str]] = {}
         for m in dict.fromkeys(hypothesis.mutations):
@@ -121,7 +137,24 @@ class MutationDesigner:
             seq = "".join(chosen.get(p, WT[p]) for p in SITES)
             if seq not in measured_variants:
                 continue
-            out.append(Candidate(mutations=muts, sequence=seq))
+            positions = [int(mutation[1:-1]) for mutation in muts]
+            empirical_gains = {position: report.position_gains[position] for position in positions}
+            rule_ids = list(dict.fromkeys([*hypothesis.rule_ids, "R-GB1-SITES", "R-MAX-MUTATIONS"]))
+            gains_text = ", ".join(
+                f"{mutation} position_gain={empirical_gains[int(mutation[1:-1])]:.6g}"
+                for mutation in muts
+            )
+            rationale = CombinationRationale(
+                selected_single_mutations=muts,
+                empirical_position_gains=empirical_gains,
+                positions_non_conflicting=len(positions) == len(set(positions)),
+                rule_ids=rule_ids,
+                deterministic_summary=(
+                    f"Combined {', '.join(muts)} using measured single-position gains ({gains_text}); "
+                    f"positions are non-conflicting; rules: {', '.join(rule_ids)}."
+                ),
+            )
+            out.append(Candidate(mutations=muts, sequence=seq, combination_rationale=rationale))
             if len(out) >= budget:
                 break
         _event(event_store, "agent.role.completed", "mutation_designer", {"candidates": [c.model_dump() for c in out]}, round_id)
@@ -157,7 +190,7 @@ class ScientificCritic:
 def run_pipeline(pool, predictor, *, event_store=None, llm_hypothesis=None, llm_critic=None, budget=10, round_id=1, no_knowledge=False):
     rows = list(pool)
     measured_variants = {_variant_from_row(row) for row in rows}
-    report=DataAnalyst().run(rows,event_store=event_store,round_id=round_id); hyp=HypothesisGenerator(llm_hypothesis).run(report,event_store=event_store,round_id=round_id); cand=MutationDesigner().run(hyp,measured_variants=measured_variants,budget=budget,event_store=event_store,round_id=round_id); scored=FitnessEvaluator(predictor).run(cand,event_store=event_store,round_id=round_id); accepted, critiques=ScientificCritic(llm_critic, no_knowledge=no_knowledge).run(scored,event_store=event_store,round_id=round_id); return PipelineResult(report=report,hypothesis=hyp,candidates=scored,accepted=accepted,critiques=critiques)
+    report=DataAnalyst().run(rows,event_store=event_store,round_id=round_id); hyp=HypothesisGenerator(llm_hypothesis).run(report,event_store=event_store,round_id=round_id); cand=MutationDesigner().run(hyp,report,measured_variants=measured_variants,budget=budget,event_store=event_store,round_id=round_id); scored=FitnessEvaluator(predictor).run(cand,event_store=event_store,round_id=round_id); accepted, critiques=ScientificCritic(llm_critic, no_knowledge=no_knowledge).run(scored,event_store=event_store,round_id=round_id); return PipelineResult(report=report,hypothesis=hyp,candidates=scored,accepted=accepted,critiques=critiques)
 
 def _variant_from_row(row: dict[str, Any]) -> str:
     explicit = row.get("Variants", row.get("variant", row.get("sequence")))
