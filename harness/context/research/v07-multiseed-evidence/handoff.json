@@ -1,0 +1,38 @@
+{
+  "status": "local_draft_not_submitted",
+  "taskId": null,
+  "commitSha": "6758173343ccff95d9f70b24e42b237307c30ad9",
+  "commitKind": "empty local handoff checkpoint; no public artifacts committed",
+  "completionClaim": "210 fixed-protocol AAV campaigns completed and audited. UCB beta=3 deterministically reaches pool maximum at round3; acquisition-seed stochastic peak hit rates are alternating2/30 and Gaussian-TS3/30; greedy strong166 beats all counterpart trials.",
+  "deliverables": [
+    "harness/context/research/v07-multiseed-robustness.md",
+    "harness/context/research/v07-multiseed-evidence/"
+  ],
+  "outputs": [
+    "summary.json",
+    "results.json",
+    "controls.json",
+    "audit.log",
+    "verification.log",
+    "ucb3-uncached-verification.json"
+  ],
+  "verificationNotes": [
+    "210 trials and 60480 nominations verified in 5.01s",
+    "1260 batches reconstructed from predictions and RNG with oracle/gate/uniqueness audit",
+    "Uncached UCB3 replay matches 288/288 candidates",
+    "CV0.905917215; shuffle CV0.013438177",
+    "Legacy alternating seed42 curves, final strong and batch top10 reproduced",
+    "Product/data/runner hashes unchanged; report128 lines"
+  ],
+  "knownGaps": [
+    "Harness daemon_unavailable: worker and canonical workspace unregistered; no canonical task-id supplied; fact/doc sync not completed",
+    "No internet fetch per Mission; cached origin/main has no common ancestor; rebase not performed",
+    "Independent lifecycle review, consent, full CI, GB1/ESM and model/cold-start randomness not checked"
+  ],
+  "residualRisks": [
+    "Deterministic mean/UCB repeats are one trajectory; n30 Wilson arithmetic is not inferential",
+    "Stochastic inference conditional on this fixed data/model/gate",
+    "Gaussian-TS uses independent marginal draws, not correlated posterior functions"
+  ],
+  "nextStep": "Bind/register this worker and canonical task; submit receipt via ha doc sync --submit --task <task-id>. Owner resolves unrelated branch history. Separately preregister shared training/cold-start perturbations to test broader robustness."
+}
