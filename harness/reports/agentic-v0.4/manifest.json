@@ -12,5 +12,6 @@
   "key_result": "LLM agentic cum_top10_max 7.829(strong108,round4破7.53,链校验50事件);确定性gated-greedy 8.416=真峰(strong151,实际测到全局峰)。均破greedy/v0.2的7.53。诊断:pairwise把真峰门内排名从加性#2776拉到#447(6倍)。证实7.53=加性表达力上限,换上位感知表征即破;surrogate是关键杠杆(确定性贪心>LLM自主)。",
   "status": "CEILING BROKEN — epistasis-aware representation reaches the true peak; representation expressivity is the decisive lever",
   "date": "2026-09-12",
-  "next": "让LLM agent更好利用上位surrogate(缩小与确定性8.416的差距);或把该surrogate推广GB1/avGFP验普适"
+  "ablation_more_rounds": "12轮(576)仍7.829、16轮(768)反降7.53——更多轮次/预算未助LLM达峰,证LLM短板是利用效率非runway;确定性288即达8.416。破顶来自表征,自主性在利用surrogate这步是liability。",
+  "next": "把上位surrogate推广GB1/avGFP验普适;或研究为何LLM explore/exploit不如greedy利用surrogate(决策层改进,非轮次)"
 }

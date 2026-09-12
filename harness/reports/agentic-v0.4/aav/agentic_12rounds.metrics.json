@@ -1,0 +1,2293 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "agentic",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 48,
+  "n_rounds": 12,
+  "total_budget": 576,
+  "budget_spent": 576,
+  "strong_threshold": 2.6159,
+  "guardrail": true,
+  "max_hd": 4,
+  "blosum_min": 0.0,
+  "n_gate_rejected": 0,
+  "gate_pass_pool_size": 9533,
+  "surrogate": "epistasis",
+  "llm_used": true,
+  "llm_summary": "Round 12 completed with the final 48 measurements; budget exhausted.\n\n**Final outcome**\n- Best overall variant: `DEEEIRTTNPVATEQYGSYSTNLQQGNR` — fitness **9.536**.\n- Other strong measured variants included:\n  - `DEEEIRTTNPVATEAYGSVSENLQRGNR` — **8.645**\n  - `DEEEIRTTNPVATEQYGIVSDNLQRGNR` — **8.438**\n  - `DEEEIRTTNPVATEWYGSVSTNLQRGNQ` — **8.390**\n  - `DEEEIRTTNPVATEQYGSASENLQRGNR` — **8.078**\n  - `DEEEIRTTNPVATEQYGDVSDNLQRGNR` — **7.836**\n- Final-batch best was `DEEEIRTTNPVATEIWGSVSENLQRGNF` at **5.702**.\n\n**Campaign conclusion**\n- The most reliable beneficial substitutions were `S17E`, `T20E/D`, `R24Q/H`, and `R27Q/I/T`.\n- `SENLQ`, `GEV/DNL`, and selected `RGN*` terminal contexts produced secondary peaks.\n- The surrogate systematically overestimated many high-order candidates; direct testi",
+  "agent_model": "gpt-5.6-sol",
+  "n_tool_calls": 66,
+  "summary": {
+    "final_cum_top10_max": 7.829,
+    "final_cum_top10_mean": 6.6051,
+    "final_cum_n_strong": 183,
+    "cum_top10_max_curve": [
+      7.391,
+      7.391,
+      7.391,
+      7.391,
+      7.829,
+      7.829,
+      7.829,
+      7.829,
+      7.829,
+      7.829,
+      7.829,
+      7.829
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 48,
+      "top10_max": 7.391,
+      "top10_mean": 5.4285,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.4285,
+      "n_hit_strong": 31,
+      "cum_n_strong": 31,
+      "top10": [
+        [
+          "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+          7.391
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENIQRGNA",
+          5.9988
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+          5.9521
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQRGNM",
+          5.8127
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASENLQRGMR",
+          5.6302
+        ],
+        [
+          "DEEEIRPTNPVATEAYGSVSENLQRGTR",
+          5.4646
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+          5.1849
+        ],
+        [
+          "QEEEIATTNPVATEQYGEVSTNLQRGGR",
+          4.3829
+        ],
+        [
+          "DEEEICTTNPVATEQYGSASDNLQRGGR",
+          4.2691
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGDR",
+          4.1989
+        ]
+      ],
+      "spent_after": 48
+    },
+    {
+      "round": 2,
+      "n_nominated": 48,
+      "top10_max": 5.1258,
+      "top10_mean": 3.6786,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.5212,
+      "n_hit_strong": 16,
+      "cum_n_strong": 47,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEGYGSVSENLQHGGR",
+          5.1258
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDALQRGNY",
+          4.0722
+        ],
+        [
+          "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+          3.9115
+        ],
+        [
+          "DENEISTTNPVATEQYGSVSTNLQVGNQ",
+          3.7946
+        ],
+        [
+          "DEQEIRTTNPVATEQYGIVSDNLQRGNR",
+          3.4356
+        ],
+        [
+          "DENEIVTTNPVATEQYGSVSTNLQNGNN",
+          3.3904
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSEDLQRGNV",
+          3.364
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQNGNN",
+          3.2551
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVGNNLQRGTQ",
+          3.2322
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDNLQGTNN",
+          3.2047
+        ]
+      ],
+      "spent_after": 96
+    },
+    {
+      "round": 3,
+      "n_nominated": 48,
+      "top10_max": 3.7775,
+      "top10_mean": 2.7018,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.5212,
+      "n_hit_strong": 4,
+      "cum_n_strong": 51,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGDVSTNEQRGNF",
+          3.7775
+        ],
+        [
+          "DEEEIRTTNPVATECYGSASTNLQTGNI",
+          3.4653
+        ],
+        [
+          "DEEEIRATNPVATEQYGVVSTDLQRGER",
+          3.2161
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTDLQQGNY",
+          3.1107
+        ],
+        [
+          "DEDEIRTTNPVATEQYGDVSTNLQFGNF",
+          2.4661
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSEDLQHGNR",
+          2.4489
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNEMIGNW",
+          2.2421
+        ],
+        [
+          "MEEEIRTTNPVATEQYGSVSTDLQHGNV",
+          2.1685
+        ],
+        [
+          "KEEEISTTNPVATEQYGSVSTNLQLGNN",
+          2.069
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTELQTGDI",
+          2.0536
+        ]
+      ],
+      "spent_after": 144
+    },
+    {
+      "round": 4,
+      "n_nominated": 48,
+      "top10_max": 6.0791,
+      "top10_mean": 4.3791,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.863,
+      "n_hit_strong": 16,
+      "cum_n_strong": 67,
+      "top10": [
+        [
+          "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+          6.0791
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVPTNLQRGGR",
+          5.9907
+        ],
+        [
+          "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+          4.601
+        ],
+        [
+          "MEEEIRTTNPVATECYGSVSTNLQNGNM",
+          4.1528
+        ],
+        [
+          "DENEICTTNPVATEVYGSVSTNLQRGGR",
+          4.0496
+        ],
+        [
+          "DEEEIRTTNPVATECWGSVSENLQRGNA",
+          3.9638
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQYGNR",
+          3.8631
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGMR",
+          3.7701
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGNA",
+          3.7184
+        ],
+        [
+          "MEEEIRTTNPVATEQYGSVSENLQNGNA",
+          3.6018
+        ]
+      ],
+      "spent_after": 192
+    },
+    {
+      "round": 5,
+      "n_nominated": 48,
+      "top10_max": 7.829,
+      "top10_mean": 4.8497,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.4226,
+      "n_hit_strong": 11,
+      "cum_n_strong": 78,
+      "top10": [
+        [
+          "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+          7.829
+        ],
+        [
+          "QEEEIATTNPVATEQYGEVSENLQRGNR",
+          7.0807
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSEDLQNGNR",
+          6.4613
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENEQGGNR",
+          4.5091
+        ],
+        [
+          "DEEEIATTNPVATEQYGDVSTNLQSGNR",
+          4.4901
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVSDNLQRGNR",
+          4.4031
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+          4.0877
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVPTVLQRGNR",
+          3.3189
+        ],
+        [
+          "DEEEIRTTNPVATEIYGTVSTNLQRGNA",
+          3.2085
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTNLQQGNH",
+          3.1086
+        ]
+      ],
+      "spent_after": 240
+    },
+    {
+      "round": 6,
+      "n_nominated": 48,
+      "top10_max": 5.8728,
+      "top10_mean": 4.1526,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.4468,
+      "n_hit_strong": 19,
+      "cum_n_strong": 97,
+      "top10": [
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+          5.8728
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTDLQGGNR",
+          5.2998
+        ],
+        [
+          "DEQEIVTTNPVATEQYGEVSDNLQRGNR",
+          4.1509
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQRGGR",
+          4.0875
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTDLQGGNS",
+          3.7997
+        ],
+        [
+          "DEEEIVTTNPVATESYGSVSENLQNGNR",
+          3.7632
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGDH",
+          3.7581
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSEELQGGNR",
+          3.7183
+        ],
+        [
+          "DEEEIRTTNPVATEQFGDVSTNLQRGNI",
+          3.6276
+        ],
+        [
+          "NEQEIRTTNPVATEQYGSVSDNLQRGNV",
+          3.4479
+        ]
+      ],
+      "spent_after": 288
+    },
+    {
+      "round": 7,
+      "n_nominated": 48,
+      "top10_max": 6.4036,
+      "top10_mean": 4.7316,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.5059,
+      "n_hit_strong": 13,
+      "cum_n_strong": 110,
+      "top10": [
+        [
+          "DEEEIRTTNPVAYEQYGSVSENLQRGNS",
+          6.4036
+        ],
+        [
+          "DEEEIRTTNPVATEAYGSVSENLQRGTR",
+          5.8322
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSTNLQRGTL",
+          5.7677
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSNNLQQGNR",
+          4.601
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+          4.6002
+        ],
+        [
+          "DEEEIRTTNPVATELYGSASTNLQHGNR",
+          4.4638
+        ],
+        [
+          "SEEEIRTTNPVATELYGSVSTNLQQGNR",
+          4.2975
+        ],
+        [
+          "DEEEIRTTNPVATEQYGGVSTNLQSGNQ",
+          3.9957
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQHGNR",
+          3.7422
+        ],
+        [
+          "DEEEIRATNPVATEQYGIVSTNLQRGNA",
+          3.6117
+        ]
+      ],
+      "spent_after": 336
+    },
+    {
+      "round": 8,
+      "n_nominated": 48,
+      "top10_max": 6.5309,
+      "top10_mean": 4.1943,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.5717,
+      "n_hit_strong": 17,
+      "cum_n_strong": 127,
+      "top10": [
+        [
+          "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+          6.5309
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQGGNR",
+          4.8563
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVDENLQRGNV",
+          4.4281
+        ],
+        [
+          "DEEEIRTTNPVATEVYGDVSDNLQRGNR",
+          4.2543
+        ],
+        [
+          "DEEEIRTTNPVATEQWGDVSTNLQRGDR",
+          3.9767
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQRGGR",
+          3.9333
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSENLQRGNT",
+          3.698
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQHGNV",
+          3.5075
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSENLQIGNQ",
+          3.4198
+        ],
+        [
+          "DEEEIATTNPVATEMYGSASTVLQRGNR",
+          3.3386
+        ]
+      ],
+      "spent_after": 384
+    },
+    {
+      "round": 9,
+      "n_nominated": 48,
+      "top10_max": 6.2857,
+      "top10_mean": 4.2124,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.6051,
+      "n_hit_strong": 20,
+      "cum_n_strong": 147,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGVVSENLQRGND",
+          6.2857
+        ],
+        [
+          "DEEEIATTNPVATECYGSVSTNLQRGNI",
+          5.131
+        ],
+        [
+          "DEEEIATTNPVATEVYGEASTNLQRGNR",
+          4.4412
+        ],
+        [
+          "DEEEIRTTNPVATENYGEVSTNLQHGNR",
+          4.2364
+        ],
+        [
+          "SEDEIRTTNPTATEQYGSVSTNLQVGNR",
+          3.9444
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTNLQSGEQ",
+          3.7972
+        ],
+        [
+          "DEEEIRTTNPAATEQYGEVSTNLQQGNR",
+          3.7705
+        ],
+        [
+          "DEEEIATTNPVATEQYGSVCENLQRGNR",
+          3.77
+        ],
+        [
+          "DEEEIGTTNPVSTEQYGEVSTNLQQGNR",
+          3.3979
+        ],
+        [
+          "DEEEIVTTNPVATEQYGEVSTNLQIGTR",
+          3.3499
+        ]
+      ],
+      "spent_after": 432
+    },
+    {
+      "round": 10,
+      "n_nominated": 48,
+      "top10_max": 4.2182,
+      "top10_mean": 3.0459,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.6051,
+      "n_hit_strong": 9,
+      "cum_n_strong": 156,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+          4.2182
+        ],
+        [
+          "DEEEIRTTNPVSTEQYGSVSTNLQQGTR",
+          3.4421
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTDLQNGNR",
+          3.1558
+        ],
+        [
+          "QENEIRTTNPVATECYGSVSTNLQTGNR",
+          3.0185
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSEVLQRGER",
+          2.9948
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQIGER",
+          2.9099
+        ],
+        [
+          "DEEEIRATNPVAYEQYGSVSTNLQSGNL",
+          2.7793
+        ],
+        [
+          "DEEEIRTTNPVATEQYGIVSDNLQRGTR",
+          2.7171
+        ],
+        [
+          "QEQEIVTTNPVATEQYGIVSTNLQRGNR",
+          2.6702
+        ],
+        [
+          "DEEEIRSTNPVATEQYGSVSDNIQRGNR",
+          2.553
+        ]
+      ],
+      "spent_after": 480
+    },
+    {
+      "round": 11,
+      "n_nominated": 48,
+      "top10_max": 5.4012,
+      "top10_mean": 3.9572,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.6051,
+      "n_hit_strong": 16,
+      "cum_n_strong": 172,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGEVSTNLQRGDA",
+          5.4012
+        ],
+        [
+          "DEQEIRTTNPVATEGYGEVSTNLQRGNS",
+          4.9766
+        ],
+        [
+          "DENEIRTTNPVATEQYGIVSTNLQTGNQ",
+          3.9435
+        ],
+        [
+          "KEEEIRTTNPVATECYGSVSTNLQTGNV",
+          3.7954
+        ],
+        [
+          "QENEIVTTNPVATEQYGSVSTNLQTGNR",
+          3.7349
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDNLQRGPF",
+          3.7303
+        ],
+        [
+          "DEEEICTTNPVATEVYGEVSTNLQRGNR",
+          3.625
+        ],
+        [
+          "DENEIRTTNPVATEQYGSVSTNLQTGNT",
+          3.5755
+        ],
+        [
+          "DEEEIRCTNPVATEGYGEVSDNLQRGNR",
+          3.5141
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLQLGNV",
+          3.276
+        ]
+      ],
+      "spent_after": 528
+    },
+    {
+      "round": 12,
+      "n_nominated": 48,
+      "top10_max": 5.7024,
+      "top10_mean": 3.8343,
+      "cum_top10_max": 7.829,
+      "cum_top10_mean": 6.6051,
+      "n_hit_strong": 11,
+      "cum_n_strong": 183,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEIWGSVSENLQRGNF",
+          5.7024
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQAGNR",
+          4.7269
+        ],
+        [
+          "QEEEIATTNPVATECYGSVSTNLQGGNR",
+          4.5278
+        ],
+        [
+          "DEEEIRTTNPTATECFGSVSTNLQNGNR",
+          4.3022
+        ],
+        [
+          "DEEEIRTTNPVASEQYGDVSTNLQVGNR",
+          4.1139
+        ],
+        [
+          "DEEEIATTNPVATEQFGSVSTNLQVGNR",
+          3.8313
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSAATNLQHGNM",
+          2.8454
+        ],
+        [
+          "DEEEIRTTNPAATEQYGSVSDNLQNGNR",
+          2.8314
+        ],
+        [
+          "DEQEIATTNPVATEQYGSVSTDLQRGER",
+          2.7435
+        ],
+        [
+          "DEEEIRTTNPVATECYGSMSTNLQGGNN",
+          2.7179
+        ]
+      ],
+      "spent_after": 576
+    }
+  ],
+  "tool_trace": [
+    {
+      "event_type": "agent.llm.model",
+      "actor": "agent",
+      "payload": {
+        "model": "gpt-5.6-sol",
+        "base_url": "https://token.qianbaner.top/v1"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 576,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 16,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "random",
+        "n": 8,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.llm.round_error",
+      "actor": "agent",
+      "payload": {
+        "round": 1,
+        "error": "string index out of range"
+      }
+    },
+    {
+      "event_type": "agent.llm.no_test",
+      "actor": "agent",
+      "payload": {
+        "round": 1,
+        "note": "LLM skipped test; harness exploit fill"
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 48,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 48,
+        "batch_max": 7.391
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10481,
+        "n_pool_unmeasured": 27784,
+        "budget_remaining": 528,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.832
+          ],
+          [
+            "T20E",
+            2.781
+          ],
+          [
+            "R27Q",
+            2.504
+          ],
+          [
+            "R27I",
+            2.34
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.301
+          ],
+          [
+            "R27M",
+            2.268
+          ],
+          [
+            "T20D",
+            2.257
+          ],
+          [
+            "R24Q",
+            2.252
+          ],
+          [
+            "R24H",
+            2.126
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.066
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.predict",
+      "actor": "fitness_evaluator",
+      "payload": {
+        "n": 63
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 96,
+        "batch_max": 5.126
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10529,
+        "n_pool_unmeasured": 27736,
+        "budget_remaining": 480,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.773
+          ],
+          [
+            "S17E",
+            2.771
+          ],
+          [
+            "R27Q",
+            2.48
+          ],
+          [
+            "R27I",
+            2.342
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "R27T",
+            2.311
+          ],
+          [
+            "T20D",
+            2.291
+          ],
+          [
+            "R27M",
+            2.268
+          ],
+          [
+            "R24Q",
+            2.19
+          ],
+          [
+            "R24H",
+            2.149
+          ],
+          [
+            "R24G",
+            2.095
+          ],
+          [
+            "R27A",
+            2.052
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 144,
+        "batch_max": 3.778
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10577,
+        "n_pool_unmeasured": 27688,
+        "budget_remaining": 432,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.771
+          ],
+          [
+            "T20E",
+            2.759
+          ],
+          [
+            "R27Q",
+            2.451
+          ],
+          [
+            "R27I",
+            2.352
+          ],
+          [
+            "R27T",
+            2.311
+          ],
+          [
+            "R27L",
+            2.302
+          ],
+          [
+            "T20D",
+            2.291
+          ],
+          [
+            "R27M",
+            2.214
+          ],
+          [
+            "R24Q",
+            2.19
+          ],
+          [
+            "R24H",
+            2.142
+          ],
+          [
+            "R24G",
+            2.095
+          ],
+          [
+            "R27N",
+            2.045
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 192,
+        "batch_max": 6.079
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10625,
+        "n_pool_unmeasured": 27640,
+        "budget_remaining": 384,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.828
+          ],
+          [
+            "T20E",
+            2.735
+          ],
+          [
+            "R27Q",
+            2.449
+          ],
+          [
+            "R27I",
+            2.345
+          ],
+          [
+            "R27T",
+            2.311
+          ],
+          [
+            "T20D",
+            2.291
+          ],
+          [
+            "R27L",
+            2.285
+          ],
+          [
+            "R27M",
+            2.227
+          ],
+          [
+            "R24Q",
+            2.186
+          ],
+          [
+            "R24H",
+            2.137
+          ],
+          [
+            "R24G",
+            2.071
+          ],
+          [
+            "R27N",
+            2.045
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 240,
+        "batch_max": 7.829
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10673,
+        "n_pool_unmeasured": 27592,
+        "budget_remaining": 336,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.923
+          ],
+          [
+            "T20E",
+            2.756
+          ],
+          [
+            "R27Q",
+            2.432
+          ],
+          [
+            "T20D",
+            2.348
+          ],
+          [
+            "R27I",
+            2.298
+          ],
+          [
+            "R27T",
+            2.296
+          ],
+          [
+            "R27L",
+            2.285
+          ],
+          [
+            "R27M",
+            2.214
+          ],
+          [
+            "R24Q",
+            2.194
+          ],
+          [
+            "R24H",
+            2.137
+          ],
+          [
+            "R27A",
+            2.046
+          ],
+          [
+            "R27N",
+            2.022
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 288,
+        "batch_max": 5.873
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10721,
+        "n_pool_unmeasured": 27544,
+        "budget_remaining": 288,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.973
+          ],
+          [
+            "T20E",
+            2.755
+          ],
+          [
+            "R27Q",
+            2.432
+          ],
+          [
+            "T20D",
+            2.362
+          ],
+          [
+            "R27T",
+            2.3
+          ],
+          [
+            "R27L",
+            2.285
+          ],
+          [
+            "R27I",
+            2.268
+          ],
+          [
+            "R27M",
+            2.214
+          ],
+          [
+            "R24H",
+            2.137
+          ],
+          [
+            "R24Q",
+            2.13
+          ],
+          [
+            "R24G",
+            2.062
+          ],
+          [
+            "R27N",
+            2.022
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 336,
+        "batch_max": 6.404
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10769,
+        "n_pool_unmeasured": 27496,
+        "budget_remaining": 240,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.973
+          ],
+          [
+            "T20E",
+            2.702
+          ],
+          [
+            "R27Q",
+            2.453
+          ],
+          [
+            "T20D",
+            2.368
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.3
+          ],
+          [
+            "R27I",
+            2.265
+          ],
+          [
+            "R27M",
+            2.21
+          ],
+          [
+            "R24H",
+            2.101
+          ],
+          [
+            "R24Q",
+            2.086
+          ],
+          [
+            "R27H",
+            2.056
+          ],
+          [
+            "R24G",
+            2.046
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 384,
+        "batch_max": 6.531
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10817,
+        "n_pool_unmeasured": 27448,
+        "budget_remaining": 192,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.972
+          ],
+          [
+            "T20E",
+            2.713
+          ],
+          [
+            "R27Q",
+            2.492
+          ],
+          [
+            "T20D",
+            2.384
+          ],
+          [
+            "R27T",
+            2.32
+          ],
+          [
+            "R27I",
+            2.258
+          ],
+          [
+            "R27L",
+            2.239
+          ],
+          [
+            "R27M",
+            2.21
+          ],
+          [
+            "R24H",
+            2.117
+          ],
+          [
+            "R24Q",
+            2.086
+          ],
+          [
+            "R27H",
+            2.07
+          ],
+          [
+            "R27S",
+            2.047
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 432,
+        "batch_max": 6.286
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10865,
+        "n_pool_unmeasured": 27400,
+        "budget_remaining": 144,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.978
+          ],
+          [
+            "T20E",
+            2.684
+          ],
+          [
+            "R27Q",
+            2.494
+          ],
+          [
+            "T20D",
+            2.384
+          ],
+          [
+            "R27T",
+            2.311
+          ],
+          [
+            "R27I",
+            2.286
+          ],
+          [
+            "R27M",
+            2.21
+          ],
+          [
+            "R27L",
+            2.162
+          ],
+          [
+            "R24H",
+            2.111
+          ],
+          [
+            "R24Q",
+            2.086
+          ],
+          [
+            "R27H",
+            2.068
+          ],
+          [
+            "R27S",
+            2.047
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 480,
+        "batch_max": 4.218
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10913,
+        "n_pool_unmeasured": 27352,
+        "budget_remaining": 96,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.962
+          ],
+          [
+            "T20E",
+            2.678
+          ],
+          [
+            "R27Q",
+            2.491
+          ],
+          [
+            "T20D",
+            2.387
+          ],
+          [
+            "R27T",
+            2.311
+          ],
+          [
+            "R27I",
+            2.273
+          ],
+          [
+            "R27M",
+            2.228
+          ],
+          [
+            "R27L",
+            2.151
+          ],
+          [
+            "R24H",
+            2.111
+          ],
+          [
+            "R24Q",
+            2.093
+          ],
+          [
+            "R27H",
+            2.063
+          ],
+          [
+            "R24G",
+            2.03
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 528,
+        "batch_max": 5.401
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10961,
+        "n_pool_unmeasured": 27304,
+        "budget_remaining": 48,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.007
+          ],
+          [
+            "T20E",
+            2.627
+          ],
+          [
+            "R27Q",
+            2.488
+          ],
+          [
+            "T20D",
+            2.404
+          ],
+          [
+            "R27T",
+            2.329
+          ],
+          [
+            "R27I",
+            2.273
+          ],
+          [
+            "R27M",
+            2.224
+          ],
+          [
+            "R27L",
+            2.144
+          ],
+          [
+            "R24Q",
+            2.077
+          ],
+          [
+            "R24H",
+            2.072
+          ],
+          [
+            "R27H",
+            2.059
+          ],
+          [
+            "R27S",
+            2.047
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "diverse",
+        "n": 24,
+        "gated": true
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 576,
+        "batch_max": 5.702
+      }
+    }
+  ]
+}
