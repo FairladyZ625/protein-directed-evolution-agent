@@ -209,3 +209,36 @@ def test_v06_prompt_swaps_acquisition_paragraph_and_keeps_v05_wording():
     assert "PURE" in v06
     # the published v0.5 prompt keeps its adaptive-default wording byte-for-byte
     assert _V05_ACQUISITION_PARAGRAPH in SYSTEM_PROMPT
+
+
+def test_acquisition_flag_decouples_policy_from_backtrack_without_moving_v05_or_v06():
+    """v0.8 解耦:采集档位与 backtrack 各管各的,但历史配对必须逐字节不变。
+
+    v0.8 之前这两件事是一个旋钮:传 --backtrack 会**顺带**把 v0.5 的质量感知采集段落
+    换成 v0.6 的纯利用段落。于是「去掉 --backtrack」同时改了采集策略、stall 注入
+    和可用工具三样,任何差异都归因不到具体哪一样——这样的对照没法解释。
+
+    解耦之后仍必须保证:acquisition=None 时的输出与解耦前完全一致,
+    否则 v0.5/v0.6 两个已发布版本的数据就不可复现了。
+    """
+    from agent.auto_researcher import (SYSTEM_PROMPT, _BACKTRACK_FULL_NOTE,
+                                       _BACKTRACK_SEMI_NOTE, _V05_ACQUISITION_PARAGRAPH,
+                                       _V06_ACQUISITION_PARAGRAPH, compose_system_prompt)
+
+    v06_body = SYSTEM_PROMPT.replace(_V05_ACQUISITION_PARAGRAPH, _V06_ACQUISITION_PARAGRAPH)
+
+    # 历史配对:三条都必须逐字节等于解耦前的产物
+    assert compose_system_prompt(None) == SYSTEM_PROMPT
+    assert compose_system_prompt("semi") == v06_body + _BACKTRACK_SEMI_NOTE
+    assert compose_system_prompt("full") == v06_body + _BACKTRACK_FULL_NOTE
+
+    # 新增的两个格子:backtrack 固定为 semi,只换采集档位
+    v05_semi = compose_system_prompt("semi", "v05")
+    v06_semi = compose_system_prompt("semi", "v06")
+    assert v05_semi == SYSTEM_PROMPT + _BACKTRACK_SEMI_NOTE
+    assert v06_semi == v06_body + _BACKTRACK_SEMI_NOTE
+    # 两格之间唯一的差别就是采集段落本身
+    assert _V05_ACQUISITION_PARAGRAPH in v05_semi and _V06_ACQUISITION_PARAGRAPH not in v05_semi
+    assert _V06_ACQUISITION_PARAGRAPH in v06_semi and _V05_ACQUISITION_PARAGRAPH not in v06_semi
+    # stall note 在两格里都在 —— 这正是解耦要保住的「其余条件不变」
+    assert v05_semi.endswith(_BACKTRACK_SEMI_NOTE) and v06_semi.endswith(_BACKTRACK_SEMI_NOTE)

@@ -106,6 +106,31 @@ basin hop; lower `max_overlap` = a harder hop). The default acquisition stays pu
 exploitation. Where to redirect — and whether to redirect at all — is your judgment, based only on
 measured fitness and surrogate predictions."""
 
+def compose_system_prompt(backtrack: str | None, acquisition: str | None = None) -> str:
+    """Assemble the agent's system prompt from an acquisition policy and a backtrack note.
+
+    Until v0.8 these two were one knob: passing ``backtrack`` silently ALSO swapped v0.5's
+    quality-aware acquisition paragraph for v0.6's pure-exploitation one. That coupling makes
+    a controlled comparison impossible — dropping ``--backtrack`` changes the acquisition
+    policy, the stall injection and the available tools all at once, so any observed
+    difference is unattributable to any one of them.
+
+    ``acquisition=None`` reproduces the historical pairing byte-for-byte (v0.6 paragraph iff
+    ``backtrack``), so v0.5 and v0.6 stay reproducible; pass "v05"/"v06" to vary it
+    independently of the backtrack note.
+    """
+    want_v06 = (acquisition == "v06") if acquisition else bool(backtrack)
+    if want_v06:
+        prompt = SYSTEM_PROMPT.replace(_V05_ACQUISITION_PARAGRAPH, _V06_ACQUISITION_PARAGRAPH)
+        if prompt == SYSTEM_PROMPT:  # prompt text drifted; never mis-prompt silently
+            raise RuntimeError("v0.6 acquisition paragraph no longer matches SYSTEM_PROMPT")
+    else:
+        prompt = SYSTEM_PROMPT
+    if backtrack:
+        prompt += _BACKTRACK_FULL_NOTE if backtrack == "full" else _BACKTRACK_SEMI_NOTE
+    return prompt
+
+
 _MUTATION_NOTATION = re.compile(r"^[A-Z]\d+[A-Z]$")
 _AMINO_ACIDS = frozenset("ACDEFGHIKLMNPQRSTVWY")
 
@@ -300,7 +325,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                      request_limit: int = 60, model: str | None = None,
                      guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0,
                      surrogate: str = "ridge", no_knowledge: bool = False,
-                     backtrack: str | None = None, reflexion: bool = False) -> dict:
+                     backtrack: str | None = None, reflexion: bool = False,
+                     acquisition: str | None = None) -> dict:
     if guardrail and no_knowledge:
         raise ValueError("guardrail and no_knowledge are mutually exclusive treatment modes")
     if reflexion and event_store is None:
@@ -792,14 +818,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                          f"`compose_batch` and `list_pool` ALREADY return only gate-passing candidates. Test a full "
                          f"composed batch each round; do not hand-craft high-order variants (they are rejected without "
                          f"spending budget). Use the reported CV evidence and round annealing to set allocation.")
-            if backtrack:
-                base_prompt = SYSTEM_PROMPT.replace(
-                    _V05_ACQUISITION_PARAGRAPH, _V06_ACQUISITION_PARAGRAPH)
-                if base_prompt == SYSTEM_PROMPT:  # prompt text drifted; never mis-prompt silently
-                    raise RuntimeError("v0.6 acquisition paragraph no longer matches SYSTEM_PROMPT")
-                base_prompt += _BACKTRACK_FULL_NOTE if backtrack == "full" else _BACKTRACK_SEMI_NOTE
-            else:
-                base_prompt = SYSTEM_PROMPT
+            base_prompt = compose_system_prompt(backtrack, acquisition)
             ag = Agent(oa, system_prompt=base_prompt + gate_note)
             agent_model = model_id
             emit("agent.llm.model", "agent", {
@@ -1035,6 +1054,11 @@ def main(argv=None):
                         "acquisition in both modes is pure predicted-mean exploitation.")
     p.add_argument("--reflexion", action="store_true",
                    help="v0.8 treatment: inject the previous round's observed residual event")
+    p.add_argument("--acquisition", choices=("v05", "v06"), default=None,
+                   help="v0.8: pick the acquisition paragraph independently of --backtrack. "
+                        "'v05' = quality-aware adaptive mix (the LLM's exploit_ratio matters), "
+                        "'v06' = pure predicted-mean exploitation. Omit to keep the historical "
+                        "pairing (v06 iff --backtrack), which is what v0.5/v0.6 reproduce with.")
     p.add_argument("--out-dir", type=Path, default=None,
                    help="default: harness/reports/<agentic-version>/<dataset>/")
     p.add_argument("--skip-experiment-log", action="store_true",
@@ -1060,7 +1084,8 @@ def main(argv=None):
                            event_store=store, llm=not a.no_llm, model=a.model,
                            guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min,
                            surrogate=a.surrogate, no_knowledge=a.no_knowledge,
-                           backtrack=a.backtrack, reflexion=a.reflexion)
+                           backtrack=a.backtrack, reflexion=a.reflexion,
+                           acquisition=a.acquisition)
     store.verify()
     out = out_dir / "agentic.metrics.json"
     fig = out_dir / "figures" / "agentic.png"
