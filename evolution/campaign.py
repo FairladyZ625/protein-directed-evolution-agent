@@ -466,24 +466,58 @@ def run_campaign(df: pd.DataFrame | None = None, *, seed: int = 42, n_rounds: in
                            else f"random ({pool_size} uniform variants; ~98% HD>=3: easy regime)"),
             "llm": (f"pool {(llm_config() or {}).get('model', '?')} via injectable hypothesis port"
                     if use_llm else "deterministic (pool LLM port available via --use-llm)"),
-            "summary": _summary(all_results),
+            "summary": _summary(all_results, budget=budget, n_rounds=n_rounds),
             "strategies": all_results}
 
 
-def _summary(results: dict) -> dict:
-    """Sample-efficiency view: what each strategy reaches under the same budget."""
+def _summary(results: dict, *, budget: int, n_rounds: int) -> dict:
+    """Sample-efficiency view — with the budget each strategy ACTUALLY spent.
+
+    The totals below (`final_cum_n_strong`, `total_beneficial_hits`) are counts, so they
+    scale with how many nominations an arm made. That only stays comparable across arms
+    while every arm fills the same budget, and an arm can quietly fail to: when the LLM
+    hypothesis port returns a handful of substitutions the combinatorial library collapses,
+    the arm nominates ~5 instead of 96, and if a later round finds nothing left it breaks
+    out early with exit code 0.
+
+    This actually happened and the reading it produced was wrong: the `llm` regime's agent
+    arms spent 105 / 197 of 288 while the deterministic comparison spent 288, and the lower
+    totals were written up as "the LLM degrades batch quality". Normalised per nomination
+    the LLM arms were in fact ahead (0.305 vs 0.174 strong/nomination). The information was
+    always in `rounds[].n_nominated`; nothing surfaced it, so nobody looked.
+
+    Hence `budget_spent` / `budget_complete` / the per-nomination rates ride alongside every
+    total, and `plot_campaign` / the CLI mark an incomplete arm instead of tabling it as if
+    it were comparable.
+    """
+    planned = budget * n_rounds
     out = {}
     for name, r in results.items():
         rounds = r["rounds"]
         if not rounds:
             continue
+        spent = sum(x["n_nominated"] for x in rounds)
+        strong = rounds[-1]["cum_n_strong"]
+        hits = sum(x["n_hit_beneficial"] for x in rounds)
         out[name] = {
             "final_cum_top10_max": rounds[-1]["cum_top10_max"],
             "final_cum_top10_mean": rounds[-1]["cum_top10_mean"],
-            "final_cum_n_strong": rounds[-1]["cum_n_strong"],
-            "total_beneficial_hits": sum(x["n_hit_beneficial"] for x in rounds),
+            "final_cum_n_strong": strong,
+            "total_beneficial_hits": hits,
+            "budget_planned": planned,
+            "budget_spent": spent,
+            "budget_complete": spent == planned,
+            "rounds_completed": len(rounds),
+            # Count totals are only comparable at equal budget; these are not.
+            "strong_per_nomination": round(strong / spent, 6) if spent else None,
+            "beneficial_per_nomination": round(hits / spent, 6) if spent else None,
             "cum_top10_max_curve": [x["cum_top10_max"] for x in rounds]}
     return out
+
+
+def incomplete_arms(summary: dict) -> list[str]:
+    """Strategies that did not spend the planned budget — their totals are not comparable."""
+    return sorted(name for name, s in summary.items() if not s.get("budget_complete", True))
 
 
 def plot_campaign(report: dict, path: Path = OUT_FIG) -> None:
@@ -539,9 +573,18 @@ def main(argv: list[str] | None = None) -> dict:
     print(f"[out] {args.out_json}\n[out] {args.out_fig}\n[out] {args.out_events} "
           f"({n_events} events, head {store.head_hash[:12]})")
     for name, s in report["summary"].items():
+        flag = "" if s["budget_complete"] else (
+            f"  ⚠ 只花了 {s['budget_spent']}/{s['budget_planned']} 预算"
+            f"({s['rounds_completed']} 轮) — 下面的 strong/hits 是计数,与满额臂不可比;"
+            f"请改看 strong/提名={s['strong_per_nomination']}")
         print(f"  {name:20s} cum_top10_max={s['final_cum_top10_max']} "
               f"cum_top10_mean={s['final_cum_top10_mean']} strong={s['final_cum_n_strong']} "
-              f"hits={s['total_beneficial_hits']}")
+              f"hits={s['total_beneficial_hits']}{flag}")
+    short = incomplete_arms(report["summary"])
+    if short:
+        print(f"\n  ⚠⚠ 本次对比不是同预算对比:{', '.join(short)} 未花满预算。"
+              f"\n     直接并列 strong / hits 会把「提名次数少」读成「批次质量差」——"
+              f"这个误读已经发生过一次(见 REPORT-HANDOFF §7.14)。")
 
     # Every run appends an immutable entry to the master experiment ledger (never overwritten).
     from evolution.experiment_log import log_run

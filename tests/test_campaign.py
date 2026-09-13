@@ -311,3 +311,42 @@ def test_random_baseline_records_no_prediction_rather_than_a_fake_zero():
     for row in payload["residuals"]:
         assert row["predicted_mean"] is None and row["residual"] is None
         assert row["measured_fitness"] is not None  # 真值照记
+
+
+def test_summary_flags_an_arm_that_did_not_spend_its_budget():
+    """未花满预算的臂必须被标出来,否则计数型指标会被当成质量指标读。
+
+    这条门是为一次真实的误读立的:llm 档两条 agent 策略分别只提名了 105 / 197 次,
+    而对照的 hard 档提名 288 次,于是较低的 strong / hits 被写成了「LLM 让批次质量下降」。
+    按每次提名归一化之后,LLM 臂其实更高(0.305 vs 0.174)。
+    `rounds[].n_nominated` 一直都在,信息没丢——只是没有任何东西提示读者这两列不可比。
+    """
+    from evolution.campaign import _summary, incomplete_arms
+
+    results = {
+        "greedy": {"rounds": [{"n_nominated": 96, "cum_top10_max": 8.0, "cum_top10_mean": 6.0,
+                               "cum_n_strong": 40, "n_hit_beneficial": 60},
+                              {"n_nominated": 96, "cum_top10_max": 8.7, "cum_top10_mean": 6.5,
+                               "cum_n_strong": 80, "n_hit_beneficial": 60}]},
+        # 只跑了一轮、只提名 5 个就断掉的臂(llm 档实际发生过)
+        "agent_no_knowledge": {"rounds": [{"n_nominated": 5, "cum_top10_max": 8.7,
+                                           "cum_top10_mean": 4.5, "cum_n_strong": 3,
+                                           "n_hit_beneficial": 4}]},
+    }
+    summary = _summary(results, budget=96, n_rounds=2)
+
+    assert summary["greedy"]["budget_complete"] is True
+    assert summary["greedy"]["budget_spent"] == 192
+
+    short = summary["agent_no_knowledge"]
+    assert short["budget_complete"] is False
+    assert short["budget_spent"] == 5 and short["budget_planned"] == 192
+    assert short["rounds_completed"] == 1
+    assert incomplete_arms(summary) == ["agent_no_knowledge"]
+
+    # 归一化指标必须同时给出,否则读者手上只有不可比的计数
+    assert short["strong_per_nomination"] == pytest.approx(3 / 5)
+    assert summary["greedy"]["strong_per_nomination"] == pytest.approx(80 / 192)
+    # 正是这个反转:计数上 greedy 高得多,归一化后短臂更高——不标注就会读反
+    assert short["final_cum_n_strong"] < summary["greedy"]["final_cum_n_strong"]
+    assert short["strong_per_nomination"] > summary["greedy"]["strong_per_nomination"]
