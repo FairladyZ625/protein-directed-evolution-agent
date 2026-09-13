@@ -8,7 +8,7 @@
 
 - `report.md`：八章正文、附录与 30 条参考文献。
 - `figures/`：12 张主图与 1 张附图，各含 300 dpi PNG 和 SVG。
-- `evidence/sources.json`：41 项冻结输入的原路径、快照位置和 SHA-256；基础代码为 `80f4447c5f8ee26267e98199e900230459b785b8`。
+- `evidence/sources.json`：44 项冻结输入的原路径、快照位置和 SHA-256；基础代码为 `80f4447c5f8ee26267e98199e900230459b785b8`。
 - `evidence/v08-*`：另行收到的 V0.8 冒烟报告、两臂指标与原始压缩事件；不是基础代码版本生成的实验。
 - `evidence/verification.json`：源文件哈希、V0.8 逐轮集合哈希、残差恒等式、GB1 实际查询、PDF 页数与布局检查。
 - `v07-data-receipt.md`：下一版的数据接收与比较条件。

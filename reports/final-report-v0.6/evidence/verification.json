@@ -1,5 +1,5 @@
 {
-  "snapshot_count": 41,
+  "snapshot_count": 44,
   "v08": {
     "control": {
       "batches": {
@@ -88,6 +88,10 @@
       "agent_no_knowledge": 105,
       "knowledge_agent": 197
     }
+  },
+  "gb1_replication_queries": {
+    "agent_no_knowledge": 5,
+    "knowledge_agent": 5
   },
   "layout_pages": 18,
   "layout_overflow": 0,

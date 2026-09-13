@@ -25,6 +25,9 @@ aud=load('event-audit.json');audit['gb1_actual_queries']={}
 for reg in ['hard','llm']:
  audit['gb1_actual_queries'][reg]={k:sum(x['n'] for x in aud[reg]['nominations'] if x['strategy']==k) for k in ['agent_no_knowledge','knowledge_agent']}
 assert audit['gb1_actual_queries']=={'hard':{'agent_no_knowledge':288,'knowledge_agent':288},'llm':{'agent_no_knowledge':105,'knowledge_agent':197}}
+rep=load('gb1_llm_replication.json')
+audit['gb1_replication_queries']={k:sum(x['n_nominated'] for x in rep['strategies'][k]['rounds']) for k in ['agent_no_knowledge','knowledge_agent']}
+assert list(audit['gb1_replication_queries'].values())==[5,5]
 layout=load('layout-check.json');assert len(layout)==18
 assert all(not x['bad'] and all(i['ok'] for i in x['images']) for x in layout),'Layout overflow / missing image'
 audit['layout_pages']=len(layout);audit['layout_overflow']=0

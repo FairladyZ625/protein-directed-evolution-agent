@@ -246,6 +246,24 @@
       "snapshot": "evidence/v08-reflexion.events.jsonl.gz",
       "sha256": "ad59754e7443e9eb4b74bb477606498c267a6fc97393a6427f4ccafe56d96559",
       "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline"
+    },
+    {
+      "path": "harness/reports/workflow-v1.2/gb1/campaign_llm.metrics.json",
+      "snapshot": "evidence/gb1_llm_replication.json",
+      "sha256": "825bd5f9ecac0e02a6798c7df3222e3e00d63c62017c5f543edbcffed9eb0758",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run"
+    },
+    {
+      "path": "harness/reports/workflow-v1.2/gb1/campaign_llm.events.jsonl",
+      "snapshot": "evidence/gb1_llm_replication.events.jsonl",
+      "sha256": "01734421ce25d895a992e2863d46fad92013e367d352dd496a5ccc3ec6f01710",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/handoff-update-replication.md",
+      "sha256": "c179f04e9ce95b4bed2b6334dba4edcdeb8965895269d126c37ecb458650ddce",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run"
     }
   ]
 }
