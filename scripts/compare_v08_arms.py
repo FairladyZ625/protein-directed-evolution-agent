@@ -43,7 +43,8 @@ def main() -> int:
         print(f"{root} 下没有完成的臂")
         return 1
 
-    print(f"{'臂':36s}{'redirect':12s}{'LLM':>7s}{'墙钟s':>7s}  逐轮批次哈希")
+    print(f"{'臂':36s}{'峰':>8s}{'strong':>7s}  {'采集档':<24s}{'redirect':>8s}  "
+          f"{'LLM':<5s}{'秒':>5s}  逐轮批次哈希")
     batches = {}
     for arm in arms:
         m = json.loads((arm / "agentic.metrics.json").read_text())
@@ -52,8 +53,17 @@ def main() -> int:
         wall = (arm.parent / f"{arm.name}.wall-seconds.txt")
         wall_s = wall.read_text().strip() if wall.exists() else "?"
         digests = " ".join(digest(b[r]) for r in sorted(b))
-        print(f"{arm.name:36s}{str(m.get('redirect_rounds')):12s}"
-              f"{m.get('llm_round_successes')}/{m.get('llm_round_attempts'):<5}{wall_s:>7s}  {digests}")
+        summary = m.get("summary", {})
+        # 采集档位取实际生效值,不取命令行意图 —— 两者曾经不一致(工具层耦合未解),
+        # 那一轮四个臂看起来是 2x2、实际是同一个档位。
+        sources = {e["payload"].get("allocation_source")
+                   for e in m.get("tool_trace", [])
+                   if e.get("event_type") == "agent.tool.compose_batch"}
+        print(f"{arm.name:36s}{summary.get('final_cum_top10_max', 0):8.4f}"
+              f"{summary.get('final_cum_n_strong', 0):7d}  "
+              f"{'/'.join(sorted(s or '?' for s in sources)):<26s}"
+              f"{str(m.get('redirect_rounds')):>8s}  "
+              f"{m.get('llm_round_successes')}/{m.get('llm_round_attempts'):<3}{wall_s:>5s}  {digests}")
 
     # 同一 seed、同一采集档位下,反思开/关是否让批次分叉
     print("\n=== 反思开 vs 关(同 seed、同采集档位)===")
