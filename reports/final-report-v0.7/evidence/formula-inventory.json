@@ -1,0 +1,102 @@
+{
+  "v05_path": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/reports/final-report-v0.5/report.md",
+  "v05_sha256": "776035980dddd3ff5320be5802a9bcafc903dbf92fc3eb6534848753cc7a61f2",
+  "display_blocks": [
+    {
+      "id": 1,
+      "original_tex": "M_t=M_{t-1}\\cup B_t",
+      "restored_location": "L.1",
+      "status": "restored"
+    },
+    {
+      "id": 2,
+      "original_tex": "Q_t=Q_{t-1}\\setminus B_t.",
+      "restored_location": "L.1",
+      "status": "restored"
+    },
+    {
+      "id": 3,
+      "original_tex": "f_{\\mathrm{new}}(T)=\\max_{x\\in S_T} f(x),",
+      "restored_location": "L.1",
+      "status": "restored"
+    },
+    {
+      "id": 4,
+      "original_tex": "f_{\\mathrm{all}}(T)=\\max_{x\\in M_0\\cup S_T} f(x).",
+      "restored_location": "L.1",
+      "status": "restored"
+    },
+    {
+      "id": 5,
+      "original_tex": "\\min_w\\ \\|y-\\Phi w\\|_2^2+\\lambda\\|w\\|_2^2.",
+      "restored_location": "L.1",
+      "status": "restored; Ridge lambda renamed alpha with intercept clarified"
+    },
+    {
+      "id": 6,
+      "original_tex": "\\hat f_{\\mathrm{add}}(x)=b+\\sum_i h_i(x_i),",
+      "restored_location": "L.1",
+      "status": "restored"
+    },
+    {
+      "id": 7,
+      "original_tex": "\\hat f_{\\mathrm{pair}}(x)=\\hat f_{\\mathrm{add}}(x)+\\sum_{i<j}J_{ij}(x_i,x_j).",
+      "restored_location": "L.1",
+      "status": "restored"
+    },
+    {
+      "id": 8,
+      "original_tex": "C_t(x\\mid B)=\\frac{1}{|P(x)|}\\sum_{p\\in P(x)}\\frac{w_p}{1+n_t(p)+n_B(p)}.",
+      "restored_location": "L.2",
+      "status": "restored"
+    },
+    {
+      "id": 9,
+      "original_tex": "\\hat f_{\\mathrm{add}}(ABC)=f_A+f_B+f_C-2f_{WT}",
+      "restored_location": "L.3",
+      "status": "restored"
+    },
+    {
+      "id": 10,
+      "original_tex": "=6.315428.",
+      "restored_location": "L.3",
+      "status": "restored"
+    },
+    {
+      "id": 11,
+      "original_tex": "\\begin{aligned}\\epsilon_{ABC}={}&f_{ABC}-f_{AB}-f_{AC}-f_{BC}\\\\&+f_A+f_B+f_C-f_{WT}.\\end{aligned}",
+      "restored_location": "L.3",
+      "status": "restored"
+    },
+    {
+      "id": 12,
+      "original_tex": "\\Delta f_{\\max}=8.416205-7.828968",
+      "restored_location": "L.3",
+      "status": "historical comparison retained as explanation, not current effect"
+    },
+    {
+      "id": 13,
+      "original_tex": "=0.587237.",
+      "restored_location": "L.3",
+      "status": "historical comparison retained as explanation, not current effect"
+    },
+    {
+      "id": 14,
+      "original_tex": "\\mathrm{EVI}(B)=\\mathbb E_Y[V(D\\cup\\{B,Y\\})]-V(D).",
+      "restored_location": "I",
+      "status": "restored"
+    }
+  ],
+  "inline_restored": [
+    "20^L",
+    "UCB mean plus beta sigma",
+    "structure distance kernel"
+  ],
+  "main_locations": [
+    "chapter2 measured/candidate update",
+    "chapter3 Ridge",
+    "chapter5 GB1 acquisition",
+    "chapter7 additive expectation and deviation"
+  ],
+  "no_new_experiment": true
+}

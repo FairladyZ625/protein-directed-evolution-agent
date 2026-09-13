@@ -1,0 +1,4940 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "knowledge_agent",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 48,
+  "n_rounds": 6,
+  "total_budget": 288,
+  "budget_spent": 288,
+  "strong_threshold": 2.6159,
+  "guardrail": true,
+  "no_knowledge": false,
+  "knowledge_graph_enabled": true,
+  "max_hd": 4,
+  "blosum_min": 0.0,
+  "n_gate_rejected": 0,
+  "gate_pass_pool_size": 2515,
+  "surrogate": "epistasis",
+  "backtrack": "semi",
+  "reflexion": true,
+  "acquisition": "v05",
+  "contract": "v09",
+  "fatal_fitness_threshold": 0.2,
+  "motif_recurrence": [
+    {
+      "round": 2,
+      "n_candidates": 48,
+      "n_with_previous_lethal_motif": 25,
+      "rate": 0.5208333333333334,
+      "previous_lethal_motifs": [
+        "D0K",
+        "E13Q",
+        "E2Q",
+        "L22E",
+        "N21D",
+        "N26D",
+        "N26E",
+        "R27M",
+        "R27Q",
+        "R5S",
+        "T20E",
+        "T6Q",
+        "Y15F"
+      ]
+    },
+    {
+      "round": 3,
+      "n_candidates": 48,
+      "n_with_previous_lethal_motif": 13,
+      "rate": 0.2708333333333333,
+      "previous_lethal_motifs": [
+        "D0Q",
+        "E2Q",
+        "Q14L",
+        "Q23E",
+        "S17A",
+        "S17D",
+        "T12S",
+        "T20D"
+      ]
+    },
+    {
+      "round": 4,
+      "n_candidates": 48,
+      "n_with_previous_lethal_motif": 0,
+      "rate": 0.0,
+      "previous_lethal_motifs": [
+        "A11S",
+        "Q14H",
+        "S17N",
+        "S19G"
+      ]
+    },
+    {
+      "round": 5,
+      "n_candidates": 48,
+      "n_with_previous_lethal_motif": 8,
+      "rate": 0.16666666666666666,
+      "previous_lethal_motifs": [
+        "E2Q",
+        "L22E",
+        "Q23M",
+        "R27W",
+        "S17E",
+        "Y15F",
+        "Y15W"
+      ]
+    },
+    {
+      "round": 6,
+      "n_candidates": 48,
+      "n_with_previous_lethal_motif": 1,
+      "rate": 0.020833333333333332,
+      "previous_lethal_motifs": [
+        "E1D",
+        "L22I",
+        "N21E",
+        "R24A",
+        "R24N",
+        "T6A",
+        "T7V",
+        "V10E"
+      ]
+    }
+  ],
+  "stall_threshold": 2,
+  "redirect_rounds": [],
+  "stall_flag_rounds": [],
+  "top10_max_history": [
+    7.391,
+    8.4162,
+    8.4162,
+    8.4162,
+    8.4162,
+    8.4162
+  ],
+  "llm_used": true,
+  "llm_summary": "Campaign complete: all 288 experiments have been used.\n\nFor the final round, the surrogate remained highly calibrated (`CV Spearman=0.9097`), so I used `exploit_ratio=0.95`. Although the campaign was stalled, I chose exploitation of the validated high-fitness basin over a final basin hop because no alternative cluster had produced a better result. I excluded the accumulated lethal-associated motifs, including the newly supported `E1D`, `L22I`, `N21E`, `R24N`, `T6A`, `T7V`, and `V10E`, while retaining mixed or beneficial motifs such as `R24A`, `S17E`, `D0S`, `E2D`, `N26Q`, `T12S`, `T20E`, and `V10T`.\n\nThe final batch did not improve the campaign best. The best measured variant remains:\n\n- `DEEEIRTTNPVATEQYGSYSTNLQQGNR`: **9.536**\n\nStrong final-round variants included:\n\n- `DEEEIRTTNPVATEEYGD",
+  "agent_model": "gpt-5.6-sol",
+  "llm_round_timeout_seconds": 240.0,
+  "llm_round_attempts": 6,
+  "llm_round_successes": 6,
+  "llm_round_success_rate": 1.0,
+  "llm_timeout_errors": 0,
+  "llm_direct_test_rounds": 6,
+  "llm_no_test_rounds": 0,
+  "llm_round_errors": 0,
+  "n_tool_calls": 42,
+  "summary": {
+    "final_cum_top10_max": 8.4162,
+    "final_cum_top10_mean": 6.7102,
+    "final_cum_n_strong": 160,
+    "cum_top10_max_curve": [
+      7.391,
+      8.4162,
+      8.4162,
+      8.4162,
+      8.4162,
+      8.4162
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 48,
+      "top10_max": 7.391,
+      "top10_mean": 5.4142,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.4142,
+      "n_hit_strong": 26,
+      "cum_n_strong": 26,
+      "top10": [
+        [
+          "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+          7.391
+        ],
+        [
+          "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+          6.0791
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENIQRGNA",
+          5.9988
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+          5.9521
+        ],
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+          5.8728
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+          5.1849
+        ],
+        [
+          "DEEEIATTNPVATEQYGTASTNLQQGNR",
+          4.6066
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQQGTR",
+          4.4885
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQFGDR",
+          4.3496
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+          4.2182
+        ]
+      ],
+      "spent_after": 48
+    },
+    {
+      "round": 2,
+      "n_nominated": 48,
+      "top10_max": 8.4162,
+      "top10_mean": 5.6679,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.5588,
+      "n_hit_strong": 25,
+      "cum_n_strong": 51,
+      "top10": [
+        [
+          "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+          8.4162
+        ],
+        [
+          "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+          7.829
+        ],
+        [
+          "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+          6.5309
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGTR",
+          6.262
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQQGNR",
+          5.2559
+        ],
+        [
+          "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+          4.601
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+          4.6002
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGGR",
+          4.5899
+        ],
+        [
+          "DEDEIRTTNPVATEQYGEASTNLQRGNR",
+          4.3412
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVAINLQRGNR",
+          4.253
+        ]
+      ],
+      "spent_after": 96
+    },
+    {
+      "round": 3,
+      "n_nominated": 48,
+      "top10_max": 5.316,
+      "top10_mean": 4.4434,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.5648,
+      "n_hit_strong": 30,
+      "cum_n_strong": 81,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQRGQR",
+          5.316
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNS",
+          5.0542
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSENLQRGNS",
+          4.7596
+        ],
+        [
+          "DEEEIRTTNPVATEQWGDVSTNLQQGNR",
+          4.6572
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNH",
+          4.4122
+        ],
+        [
+          "DEEEIRTTNPVATEMYGTVSTNLQRGER",
+          4.2553
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVPENLQHGNK",
+          4.102
+        ],
+        [
+          "DEEEIRTTNPVATEQYGGVSTNLQSGNQ",
+          3.9957
+        ],
+        [
+          "DEEEIRTTNPVATEQWGDVSTNLQRGDR",
+          3.9767
+        ],
+        [
+          "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+          3.9054
+        ]
+      ],
+      "spent_after": 144
+    },
+    {
+      "round": 4,
+      "n_nominated": 48,
+      "top10_max": 5.3592,
+      "top10_mean": 4.6775,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.5691,
+      "n_hit_strong": 28,
+      "cum_n_strong": 109,
+      "top10": [
+        [
+          "DEEEIRTTNPVATESYGTVSENLQRGNR",
+          5.3592
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVNENLQQGNR",
+          5.0381
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQKGNR",
+          5.0045
+        ],
+        [
+          "DEEEIRTTNPVATEQWGIVSTNLQQGNR",
+          4.8863
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSDNLQQGNR",
+          4.7579
+        ],
+        [
+          "DEEEIRCTNPVATEQYGEVATNLQRGNH",
+          4.595
+        ],
+        [
+          "DEEEIRTTNPVASEQYGEVSTNLQRGGR",
+          4.4171
+        ],
+        [
+          "DEQEIRTTNPVATEQYGEVSTNLQRGNM",
+          4.292
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEMSTNLQRGQR",
+          4.2308
+        ],
+        [
+          "VEEELRTTNPVATEQYGSVATNLQRGNQ",
+          4.1944
+        ]
+      ],
+      "spent_after": 192
+    },
+    {
+      "round": 5,
+      "n_nominated": 48,
+      "top10_max": 6.6876,
+      "top10_mean": 5.1822,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.7102,
+      "n_hit_strong": 27,
+      "cum_n_strong": 136,
+      "top10": [
+        [
+          "SEEEIRTTNPTATEQYGEVSTNLQRGNR",
+          6.6876
+        ],
+        [
+          "DEEEIRTTNPVASEQYGEVSTNLQAGNR",
+          5.9554
+        ],
+        [
+          "SEDEIRTTNPVATEQYGSVSENLQRGNR",
+          5.6122
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSENLQRGQR",
+          5.387
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDASTNLQRGQR",
+          5.0969
+        ],
+        [
+          "SEEEIRTTNPVATEQYGGVSENLQQGNR",
+          5.0499
+        ],
+        [
+          "EEEEIRTTNPVATDQYGEVPTNLQRGNR",
+          4.9126
+        ],
+        [
+          "DEEEIRTTNPVATEQYGGISDNLQRGNR",
+          4.5702
+        ],
+        [
+          "SEEEIRTTNPVATEMYGSVSTNLQQGNR",
+          4.2851
+        ],
+        [
+          "NEEEIRTTNPVATEQYGEVSTNLQTGNR",
+          4.2655
+        ]
+      ],
+      "spent_after": 240
+    },
+    {
+      "round": 6,
+      "n_nominated": 48,
+      "top10_max": 5.829,
+      "top10_mean": 4.7287,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.7102,
+      "n_hit_strong": 24,
+      "cum_n_strong": 160,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEEYGDVSENLQRGNR",
+          5.829
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTNLQRGDA",
+          5.4012
+        ],
+        [
+          "NEEEIRTTNPVASEQYGDVSTNLQRGNR",
+          5.1861
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQHGER",
+          4.9238
+        ],
+        [
+          "AEEEIRTTNPVATEQYGEISTNLQRGNR",
+          4.5143
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSTNLQAGNA",
+          4.5017
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDASTNLQRGNQ",
+          4.4022
+        ],
+        [
+          "DEEEVRTTNPVATEQYGSVSTNLQQMNR",
+          4.3277
+        ],
+        [
+          "DESEINTTNPVATEQYGDVSTNLQRGNR",
+          4.1514
+        ],
+        [
+          "DEEEIATTNPVATEQYGSASTNLQRGQQ",
+          4.0499
+        ]
+      ],
+      "spent_after": 288
+    }
+  ],
+  "nominations": [
+    {
+      "round": 1,
+      "variants": [
+        [
+          "DEEEIATTNPTATEQFGSVSTNLQQGNR",
+          3.39399568708
+        ],
+        [
+          "DEEEIATTNPTATEQYGSVSTNVQRGDR",
+          2.3296998107
+        ],
+        [
+          "DEEEIATTNPVATEMFGSVSENLQRGNR",
+          2.90445897122
+        ],
+        [
+          "DEEEIATTNPVATEQYGDVATNLQRGNR",
+          1.83038044025
+        ],
+        [
+          "DEEEIATTNPVATEQYGTASTNLQQGNR",
+          4.60660083607
+        ],
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+          5.87276892038
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSEDLQHGNR",
+          2.448891071
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTDLQHGER",
+          2.02143397742
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTDLQHGNT",
+          1.94209638081
+        ],
+        [
+          "DEEEIRTTNPAATEQFGSVSENLQQGNR",
+          2.45437522856
+        ],
+        [
+          "DEEEIRTTNPTATEQFGSVSTNLQVGTR",
+          1.66309197871
+        ],
+        [
+          "DEEEIRTTNPVATECWGSVSTNLQRGDQ",
+          1.5003180484099998
+        ],
+        [
+          "DEEEIRTTNPVATEQFGGVSENLQQGNR",
+          2.60731910436
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSEDLQRGNF",
+          2.0829070182
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENEQQGNR",
+          3.60999320262
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENEQRGDR",
+          -0.3477180152269999
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQFGDR",
+          4.34959402601
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQRFDR",
+          3.86873554141
+        ],
+        [
+          "DEEEIRTTNPVATEQFGTVSENLQRGNF",
+          3.84211092082
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLMRGNA",
+          2.84268260172
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+          4.21817875349
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTNLMRGNA",
+          2.1969898964400003
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVTENLQRGNM",
+          2.22368156165
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGDR",
+          4.19887960376
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDYSTNLQQGNR",
+          3.1549858593
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+          5.95213756811
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+          5.184858233469999
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+          4.08771894101
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENIQRGNA",
+          5.9987682548
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+          2.86589824367
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVGNNLQRGTQ",
+          3.2321985370200004
+        ],
+        [
+          "DEEEIRTTNPVSTEQFGSVSTNLQRGDF",
+          2.0020596774
+        ],
+        [
+          "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+          6.0790601727
+        ],
+        [
+          "DEEEISQTNPVATEQYGSVSTDLQRGNQ",
+          -0.223543999307
+        ],
+        [
+          "DEEEISTTNPVATEQYGSMSTELQRGER",
+          0.994377600074
+        ],
+        [
+          "DEEEVRAVNPVATEQYGSVSTNLQRGNQ",
+          0.728277909597
+        ],
+        [
+          "DEHEIRTTNPVATEQYGSVSDNLQRGNQ",
+          3.42429454577
+        ],
+        [
+          "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+          7.39100378895
+        ],
+        [
+          "DEQEIATTNPVATEQYGSVSTDLQRGER",
+          2.74350776332
+        ],
+        [
+          "DEQEIRTTNPVATEQWGSVSENLQRGNM",
+          3.66780705328
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLERGNN",
+          1.97923971674
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLQRGNM",
+          2.06188018254
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTNLQNGNN",
+          2.09355552605
+        ],
+        [
+          "KEEEIRTTNPVATQQYGSVSTDLQRGER",
+          -1.01805962755
+        ],
+        [
+          "KEQEIRTTNPVATEQYGSVSTDLQRGNM",
+          -0.149848356941
+        ],
+        [
+          "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+          3.91150032309
+        ],
+        [
+          "NEEEVATTNPVATEQYGSVSTNLQRGNQ",
+          2.92638715681
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQQGTR",
+          4.48853145128
+        ]
+      ]
+    },
+    {
+      "round": 2,
+      "variants": [
+        [
+          "DDEEIRTTNPVATEQYGSCSTNLQNGNA",
+          1.59258517942
+        ],
+        [
+          "DDEEIRTTNPVATEQYGSVSENVQRGNR",
+          2.22144385228
+        ],
+        [
+          "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+          6.53091633888
+        ],
+        [
+          "DEDEIATTNPVATEQYGEVSTNLQRGNR",
+          3.5667719587300004
+        ],
+        [
+          "DEDEIRTTNPVATEQYGEASTNLQRGNR",
+          4.341167516650001
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVATNLQRGNR",
+          4.205002616580001
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQHGNR",
+          3.74217462877
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGGR",
+          4.5898953136400005
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+          4.6001657046
+        ],
+        [
+          "DEEEIRATNPAATEQYGSVSTNLQQGNR",
+          1.02533296797
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTNLQHGGR",
+          3.699089712
+        ],
+        [
+          "DEEEIRCTNPVCTEQYGSVSDNIQRGNR",
+          3.2244307563800003
+        ],
+        [
+          "DEEEIRSTNPVATEQYGSVSDNIQRGNR",
+          2.55300475775
+        ],
+        [
+          "DEEEIRTTNPCATEQYGSASENLERGNR",
+          0.8393528677140001
+        ],
+        [
+          "DEEEIRTTNPVASELYGAVSTNLERGNR",
+          -2.49811835621
+        ],
+        [
+          "DEEEIRTTNPVATEHYGSVGTNLQHGNR",
+          3.30680938358
+        ],
+        [
+          "DEEEIRTTNPVATENYGEVSTNLQHGNR",
+          4.23636700397
+        ],
+        [
+          "DEEEIRTTNPVATEQFGDVSTNLQRGNI",
+          3.6276444831
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVATNLQIGNR",
+          3.18625984227
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQMGNR",
+          2.964414550521333
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSTNLQQGNN",
+          2.30204979696
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTELQRGNM",
+          2.12848269076
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTNLMRGDR",
+          1.24279068364
+        ],
+        [
+          "DEEEIRTTNPVATEQYGCVSTNLQQGNH",
+          1.9472690803
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVAINLQRGNR",
+          4.25298808638
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGTR",
+          6.26196793591
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVATNLQRGEM",
+          2.39931414491
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGDR",
+          3.18663197645
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTQLQRGQR",
+          4.21557972464
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSTSMNLERGDR",
+          2.0952145323099995
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDNLMQGNR",
+          2.83843927548
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQQGNN",
+          1.4712133585299998
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLQQGEH",
+          1.22378733465
+        ],
+        [
+          "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+          4.60100407249
+        ],
+        [
+          "DEEEIRTVNPVATEMYGTVSTNLQHGNR",
+          2.75038002052
+        ],
+        [
+          "DEEEISTTNPVATEQYGNVSTNLQRGTQ",
+          3.31271930285
+        ],
+        [
+          "DEEEVRTTNPVATEQYGSVSDNLQSGNR",
+          1.7301095292099995
+        ],
+        [
+          "DENEIRTTNPVATEQYGSVDTNLMRGNQ",
+          1.1961523867
+        ],
+        [
+          "DENEIRTTNPVATEQYGSVSTNLERGTL",
+          1.37098440702
+        ],
+        [
+          "DENEIRTTNPVATEQYGVVSTNLERGNR",
+          1.6533410890399998
+        ],
+        [
+          "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+          7.828967551339999
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSASENLQRGNR",
+          0.7684112173326376
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTNLQRGPQ",
+          1.80483985425
+        ],
+        [
+          "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+          8.416205130560002
+        ],
+        [
+          "QEEEIRTTNPVATEQYGSVSANLQQGNH",
+          2.4300781541900003
+        ],
+        [
+          "QEQEIRTTNPVATEQYGDVSDNLQRGNR",
+          0.0248266703498
+        ],
+        [
+          "SEEEIRTTNPIATEQYGSVSTNLQRGNF",
+          2.41523683466
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQQGNR",
+          5.25591491884
+        ]
+      ]
+    },
+    {
+      "round": 3,
+      "variants": [
+        [
+          "DDEEIRTTNPVATEQYGSASTNLQQGNR",
+          2.45868387934
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSASTNLQRGNQ",
+          3.8970268353199993
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSENLQRGNS",
+          4.75956575224
+        ],
+        [
+          "DEEEIATTNPVSTEQYGEVSTNLQRGNR",
+          3.081698996988779
+        ],
+        [
+          "DEEEICTTNPVATEQFGSVSTNLQRGNQ",
+          3.0305959179900004
+        ],
+        [
+          "DEEEIGTTNPVSTEQYGEVSTNLQQGNR",
+          3.39792694954
+        ],
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGNR",
+          1.4061776063
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTELQRGER",
+          1.95857233051
+        ],
+        [
+          "DEEEIRSTNPVATEQYGSVSTNLQNGNA",
+          2.75656244408
+        ],
+        [
+          "DEEEIRTTNPAATEQYGEVSTNLQQGNR",
+          3.77050575595
+        ],
+        [
+          "DEEEIRTTNPTATEQFGSVSTNLQFGNN",
+          1.5949798949899998
+        ],
+        [
+          "DEEEIRTTNPVATDQYGSVSENLQRGNH",
+          2.03344485825
+        ],
+        [
+          "DEEEIRTTNPVATEHYGNVGTNLQRGNR",
+          0.463141774903
+        ],
+        [
+          "DEEEIRTTNPVATEMYGSVSNELQRGER",
+          1.80221018421
+        ],
+        [
+          "DEEEIRTTNPVATEMYGTVSTNLQRGER",
+          4.25534706379
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQRGMK",
+          2.4595431370400003
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQRGQR",
+          5.31599584609
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSNNLQHGNR",
+          2.29458679857
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSTNLQSGNN",
+          2.27350489555
+        ],
+        [
+          "DEEEIRTTNPVATEQWGDVSTNLQQGNR",
+          4.65723164763
+        ],
+        [
+          "DEEEIRTTNPVATEQWGDVSTNLQRGDR",
+          3.97673016623
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNH",
+          4.4121728197
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNS",
+          5.05417950356
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTNLMQGNQ",
+          3.16204761457
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQQGNR",
+          3.7225721754
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLMQGNR",
+          2.94349689973
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQRGEN",
+          2.76917496205
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQRGQN",
+          3.05034337933
+        ],
+        [
+          "DEEEIRTTNPVATEQYGGVSTNLQSGNQ",
+          3.99568385425
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVPENLQHGNK",
+          4.1019671951
+        ],
+        [
+          "DEEEIRTTNPVAVEQYGSVSENLQRGNQ",
+          2.66001763355
+        ],
+        [
+          "DEEEIRTTNPVSSEQYGSVSTNLQHGNR",
+          2.49808116112
+        ],
+        [
+          "DEEEIRTTNPVSSEQYGTVSTNLQRGTR",
+          1.10260370434
+        ],
+        [
+          "DEEEIRTTNPVSTEHYGNVGTNLQRGNR",
+          -0.148192504516
+        ],
+        [
+          "DEEEIRTTNPVSTEQYGSVSTNLQQGTR",
+          3.4421071481400003
+        ],
+        [
+          "DEEEIRTVNPVATEMYGDVSTNLQQGNR",
+          1.50628143276
+        ],
+        [
+          "DENEIRTTNPVATEQWGSVSTNLQRGNM",
+          3.74580754442
+        ],
+        [
+          "DEQEIATTNPVATEQYGSVSDNLQRGNR",
+          2.69434512541
+        ],
+        [
+          "DEQEIATTNPVATEQYGSVSNNLQRGNR",
+          2.77704336745
+        ],
+        [
+          "NEEEIRTTNPVSTEQYGIVSTNLQRGNR",
+          0.99102491719
+        ],
+        [
+          "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+          3.90542285637
+        ],
+        [
+          "QEQEIRTTNPVATEQYGEVSDNLQRGNR",
+          2.52884172977
+        ],
+        [
+          "SEEEIRTTNPVATEQFGEVSTNLQSGNR",
+          2.22310055412
+        ],
+        [
+          "SEEEIRTTNPVATEQFGSVSENLQRGNR",
+          2.2842671165
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVATNLQQGMR",
+          2.93736987108
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSTNLQHGTR",
+          2.95646403894
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSTNLQRGTE",
+          3.87466845329
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSTNLQRGTN",
+          3.1401620988
+        ]
+      ]
+    },
+    {
+      "round": 4,
+      "variants": [
+        [
+          "DDEEIRQTNPVATEQYGSVSTNLQRGNQ",
+          3.06045021648
+        ],
+        [
+          "DEDEIRTTNPVATECYGSVSTNLQRGDR",
+          2.5604347502
+        ],
+        [
+          "DEEEIATTNPVATEQYGGVSTNLQQGNR",
+          3.50284987059
+        ],
+        [
+          "DEEEIRCTNPVATEQWGSVSENLQQGNR",
+          2.97191826815
+        ],
+        [
+          "DEEEIRCTNPVATEQYGEVATNLQRGNH",
+          4.59504531047
+        ],
+        [
+          "DEEEIRTTNPIATEQYGSVATNLQRGNF",
+          1.38336737081
+        ],
+        [
+          "DEEEIRTTNPVASEQYGEVSTNLQRGGR",
+          4.417127013430001
+        ],
+        [
+          "DEEEIRTTNPVATEMYGSVSENLQRGDR",
+          0.972578994082
+        ],
+        [
+          "DEEEIRTTNPVATENYGAVSNNLQRGNQ",
+          3.77386780719
+        ],
+        [
+          "DEEEIRTTNPVATEQFGEVSTNEQRGNR",
+          -0.598174576418
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSTNLQRGMM",
+          3.635715089080001
+        ],
+        [
+          "DEEEIRTTNPVATEQWGDVSENLMRGNR",
+          1.49464012977
+        ],
+        [
+          "DEEEIRTTNPVATEQWGDVSTNLMRGNR",
+          0.8626310031659999
+        ],
+        [
+          "DEEEIRTTNPVATEQWGIVSENLQQGNR",
+          2.87658184222
+        ],
+        [
+          "DEEEIRTTNPVATEQWGIVSTNLQQGNR",
+          4.886336880330001
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVDTNLQGGNR",
+          2.16895379311
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNA",
+          3.5937250709699997
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTNLMQGNW",
+          0.651610871966
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTNLQQGNF",
+          1.69823769025
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTNLQQGNM",
+          1.65084956704
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQKGNR",
+          5.0045050815300005
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLMRGNQ",
+          3.0868787766900003
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEMSTNLQRGQR",
+          4.23078822481
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSDNLQQGER",
+          1.37252827073
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSADSNLQRGNR",
+          1.49245711774
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSMSENLQRGNQ",
+          3.44794754552
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLMRGDR",
+          2.25876225931
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQHGNQ",
+          3.2554248180000003
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSESLQRGGR",
+          2.9111258305
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLQQGEQ",
+          1.65126471997
+        ],
+        [
+          "DEEEIRTTNPVATEQYGTVSTELQHGNR",
+          1.8063577811
+        ],
+        [
+          "DEEEIRTTNPVATESYGTVSENLQRGNR",
+          5.35917549622
+        ],
+        [
+          "DEEEIRTTNPVCTEQYGEVSTNLQRGER",
+          3.69247260782
+        ],
+        [
+          "DEEEIRTVNPVATEQYGSVSENIQRGNR",
+          2.68319957155
+        ],
+        [
+          "DEEEIRTVNPVATEQYGSVSTNLMHGNR",
+          3.56053571916
+        ],
+        [
+          "DEEEISTTNPVATEQYGDVSTNLMRGNQ",
+          2.18512625961
+        ],
+        [
+          "DEEEVRSTNPVATEQYGSVSTNLQRGNQ",
+          1.58919367058
+        ],
+        [
+          "DEQEIATTNPVATEQYGEVSTNLQRGNR",
+          3.5344399729800005
+        ],
+        [
+          "DEQEIATTNPVATEQYGSVSTNLQQGNY",
+          1.9638857569
+        ],
+        [
+          "DEQEIRTTNPVATEQWGSVSTNLMRGNW",
+          -1.232247536306112
+        ],
+        [
+          "DEQEIRTTNPVATEQWGSVSTNLQQGNW",
+          2.75544011574
+        ],
+        [
+          "DEQEIRTTNPVATEQYGEVSTNLQRGNM",
+          4.29195427458
+        ],
+        [
+          "NEEEIRTTNPVATESYGSVSTNLQHGNQ",
+          2.92840437283
+        ],
+        [
+          "QEEEIRTTNPVATEQYGSASTNLQRGER",
+          3.04924376087
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVNENLQQGNR",
+          5.0380788041
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSDNLQQGNR",
+          4.75785134582
+        ],
+        [
+          "VEEEIRSTNPVATEQYGSVATNLQRGNQ",
+          2.1701314461003554
+        ],
+        [
+          "VEEELRTTNPVATEQYGSVATNLQRGNQ",
+          4.19441050896
+        ]
+      ]
+    },
+    {
+      "round": 5,
+      "variants": [
+        [
+          "ADEEIRTTNPVATEQYGEVSTNLQRGNR",
+          2.8879076544
+        ],
+        [
+          "DDEEIRATNPVATEQYGSVSTNLQRGNM",
+          2.98433292992
+        ],
+        [
+          "DDEEIRTTNPEATEQYGSVSTNIQAGNR",
+          -2.6301482060668517
+        ],
+        [
+          "DDEEIRTTNPVATEQYGAVSTNLQVGNR",
+          2.64324265781
+        ],
+        [
+          "DDEEIRTTNPVATEQYGSVSTNLQHGND",
+          1.94273392319
+        ],
+        [
+          "DEAEIRTTNPVATEQYGQVSDNIQRGNR",
+          1.81934996607
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSENLQRGQR",
+          5.387000670319999
+        ],
+        [
+          "DEDEISTTNPVATEQYGSVSENLQRGNR",
+          3.14589920435
+        ],
+        [
+          "DEEEIATTNPVATEMYGGVSTNLQQGNR",
+          2.7007196690400006
+        ],
+        [
+          "DEEEIATTNPVATEQYGSVSTNLQQGER",
+          1.78832478595
+        ],
+        [
+          "DEEEIHTTNPVATEQYGEVSTNLQQGNR",
+          3.06265353106
+        ],
+        [
+          "DEEEIRATNPVATEMYGSVSTNLQNGNR",
+          3.96516230886
+        ],
+        [
+          "DEEEIRATNPVATEQYGSMSTNLQRGNM",
+          3.92490308237
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSAGLQRGDR",
+          2.07374575321
+        ],
+        [
+          "DEEEIRAVNPVATEQYGSVSTELQNGNR",
+          -1.9810933011900005
+        ],
+        [
+          "DEEEIRSTNPVASEQYGTVSTNLQVGNR",
+          3.31726543273
+        ],
+        [
+          "DEEEIRTTNPTATEQYGSVATNLQHGNR",
+          1.94890700903
+        ],
+        [
+          "DEEEIRTTNPTATEQYGSVSTNLQQGNA",
+          3.23352006221
+        ],
+        [
+          "DEEEIRTTNPVASEQYGEVSTNLQAGNR",
+          5.95535125617
+        ],
+        [
+          "DEEEIRTTNPVATDQYGEVSENIQRGNR",
+          3.44715519626
+        ],
+        [
+          "DEEEIRTTNPVATEQYGCVSTNLQRGDQ",
+          2.38339575204
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDASTNLQRGQR",
+          5.09694891454
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNVQTGNR",
+          3.58415039444
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTQLQRNNE",
+          2.16415557998
+        ],
+        [
+          "DEEEIRTTNPVATEQYGGISDNLQRGNR",
+          4.57017477477
+        ],
+        [
+          "DEEEIRTTNPVATEQYGGVSNQLQRGTR",
+          0.630131884341
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDELQRGNQ",
+          2.101245269852804
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQRGDH",
+          3.26432189983
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLMQGNA",
+          1.59052230349
+        ],
+        [
+          "DEEEIRTTNPVATETYGSVSTNLQRGTQ",
+          3.5270234889300003
+        ],
+        [
+          "DEEEIRTVNPVATEQYGSVATNLQRGNQ",
+          3.23553452317
+        ],
+        [
+          "DEEEIRTVNPVATEQYGSVSTELQRGER",
+          3.11806481351
+        ],
+        [
+          "DEEEVRTTNPVATEQYGVVSNNLQRGNR",
+          1.82614509739
+        ],
+        [
+          "DEEEVRTVNPVATEQYGSVSTNLQVGNR",
+          3.11397357286
+        ],
+        [
+          "EEEEIRTTNPVATDQYGEVPTNLQRGNR",
+          4.91259202004
+        ],
+        [
+          "EEEEIRTTNPVATEQYGSVSDNLQRGNS",
+          1.32424081999
+        ],
+        [
+          "GEEEIRTVNPVATEQYGSVATNLQRGNQ",
+          2.22932785703
+        ],
+        [
+          "GEEEVRTTNPVATEQYGSVSTNLQRGNQ",
+          1.92959127061
+        ],
+        [
+          "NEEEIRTTNPVATEQYGEVSTNLQTGNR",
+          4.26552661712
+        ],
+        [
+          "QEEEIRTTNPVATEQYGSASTNLQRGGR",
+          0.987946552075
+        ],
+        [
+          "QEEEIRTTNPVATEQYGSVSTNIQHGGR",
+          1.19339822691
+        ],
+        [
+          "QEEEIRTTNPVATEQYGTVSDNLQRGNR",
+          2.47158919785
+        ],
+        [
+          "SEDEIRTTNPVATEQYGSVSENLQRGNR",
+          5.61221444253
+        ],
+        [
+          "SEEEIRTTNPTATEQYGEVSTNLQRGNR",
+          6.68756447347
+        ],
+        [
+          "SEEEIRTTNPTATEQYGSVSTNLQQGNR",
+          2.3993185679700004
+        ],
+        [
+          "SEEEIRTTNPVATEMYGSVSTNLQQGNR",
+          4.28508529192
+        ],
+        [
+          "SEEEIRTTNPVATEQYGGVSENLQQGNR",
+          5.04994251068
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVETNLQQGNR",
+          1.72520346336
+        ]
+      ]
+    },
+    {
+      "round": 6,
+      "variants": [
+        [
+          "AEEEIRTTNPVATEQYGEISTNLQRGNR",
+          4.5143178849000005
+        ],
+        [
+          "DEDEIATTNPVATESYGSVSTNLQRGNR",
+          0.592231072001
+        ],
+        [
+          "DEDEIATTNPVATETYGTVSTNLQRGNR",
+          0.555024181565
+        ],
+        [
+          "DEDEIRTTNPVATEQYGSVSTNLQAGNA",
+          4.50170092541
+        ],
+        [
+          "DEEEIATTNPVATEMYGSVSVNLQQGNR",
+          2.76964923544
+        ],
+        [
+          "DEEEIATTNPVATEQYGSASTNLQRGQQ",
+          4.04990537053
+        ],
+        [
+          "DEEEIRCTNPACTEQYGSVSTNLQQGNR",
+          -1.0590958132
+        ],
+        [
+          "DEEEIRCTNPVASEQYGSVSTNLQHGNR",
+          2.5391962264
+        ],
+        [
+          "DEEEIRTTNPAATEMYGSVSTNLQQGNR",
+          1.36979887248
+        ],
+        [
+          "DEEEIRTTNPVASEQYGDVSTNLDRGNR",
+          0.148021440569
+        ],
+        [
+          "DEEEIRTTNPVASEQYGSVANNLQRGMR",
+          1.11264343304
+        ],
+        [
+          "DEEEIRTTNPVATEEYGDVSENLQRGNR",
+          5.82904053494
+        ],
+        [
+          "DEEEIRTTNPVATEMYGEVSANLQRGNR",
+          3.54417861441
+        ],
+        [
+          "DEEEIRTTNPVATENYGSVSTNLQRGTQ",
+          3.28729776899
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDASTNLQRGNQ",
+          4.402247241273463
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDASTNLQRGQQ",
+          4.0352646023
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQHGER",
+          4.9237868459800005
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQHGQR",
+          3.81245305685
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTNLQRGEK",
+          2.94199509951
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSTQLQRNNR",
+          0.268562869487
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTNFQHGNR",
+          3.214706962567785
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTNLQRGDA",
+          5.401217798459999
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVTTNLQRGER",
+          3.6962472844
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVPTNLQRGDN",
+          2.10572525834
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLQMGEQ",
+          1.0388794998
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLQQGDH",
+          0.718535110703
+        ],
+        [
+          "DEEEIRTTNPVATQQYGDVSENLQRGNR",
+          -2.18983835545
+        ],
+        [
+          "DEEEIRTTNPVCTEQYGDVSTNLQHGNR",
+          2.82229996842
+        ],
+        [
+          "DEEEISSTNPVATEQYGDVSTNLQRGNR",
+          0.4810922446149999
+        ],
+        [
+          "DEEEISTTNPVATEQYGSVSENLQKGNR",
+          2.09166099788
+        ],
+        [
+          "DEEELATTNPVATEQYGSVSTNLQHGER",
+          1.5676508027200002
+        ],
+        [
+          "DEEELRTTNPVATEQYGSVSENLQRGGR",
+          2.6128112262400003
+        ],
+        [
+          "DEEELRTTNPVATEQYGSVSTNLTRGNQ",
+          1.36995364871
+        ],
+        [
+          "DEEEVRTTNPVATEQYGSVSTNLQMGNL",
+          2.66476492043
+        ],
+        [
+          "DEEEVRTTNPVATEQYGSVSTNLQQMNR",
+          4.327685069469999
+        ],
+        [
+          "DEHEIRTTNPVCTEQYGSVSTNLQRGNQ",
+          1.82215722253
+        ],
+        [
+          "DENEIATTNPVATEQYGSVSTNLQQGNR",
+          2.9977029302900005
+        ],
+        [
+          "DENEIRTTNPVATEQYGEVSTNLQRGER",
+          2.00380642666
+        ],
+        [
+          "DENEIRTTNPVATEQYGSASTNLDRGNR",
+          2.05103440046
+        ],
+        [
+          "DENEIRTTNPVATEQYGSVSENLQQGNR",
+          2.3767540745099995
+        ],
+        [
+          "DESEINTTNPVATEQYGDVSTNLQRGNR",
+          4.15140759852
+        ],
+        [
+          "DETEIRTTNPVATEQYGSVATTLQRGNR",
+          1.82244234418
+        ],
+        [
+          "NEEEIRTTNPVASEQYGDVSTNLQRGNR",
+          5.186117768430001
+        ],
+        [
+          "QEEEIRTTNPVATEQYGSVSTNLQHGNQ",
+          3.176350725859999
+        ],
+        [
+          "SEDEIRTTNPVATEQYGSVSTNLQTGNR",
+          2.8638365885900003
+        ],
+        [
+          "SEEEIRTTNPAATEQYGSVSTNLQRGTE",
+          2.0195254994400003
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSASTNLQEGNR",
+          1.79446856779
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQRGNQ",
+          3.7366959771
+        ]
+      ]
+    }
+  ],
+  "tool_trace": [
+    {
+      "event_type": "agent.llm.model",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "agent",
+      "payload": {
+        "model": "gpt-5.6-sol",
+        "base_url": "https://token.qianbaner.top/v1",
+        "llm_timeout_s": 240.0
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 288,
+        "current_round": "1 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9059,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [],
+          "rounds_since_improvement": 0,
+          "redirect_rounds_so_far": [],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEEEIRTTNPVATEQYGSASENIQRGNA",
+            "rationale": "KG: V18A (n=78, measured-association mean=0.865, max=8.078; target properties: charge=0, size=small, polarity=nonpolar); T20E (n=172, measured-association mean=2.784, max=8.645; target properties: charge=-1, size=medium, polarity=polar); L22I (n=45, measured-association mean=0.210, max=5.811; target properties: charge=0, size=large, polarity=nonpolar); R27A (n=103, measured-association mean=2.008, max=6.478; target properties: charge=0, size=small, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+            "rationale": "KG: S17E (n=78, measured-association mean=2.686, max=7.636; target properties: charge=-1, size=medium, polarity=polar); V18A (n=78, measured-association mean=0.865, max=8.078; target properties: charge=0, size=small, polarity=nonpolar); S19A (n=77, measured-association mean=0.036, max=6.637; target properties: charge=0, size=small, polarity=nonpolar); N26G (n=48, measured-association mean=0.539, max=5.925; target properties: charge=0, size=small, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+            "rationale": "KG: V18A (n=78, measured-association mean=0.865, max=8.078; target properties: charge=0, size=small, polarity=nonpolar); T20E (n=172, measured-association mean=2.784, max=8.645; target properties: charge=-1, size=medium, polarity=polar); R24H (n=101, measured-association mean=2.056, max=6.007; target properties: charge=0, size=medium, polarity=polar); R27Q (n=98, measured-association mean=2.501, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.85,
+        "exploit_ratio": 0.85,
+        "adaptive_default_ratio": 0.8707,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [],
+        "n_excluded": 0,
+        "n_eligible_after_exclusion": 2515,
+        "n_exploit": 41,
+        "n_explore": 7,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 48,
+        "batch_max": 7.391,
+        "cum_top10_max": 7.391
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DEEEIATTNPTATEQFGSVSTNLQQGNR",
+            "predicted_mean": 11.184376359207395,
+            "predicted_var": 7.6514884771655005,
+            "measured_fitness": 3.39399568708,
+            "residual": -7.7903806721273945
+          },
+          {
+            "seq": "DEEEIATTNPTATEQYGSVSTNVQRGDR",
+            "predicted_mean": 7.64212268296269,
+            "predicted_var": 6.428808927600191,
+            "measured_fitness": 2.3296998107,
+            "residual": -5.312422872262689
+          },
+          {
+            "seq": "DEEEIATTNPVATEMFGSVSENLQRGNR",
+            "predicted_mean": 8.294848043514179,
+            "predicted_var": 1.9413912186731037,
+            "measured_fitness": 2.90445897122,
+            "residual": -5.3903890722941785
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGDVATNLQRGNR",
+            "predicted_mean": 7.900791202730733,
+            "predicted_var": 2.70022802481749,
+            "measured_fitness": 1.83038044025,
+            "residual": -6.0704107624807335
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGTASTNLQQGNR",
+            "predicted_mean": 7.822376247236594,
+            "predicted_var": 0.6690489789381776,
+            "measured_fitness": 4.60660083607,
+            "residual": -3.215775411166594
+          },
+          {
+            "seq": "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+            "predicted_mean": 7.058751921550208,
+            "predicted_var": 3.834852159246651,
+            "measured_fitness": 5.87276892038,
+            "residual": -1.1859830011702073
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSEDLQHGNR",
+            "predicted_mean": 8.240974977991801,
+            "predicted_var": 1.5639684542568013,
+            "measured_fitness": 2.448891071,
+            "residual": -5.792083906991801
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSTDLQHGER",
+            "predicted_mean": 8.159766053199316,
+            "predicted_var": 2.853611684677696,
+            "measured_fitness": 2.02143397742,
+            "residual": -6.138332075779316
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSTDLQHGNT",
+            "predicted_mean": 6.230017161954571,
+            "predicted_var": 7.364812941383216,
+            "measured_fitness": 1.94209638081,
+            "residual": -4.287920781144571
+          },
+          {
+            "seq": "DEEEIRTTNPAATEQFGSVSENLQQGNR",
+            "predicted_mean": 7.912045130400671,
+            "predicted_var": 7.804282803406637,
+            "measured_fitness": 2.45437522856,
+            "residual": -5.457669901840671
+          },
+          {
+            "seq": "DEEEIRTTNPTATEQFGSVSTNLQVGTR",
+            "predicted_mean": 8.22666015324545,
+            "predicted_var": 5.179686575045625,
+            "measured_fitness": 1.66309197871,
+            "residual": -6.563568174535451
+          },
+          {
+            "seq": "DEEEIRTTNPVATECWGSVSTNLQRGDQ",
+            "predicted_mean": 8.34361242426072,
+            "predicted_var": 4.838478856479303,
+            "measured_fitness": 1.5003180484099998,
+            "residual": -6.84329437585072
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGGVSENLQQGNR",
+            "predicted_mean": 8.58163815199384,
+            "predicted_var": 2.711606849653883,
+            "measured_fitness": 2.60731910436,
+            "residual": -5.9743190476338395
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSEDLQRGNF",
+            "predicted_mean": 10.751685487281996,
+            "predicted_var": 5.681621575104553,
+            "measured_fitness": 2.0829070182,
+            "residual": -8.668778469081996
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENEQQGNR",
+            "predicted_mean": 4.0421874135432745,
+            "predicted_var": 11.951427446691968,
+            "measured_fitness": 3.60999320262,
+            "residual": -0.43219421092327437
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENEQRGDR",
+            "predicted_mean": 4.960638931824043,
+            "predicted_var": 12.53024147025681,
+            "measured_fitness": -0.3477180152269999,
+            "residual": -5.308356947051043
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENLQFGDR",
+            "predicted_mean": 7.66064699677392,
+            "predicted_var": 1.00232209811035,
+            "measured_fitness": 4.34959402601,
+            "residual": -3.31105297076392
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENLQRFDR",
+            "predicted_mean": 7.770344809121152,
+            "predicted_var": 3.0997501955973785,
+            "measured_fitness": 3.86873554141,
+            "residual": -3.901609267711152
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGTVSENLQRGNF",
+            "predicted_mean": 8.544815716047552,
+            "predicted_var": 2.9774420841169587,
+            "measured_fitness": 3.84211092082,
+            "residual": -4.702704795227552
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSENLMRGNA",
+            "predicted_mean": 10.167249701078184,
+            "predicted_var": 4.055749246295466,
+            "measured_fitness": 2.84268260172,
+            "residual": -7.324567099358184
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+            "predicted_mean": 9.208845778202853,
+            "predicted_var": 2.775735763664087,
+            "measured_fitness": 4.21817875349,
+            "residual": -4.990667024712853
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTNLMRGNA",
+            "predicted_mean": 7.6202538182195845,
+            "predicted_var": 2.80153004843889,
+            "measured_fitness": 2.1969898964400003,
+            "residual": -5.423263921779585
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVTENLQRGNM",
+            "predicted_mean": 8.238328857530032,
+            "predicted_var": 2.1656316462321787,
+            "measured_fitness": 2.22368156165,
+            "residual": -6.014647295880032
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSENLQHGDR",
+            "predicted_mean": 11.123133317762974,
+            "predicted_var": 0.5847949323365303,
+            "measured_fitness": 4.19887960376,
+            "residual": -6.924253714002974
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDYSTNLQQGNR",
+            "predicted_mean": 11.841716124031361,
+            "predicted_var": 13.247947482937944,
+            "measured_fitness": 3.1549858593,
+            "residual": -8.686730264731361
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+            "predicted_mean": 12.196881173827919,
+            "predicted_var": 2.2762845485008496,
+            "measured_fitness": 5.95213756811,
+            "residual": -6.244743605717918
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+            "predicted_mean": 10.762534466128951,
+            "predicted_var": 13.350016505005202,
+            "measured_fitness": 5.184858233469999,
+            "residual": -5.577676232658952
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+            "predicted_mean": 8.957404197115206,
+            "predicted_var": 2.203946752129855,
+            "measured_fitness": 4.08771894101,
+            "residual": -4.869685256105206
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSASENIQRGNA",
+            "predicted_mean": 13.558154769236882,
+            "predicted_var": 1.3049545758148913,
+            "measured_fitness": 5.9987682548,
+            "residual": -7.559386514436882
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+            "predicted_mean": 12.037531976445244,
+            "predicted_var": 0.1636088082302309,
+            "measured_fitness": 2.86589824367,
+            "residual": -9.171633732775245
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVGNNLQRGTQ",
+            "predicted_mean": 9.351919786069345,
+            "predicted_var": 1.0727603568525053,
+            "measured_fitness": 3.2321985370200004,
+            "residual": -6.119721249049345
+          },
+          {
+            "seq": "DEEEIRTTNPVSTEQFGSVSTNLQRGDF",
+            "predicted_mean": 8.330537373933758,
+            "predicted_var": 0.8587838980270931,
+            "measured_fitness": 2.0020596774,
+            "residual": -6.328477696533758
+          },
+          {
+            "seq": "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+            "predicted_mean": 8.616541292153904,
+            "predicted_var": 0.3526232366006894,
+            "measured_fitness": 6.0790601727,
+            "residual": -2.537481119453904
+          },
+          {
+            "seq": "DEEEISQTNPVATEQYGSVSTDLQRGNQ",
+            "predicted_mean": 8.331897845795005,
+            "predicted_var": 3.2831657000881367,
+            "measured_fitness": -0.223543999307,
+            "residual": -8.555441845102004
+          },
+          {
+            "seq": "DEEEISTTNPVATEQYGSMSTELQRGER",
+            "predicted_mean": 7.091082256711111,
+            "predicted_var": 3.6264008155033527,
+            "measured_fitness": 0.994377600074,
+            "residual": -6.096704656637111
+          },
+          {
+            "seq": "DEEEVRAVNPVATEQYGSVSTNLQRGNQ",
+            "predicted_mean": 9.358472324630494,
+            "predicted_var": 1.3201930206016297,
+            "measured_fitness": 0.728277909597,
+            "residual": -8.630194415033493
+          },
+          {
+            "seq": "DEHEIRTTNPVATEQYGSVSDNLQRGNQ",
+            "predicted_mean": 6.40313538348418,
+            "predicted_var": 5.66160914970875,
+            "measured_fitness": 3.42429454577,
+            "residual": -2.97884083771418
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+            "predicted_mean": 10.132880606289635,
+            "predicted_var": 0.5888180266349556,
+            "measured_fitness": 7.39100378895,
+            "residual": -2.7418768173396355
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGSVSTDLQRGER",
+            "predicted_mean": 7.969778980530307,
+            "predicted_var": 0.4915179497082209,
+            "measured_fitness": 2.74350776332,
+            "residual": -5.226271217210307
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQWGSVSENLQRGNM",
+            "predicted_mean": 10.459884290196587,
+            "predicted_var": 6.750081274264986,
+            "measured_fitness": 3.66780705328,
+            "residual": -6.792077236916588
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSENLERGNN",
+            "predicted_mean": 8.464473007103969,
+            "predicted_var": 7.276499248605719,
+            "measured_fitness": 1.97923971674,
+            "residual": -6.4852332903639685
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSENLQRGNM",
+            "predicted_mean": 8.089686843062832,
+            "predicted_var": 0.6388435183874885,
+            "measured_fitness": 2.06188018254,
+            "residual": -6.027806660522833
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSTNLQNGNN",
+            "predicted_mean": 7.8522484730165445,
+            "predicted_var": 2.811802519586615,
+            "measured_fitness": 2.09355552605,
+            "residual": -5.758692946966544
+          },
+          {
+            "seq": "KEEEIRTTNPVATQQYGSVSTDLQRGER",
+            "predicted_mean": 6.448146637843639,
+            "predicted_var": 5.440179503972395,
+            "measured_fitness": -1.01805962755,
+            "residual": -7.466206265393639
+          },
+          {
+            "seq": "KEQEIRTTNPVATEQYGSVSTDLQRGNM",
+            "predicted_mean": 7.756840088586237,
+            "predicted_var": 5.156062211997042,
+            "measured_fitness": -0.149848356941,
+            "residual": -7.906688445527237
+          },
+          {
+            "seq": "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+            "predicted_mean": 8.297276897382165,
+            "predicted_var": 1.0738585335309183,
+            "measured_fitness": 3.91150032309,
+            "residual": -4.385776574292166
+          },
+          {
+            "seq": "NEEEVATTNPVATEQYGSVSTNLQRGNQ",
+            "predicted_mean": 8.256768320261187,
+            "predicted_var": 0.41803955967116563,
+            "measured_fitness": 2.92638715681,
+            "residual": -5.330381163451188
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSENLQQGTR",
+            "predicted_mean": 7.630273444333881,
+            "predicted_var": 3.610387209371812,
+            "measured_fitness": 4.48853145128,
+            "residual": -3.1417419930538806
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.reflexion.injected",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "agent",
+      "payload": {
+        "source_round": 1,
+        "target_round": 2,
+        "prompt_text": "MANDATORY RESIDUAL REFLEXION (observed round 1):\nResidual definition: measured_fitness - nomination-time predicted_mean.\nLethal threshold fixed before the run: measured_fitness < 0.2.\nOverestimated lethal variants (largest absolute residual first):\n- DEEEISQTNPVATEQYGSVSTDLQRGNQ: predicted=8.331898, variance=3.283166, measured=-0.223544, residual=-8.555442\n- KEQEIRTTNPVATEQYGSVSTDLQRGNM: predicted=7.756840, variance=5.156062, measured=-0.149848, residual=-7.906688\n- KEEEIRTTNPVATQQYGSVSTDLQRGER: predicted=6.448147, variance=5.440180, measured=-1.018060, residual=-7.466206\nUnderestimated variants: none observed in the recorded batch.\nObserved substitution motifs: N21D (over=3, under=0), D0K (over=2, under=0), E13Q (over=1, under=0), E2Q (over=1, under=0), N26E (over=1, under=0), R27M (over=1, under=0), R27Q (over=1, under=0), R5S (over=1, under=0), T6Q (over=1, under=0).\nACTION CONSTRAINT: before selecting this round, explicitly account for the lethal motifs above. The actionable entry point is `compose_batch(exclude_motifs=[...])`, which drops every candidate carrying the listed substitutions before scoring; pass the motifs you judge lethal there rather than only naming them in prose, and say which ones you deliberately kept and why."
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10481,
+        "n_pool_unmeasured": 27784,
+        "budget_remaining": 240,
+        "current_round": "2 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.835
+          ],
+          [
+            "S17E",
+            2.812
+          ],
+          [
+            "R27Q",
+            2.472
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R24Q",
+            2.317
+          ],
+          [
+            "R27T",
+            2.291
+          ],
+          [
+            "T20D",
+            2.26
+          ],
+          [
+            "R27M",
+            2.206
+          ],
+          [
+            "R24H",
+            2.123
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.056
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9027,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391
+          ],
+          "rounds_since_improvement": 0,
+          "redirect_rounds_so_far": [],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEDEIATTNPVATEQYGEVSTNLQRGNR",
+            "rationale": "KG: E2D (n=65, measured-association mean=-0.709, max=4.009; target properties: charge=-1, size=medium, polarity=polar); R5A (n=124, measured-association mean=1.505, max=7.391; target properties: charge=0, size=small, polarity=nonpolar); S17E (n=82, measured-association mean=2.812, max=7.636; target properties: charge=-1, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGSVSENLQQGNN",
+            "rationale": "KG: T20E (n=193, measured-association mean=2.835, max=8.645; target properties: charge=-1, size=medium, polarity=polar); R24Q (n=113, measured-association mean=2.317, max=9.536; target properties: charge=0, size=medium, polarity=polar); R27N (n=74, measured-association mean=1.978, max=7.527; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DENEIRTTNPVATEQYGSVSTNLERGTL",
+            "rationale": "KG: E2N (n=91, measured-association mean=0.076, max=4.985; target properties: charge=0, size=medium, polarity=polar); Q23E (n=115, measured-association mean=1.056, max=4.321; target properties: charge=-1, size=medium, polarity=polar); N26T (n=83, measured-association mean=1.070, max=5.837; target properties: charge=0, size=medium, polarity=polar); R27L (n=83, measured-association mean=2.324, max=6.016; target properties: charge=0, size=large, polarity=nonpolar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.85,
+        "exploit_ratio": 0.85,
+        "adaptive_default_ratio": 0.9149,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [
+          "D0K",
+          "N21D"
+        ],
+        "n_excluded": 337,
+        "n_eligible_after_exclusion": 2130,
+        "n_exploit": 41,
+        "n_explore": 7,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 96,
+        "batch_max": 8.416,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DDEEIRTTNPVATEQYGSCSTNLQNGNA",
+            "predicted_mean": 5.073302715323484,
+            "predicted_var": 1.5325750142041823,
+            "measured_fitness": 1.59258517942,
+            "residual": -3.4807175359034837
+          },
+          {
+            "seq": "DDEEIRTTNPVATEQYGSVSENVQRGNR",
+            "predicted_mean": 6.287791702802869,
+            "predicted_var": 2.7192450682211096,
+            "measured_fitness": 2.22144385228,
+            "residual": -4.0663478505228685
+          },
+          {
+            "seq": "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+            "predicted_mean": 5.874178492732868,
+            "predicted_var": 4.425596775011728,
+            "measured_fitness": 6.53091633888,
+            "residual": 0.6567378461471316
+          },
+          {
+            "seq": "DEDEIATTNPVATEQYGEVSTNLQRGNR",
+            "predicted_mean": 7.16199420475971,
+            "predicted_var": 0.0028581136772444504,
+            "measured_fitness": 3.5667719587300004,
+            "residual": -3.595222246029709
+          },
+          {
+            "seq": "DEDEIRTTNPVATEQYGEASTNLQRGNR",
+            "predicted_mean": 6.237470270705822,
+            "predicted_var": 1.0057068508193225,
+            "measured_fitness": 4.341167516650001,
+            "residual": -1.8963027540558217
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGEVATNLQRGNR",
+            "predicted_mean": 1.1836117811894535,
+            "predicted_var": 15.148797637206352,
+            "measured_fitness": 4.205002616580001,
+            "residual": 3.021390835390547
+          },
+          {
+            "seq": "DEEEIKTTNPVATEQYGSVSENLQHGNR",
+            "predicted_mean": 6.017434210248927,
+            "predicted_var": 0.17232735241831829,
+            "measured_fitness": 3.74217462877,
+            "residual": -2.2752595814789274
+          },
+          {
+            "seq": "DEEEIKTTNPVATEQYGSVSENLQRGGR",
+            "predicted_mean": 5.266530729110434,
+            "predicted_var": 0.36583477703276107,
+            "measured_fitness": 4.5898953136400005,
+            "residual": -0.6766354154704333
+          },
+          {
+            "seq": "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+            "predicted_mean": 5.798195636172357,
+            "predicted_var": 0.008538139586579485,
+            "measured_fitness": 4.6001657046,
+            "residual": -1.198029931572357
+          },
+          {
+            "seq": "DEEEIRATNPAATEQYGSVSTNLQQGNR",
+            "predicted_mean": 6.376643974596297,
+            "predicted_var": 0.0723027760618004,
+            "measured_fitness": 1.02533296797,
+            "residual": -5.351311006626297
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSTNLQHGGR",
+            "predicted_mean": 6.1819070171107295,
+            "predicted_var": 5.093500468667226,
+            "measured_fitness": 3.699089712,
+            "residual": -2.4828173051107294
+          },
+          {
+            "seq": "DEEEIRCTNPVCTEQYGSVSDNIQRGNR",
+            "predicted_mean": 6.881559279138637,
+            "predicted_var": 1.9899274103027356,
+            "measured_fitness": 3.2244307563800003,
+            "residual": -3.6571285227586365
+          },
+          {
+            "seq": "DEEEIRSTNPVATEQYGSVSDNIQRGNR",
+            "predicted_mean": 6.4814703397047335,
+            "predicted_var": 1.5331811957645405,
+            "measured_fitness": 2.55300475775,
+            "residual": -3.9284655819547334
+          },
+          {
+            "seq": "DEEEIRTTNPCATEQYGSASENLERGNR",
+            "predicted_mean": 5.7254893606131265,
+            "predicted_var": 4.553170136338475,
+            "measured_fitness": 0.8393528677140001,
+            "residual": -4.886136492899126
+          },
+          {
+            "seq": "DEEEIRTTNPVASELYGAVSTNLERGNR",
+            "predicted_mean": 3.511366273640684,
+            "predicted_var": 5.383719893054742,
+            "measured_fitness": -2.49811835621,
+            "residual": -6.009484629850684
+          },
+          {
+            "seq": "DEEEIRTTNPVATEHYGSVGTNLQHGNR",
+            "predicted_mean": 5.6727373237027106,
+            "predicted_var": 3.5135358490879844,
+            "measured_fitness": 3.30680938358,
+            "residual": -2.3659279401227105
+          },
+          {
+            "seq": "DEEEIRTTNPVATENYGEVSTNLQHGNR",
+            "predicted_mean": 5.7359112541874016,
+            "predicted_var": 1.1955574277026013,
+            "measured_fitness": 4.23636700397,
+            "residual": -1.4995442502174017
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGDVSTNLQRGNI",
+            "predicted_mean": 6.312923265315762,
+            "predicted_var": 1.9777228904747408,
+            "measured_fitness": 3.6276444831,
+            "residual": -2.6852787822157618
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVATNLQIGNR",
+            "predicted_mean": 5.966884189764327,
+            "predicted_var": 0.027213350062793393,
+            "measured_fitness": 3.18625984227,
+            "residual": -2.780624347494327
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENLQMGNR",
+            "predicted_mean": 5.3190963912593165,
+            "predicted_var": 1.2084183937047552,
+            "measured_fitness": 2.964414550521333,
+            "residual": -2.3546818407379835
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSTNLQQGNN",
+            "predicted_mean": 5.209386586692679,
+            "predicted_var": 0.1536450020992566,
+            "measured_fitness": 2.30204979696,
+            "residual": -2.9073367897326787
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTELQRGNM",
+            "predicted_mean": 5.290821312238636,
+            "predicted_var": 0.04866360366256142,
+            "measured_fitness": 2.12848269076,
+            "residual": -3.162338621478636
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTNLMRGDR",
+            "predicted_mean": 1.7654347693124777,
+            "predicted_var": 9.801537685213304,
+            "measured_fitness": 1.24279068364,
+            "residual": -0.5226440856724777
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGCVSTNLQQGNH",
+            "predicted_mean": 6.370860953354535,
+            "predicted_var": 0.08658663404922719,
+            "measured_fitness": 1.9472690803,
+            "residual": -4.423591873054535
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVAINLQRGNR",
+            "predicted_mean": 4.83093722432171,
+            "predicted_var": 3.1384164866757422,
+            "measured_fitness": 4.25298808638,
+            "residual": -0.5779491379417099
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEASTNLQRGTR",
+            "predicted_mean": 5.916438676641905,
+            "predicted_var": 1.1165949993394373,
+            "measured_fitness": 6.26196793591,
+            "residual": 0.34552925926809497
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVATNLQRGEM",
+            "predicted_mean": 4.597746483470241,
+            "predicted_var": 7.191789212522576,
+            "measured_fitness": 2.39931414491,
+            "residual": -2.1984323385602407
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVSENLQRGDR",
+            "predicted_mean": 5.127832883925171,
+            "predicted_var": 1.35812797212657,
+            "measured_fitness": 3.18663197645,
+            "residual": -1.9412009074751708
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVSTQLQRGQR",
+            "predicted_mean": 5.259263731544072,
+            "predicted_var": 0.8392272836937607,
+            "measured_fitness": 4.21557972464,
+            "residual": -1.0436840069040718
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSTSMNLERGDR",
+            "predicted_mean": 5.35762691829351,
+            "predicted_var": 3.1501220725685273,
+            "measured_fitness": 2.0952145323099995,
+            "residual": -3.262412385983511
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSDNLMQGNR",
+            "predicted_mean": 4.817163104780137,
+            "predicted_var": 4.115720357339931,
+            "measured_fitness": 2.83843927548,
+            "residual": -1.9787238293001375
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSENLQQGNN",
+            "predicted_mean": 7.155443014617612,
+            "predicted_var": 0.372104017366399,
+            "measured_fitness": 1.4712133585299998,
+            "residual": -5.684229656087612
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSTNLQQGEH",
+            "predicted_mean": 5.551943141060873,
+            "predicted_var": 0.7386159849628466,
+            "measured_fitness": 1.22378733465,
+            "residual": -4.328155806410873
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+            "predicted_mean": 6.629545476935883,
+            "predicted_var": 1.1370280971823685,
+            "measured_fitness": 4.60100407249,
+            "residual": -2.0285414044458827
+          },
+          {
+            "seq": "DEEEIRTVNPVATEMYGTVSTNLQHGNR",
+            "predicted_mean": 6.6692770417554055,
+            "predicted_var": 0.7158723346604084,
+            "measured_fitness": 2.75038002052,
+            "residual": -3.9188970212354053
+          },
+          {
+            "seq": "DEEEISTTNPVATEQYGNVSTNLQRGTQ",
+            "predicted_mean": 5.065980673165965,
+            "predicted_var": 9.726182411056518,
+            "measured_fitness": 3.31271930285,
+            "residual": -1.7532613703159652
+          },
+          {
+            "seq": "DEEEVRTTNPVATEQYGSVSDNLQSGNR",
+            "predicted_mean": 5.2422707922372584,
+            "predicted_var": 0.2261438329731589,
+            "measured_fitness": 1.7301095292099995,
+            "residual": -3.512161263027259
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGSVDTNLMRGNQ",
+            "predicted_mean": 5.939029669318776,
+            "predicted_var": 0.06032297285111795,
+            "measured_fitness": 1.1961523867,
+            "residual": -4.742877282618776
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGSVSTNLERGTL",
+            "predicted_mean": 7.146513266628132,
+            "predicted_var": 0.20540893899922752,
+            "measured_fitness": 1.37098440702,
+            "residual": -5.775528859608132
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGVVSTNLERGNR",
+            "predicted_mean": 6.103222316864594,
+            "predicted_var": 5.627887413162636,
+            "measured_fitness": 1.6533410890399998,
+            "residual": -4.449881227824594
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            "predicted_mean": 5.248130727135349,
+            "predicted_var": 1.517196777439023,
+            "measured_fitness": 7.828967551339999,
+            "residual": 2.58083682420465
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSASENLQRGNR",
+            "predicted_mean": 5.511655726345909,
+            "predicted_var": 10.588104371909896,
+            "measured_fitness": 0.7684112173326376,
+            "residual": -4.743244509013271
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSTNLQRGPQ",
+            "predicted_mean": 5.800042678929435,
+            "predicted_var": 2.2708123239486184,
+            "measured_fitness": 1.80483985425,
+            "residual": -3.995202824679435
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            "predicted_mean": 6.112383192034391,
+            "predicted_var": 1.062194094982731,
+            "measured_fitness": 8.416205130560002,
+            "residual": 2.3038219385256102
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGSVSANLQQGNH",
+            "predicted_mean": 5.527288869034793,
+            "predicted_var": 0.34237743931063563,
+            "measured_fitness": 2.4300781541900003,
+            "residual": -3.0972107148447927
+          },
+          {
+            "seq": "QEQEIRTTNPVATEQYGDVSDNLQRGNR",
+            "predicted_mean": 5.83202313370589,
+            "predicted_var": 0.6180150072470944,
+            "measured_fitness": 0.0248266703498,
+            "residual": -5.807196463356091
+          },
+          {
+            "seq": "SEEEIRTTNPIATEQYGSVSTNLQRGNF",
+            "predicted_mean": 6.529809249627304,
+            "predicted_var": 1.3542813973776517,
+            "measured_fitness": 2.41523683466,
+            "residual": -4.114572414967304
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSENLQQGNR",
+            "predicted_mean": 5.8342235389434,
+            "predicted_var": 0.49409133991000126,
+            "measured_fitness": 5.25591491884,
+            "residual": -0.5783086201033996
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.reflexion.injected",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "agent",
+      "payload": {
+        "source_round": 2,
+        "target_round": 3,
+        "prompt_text": "MANDATORY RESIDUAL REFLEXION (observed round 2):\nResidual definition: measured_fitness - nomination-time predicted_mean.\nLethal threshold fixed before the run: measured_fitness < 0.2.\nOverestimated lethal variants (largest absolute residual first):\n- DEEEIRTTNPVASELYGAVSTNLERGNR: predicted=3.511366, variance=5.383720, measured=-2.498118, residual=-6.009485\n- QEQEIRTTNPVATEQYGDVSDNLQRGNR: predicted=5.832023, variance=0.618015, measured=0.024827, residual=-5.807196\nUnderestimated variants (largest positive residual first):\n- DEEEIATTNPVATEQYGEVATNLQRGNR: predicted=1.183612, variance=15.148798, measured=4.205003, residual=+3.021391\n- DEQEIATTNPVATEQYGEVSDNLQRGNR: predicted=5.248131, variance=1.517197, measured=7.828968, residual=+2.580837\n- QEEEIRTTNPVATEQYGEASTNLQRGNR: predicted=6.112383, variance=1.062194, measured=8.416205, residual=+2.303822\nObserved substitution motifs: S17E (over=0, under=3), D0Q (over=1, under=1), E2Q (over=1, under=1), R5A (over=0, under=2), T20D (over=1, under=1), Q14L (over=1, under=0), Q23E (over=1, under=0), S17A (over=1, under=0), S17D (over=1, under=0), S19A (over=0, under=1), T12S (over=1, under=0), V18A (over=0, under=1).\nACTION CONSTRAINT: before selecting this round, explicitly account for the lethal motifs above. The actionable entry point is `compose_batch(exclude_motifs=[...])`, which drops every candidate carrying the listed substitutions before scoring; pass the motifs you judge lethal there rather than only naming them in prose, and say which ones you deliberately kept and why."
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10529,
+        "n_pool_unmeasured": 27736,
+        "budget_remaining": 192,
+        "current_round": "3 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.036
+          ],
+          [
+            "T20E",
+            2.85
+          ],
+          [
+            "R27Q",
+            2.499
+          ],
+          [
+            "R27I",
+            2.367
+          ],
+          [
+            "R24Q",
+            2.317
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "T20D",
+            2.297
+          ],
+          [
+            "R27T",
+            2.291
+          ],
+          [
+            "R27M",
+            2.207
+          ],
+          [
+            "R24H",
+            2.187
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.051
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9063,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            8.4162
+          ],
+          "rounds_since_improvement": 0,
+          "redirect_rounds_so_far": [],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEDEIRTTNPVATEQYGSASTNLQRGNQ",
+            "rationale": "KG: E2D (n=67, measured-association mean=-0.570, max=4.341; target properties: charge=-1, size=medium, polarity=polar); V18A (n=87, measured-association mean=1.235, max=8.416; target properties: charge=0, size=small, polarity=nonpolar); R27Q (n=109, measured-association mean=2.499, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+            "rationale": "KG: D0Q (n=55, measured-association mean=0.188, max=8.416; target properties: charge=0, size=medium, polarity=polar); S17E (n=92, measured-association mean=3.036, max=8.416; target properties: charge=-1, size=medium, polarity=polar); R24H (n=112, measured-association mean=2.187, max=6.079; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQFGSVSTNLQSGNN",
+            "rationale": "KG: Y15F (n=90, measured-association mean=0.445, max=6.390; target properties: charge=0, size=large, polarity=nonpolar); R24S (n=64, measured-association mean=1.212, max=4.707; target properties: charge=0, size=small, polarity=polar); R27N (n=76, measured-association mean=1.976, max=7.527; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.88,
+        "exploit_ratio": 0.88,
+        "adaptive_default_ratio": 0.9713,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [
+          "D0K",
+          "N21D",
+          "Q14L",
+          "Q23E"
+        ],
+        "n_excluded": 694,
+        "n_eligible_after_exclusion": 1725,
+        "n_exploit": 42,
+        "n_explore": 6,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 144,
+        "batch_max": 5.316,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DDEEIRTTNPVATEQYGSASTNLQQGNR",
+            "predicted_mean": 4.389461250586628,
+            "predicted_var": 0.9179930210212331,
+            "measured_fitness": 2.45868387934,
+            "residual": -1.9307773712466276
+          },
+          {
+            "seq": "DEDEIRTTNPVATEQYGSASTNLQRGNQ",
+            "predicted_mean": 5.258622565012985,
+            "predicted_var": 0.05169076077372425,
+            "measured_fitness": 3.8970268353199993,
+            "residual": -1.3615957296929855
+          },
+          {
+            "seq": "DEDEIRTTNPVATEQYGSVSENLQRGNS",
+            "predicted_mean": 4.735564216121496,
+            "predicted_var": 0.226283522983847,
+            "measured_fitness": 4.75956575224,
+            "residual": 0.02400153611850442
+          },
+          {
+            "seq": "DEEEIATTNPVSTEQYGEVSTNLQRGNR",
+            "predicted_mean": 4.555309444838457,
+            "predicted_var": 0.0181783504606679,
+            "measured_fitness": 3.081698996988779,
+            "residual": -1.473610447849678
+          },
+          {
+            "seq": "DEEEICTTNPVATEQFGSVSTNLQRGNQ",
+            "predicted_mean": 4.353032251648553,
+            "predicted_var": 0.1171155208714047,
+            "measured_fitness": 3.0305959179900004,
+            "residual": -1.322436333658553
+          },
+          {
+            "seq": "DEEEIGTTNPVSTEQYGEVSTNLQQGNR",
+            "predicted_mean": 4.523860600967655,
+            "predicted_var": 0.12551592580053558,
+            "measured_fitness": 3.39792694954,
+            "residual": -1.1259336514276552
+          },
+          {
+            "seq": "DEEEIKTTNPVATEVYGEVSTNLQRGNR",
+            "predicted_mean": 4.43960496264507,
+            "predicted_var": 0.04452783405334287,
+            "measured_fitness": 1.4061776063,
+            "residual": -3.0334273563450704
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSTELQRGER",
+            "predicted_mean": 4.346429475750043,
+            "predicted_var": 3.469491549496252,
+            "measured_fitness": 1.95857233051,
+            "residual": -2.3878571452400426
+          },
+          {
+            "seq": "DEEEIRSTNPVATEQYGSVSTNLQNGNA",
+            "predicted_mean": 4.816034648829849,
+            "predicted_var": 0.06680508442285116,
+            "measured_fitness": 2.75656244408,
+            "residual": -2.0594722047498486
+          },
+          {
+            "seq": "DEEEIRTTNPAATEQYGEVSTNLQQGNR",
+            "predicted_mean": 4.514713738643664,
+            "predicted_var": 0.6087373582348822,
+            "measured_fitness": 3.77050575595,
+            "residual": -0.7442079826936641
+          },
+          {
+            "seq": "DEEEIRTTNPTATEQFGSVSTNLQFGNN",
+            "predicted_mean": 4.875501001069786,
+            "predicted_var": 3.982047686420136,
+            "measured_fitness": 1.5949798949899998,
+            "residual": -3.280521106079786
+          },
+          {
+            "seq": "DEEEIRTTNPVATDQYGSVSENLQRGNH",
+            "predicted_mean": 4.763333347865071,
+            "predicted_var": 0.03502654697981077,
+            "measured_fitness": 2.03344485825,
+            "residual": -2.729888489615071
+          },
+          {
+            "seq": "DEEEIRTTNPVATEHYGNVGTNLQRGNR",
+            "predicted_mean": 4.528315569185935,
+            "predicted_var": 3.767008394170439,
+            "measured_fitness": 0.463141774903,
+            "residual": -4.065173794282935
+          },
+          {
+            "seq": "DEEEIRTTNPVATEMYGSVSNELQRGER",
+            "predicted_mean": 4.693721091058826,
+            "predicted_var": 0.17730826765835528,
+            "measured_fitness": 1.80221018421,
+            "residual": -2.8915109068488265
+          },
+          {
+            "seq": "DEEEIRTTNPVATEMYGTVSTNLQRGER",
+            "predicted_mean": 4.8307908205985655,
+            "predicted_var": 1.238686511515448,
+            "measured_fitness": 4.25534706379,
+            "residual": -0.5754437568085651
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENLQRGMK",
+            "predicted_mean": 4.690813505396715,
+            "predicted_var": 1.0332987982507456,
+            "measured_fitness": 2.4595431370400003,
+            "residual": -2.2312703683567148
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENLQRGQR",
+            "predicted_mean": 4.664859369955533,
+            "predicted_var": 0.004195590528841604,
+            "measured_fitness": 5.31599584609,
+            "residual": 0.6511364761344671
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSNNLQHGNR",
+            "predicted_mean": 4.439226468693505,
+            "predicted_var": 1.2013136796473836,
+            "measured_fitness": 2.29458679857,
+            "residual": -2.144639670123505
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSTNLQSGNN",
+            "predicted_mean": 5.1124506507717875,
+            "predicted_var": 0.01026590550714372,
+            "measured_fitness": 2.27350489555,
+            "residual": -2.8389457552217876
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGDVSTNLQQGNR",
+            "predicted_mean": 1.2088276446624793,
+            "predicted_var": 12.27626433216456,
+            "measured_fitness": 4.65723164763,
+            "residual": 3.4484040029675205
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGDVSTNLQRGDR",
+            "predicted_mean": 4.884370660710747,
+            "predicted_var": 2.1257115747235367,
+            "measured_fitness": 3.97673016623,
+            "residual": -0.9076404944807472
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSENLQRGNH",
+            "predicted_mean": 4.715250180089527,
+            "predicted_var": 0.3955131494742304,
+            "measured_fitness": 4.4121728197,
+            "residual": -0.30307736038952626
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSENLQRGNS",
+            "predicted_mean": 4.392223917907387,
+            "predicted_var": 0.6451466079440719,
+            "measured_fitness": 5.05417950356,
+            "residual": 0.6619555856526134
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTNLMQGNQ",
+            "predicted_mean": -1.255295078574445,
+            "predicted_var": 15.75440361785615,
+            "measured_fitness": 3.16204761457,
+            "residual": 4.417342693144445
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSENLQQGNR",
+            "predicted_mean": 1.56310193062561,
+            "predicted_var": 12.624069771642409,
+            "measured_fitness": 3.7225721754,
+            "residual": 2.15947024477439
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNLMQGNR",
+            "predicted_mean": -0.5301472425857412,
+            "predicted_var": 17.021501382879535,
+            "measured_fitness": 2.94349689973,
+            "residual": 3.473644142315741
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNLQRGEN",
+            "predicted_mean": 4.671829808455474,
+            "predicted_var": 0.5126013843225028,
+            "measured_fitness": 2.76917496205,
+            "residual": -1.9026548464054738
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNLQRGQN",
+            "predicted_mean": 4.676744477279335,
+            "predicted_var": 0.09692472217041666,
+            "measured_fitness": 3.05034337933,
+            "residual": -1.6264010979493353
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGGVSTNLQSGNQ",
+            "predicted_mean": 4.800642876676822,
+            "predicted_var": 0.6293411680498974,
+            "measured_fitness": 3.99568385425,
+            "residual": -0.8049590224268215
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVPENLQHGNK",
+            "predicted_mean": 4.323457738511689,
+            "predicted_var": 0.8083513707765931,
+            "measured_fitness": 4.1019671951,
+            "residual": -0.22149054341168828
+          },
+          {
+            "seq": "DEEEIRTTNPVAVEQYGSVSENLQRGNQ",
+            "predicted_mean": 4.404841681769504,
+            "predicted_var": 0.7499988532213194,
+            "measured_fitness": 2.66001763355,
+            "residual": -1.7448240482195043
+          },
+          {
+            "seq": "DEEEIRTTNPVSSEQYGSVSTNLQHGNR",
+            "predicted_mean": 4.395795159853947,
+            "predicted_var": 1.151326956683943,
+            "measured_fitness": 2.49808116112,
+            "residual": -1.8977139987339466
+          },
+          {
+            "seq": "DEEEIRTTNPVSSEQYGTVSTNLQRGTR",
+            "predicted_mean": 4.370060016157364,
+            "predicted_var": 1.0396029741575625,
+            "measured_fitness": 1.10260370434,
+            "residual": -3.267456311817364
+          },
+          {
+            "seq": "DEEEIRTTNPVSTEHYGNVGTNLQRGNR",
+            "predicted_mean": 4.481253080736074,
+            "predicted_var": 4.585528713999056,
+            "measured_fitness": -0.148192504516,
+            "residual": -4.629445585252075
+          },
+          {
+            "seq": "DEEEIRTTNPVSTEQYGSVSTNLQQGTR",
+            "predicted_mean": 4.759487367180402,
+            "predicted_var": 3.2785412481367775,
+            "measured_fitness": 3.4421071481400003,
+            "residual": -1.3173802190404014
+          },
+          {
+            "seq": "DEEEIRTVNPVATEMYGDVSTNLQQGNR",
+            "predicted_mean": 1.6386303910499276,
+            "predicted_var": 12.230952413511224,
+            "measured_fitness": 1.50628143276,
+            "residual": -0.13234895828992754
+          },
+          {
+            "seq": "DENEIRTTNPVATEQWGSVSTNLQRGNM",
+            "predicted_mean": 4.453883306165384,
+            "predicted_var": 1.1148950992490319,
+            "measured_fitness": 3.74580754442,
+            "residual": -0.7080757617453841
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGSVSDNLQRGNR",
+            "predicted_mean": 4.70493742989601,
+            "predicted_var": 0.031171149610837844,
+            "measured_fitness": 2.69434512541,
+            "residual": -2.0105923044860097
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGSVSNNLQRGNR",
+            "predicted_mean": 4.467624716795299,
+            "predicted_var": 3.568467589188048,
+            "measured_fitness": 2.77704336745,
+            "residual": -1.6905813493452992
+          },
+          {
+            "seq": "NEEEIRTTNPVSTEQYGIVSTNLQRGNR",
+            "predicted_mean": 4.543669077812687,
+            "predicted_var": 0.018512643836019183,
+            "measured_fitness": 0.99102491719,
+            "residual": -3.5526441606226875
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+            "predicted_mean": 5.230757747107102,
+            "predicted_var": 2.6264306949363028,
+            "measured_fitness": 3.90542285637,
+            "residual": -1.325334890737102
+          },
+          {
+            "seq": "QEQEIRTTNPVATEQYGEVSDNLQRGNR",
+            "predicted_mean": 0.9535968888041442,
+            "predicted_var": 14.960823542592713,
+            "measured_fitness": 2.52884172977,
+            "residual": 1.5752448409658557
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQFGEVSTNLQSGNR",
+            "predicted_mean": 4.679875055230504,
+            "predicted_var": 0.16953394192394736,
+            "measured_fitness": 2.22310055412,
+            "residual": -2.4567745011105036
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQFGSVSENLQRGNR",
+            "predicted_mean": 5.060089999958539,
+            "predicted_var": 0.23980367914580789,
+            "measured_fitness": 2.2842671165,
+            "residual": -2.7758228834585386
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVATNLQQGMR",
+            "predicted_mean": 4.9671081341209735,
+            "predicted_var": 0.03529951058430223,
+            "measured_fitness": 2.93736987108,
+            "residual": -2.0297382630409735
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSTNLQHGTR",
+            "predicted_mean": 4.339563961220005,
+            "predicted_var": 0.5405122677424661,
+            "measured_fitness": 2.95646403894,
+            "residual": -1.383099922280005
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSTNLQRGTE",
+            "predicted_mean": 4.872748377835972,
+            "predicted_var": 0.5410452379287986,
+            "measured_fitness": 3.87466845329,
+            "residual": -0.9980799245459719
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSTNLQRGTN",
+            "predicted_mean": 4.891448017173783,
+            "predicted_var": 0.8718734081026924,
+            "measured_fitness": 3.1401620988,
+            "residual": -1.751285918373783
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.reflexion.injected",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "agent",
+      "payload": {
+        "source_round": 3,
+        "target_round": 4,
+        "prompt_text": "MANDATORY RESIDUAL REFLEXION (observed round 3):\nResidual definition: measured_fitness - nomination-time predicted_mean.\nLethal threshold fixed before the run: measured_fitness < 0.2.\nOverestimated lethal variants (largest absolute residual first):\n- DEEEIRTTNPVSTEHYGNVGTNLQRGNR: predicted=4.481253, variance=4.585529, measured=-0.148193, residual=-4.629446\nUnderestimated variants (largest positive residual first):\n- DEEEIRTTNPVATEQWGSVSTNLMQGNQ: predicted=-1.255295, variance=15.754404, measured=3.162048, residual=+4.417343\n- DEEEIRTTNPVATEQYGDVSTNLMQGNR: predicted=-0.530147, variance=17.021501, measured=2.943497, residual=+3.473644\n- DEEEIRTTNPVATEQWGDVSTNLQQGNR: predicted=1.208828, variance=12.276264, measured=4.657232, residual=+3.448404\nObserved substitution motifs: R24Q (over=0, under=3), Q23M (over=0, under=2), S17D (over=0, under=2), Y15W (over=0, under=2), A11S (over=1, under=0), Q14H (over=1, under=0), R27Q (over=0, under=1), S17N (over=1, under=0), S19G (over=1, under=0).\nACTION CONSTRAINT: before selecting this round, explicitly account for the lethal motifs above. The actionable entry point is `compose_batch(exclude_motifs=[...])`, which drops every candidate carrying the listed substitutions before scoring; pass the motifs you judge lethal there rather than only naming them in prose, and say which ones you deliberately kept and why."
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10577,
+        "n_pool_unmeasured": 27688,
+        "budget_remaining": 144,
+        "current_round": "4 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.026
+          ],
+          [
+            "T20E",
+            2.889
+          ],
+          [
+            "R27Q",
+            2.536
+          ],
+          [
+            "R24Q",
+            2.384
+          ],
+          [
+            "R27I",
+            2.367
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "T20D",
+            2.302
+          ],
+          [
+            "R27T",
+            2.291
+          ],
+          [
+            "R24H",
+            2.228
+          ],
+          [
+            "R27M",
+            2.224
+          ],
+          [
+            "R27S",
+            2.118
+          ],
+          [
+            "R24G",
+            2.068
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.904,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            8.4162,
+            8.4162
+          ],
+          "rounds_since_improvement": 1,
+          "redirect_rounds_so_far": [],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEEEISTTNPVATEQYGDVSTNLMRGNQ",
+            "rationale": "KG: R5S (n=54, measured-association mean=0.617, max=6.618; target properties: charge=0, size=small, polarity=polar); S17D (n=127, measured-association mean=2.000, max=7.836; target properties: charge=-1, size=medium, polarity=polar); Q23M (n=58, measured-association mean=-0.031, max=5.886; target properties: charge=0, size=large, polarity=nonpolar); R27Q (n=114, measured-association mean=2.536, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGDVSTNLMRGNQ",
+            "rationale": "KG: S17D (n=127, measured-association mean=2.000, max=7.836; target properties: charge=-1, size=medium, polarity=polar); Q23M (n=58, measured-association mean=-0.031, max=5.886; target properties: charge=0, size=large, polarity=nonpolar); R27Q (n=114, measured-association mean=2.536, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGSVSESLQRGGR",
+            "rationale": "KG: T20E (n=214, measured-association mean=2.889, max=8.645; target properties: charge=-1, size=medium, polarity=polar); N21S (n=31, measured-association mean=-1.528, max=3.265; target properties: charge=0, size=small, polarity=polar); N26G (n=53, measured-association mean=0.949, max=6.079; target properties: charge=0, size=small, polarity=nonpolar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.88,
+        "exploit_ratio": 0.88,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [
+          "A11S",
+          "D0K",
+          "N21D",
+          "Q14H",
+          "Q14L",
+          "Q23E",
+          "S17N",
+          "S19G"
+        ],
+        "n_excluded": 967,
+        "n_eligible_after_exclusion": 1404,
+        "n_exploit": 42,
+        "n_explore": 6,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 192,
+        "batch_max": 5.359,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DDEEIRQTNPVATEQYGSVSTNLQRGNQ",
+            "predicted_mean": 4.232740612753853,
+            "predicted_var": 0.45844723801565596,
+            "measured_fitness": 3.06045021648,
+            "residual": -1.1722903962738527
+          },
+          {
+            "seq": "DEDEIRTTNPVATECYGSVSTNLQRGDR",
+            "predicted_mean": 3.6505506994041728,
+            "predicted_var": 1.2326753460400925,
+            "measured_fitness": 2.5604347502,
+            "residual": -1.0901159492041725
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGGVSTNLQQGNR",
+            "predicted_mean": 2.9881151064301736,
+            "predicted_var": 4.2519544547675485,
+            "measured_fitness": 3.50284987059,
+            "residual": 0.5147347641598263
+          },
+          {
+            "seq": "DEEEIRCTNPVATEQWGSVSENLQQGNR",
+            "predicted_mean": 4.571879732363138,
+            "predicted_var": 0.27100872668264964,
+            "measured_fitness": 2.97191826815,
+            "residual": -1.5999614642131381
+          },
+          {
+            "seq": "DEEEIRCTNPVATEQYGEVATNLQRGNH",
+            "predicted_mean": 1.3173322221395,
+            "predicted_var": 7.680879193160031,
+            "measured_fitness": 4.59504531047,
+            "residual": 3.2777130883304997
+          },
+          {
+            "seq": "DEEEIRTTNPIATEQYGSVATNLQRGNF",
+            "predicted_mean": 3.742447924290664,
+            "predicted_var": 0.01855593144278192,
+            "measured_fitness": 1.38336737081,
+            "residual": -2.3590805534806636
+          },
+          {
+            "seq": "DEEEIRTTNPVASEQYGEVSTNLQRGGR",
+            "predicted_mean": 3.7964693408572554,
+            "predicted_var": 0.3958797289708143,
+            "measured_fitness": 4.417127013430001,
+            "residual": 0.6206576725727455
+          },
+          {
+            "seq": "DEEEIRTTNPVATEMYGSVSENLQRGDR",
+            "predicted_mean": 3.8102560359446276,
+            "predicted_var": 0.34974418135079066,
+            "measured_fitness": 0.972578994082,
+            "residual": -2.8376770418626274
+          },
+          {
+            "seq": "DEEEIRTTNPVATENYGAVSNNLQRGNQ",
+            "predicted_mean": 4.329890764413404,
+            "predicted_var": 0.3957511077495994,
+            "measured_fitness": 3.77386780719,
+            "residual": -0.5560229572234046
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGEVSTNEQRGNR",
+            "predicted_mean": 4.686514138261741,
+            "predicted_var": 0.29191552266123416,
+            "measured_fitness": -0.598174576418,
+            "residual": -5.28468871467974
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSTNLQRGMM",
+            "predicted_mean": 3.798889413065057,
+            "predicted_var": 0.07441691274168061,
+            "measured_fitness": 3.635715089080001,
+            "residual": -0.16317432398505582
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGDVSENLMRGNR",
+            "predicted_mean": 4.588642452398696,
+            "predicted_var": 0.057112974285072594,
+            "measured_fitness": 1.49464012977,
+            "residual": -3.0940023226286963
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGDVSTNLMRGNR",
+            "predicted_mean": 3.9951322253521955,
+            "predicted_var": 0.5829299554394299,
+            "measured_fitness": 0.8626310031659999,
+            "residual": -3.1325012221861956
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGIVSENLQQGNR",
+            "predicted_mean": 4.100161583364789,
+            "predicted_var": 0.2635604830699559,
+            "measured_fitness": 2.87658184222,
+            "residual": -1.2235797411447895
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGIVSTNLQQGNR",
+            "predicted_mean": 3.7110060974098484,
+            "predicted_var": 0.0005935044858006542,
+            "measured_fitness": 4.886336880330001,
+            "residual": 1.1753307829201525
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVDTNLQGGNR",
+            "predicted_mean": 4.070515213122066,
+            "predicted_var": 1.4254994795380849,
+            "measured_fitness": 2.16895379311,
+            "residual": -1.901561420012066
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSENLQRGNA",
+            "predicted_mean": 3.839007473915407,
+            "predicted_var": 1.7420213834249754,
+            "measured_fitness": 3.5937250709699997,
+            "residual": -0.24528240294540726
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTNLMQGNW",
+            "predicted_mean": 3.900917582556799,
+            "predicted_var": 1.3144104047471687,
+            "measured_fitness": 0.651610871966,
+            "residual": -3.249306710590799
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTNLQQGNF",
+            "predicted_mean": 4.082091462535397,
+            "predicted_var": 1.0414057819736644,
+            "measured_fitness": 1.69823769025,
+            "residual": -2.3838537722853967
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTNLQQGNM",
+            "predicted_mean": 3.674193273271607,
+            "predicted_var": 2.0940800910210995,
+            "measured_fitness": 1.65084956704,
+            "residual": -2.023343706231607
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSENLQKGNR",
+            "predicted_mean": 4.1477286925885455,
+            "predicted_var": 0.3900978228079895,
+            "measured_fitness": 5.0045050815300005,
+            "residual": 0.856776388941455
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNLMRGNQ",
+            "predicted_mean": 5.861276917341881,
+            "predicted_var": 1.7849750812163176,
+            "measured_fitness": 3.0868787766900003,
+            "residual": -2.7743981406518805
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEMSTNLQRGQR",
+            "predicted_mean": 3.893494848050997,
+            "predicted_var": 0.013035214783153658,
+            "measured_fitness": 4.23078822481,
+            "residual": 0.3372933767590034
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVSDNLQQGER",
+            "predicted_mean": 0.7061650300593989,
+            "predicted_var": 9.157932214114323,
+            "measured_fitness": 1.37252827073,
+            "residual": 0.666363240670601
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSADSNLQRGNR",
+            "predicted_mean": 3.878000057028183,
+            "predicted_var": 3.6259449489391975,
+            "measured_fitness": 1.49245711774,
+            "residual": -2.3855429392881833
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSMSENLQRGNQ",
+            "predicted_mean": 3.9665364305326225,
+            "predicted_var": 0.5577913545898936,
+            "measured_fitness": 3.44794754552,
+            "residual": -0.5185888850126226
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSENLMRGDR",
+            "predicted_mean": 3.7276145184541907,
+            "predicted_var": 0.670524227399817,
+            "measured_fitness": 2.25876225931,
+            "residual": -1.4688522591441906
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSENLQHGNQ",
+            "predicted_mean": 4.454152723363576,
+            "predicted_var": 0.8350814078458065,
+            "measured_fitness": 3.2554248180000003,
+            "residual": -1.1987279053635755
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSESLQRGGR",
+            "predicted_mean": 4.867233633932036,
+            "predicted_var": 0.42442867352656477,
+            "measured_fitness": 2.9111258305,
+            "residual": -1.9561078034320363
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSTNLQQGEQ",
+            "predicted_mean": -0.5979821631074138,
+            "predicted_var": 10.31340330503074,
+            "measured_fitness": 1.65126471997,
+            "residual": 2.2492468830774137
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGTVSTELQHGNR",
+            "predicted_mean": 4.203666963228423,
+            "predicted_var": 0.005216799659661341,
+            "measured_fitness": 1.8063577811,
+            "residual": -2.3973091821284234
+          },
+          {
+            "seq": "DEEEIRTTNPVATESYGTVSENLQRGNR",
+            "predicted_mean": 3.6952534811696136,
+            "predicted_var": 0.39646783182474765,
+            "measured_fitness": 5.35917549622,
+            "residual": 1.6639220150503862
+          },
+          {
+            "seq": "DEEEIRTTNPVCTEQYGEVSTNLQRGER",
+            "predicted_mean": 3.693974700126615,
+            "predicted_var": 0.37324137020996945,
+            "measured_fitness": 3.69247260782,
+            "residual": -0.0015020923066151326
+          },
+          {
+            "seq": "DEEEIRTVNPVATEQYGSVSENIQRGNR",
+            "predicted_mean": 4.074590047353974,
+            "predicted_var": 1.3441717167070841,
+            "measured_fitness": 2.68319957155,
+            "residual": -1.391390475803974
+          },
+          {
+            "seq": "DEEEIRTVNPVATEQYGSVSTNLMHGNR",
+            "predicted_mean": 3.945701901029837,
+            "predicted_var": 0.006579377851059869,
+            "measured_fitness": 3.56053571916,
+            "residual": -0.3851661818698373
+          },
+          {
+            "seq": "DEEEISTTNPVATEQYGDVSTNLMRGNQ",
+            "predicted_mean": 6.508558509994289,
+            "predicted_var": 1.176890930152737,
+            "measured_fitness": 2.18512625961,
+            "residual": -4.32343225038429
+          },
+          {
+            "seq": "DEEEVRSTNPVATEQYGSVSTNLQRGNQ",
+            "predicted_mean": 3.565032625152087,
+            "predicted_var": 4.526934167681392,
+            "measured_fitness": 1.58919367058,
+            "residual": -1.975838954572087
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGEVSTNLQRGNR",
+            "predicted_mean": 4.559158211727874,
+            "predicted_var": 1.0573568089486265,
+            "measured_fitness": 3.5344399729800005,
+            "residual": -1.024718238747874
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGSVSTNLQQGNY",
+            "predicted_mean": 3.92199498362376,
+            "predicted_var": 3.769226793554914,
+            "measured_fitness": 1.9638857569,
+            "residual": -1.95810922672376
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQWGSVSTNLMRGNW",
+            "predicted_mean": 2.118889111675804,
+            "predicted_var": 6.694850317154504,
+            "measured_fitness": -1.232247536306112,
+            "residual": -3.351136647981916
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQWGSVSTNLQQGNW",
+            "predicted_mean": 3.770821995425246,
+            "predicted_var": 0.6492989769809089,
+            "measured_fitness": 2.75544011574,
+            "residual": -1.015381879685246
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGEVSTNLQRGNM",
+            "predicted_mean": 4.258141205351317,
+            "predicted_var": 2.311949227892829,
+            "measured_fitness": 4.29195427458,
+            "residual": 0.033813069228683545
+          },
+          {
+            "seq": "NEEEIRTTNPVATESYGSVSTNLQHGNQ",
+            "predicted_mean": 3.683625748049563,
+            "predicted_var": 1.6416320705807805,
+            "measured_fitness": 2.92840437283,
+            "residual": -0.7552213752195627
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGSASTNLQRGER",
+            "predicted_mean": 3.8208506561768747,
+            "predicted_var": 0.06074162511890472,
+            "measured_fitness": 3.04924376087,
+            "residual": -0.7716068953068747
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVNENLQQGNR",
+            "predicted_mean": 3.8374542426417424,
+            "predicted_var": 0.2448703761321213,
+            "measured_fitness": 5.0380788041,
+            "residual": 1.200624561458258
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSDNLQQGNR",
+            "predicted_mean": 3.6556026387334573,
+            "predicted_var": 1.3647851447157608,
+            "measured_fitness": 4.75785134582,
+            "residual": 1.1022487070865425
+          },
+          {
+            "seq": "VEEEIRSTNPVATEQYGSVATNLQRGNQ",
+            "predicted_mean": 4.189302097040022,
+            "predicted_var": 0.0028785300921913624,
+            "measured_fitness": 2.1701314461003554,
+            "residual": -2.0191706509396665
+          },
+          {
+            "seq": "VEEELRTTNPVATEQYGSVATNLQRGNQ",
+            "predicted_mean": 3.670740109293055,
+            "predicted_var": 0.17809439626016596,
+            "measured_fitness": 4.19441050896,
+            "residual": 0.523670399666945
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.reflexion.injected",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "agent",
+      "payload": {
+        "source_round": 4,
+        "target_round": 5,
+        "prompt_text": "MANDATORY RESIDUAL REFLEXION (observed round 4):\nResidual definition: measured_fitness - nomination-time predicted_mean.\nLethal threshold fixed before the run: measured_fitness < 0.2.\nOverestimated lethal variants (largest absolute residual first):\n- DEEEIRTTNPVATEQFGEVSTNEQRGNR: predicted=4.686514, variance=0.291916, measured=-0.598175, residual=-5.284689\n- DEQEIRTTNPVATEQWGSVSTNLMRGNW: predicted=2.118889, variance=6.694850, measured=-1.232248, residual=-3.351137\nUnderestimated variants (largest positive residual first):\n- DEEEIRCTNPVATEQYGEVATNLQRGNH: predicted=1.317332, variance=7.680879, measured=4.595045, residual=+3.277713\n- DEEEIRTTNPVATEQYGSVSTNLQQGEQ: predicted=-0.597982, variance=10.313403, measured=1.651265, residual=+2.249247\n- DEEEIRTTNPVATESYGTVSENLQRGNR: predicted=3.695253, variance=0.396468, measured=5.359175, residual=+1.663922\nObserved substitution motifs: S17E (over=1, under=1), E2Q (over=1, under=0), L22E (over=1, under=0), N26E (over=0, under=1), Q14S (over=0, under=1), Q23M (over=1, under=0), R24Q (over=0, under=1), R27H (over=0, under=1), R27Q (over=0, under=1), R27W (over=1, under=0), S17T (over=0, under=1), S19A (over=0, under=1), T20E (over=0, under=1), T6C (over=0, under=1), Y15F (over=1, under=0), Y15W (over=1, under=0).\nACTION CONSTRAINT: before selecting this round, explicitly account for the lethal motifs above. The actionable entry point is `compose_batch(exclude_motifs=[...])`, which drops every candidate carrying the listed substitutions before scoring; pass the motifs you judge lethal there rather than only naming them in prose, and say which ones you deliberately kept and why."
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10625,
+        "n_pool_unmeasured": 27640,
+        "budget_remaining": 96,
+        "current_round": "5 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.039
+          ],
+          [
+            "T20E",
+            2.908
+          ],
+          [
+            "R27Q",
+            2.564
+          ],
+          [
+            "R24Q",
+            2.417
+          ],
+          [
+            "R27I",
+            2.367
+          ],
+          [
+            "T20D",
+            2.313
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "R27T",
+            2.291
+          ],
+          [
+            "R27M",
+            2.256
+          ],
+          [
+            "R24H",
+            2.25
+          ],
+          [
+            "R27S",
+            2.118
+          ],
+          [
+            "R27H",
+            2.089
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9102,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            8.4162,
+            8.4162,
+            8.4162
+          ],
+          "rounds_since_improvement": 2,
+          "redirect_rounds_so_far": [],
+          "stalled": true
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEEEIRTTNPVASEQYGEVSTNLQAGNR",
+            "rationale": "KG: T12S (n=83, measured-association mean=-0.875, max=5.297; target properties: charge=0, size=small, polarity=polar); S17E (n=107, measured-association mean=3.039, max=8.416; target properties: charge=-1, size=medium, polarity=polar); R24A (n=69, measured-association mean=1.035, max=4.280; target properties: charge=0, size=small, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIHTTNPVATEQYGEVSTNLQQGNR",
+            "rationale": "KG: R5H (n=38, measured-association mean=-2.013, max=2.343; target properties: charge=0, size=medium, polarity=polar); S17E (n=107, measured-association mean=3.039, max=8.416; target properties: charge=-1, size=medium, polarity=polar); R24Q (n=144, measured-association mean=2.417, max=9.536; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "SEEEIRTTNPVATEQYGSVETNLQQGNR",
+            "rationale": "KG: D0S (n=78, measured-association mean=0.803, max=5.772; target properties: charge=0, size=small, polarity=polar); S19E (n=58, measured-association mean=-0.726, max=3.488; target properties: charge=-1, size=medium, polarity=polar); R24Q (n=144, measured-association mean=2.417, max=9.536; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.92,
+        "exploit_ratio": 0.92,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [
+          "A11S",
+          "D0K",
+          "E2Q",
+          "L22E",
+          "N21D",
+          "Q14H",
+          "Q14L",
+          "Q23E",
+          "R27W",
+          "S17N",
+          "S19G",
+          "Y15F",
+          "Y15W"
+        ],
+        "n_excluded": 1449,
+        "n_eligible_after_exclusion": 874,
+        "n_exploit": 44,
+        "n_explore": 4,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 240,
+        "batch_max": 6.688,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "ADEEIRTTNPVATEQYGEVSTNLQRGNR",
+            "predicted_mean": 3.537857037493712,
+            "predicted_var": 0.5410166353223954,
+            "measured_fitness": 2.8879076544,
+            "residual": -0.6499493830937118
+          },
+          {
+            "seq": "DDEEIRATNPVATEQYGSVSTNLQRGNM",
+            "predicted_mean": 3.462128352985811,
+            "predicted_var": 0.5943827448525819,
+            "measured_fitness": 2.98433292992,
+            "residual": -0.47779542306581124
+          },
+          {
+            "seq": "DDEEIRTTNPEATEQYGSVSTNIQAGNR",
+            "predicted_mean": 3.3779116481886042,
+            "predicted_var": 0.3194063499172339,
+            "measured_fitness": -2.6301482060668517,
+            "residual": -6.008059854255456
+          },
+          {
+            "seq": "DDEEIRTTNPVATEQYGAVSTNLQVGNR",
+            "predicted_mean": 3.1243967077592956,
+            "predicted_var": 0.010805206392975756,
+            "measured_fitness": 2.64324265781,
+            "residual": -0.48115404994929545
+          },
+          {
+            "seq": "DDEEIRTTNPVATEQYGSVSTNLQHGND",
+            "predicted_mean": 3.1177950702144948,
+            "predicted_var": 0.011578517307934433,
+            "measured_fitness": 1.94273392319,
+            "residual": -1.1750611470244947
+          },
+          {
+            "seq": "DEAEIRTTNPVATEQYGQVSDNIQRGNR",
+            "predicted_mean": 3.0967315973870058,
+            "predicted_var": 1.3931163677866716,
+            "measured_fitness": 1.81934996607,
+            "residual": -1.2773816313170057
+          },
+          {
+            "seq": "DEDEIRTTNPVATEQYGSVSENLQRGQR",
+            "predicted_mean": 3.0350599661505377,
+            "predicted_var": 0.1787856104705686,
+            "measured_fitness": 5.387000670319999,
+            "residual": 2.3519407041694613
+          },
+          {
+            "seq": "DEDEISTTNPVATEQYGSVSENLQRGNR",
+            "predicted_mean": 3.3924690463177143,
+            "predicted_var": 0.057863089656626045,
+            "measured_fitness": 3.14589920435,
+            "residual": -0.24656984196771425
+          },
+          {
+            "seq": "DEEEIATTNPVATEMYGGVSTNLQQGNR",
+            "predicted_mean": 3.3730815206951057,
+            "predicted_var": 0.9570950286805404,
+            "measured_fitness": 2.7007196690400006,
+            "residual": -0.6723618516551051
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGSVSTNLQQGER",
+            "predicted_mean": 3.1897540528536545,
+            "predicted_var": 0.45343253130591354,
+            "measured_fitness": 1.78832478595,
+            "residual": -1.4014292669036545
+          },
+          {
+            "seq": "DEEEIHTTNPVATEQYGEVSTNLQQGNR",
+            "predicted_mean": 3.613430741107617,
+            "predicted_var": 0.19827924149059517,
+            "measured_fitness": 3.06265353106,
+            "residual": -0.5507772100476171
+          },
+          {
+            "seq": "DEEEIRATNPVATEMYGSVSTNLQNGNR",
+            "predicted_mean": 3.149323839029723,
+            "predicted_var": 2.7249270575153126,
+            "measured_fitness": 3.96516230886,
+            "residual": 0.8158384698302772
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSMSTNLQRGNM",
+            "predicted_mean": 3.4402036846298607,
+            "predicted_var": 0.6591828687694545,
+            "measured_fitness": 3.92490308237,
+            "residual": 0.4846993977401395
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSAGLQRGDR",
+            "predicted_mean": 3.2290990046970585,
+            "predicted_var": 1.2534554129728026,
+            "measured_fitness": 2.07374575321,
+            "residual": -1.1553532514870586
+          },
+          {
+            "seq": "DEEEIRAVNPVATEQYGSVSTELQNGNR",
+            "predicted_mean": -0.6798030646930364,
+            "predicted_var": 7.153746802612786,
+            "measured_fitness": -1.9810933011900005,
+            "residual": -1.301290236496964
+          },
+          {
+            "seq": "DEEEIRSTNPVASEQYGTVSTNLQVGNR",
+            "predicted_mean": 3.127919406831907,
+            "predicted_var": 0.7283312813413071,
+            "measured_fitness": 3.31726543273,
+            "residual": 0.18934602589809302
+          },
+          {
+            "seq": "DEEEIRTTNPTATEQYGSVATNLQHGNR",
+            "predicted_mean": 3.063149753743538,
+            "predicted_var": 0.1415566245372307,
+            "measured_fitness": 1.94890700903,
+            "residual": -1.114242744713538
+          },
+          {
+            "seq": "DEEEIRTTNPTATEQYGSVSTNLQQGNA",
+            "predicted_mean": 3.165206005499307,
+            "predicted_var": 1.0323766316716438,
+            "measured_fitness": 3.23352006221,
+            "residual": 0.06831405671069302
+          },
+          {
+            "seq": "DEEEIRTTNPVASEQYGEVSTNLQAGNR",
+            "predicted_mean": 3.629884453426154,
+            "predicted_var": 0.20430295118856093,
+            "measured_fitness": 5.95535125617,
+            "residual": 2.325466802743846
+          },
+          {
+            "seq": "DEEEIRTTNPVATDQYGEVSENIQRGNR",
+            "predicted_mean": 2.704681037480565,
+            "predicted_var": 5.748262564688377,
+            "measured_fitness": 3.44715519626,
+            "residual": 0.742474158779435
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGCVSTNLQRGDQ",
+            "predicted_mean": 3.4908937809992366,
+            "predicted_var": 2.3376304447468015,
+            "measured_fitness": 2.38339575204,
+            "residual": -1.1074980289592364
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDASTNLQRGQR",
+            "predicted_mean": 3.513819756325411,
+            "predicted_var": 0.5847475880512928,
+            "measured_fitness": 5.09694891454,
+            "residual": 1.5831291582145894
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNVQTGNR",
+            "predicted_mean": 3.477234197037035,
+            "predicted_var": 0.053036384109585805,
+            "measured_fitness": 3.58415039444,
+            "residual": 0.1069161974029651
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTQLQRNNE",
+            "predicted_mean": 3.570718483601304,
+            "predicted_var": 1.6196531473732463,
+            "measured_fitness": 2.16415557998,
+            "residual": -1.406562903621304
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGGISDNLQRGNR",
+            "predicted_mean": 3.206920054064824,
+            "predicted_var": 0.9374456558034963,
+            "measured_fitness": 4.57017477477,
+            "residual": 1.363254720705176
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGGVSNQLQRGTR",
+            "predicted_mean": 3.329207817738748,
+            "predicted_var": 0.15005552931478017,
+            "measured_fitness": 0.630131884341,
+            "residual": -2.699075933397748
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSDELQRGNQ",
+            "predicted_mean": 3.2009680074690614,
+            "predicted_var": 0.036634029303685985,
+            "measured_fitness": 2.101245269852804,
+            "residual": -1.0997227376162573
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSENLQRGDH",
+            "predicted_mean": 3.1255544464335614,
+            "predicted_var": 1.0519735287672782,
+            "measured_fitness": 3.26432189983,
+            "residual": 0.1387674533964387
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSTNLMQGNA",
+            "predicted_mean": 2.6702428179600233,
+            "predicted_var": 2.746992146500467,
+            "measured_fitness": 1.59052230349,
+            "residual": -1.0797205144700233
+          },
+          {
+            "seq": "DEEEIRTTNPVATETYGSVSTNLQRGTQ",
+            "predicted_mean": 3.4661482142126196,
+            "predicted_var": 0.1418291125261629,
+            "measured_fitness": 3.5270234889300003,
+            "residual": 0.060875274717380634
+          },
+          {
+            "seq": "DEEEIRTVNPVATEQYGSVATNLQRGNQ",
+            "predicted_mean": 3.5701716661652085,
+            "predicted_var": 2.023319517450897,
+            "measured_fitness": 3.23553452317,
+            "residual": -0.3346371429952084
+          },
+          {
+            "seq": "DEEEIRTVNPVATEQYGSVSTELQRGER",
+            "predicted_mean": 3.491902495955223,
+            "predicted_var": 0.3263987111745048,
+            "measured_fitness": 3.11806481351,
+            "residual": -0.373837682445223
+          },
+          {
+            "seq": "DEEEVRTTNPVATEQYGVVSNNLQRGNR",
+            "predicted_mean": 3.1492271892069255,
+            "predicted_var": 2.1268587768018574,
+            "measured_fitness": 1.82614509739,
+            "residual": -1.3230820918169255
+          },
+          {
+            "seq": "DEEEVRTVNPVATEQYGSVSTNLQVGNR",
+            "predicted_mean": 3.353564530279023,
+            "predicted_var": 0.0435023452079793,
+            "measured_fitness": 3.11397357286,
+            "residual": -0.23959095741902292
+          },
+          {
+            "seq": "EEEEIRTTNPVATDQYGEVPTNLQRGNR",
+            "predicted_mean": 3.3390789868559416,
+            "predicted_var": 1.221583495647162,
+            "measured_fitness": 4.91259202004,
+            "residual": 1.5735130331840583
+          },
+          {
+            "seq": "EEEEIRTTNPVATEQYGSVSDNLQRGNS",
+            "predicted_mean": 3.3282231007196046,
+            "predicted_var": 0.05557401960469207,
+            "measured_fitness": 1.32424081999,
+            "residual": -2.0039822807296046
+          },
+          {
+            "seq": "GEEEIRTVNPVATEQYGSVATNLQRGNQ",
+            "predicted_mean": 2.9672886442454747,
+            "predicted_var": 3.3119119074531067,
+            "measured_fitness": 2.22932785703,
+            "residual": -0.7379607872154748
+          },
+          {
+            "seq": "GEEEVRTTNPVATEQYGSVSTNLQRGNQ",
+            "predicted_mean": 3.4916904672333438,
+            "predicted_var": 2.7243724850395137,
+            "measured_fitness": 1.92959127061,
+            "residual": -1.5620991966233437
+          },
+          {
+            "seq": "NEEEIRTTNPVATEQYGEVSTNLQTGNR",
+            "predicted_mean": 3.168203225036418,
+            "predicted_var": 0.45309035232707,
+            "measured_fitness": 4.26552661712,
+            "residual": 1.0973233920835819
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGSASTNLQRGGR",
+            "predicted_mean": 3.154669819816178,
+            "predicted_var": 0.6000715204380686,
+            "measured_fitness": 0.987946552075,
+            "residual": -2.166723267741178
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGSVSTNIQHGGR",
+            "predicted_mean": 3.1935255846585022,
+            "predicted_var": 0.30061471601142126,
+            "measured_fitness": 1.19339822691,
+            "residual": -2.000127357748502
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGTVSDNLQRGNR",
+            "predicted_mean": 3.4800501216722033,
+            "predicted_var": 0.31392509739713953,
+            "measured_fitness": 2.47158919785,
+            "residual": -1.008460923822203
+          },
+          {
+            "seq": "SEDEIRTTNPVATEQYGSVSENLQRGNR",
+            "predicted_mean": 3.4045006534984985,
+            "predicted_var": 0.02106756413836296,
+            "measured_fitness": 5.61221444253,
+            "residual": 2.2077137890315015
+          },
+          {
+            "seq": "SEEEIRTTNPTATEQYGEVSTNLQRGNR",
+            "predicted_mean": 3.187580627577592,
+            "predicted_var": 0.036120778583461854,
+            "measured_fitness": 6.68756447347,
+            "residual": 3.499983845892408
+          },
+          {
+            "seq": "SEEEIRTTNPTATEQYGSVSTNLQQGNR",
+            "predicted_mean": 3.0383258139546,
+            "predicted_var": 0.28911305465514864,
+            "measured_fitness": 2.3993185679700004,
+            "residual": -0.6390072459845997
+          },
+          {
+            "seq": "SEEEIRTTNPVATEMYGSVSTNLQQGNR",
+            "predicted_mean": 3.2373213084555026,
+            "predicted_var": 0.5981398676279231,
+            "measured_fitness": 4.28508529192,
+            "residual": 1.0477639834644972
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGGVSENLQQGNR",
+            "predicted_mean": 3.3839361271360957,
+            "predicted_var": 1.0621020606428353,
+            "measured_fitness": 5.04994251068,
+            "residual": 1.6660063835439045
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVETNLQQGNR",
+            "predicted_mean": 3.6057729345363256,
+            "predicted_var": 0.22996515097017287,
+            "measured_fitness": 1.72520346336,
+            "residual": -1.8805694711763257
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.reflexion.injected",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "agent",
+      "payload": {
+        "source_round": 5,
+        "target_round": 6,
+        "prompt_text": "MANDATORY RESIDUAL REFLEXION (observed round 5):\nResidual definition: measured_fitness - nomination-time predicted_mean.\nLethal threshold fixed before the run: measured_fitness < 0.2.\nOverestimated lethal variants (largest absolute residual first):\n- DDEEIRTTNPEATEQYGSVSTNIQAGNR: predicted=3.377912, variance=0.319406, measured=-2.630148, residual=-6.008060\n- DEEEIRAVNPVATEQYGSVSTELQNGNR: predicted=-0.679803, variance=7.153747, measured=-1.981093, residual=-1.301290\nUnderestimated variants (largest positive residual first):\n- SEEEIRTTNPTATEQYGEVSTNLQRGNR: predicted=3.187581, variance=0.036121, measured=6.687564, residual=+3.499984\n- DEDEIRTTNPVATEQYGSVSENLQRGQR: predicted=3.035060, variance=0.178786, measured=5.387001, residual=+2.351941\n- DEEEIRTTNPVASEQYGEVSTNLQAGNR: predicted=3.629884, variance=0.204303, measured=5.955351, residual=+2.325467\nObserved substitution motifs: R24A (over=1, under=1), S17E (over=0, under=2), D0S (over=0, under=1), E1D (over=1, under=0), E2D (over=0, under=1), L22I (over=1, under=0), N21E (over=1, under=0), N26Q (over=0, under=1), R24N (over=1, under=0), T12S (over=0, under=1), T20E (over=0, under=1), T6A (over=1, under=0), T7V (over=1, under=0), V10E (over=1, under=0), V10T (over=0, under=1).\nACTION CONSTRAINT: before selecting this round, explicitly account for the lethal motifs above. The actionable entry point is `compose_batch(exclude_motifs=[...])`, which drops every candidate carrying the listed substitutions before scoring; pass the motifs you judge lethal there rather than only naming them in prose, and say which ones you deliberately kept and why."
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10673,
+        "n_pool_unmeasured": 27592,
+        "budget_remaining": 48,
+        "current_round": "6 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEQEIATTNPVATEQYGEVSDNLQRGNR",
+            7.829
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.126
+          ],
+          [
+            "T20E",
+            2.944
+          ],
+          [
+            "R27Q",
+            2.564
+          ],
+          [
+            "R24Q",
+            2.444
+          ],
+          [
+            "R27I",
+            2.367
+          ],
+          [
+            "T20D",
+            2.319
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "R27T",
+            2.291
+          ],
+          [
+            "R27M",
+            2.281
+          ],
+          [
+            "R24H",
+            2.236
+          ],
+          [
+            "R27S",
+            2.109
+          ],
+          [
+            "R27H",
+            2.107
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9097,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            8.4162,
+            8.4162,
+            8.4162,
+            8.4162
+          ],
+          "rounds_since_improvement": 3,
+          "redirect_rounds_so_far": [],
+          "stalled": true
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEEEIRTTNPVATEQYGDVSTNLQHGQR",
+            "rationale": "KG: S17D (n=135, measured-association mean=2.055, max=7.836; target properties: charge=-1, size=medium, polarity=polar); R24H (n=124, measured-association mean=2.236, max=6.079; target properties: charge=0, size=medium, polarity=polar); N26Q (n=46, measured-association mean=0.527, max=5.873; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGDASTNLQRGQQ",
+            "rationale": "KG: S17D (n=135, measured-association mean=2.055, max=7.836; target properties: charge=-1, size=medium, polarity=polar); V18A (n=93, measured-association mean=1.338, max=8.416; target properties: charge=0, size=small, polarity=nonpolar); N26Q (n=46, measured-association mean=0.527, max=5.873; target properties: charge=0, size=medium, polarity=polar); R27Q (n=131, measured-association mean=2.564, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPAATEMYGSVSTNLQQGNR",
+            "rationale": "KG: V10A (n=47, measured-association mean=-0.814, max=4.713; target properties: charge=0, size=small, polarity=nonpolar); Q14M (n=64, measured-association mean=0.482, max=5.006; target properties: charge=0, size=large, polarity=nonpolar); R24Q (n=153, measured-association mean=2.444, max=9.536; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.95,
+        "exploit_ratio": 0.95,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [
+          "A11S",
+          "D0K",
+          "E1D",
+          "E2Q",
+          "L22E",
+          "L22I",
+          "N21D",
+          "N21E",
+          "Q14H",
+          "Q14L",
+          "Q23E",
+          "R24N",
+          "R27W",
+          "S17N",
+          "S19G",
+          "T6A",
+          "T7V",
+          "V10E",
+          "Y15F",
+          "Y15W"
+        ],
+        "n_excluded": 1779,
+        "n_eligible_after_exclusion": 496,
+        "n_exploit": 46,
+        "n_explore": 2,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 7,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 288,
+        "batch_max": 5.829,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "AEEEIRTTNPVATEQYGEISTNLQRGNR",
+            "predicted_mean": 2.231754464085972,
+            "predicted_var": 0.49405139284298755,
+            "measured_fitness": 4.5143178849000005,
+            "residual": 2.2825634208140286
+          },
+          {
+            "seq": "DEDEIATTNPVATESYGSVSTNLQRGNR",
+            "predicted_mean": 2.510193665146371,
+            "predicted_var": 0.006781640042717179,
+            "measured_fitness": 0.592231072001,
+            "residual": -1.917962593145371
+          },
+          {
+            "seq": "DEDEIATTNPVATETYGTVSTNLQRGNR",
+            "predicted_mean": 2.049813902521654,
+            "predicted_var": 0.017007282412890033,
+            "measured_fitness": 0.555024181565,
+            "residual": -1.4947897209566543
+          },
+          {
+            "seq": "DEDEIRTTNPVATEQYGSVSTNLQAGNA",
+            "predicted_mean": 2.502070591187014,
+            "predicted_var": 3.128534633377614,
+            "measured_fitness": 4.50170092541,
+            "residual": 1.999630334222986
+          },
+          {
+            "seq": "DEEEIATTNPVATEMYGSVSVNLQQGNR",
+            "predicted_mean": 3.5178655064939672,
+            "predicted_var": 0.35143488681488355,
+            "measured_fitness": 2.76964923544,
+            "residual": -0.748216271053967
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGSASTNLQRGQQ",
+            "predicted_mean": 2.9112112446025957,
+            "predicted_var": 0.913644955183902,
+            "measured_fitness": 4.04990537053,
+            "residual": 1.1386941259274046
+          },
+          {
+            "seq": "DEEEIRCTNPACTEQYGSVSTNLQQGNR",
+            "predicted_mean": 2.8656035874825765,
+            "predicted_var": 0.3085021258230297,
+            "measured_fitness": -1.0590958132,
+            "residual": -3.9246994006825764
+          },
+          {
+            "seq": "DEEEIRCTNPVASEQYGSVSTNLQHGNR",
+            "predicted_mean": 2.781028846697142,
+            "predicted_var": 0.9731809643128905,
+            "measured_fitness": 2.5391962264,
+            "residual": -0.2418326202971417
+          },
+          {
+            "seq": "DEEEIRTTNPAATEMYGSVSTNLQQGNR",
+            "predicted_mean": 3.6258589367483527,
+            "predicted_var": 0.04922564484788077,
+            "measured_fitness": 1.36979887248,
+            "residual": -2.2560600642683526
+          },
+          {
+            "seq": "DEEEIRTTNPVASEQYGDVSTNLDRGNR",
+            "predicted_mean": 2.2400826932698177,
+            "predicted_var": 0.035943767191810465,
+            "measured_fitness": 0.148021440569,
+            "residual": -2.0920612527008178
+          },
+          {
+            "seq": "DEEEIRTTNPVASEQYGSVANNLQRGMR",
+            "predicted_mean": 2.5143325855185346,
+            "predicted_var": 0.04924849290978555,
+            "measured_fitness": 1.11264343304,
+            "residual": -1.4016891524785347
+          },
+          {
+            "seq": "DEEEIRTTNPVATEEYGDVSENLQRGNR",
+            "predicted_mean": 2.638463737432298,
+            "predicted_var": 0.27388223383186644,
+            "measured_fitness": 5.82904053494,
+            "residual": 3.1905767975077017
+          },
+          {
+            "seq": "DEEEIRTTNPVATEMYGEVSANLQRGNR",
+            "predicted_mean": 1.9726732661076927,
+            "predicted_var": 0.049653851909741455,
+            "measured_fitness": 3.54417861441,
+            "residual": 1.5715053483023071
+          },
+          {
+            "seq": "DEEEIRTTNPVATENYGSVSTNLQRGTQ",
+            "predicted_mean": 2.381446560280173,
+            "predicted_var": 0.2345102149846199,
+            "measured_fitness": 3.28729776899,
+            "residual": 0.9058512087098269
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDASTNLQRGNQ",
+            "predicted_mean": 2.018066574480029,
+            "predicted_var": 0.0797715435880104,
+            "measured_fitness": 4.402247241273463,
+            "residual": 2.3841806667934335
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDASTNLQRGQQ",
+            "predicted_mean": 3.9909583191908613,
+            "predicted_var": 0.6172395538194145,
+            "measured_fitness": 4.0352646023,
+            "residual": 0.04430628310913853
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNLQHGER",
+            "predicted_mean": 2.158719421729778,
+            "predicted_var": 0.3174992731829154,
+            "measured_fitness": 4.9237868459800005,
+            "residual": 2.7650674242502227
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNLQHGQR",
+            "predicted_mean": 4.066214603695309,
+            "predicted_var": 0.9134162903374907,
+            "measured_fitness": 3.81245305685,
+            "residual": -0.2537615468453094
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTNLQRGEK",
+            "predicted_mean": 2.746116500873109,
+            "predicted_var": 0.030093422907745065,
+            "measured_fitness": 2.94199509951,
+            "residual": 0.19587859863689117
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSTQLQRNNR",
+            "predicted_mean": 2.4707142103116304,
+            "predicted_var": 0.2070899133400859,
+            "measured_fitness": 0.268562869487,
+            "residual": -2.2021513408246305
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVSTNFQHGNR",
+            "predicted_mean": 1.9747597469322375,
+            "predicted_var": 0.440036223911817,
+            "measured_fitness": 3.214706962567785,
+            "residual": 1.2399472156355476
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVSTNLQRGDA",
+            "predicted_mean": 2.4948018189829995,
+            "predicted_var": 2.02404124927803,
+            "measured_fitness": 5.401217798459999,
+            "residual": 2.906415979477
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVTTNLQRGER",
+            "predicted_mean": 3.0544220087588574,
+            "predicted_var": 0.12805921244620289,
+            "measured_fitness": 3.6962472844,
+            "residual": 0.6418252756411427
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVPTNLQRGDN",
+            "predicted_mean": 2.3330489260860787,
+            "predicted_var": 0.05450328277235144,
+            "measured_fitness": 2.10572525834,
+            "residual": -0.2273236677460786
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSTNLQMGEQ",
+            "predicted_mean": 1.9968174084710437,
+            "predicted_var": 0.5212430174357668,
+            "measured_fitness": 1.0388794998,
+            "residual": -0.9579379086710438
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSTNLQQGDH",
+            "predicted_mean": 0.4446839673224616,
+            "predicted_var": 6.743016758388733,
+            "measured_fitness": 0.718535110703,
+            "residual": 0.2738511433805384
+          },
+          {
+            "seq": "DEEEIRTTNPVATQQYGDVSENLQRGNR",
+            "predicted_mean": 2.5457221770795666,
+            "predicted_var": 0.11216278609706609,
+            "measured_fitness": -2.18983835545,
+            "residual": -4.735560532529567
+          },
+          {
+            "seq": "DEEEIRTTNPVCTEQYGDVSTNLQHGNR",
+            "predicted_mean": 2.7449188280918353,
+            "predicted_var": 0.12111070064803986,
+            "measured_fitness": 2.82229996842,
+            "residual": 0.07738114032816457
+          },
+          {
+            "seq": "DEEEISSTNPVATEQYGDVSTNLQRGNR",
+            "predicted_mean": 1.9777640859896355,
+            "predicted_var": 0.11240319882948625,
+            "measured_fitness": 0.4810922446149999,
+            "residual": -1.4966718413746356
+          },
+          {
+            "seq": "DEEEISTTNPVATEQYGSVSENLQKGNR",
+            "predicted_mean": 2.1849142762495735,
+            "predicted_var": 0.2002310238991846,
+            "measured_fitness": 2.09166099788,
+            "residual": -0.09325327836957342
+          },
+          {
+            "seq": "DEEELATTNPVATEQYGSVSTNLQHGER",
+            "predicted_mean": 1.2231469952394995,
+            "predicted_var": 7.735891790838884,
+            "measured_fitness": 1.5676508027200002,
+            "residual": 0.3445038074805007
+          },
+          {
+            "seq": "DEEELRTTNPVATEQYGSVSENLQRGGR",
+            "predicted_mean": 3.013886650970692,
+            "predicted_var": 0.17872058322136683,
+            "measured_fitness": 2.6128112262400003,
+            "residual": -0.4010754247306916
+          },
+          {
+            "seq": "DEEELRTTNPVATEQYGSVSTNLTRGNQ",
+            "predicted_mean": 2.528357426549812,
+            "predicted_var": 0.39683454112179556,
+            "measured_fitness": 1.36995364871,
+            "residual": -1.1584037778398122
+          },
+          {
+            "seq": "DEEEVRTTNPVATEQYGSVSTNLQMGNL",
+            "predicted_mean": 2.2371572552054975,
+            "predicted_var": 0.654304859653385,
+            "measured_fitness": 2.66476492043,
+            "residual": 0.42760766522450266
+          },
+          {
+            "seq": "DEEEVRTTNPVATEQYGSVSTNLQQMNR",
+            "predicted_mean": 1.9938471235120439,
+            "predicted_var": 0.4929959382236114,
+            "measured_fitness": 4.327685069469999,
+            "residual": 2.3338379459579555
+          },
+          {
+            "seq": "DEHEIRTTNPVCTEQYGSVSTNLQRGNQ",
+            "predicted_mean": 2.5640223219536544,
+            "predicted_var": 1.1941862805477206,
+            "measured_fitness": 1.82215722253,
+            "residual": -0.7418650994236544
+          },
+          {
+            "seq": "DENEIATTNPVATEQYGSVSTNLQQGNR",
+            "predicted_mean": 2.2874254546457102,
+            "predicted_var": 1.1239908691281384,
+            "measured_fitness": 2.9977029302900005,
+            "residual": 0.7102774756442902
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGEVSTNLQRGER",
+            "predicted_mean": 2.0793647761305554,
+            "predicted_var": 0.3505625338870679,
+            "measured_fitness": 2.00380642666,
+            "residual": -0.07555834947055518
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGSASTNLDRGNR",
+            "predicted_mean": 2.7524913717087447,
+            "predicted_var": 0.636547233453087,
+            "measured_fitness": 2.05103440046,
+            "residual": -0.7014569712487448
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGSVSENLQQGNR",
+            "predicted_mean": 2.073296620434663,
+            "predicted_var": 0.21658509703500975,
+            "measured_fitness": 2.3767540745099995,
+            "residual": 0.30345745407533675
+          },
+          {
+            "seq": "DESEINTTNPVATEQYGDVSTNLQRGNR",
+            "predicted_mean": 2.719631799429015,
+            "predicted_var": 0.033480685277197296,
+            "measured_fitness": 4.15140759852,
+            "residual": 1.4317757990909845
+          },
+          {
+            "seq": "DETEIRTTNPVATEQYGSVATTLQRGNR",
+            "predicted_mean": 2.721259134718407,
+            "predicted_var": 3.783004559906818,
+            "measured_fitness": 1.82244234418,
+            "residual": -0.898816790538407
+          },
+          {
+            "seq": "NEEEIRTTNPVASEQYGDVSTNLQRGNR",
+            "predicted_mean": 2.119217830426688,
+            "predicted_var": 0.19292085074350607,
+            "measured_fitness": 5.186117768430001,
+            "residual": 3.0668999380033126
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGSVSTNLQHGNQ",
+            "predicted_mean": 2.6687381809081696,
+            "predicted_var": 0.118377168782957,
+            "measured_fitness": 3.176350725859999,
+            "residual": 0.5076125449518294
+          },
+          {
+            "seq": "SEDEIRTTNPVATEQYGSVSTNLQTGNR",
+            "predicted_mean": 2.5016538401176778,
+            "predicted_var": 0.24930726206326384,
+            "measured_fitness": 2.8638365885900003,
+            "residual": 0.36218274847232257
+          },
+          {
+            "seq": "SEEEIRTTNPAATEQYGSVSTNLQRGTE",
+            "predicted_mean": 2.80570443341753,
+            "predicted_var": 0.027576347114284517,
+            "measured_fitness": 2.0195254994400003,
+            "residual": -0.7861789339775296
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSASTNLQEGNR",
+            "predicted_mean": 2.188275476656731,
+            "predicted_var": 0.03361493458886743,
+            "measured_fitness": 1.79446856779,
+            "residual": -0.39380690886673086
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSENLQRGNQ",
+            "predicted_mean": 3.4079456297602686,
+            "predicted_var": 1.524675354086799,
+            "measured_fitness": 3.7366959771,
+            "residual": 0.3287503473397315
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 7,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "tool": "built-in image_gen",
+  "model_selection": "not exposed by tool interface",
+  "reference": "v0.5 workflow illustration supplied by user",
+  "prompts": [
+    "Use case: infographic-diagram. Produce a polished scientific paper illustration, landscape approximately 2.2:1, high resolution. The input image is STYLE REFERENCE ONLY: preserve its professional pastel blue/code, pale green/language, peach/evidence, lavender/log color system, navy outlines, large clean English sans-serif labels, small elegant flat icons inside generous rounded rectangular cards. Pure white background, no texture, no shadows, no 3D, no decorative border. The reference's arrows and wording are NOT scientific authority. Rebuild the exact supplied updated topology. Every label must be spelled perfectly, no paragraphs, no invented quantitative data. Balanced aligned grid, ample separation, all arrows clearly routed with no crossings through text.\nTitle: \"Controlled directed evolution\". Subtitle: \"GB1: five roles and an auditable selection loop\". Upper horizontal row, left to right: \"Measured data\" (small chart icon); \"Data Analyst\" (chart and magnifier icon); \"Hypothesis Generator\" (lightbulb icon); \"Mutation Designer\" (four residue tiles icon, not five); \"Fitness Evaluator\" (prediction chart icon); \"Scientific Critic\" (checklist icon). Solid arrows connect this upper row left to right. Analyst, Designer and Evaluator blue. Hypothesis pale green, small badge \"Optional LLM\". Critic pale green, small subtitle \"Rules + optional notes\". Lower row below Evaluator extending leftwards: \"Batch selector\" with small label \"Mean / UCB + BLOSUM\", then to its LEFT \"Freeze batch\" (snowflake icon), then LEFT \"Oracle lookup\" (database magnifier icon), then LEFT \"Update data\" (database refresh icon). A solid arrow goes DIRECTLY from Fitness Evaluator downward into Batch selector. Solid arrows from Batch selector to Freeze batch to Oracle lookup to Update data (flow right to left). Update data loops back into Measured data. Scientific Critic connects ONLY by dashed arrow to a bottom lavender horizontal \"Event log\" bar. It must NOT connect to Batch selector or Freeze batch by any solid arrow: critic verdicts are logged but the frozen GB1 consumer selects all scored candidates. Other role cards may have clean dashed logging lines to Event log. Tiny legend \"Solid: executed flow\" and \"Dashed: logging\". No prior rules floating box. No misleading critic-to-selection edge. Keep chart icons purely symbolic. All title and card labels are mandatory.",
+    "Use case: infographic-diagram. Produce a polished scientific paper illustration, landscape approximately 2.2:1, high resolution. The input image is STYLE REFERENCE ONLY: preserve its professional pastel blue/code, pale green/language, peach/evidence, lavender/log color system, navy outlines, large clean English sans-serif labels, small elegant flat icons inside generous rounded rectangular cards. Pure white background, no texture, no shadows, no 3D, no decorative border. The reference's arrows and wording are NOT scientific authority. Rebuild the exact supplied updated topology. Every label must be spelled perfectly, no paragraphs, no invented quantitative data. Balanced aligned grid, ample separation, all arrows clearly routed with no crossings through text.\nTitle: \"Three channels of cross-round feedback\". Create three clean horizontal swimlanes with generous spacing and icon cards, each left-to-right. Lane 1 label \"Statistical learning\", three blue cards \"Measured labels\" (database icon), \"Refit surrogate\" (small fitting chart icon), \"Next batch\" (sequence cards icon). Arrows only within lane. Lane 2 label \"GB1 language interface\", three pale green cards \"Current menu\" (list of residue tiles icon), \"One-shot call\" (speech bubble/lightbulb icon), \"Hypothesis\" (lightbulb plus small residue tiles icon). Lane 3 label \"AAV researcher interface\", three cards \"Message history\" (stacked chat sheets), \"Tools + measured state\" (tool/data icon), \"Updated history\" (chat sheets plus refresh). Third lane peach cards with one green center badge \"LLM\". Arrows within third lane and an elegant small return arrow from Updated history to Message history along bottom. No cross-lane arrows: these are distinguished information channels, not a serial pipeline. Footer legend only \"Labels update models; history supplies context\". Keep English labels short and large; no quantitative graphs or invented evidence. Same pastel scientific illustration style as reference.",
+    "Use case: infographic-diagram. Produce a polished scientific paper illustration, landscape approximately 2.2:1, high resolution. The input image is STYLE REFERENCE ONLY: preserve its professional pastel blue/code, pale green/language, peach/evidence, lavender/log color system, navy outlines, large clean English sans-serif labels, small elegant flat icons inside generous rounded rectangular cards. Pure white background, no texture, no shadows, no 3D, no decorative border. The reference's arrows and wording are NOT scientific authority. Rebuild the exact supplied updated topology. Every label must be spelled perfectly, no paragraphs, no invented quantitative data. Balanced aligned grid, ample separation, all arrows clearly routed with no crossings through text.\nTitle: \"From residual evidence to experimental action\". Subtitle: \"V0.8: trace information, actions and measured batches\". Six equal icon cards arranged as a clean serpentine loop in two rows. Top row left to right: \"Nominated prediction\" (small prediction chart, subtitle \"Before measurement\"), \"Oracle observation\" (database magnifier, subtitle \"Measured fitness\"), \"Residual record\" (paired document icon, subtitle \"Observed - predicted\"). Arrows left to right. Bottom row right to left: beneath Residual record \"Reflection card\" (peach evidence clipboard icon, subtitle \"Previous-round evidence\"), then to its left \"Researcher agent\" (pale green lightbulb + tool icon, subtitle \"History + tools\"), then far left \"Executed batch\" (blue sequence cards with magnifier icon, subtitle \"Compare actual sequences\"). Solid arrow Residual record down to Reflection card, then arrows left through Researcher agent to Executed batch. No unearned improvement or success symbols. At bottom a small lavender strip labelled \"Next study: acquisition policy x reflection\". Add two short small tags within that strip \"Pure exploit / quality-aware mix\" and \"Off / On\". No results or numbers in this figure. This is an exact evidence-to-action mechanism, and the batch may remain unchanged despite an altered tool action. Clean English typography, icons, scientific pastel aesthetic identical to reference."
+  ],
+  "edits": [
+    {
+      "key": 0,
+      "path": "/Users/lizeyu/.codex/generated_images/01a095df-7704-70e0-9c0d-2cb1bd3a241d/exec-c9c534d3-f69f-4a7d-a278-755eaf83d8e2.png",
+      "prompt": "Edit this scientific diagram minimally. Preserve all colors, dimensions, labels, icons, card positions and overall style. Fix exactly TWO arrows: (1) add the missing navy solid right-pointing arrow from Hypothesis Generator to Mutation Designer across their small horizontal gap, aligned with the other upper-row arrows. (2) reroute the Scientific Critic dashed logging line: it must descend along the right, turn left below the Batch selector card, then end with an arrowhead at the RIGHT EDGE of the lavender Event log bar. It must not end at or point to the legend, and it must not be a solid edge to any selector. Keep the legend legible and separate. All other solid and dashed edges unchanged. Do not invent text or add decorative elements."
+    },
+    {
+      "key": 1,
+      "path": "/Users/lizeyu/.codex/generated_images/01a095df-7704-70e0-9c0d-2cb1bd3a241d/exec-40bfc95a-4faa-4e45-8083-fb76128bc7f5.png",
+      "prompt": "Edit this scientific diagram minimally. Preserve all typography, colors, icons, cards, arrows and overall layout. In the GB1 language interface middle lane ONLY, replace each existing five-letter tile strip with exactly FOUR tiles reading V D G V (left to right). Both the Current menu card and Hypothesis card must show four tiles. This is the four-position GB1 reference sequence used as a symbolic icon. Do not change any other label or any other lane. No extra text."
+    }
+  ],
+  "outputs": [
+    {
+      "path": "figures/f03_workflow_imagegen.png",
+      "source_file": "exec-32c91c5f-704a-4c0f-93be-f2675ebf4afe.png",
+      "sha256": "11c2a58b527ab352b6b20a01dfa7300ae262278ab5ed1af71281463c435c1001"
+    },
+    {
+      "path": "figures/f04_feedback_imagegen.png",
+      "source_file": "exec-92e33ebb-3a8b-4a46-8f25-0328ba0bef49.png",
+      "sha256": "45faa459d45b8778de925bcde3e1e186b339a2cf39ee073b3dc5b03fa96df3c0"
+    },
+    {
+      "path": "figures/f12_contract_imagegen.png",
+      "source_file": "exec-cf55e2ef-dc6c-46ed-8949-0ce364ca5baf.png",
+      "sha256": "b3725852344d4eb3732f26e14394df84efcd6fcb72a411bb23188274fdf4131b",
+      "prompt_record": "evidence/v07-image-edit.json"
+    },
+    {
+      "path": "figures/f13_future_architecture_imagegen.png",
+      "source_file": "reports/final-report-v0.5/figures/fig5_proposal.png",
+      "sha256": "38dc68c1228f1157b9494376219a0aea6fff2b8c81a821fcbdb163d50e9bfa6c",
+      "mode": "byte-identical reuse of previously generated image",
+      "prompt_record": "evidence/v05-imagegen-prompts.json"
+    }
+  ],
+  "historical_residual_diagram": {
+    "path": "figures/f12_v08_imagegen.png",
+    "source_file": "exec-015e783f-ec94-41a9-bfb8-f482a0860775.png",
+    "sha256": "226e6c0144398127aa750d467c640a39df20267e885d494290ff3d9bf5dbf1fb"
+  }
+}

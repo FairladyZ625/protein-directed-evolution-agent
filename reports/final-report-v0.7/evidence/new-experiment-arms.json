@@ -1,0 +1,98 @@
+[
+  {
+    "study": "v08",
+    "mode": "v05",
+    "reflection": "off",
+    "seed": 42,
+    "path": "v08/acq-v05_reflexion-off_seed-42",
+    "original_path": "tmp/v08-factorial/acq-v05_reflexion-off_seed-42"
+  },
+  {
+    "study": "v08",
+    "mode": "v05",
+    "reflection": "on",
+    "seed": 42,
+    "path": "v08/acq-v05_reflexion-on_seed-42",
+    "original_path": "tmp/v08-factorial/acq-v05_reflexion-on_seed-42"
+  },
+  {
+    "study": "v08",
+    "mode": "v06",
+    "reflection": "off",
+    "seed": 42,
+    "path": "v08/acq-v06_reflexion-off_seed-42",
+    "original_path": "tmp/v08-factorial/acq-v06_reflexion-off_seed-42"
+  },
+  {
+    "study": "v08",
+    "mode": "v06",
+    "reflection": "on",
+    "seed": 42,
+    "path": "v08/acq-v06_reflexion-on_seed-42",
+    "original_path": "tmp/v08-factorial/acq-v06_reflexion-on_seed-42"
+  },
+  {
+    "study": "v09",
+    "mode": "v08",
+    "reflection": "off",
+    "seed": 42,
+    "path": "v09/contract-v08_reflexion-off_seed-42",
+    "original_path": "harness/reports/v09-contract/contract-v08_reflexion-off_seed-42"
+  },
+  {
+    "study": "v09",
+    "mode": "v08",
+    "reflection": "on",
+    "seed": 42,
+    "path": "v09/contract-v08_reflexion-on_seed-42",
+    "original_path": "harness/reports/v09-contract/contract-v08_reflexion-on_seed-42"
+  },
+  {
+    "study": "v09",
+    "mode": "v09",
+    "reflection": "off",
+    "seed": 42,
+    "path": "v09/contract-v09_reflexion-off_seed-42",
+    "original_path": "harness/reports/v09-contract/contract-v09_reflexion-off_seed-42"
+  },
+  {
+    "study": "v09",
+    "mode": "v09",
+    "reflection": "on",
+    "seed": 42,
+    "path": "v09/contract-v09_reflexion-on_seed-42",
+    "original_path": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42"
+  },
+  {
+    "study": "v09b12",
+    "mode": "v08",
+    "reflection": "off",
+    "seed": 42,
+    "path": "v09-b12/contract-v08_reflexion-off_seed-42",
+    "original_path": "tmp/v09-b12/contract-v08_reflexion-off_seed-42"
+  },
+  {
+    "study": "v09b12",
+    "mode": "v08",
+    "reflection": "on",
+    "seed": 42,
+    "path": "v09-b12/contract-v08_reflexion-on_seed-42",
+    "original_path": "tmp/v09-b12/contract-v08_reflexion-on_seed-42"
+  },
+  {
+    "study": "v09b12",
+    "mode": "v09",
+    "reflection": "off",
+    "seed": 42,
+    "path": "v09-b12/contract-v09_reflexion-off_seed-42",
+    "original_path": "tmp/v09-b12/contract-v09_reflexion-off_seed-42"
+  },
+  {
+    "study": "v09b12",
+    "mode": "v09",
+    "reflection": "on",
+    "seed": 42,
+    "path": "v09-b12/contract-v09_reflexion-on_seed-42",
+    "original_path": "tmp/v09-b12/contract-v09_reflexion-on_seed-42"
+  }
+]

@@ -1,0 +1,853 @@
+{
+  "code_commit": "80f4447c5f8ee26267e98199e900230459b785b8",
+  "inputs": [
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_easy.metrics.json",
+      "snapshot": "evidence/gb1_easy.json",
+      "sha256": "eca6511871d1800c7a6ac3f9b53597140a900e5030f5aa0c2b0e1c537c5763f3",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_hard.metrics.json",
+      "snapshot": "evidence/gb1_hard.json",
+      "sha256": "12a82fbfe29a72568828dedb4170119c7b23dc0fe5282a58b1b1bd7a384e4107",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_sparse.metrics.json",
+      "snapshot": "evidence/gb1_sparse.json",
+      "sha256": "b74d06678ce65ce7ea0c8cb3f4c97b34c7d1c9be8ad20acc6ee659be276b1477",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_llm.metrics.json",
+      "snapshot": "evidence/gb1_llm.json",
+      "sha256": "ca9ec8ad9183be6779c323d2a851aa1ee5da8421cc303d87c6e2424f4d1901ac",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json",
+      "snapshot": "evidence/alpha.json",
+      "sha256": "61e28b71753ea62891fcd033f7c9af707f20fe5817fd07211bbd9cd227f42008",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json",
+      "snapshot": "evidence/scaling.json",
+      "sha256": "eef6f9ccc93a06f8f974476b4e290b302f0aac0862c0b811a3e7598112c6e3de",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/predictor_metrics.json",
+      "snapshot": "evidence/predictors.json",
+      "sha256": "d7fe3d7f81786bd0e2e3e13439b73ff091a92bf1a975bca56fa30f7739e9843b",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/knowledge-ablation/atomic-seed0/metrics.json",
+      "snapshot": "evidence/aav_atomic.json",
+      "sha256": "729ec91b17c8e0f61ef71a818e856be5abfc758b22b9a5944c3665f3f6190d27",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/knowledge-ablation/checkpoint-seed0/metrics.json",
+      "snapshot": "evidence/aav_checkpoint.json",
+      "sha256": "94e8f86d0591266d8072a00cff19842b3d6afdede4617783c7efc16105e603cc",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/context/research/v07-multiseed-evidence/summary.json",
+      "snapshot": "evidence/aav_multiseed.json",
+      "sha256": "3dab829b65beee7eae48ebb3a0e3330820e458dff9c5d54e48b966bf667484ea",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "reports/final-report-v0.5/evidence/epistasis.json",
+      "snapshot": "evidence/epistasis.json",
+      "sha256": "6cb883ba6f330b32454e34781464e82a7150b2c81163707b39cdf200fd3895d9",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/context/research/v07-peak-mechanism.md",
+      "snapshot": "evidence/aav_mechanism.md",
+      "sha256": "f429610c1b191a83af9ed74aa07f819de035e73d09ac95365afd80dc11b70c48",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/context/research/v07-multiseed-robustness.md",
+      "snapshot": "evidence/multiseed_protocol.md",
+      "sha256": "c025bbd0bb7a7eecae092e3b3ca45d4cadf5e170ded3f5c3dbd7f2630c12ba24",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/handoff.md",
+      "sha256": "8fe9e6da654c5d3a8e028973a0f45b39e64bad4b9d2b02bcc23f85d924e5382e",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input",
+      "interpretation_status": "superseded for current interpretation by evidence/engineering/handoff-current.md; retained as provenance"
+    },
+    {
+      "path": "reports/v0.8-proposal-event-stream-reflexion.md",
+      "snapshot": "evidence/v08-proposal-received.md",
+      "sha256": "2933e85eb22e4210c78f667e64d9a044e4d2f10f051e6c510085ef9215bbef56",
+      "origin": "user-provided working document",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/gb1/mutation_order.json",
+      "snapshot": "evidence/gb1_mutation_order.json",
+      "sha256": "05f23b240017f0bedbb35af043a59e36ac66ab2c73bdf51fae691953d107587d",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/gb1/conservation.json",
+      "snapshot": "evidence/gb1_conservation.json",
+      "sha256": "0346b053d4edda4b609bd8bcbc64af2b96fab21038bd66a19f62bc4538c4eba1",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/aav/mutation_order.json",
+      "snapshot": "evidence/aav_mutation_order.json",
+      "sha256": "f83fb8ed83d4bc58e80a71a6abdd0b8f3d0aeb7d4f6668086461994e0655dc4b",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/aav/conservation.json",
+      "snapshot": "evidence/aav_conservation.json",
+      "sha256": "12bc6db61cfa42b3a22ba6781085c64fa39c7167d9fb30c7036feb1b17bf6a52",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "agent/pipeline.py",
+      "snapshot": "evidence/code/agent/pipeline.py",
+      "sha256": "1b28c2156820ccd4de3a192ebb239d218119a54d9c753836e7a3d13059e922be",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "evolution/campaign.py",
+      "snapshot": "evidence/code/evolution/campaign.py",
+      "sha256": "0911f4913d6b2445f9fa0a270c79dd6184741af1ed2af45d43358f35cde3e630",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "agent/auto_researcher.py",
+      "snapshot": "evidence/code/agent/auto_researcher.py",
+      "sha256": "401fbce2d1c2f4f3d4698fc78032f6c814c206313798b2a9f7e3bcd9284ac132",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "agent/llm.py",
+      "snapshot": "evidence/code/agent/llm.py",
+      "sha256": "6e498f6042fd886f5ae5d32605affeef9a74841e1234f19c293b966ca2cf9549",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "knowledge/validators.py",
+      "snapshot": "evidence/code/knowledge/validators.py",
+      "sha256": "9b2f1842b820e900ba14d76b87563313f688ef50bf6fbd675c92666ab7e86928",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "knowledge/rules.yaml",
+      "snapshot": "evidence/code/knowledge/rules.yaml",
+      "sha256": "2b546f191a64354a91fa2947e7e7ebea086fa931ad063c9adf0201c14f2ed667",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "events/store.py",
+      "snapshot": "evidence/code/events/store.py",
+      "sha256": "db007a2f2b2145f7780f16c3ccd9302db34e6b54680db5cc704f6b5ff40281f7",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "models/train_ladder.py",
+      "snapshot": "evidence/code/models/train_ladder.py",
+      "sha256": "b379ad09e368eab5c694fb1e7e1f13985befcd49c79ec332f72aed2e32c36bbe",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "models/alpha_sweep.py",
+      "snapshot": "evidence/code/models/alpha_sweep.py",
+      "sha256": "b3b0506809e9ae49a73f7dffcaad084cb2546de31b184989e8235aa79bc2ae10",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "features/conservation.py",
+      "snapshot": "evidence/code/features/conservation.py",
+      "sha256": "3299902e4a2ebbe0aaa2f8a2a705fedde1c04c47f1bc1379f9d22fafd631d3ea",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "analysis/mutation_order.py",
+      "snapshot": "evidence/code/analysis/mutation_order.py",
+      "sha256": "72bca6a0954e0b031fb06219d38ef72c94eef0d754bb8ea9da3337b9ed707101",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "app/demo.py",
+      "snapshot": "evidence/code/app/demo.py",
+      "sha256": "99515e478732d7484597b15ddfcdf7981013c0057cd5ad962b0cad039d425b8a",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl.gz",
+      "snapshot": "evidence/gb1_easy.events.jsonl.gz",
+      "sha256": "7367ecea390e8cbac2db67edd73fd255aa4724b0f5cc3550c533103c053793ce",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_hard.events.jsonl.gz",
+      "snapshot": "evidence/gb1_hard.events.jsonl.gz",
+      "sha256": "4f1a5dfadeb1a189ad2ab5ad9f0e46f06202b404bb95c74a0c02250e3da9741d",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_sparse.events.jsonl.gz",
+      "snapshot": "evidence/gb1_sparse.events.jsonl.gz",
+      "sha256": "649ba3b3e200b485d28f5bdab1925408cccf1dd004eec6455bb4c7b0da7e6786",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_llm.events.jsonl.gz",
+      "snapshot": "evidence/gb1_llm.events.jsonl.gz",
+      "sha256": "70891d8a56613a089dfeb30ccde5457b09a4c2c6406132ab59301132c2d17dee",
+      "origin": "frozen checkout",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-1seed.md",
+      "snapshot": "evidence/v08-smoke-1seed.md",
+      "sha256": "1b6de52c92e723c043084b36011ae1249e89913540380d142be890d34fbcb54f",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/handoff-update-v08.md",
+      "sha256": "cb92b0f56c1cb910d61569538a5b179c66eb097d9e133238ff294e8bf2b9f62e",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline",
+      "report_role": "historical v0.6 input",
+      "interpretation_status": "superseded for current interpretation by evidence/engineering/handoff-current.md; retained as provenance"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.metrics.json",
+      "snapshot": "evidence/v08-control.metrics.json",
+      "sha256": "8641d7ca844359115c75b7b2c1f21a5259768bff4b5c7e93ffde25d5e74c5630",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.events.jsonl.gz",
+      "snapshot": "evidence/v08-control.events.jsonl.gz",
+      "sha256": "e0adf60958831c800c6fbb656e0754fbb1f617aad8c90b6535b3928db6dc6c97",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.metrics.json",
+      "snapshot": "evidence/v08-reflexion.metrics.json",
+      "sha256": "2459cffe063805f42b7a269a3138c42e03ab2ae28684c46a12d9b360beafe8c5",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.events.jsonl.gz",
+      "snapshot": "evidence/v08-reflexion.events.jsonl.gz",
+      "sha256": "ad59754e7443e9eb4b74bb477606498c267a6fc97393a6427f4ccafe56d96559",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.2/gb1/campaign_llm.metrics.json",
+      "snapshot": "evidence/gb1_llm_replication.json",
+      "sha256": "825bd5f9ecac0e02a6798c7df3222e3e00d63c62017c5f543edbcffed9eb0758",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/workflow-v1.2/gb1/campaign_llm.events.jsonl",
+      "snapshot": "evidence/gb1_llm_replication.events.jsonl",
+      "sha256": "01734421ce25d895a992e2863d46fad92013e367d352dd496a5ccc3ec6f01710",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run",
+      "report_role": "historical v0.6 input"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/handoff-update-replication.md",
+      "sha256": "c179f04e9ce95b4bed2b6334dba4edcdeb8965895269d126c37ecb458650ddce",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run",
+      "report_role": "historical v0.6 input",
+      "interpretation_status": "superseded for current interpretation by evidence/engineering/handoff-current.md; retained as provenance"
+    },
+    {
+      "path": "reports/final-report-v0.6/v07-handoff-from-engineering.md",
+      "snapshot": "evidence/engineering/v07-handoff.md",
+      "sha256": "bef9ba81281b0d9c15f42837dfa41652afa2457c84ac792500b203bdedec9340",
+      "source_sha256": "bef9ba81281b0d9c15f42837dfa41652afa2457c84ac792500b203bdedec9340",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/engineering/handoff-current.md",
+      "sha256": "258c8c2e65afbd95bfe7081fd42c5ba49598cfc7ae559caf7d4839720cd604e8",
+      "source_sha256": "258c8c2e65afbd95bfe7081fd42c5ba49598cfc7ae559caf7d4839720cd604e8",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/factorial-2x2-seed42.md",
+      "snapshot": "evidence/engineering/v08-factorial.md",
+      "sha256": "003e135a502b3938dd709dc6a60949b7dbf102997eb79305f390dadca9666081",
+      "source_sha256": "003e135a502b3938dd709dc6a60949b7dbf102997eb79305f390dadca9666081",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/tasks/task_feb731c779788be5bfff65e979-v0-9/artifacts/contract-2x2-seed42.md",
+      "snapshot": "evidence/engineering/v09-contract.md",
+      "sha256": "4615b3c548016154c9d581ae2fcdc04fd79a5752cf47dbe0d6f66f84f104724e",
+      "source_sha256": "4615b3c548016154c9d581ae2fcdc04fd79a5752cf47dbe0d6f66f84f104724e",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "agent/auto_researcher.py",
+      "snapshot": "evidence/code-v09/agent/auto_researcher.py",
+      "sha256": "71ad98c6c58d619a3ed2699f2fe99f4131ca5c7074a66be449b59bc2f69cca87",
+      "source_sha256": "71ad98c6c58d619a3ed2699f2fe99f4131ca5c7074a66be449b59bc2f69cca87",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "events/reflexion.py",
+      "snapshot": "evidence/code-v09/events/reflexion.py",
+      "sha256": "64d6296673d80a845097e80d8b2f68b5b87bb2bff0fc8c2394da02e317c09d32",
+      "source_sha256": "64d6296673d80a845097e80d8b2f68b5b87bb2bff0fc8c2394da02e317c09d32",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "scripts/run_v08_factorial.sh",
+      "snapshot": "evidence/code-v09/scripts/run_v08_factorial.sh",
+      "sha256": "eedf4c226a392915461594520eeac5390ed18da40349f6b5c5ffe6a84affd5f7",
+      "source_sha256": "eedf4c226a392915461594520eeac5390ed18da40349f6b5c5ffe6a84affd5f7",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "scripts/run_v09_contract.sh",
+      "snapshot": "evidence/code-v09/scripts/run_v09_contract.sh",
+      "sha256": "554a60936c98476b733c6d19c906747c3b47556210399c7c41bb6f068d6c660f",
+      "source_sha256": "554a60936c98476b733c6d19c906747c3b47556210399c7c41bb6f068d6c660f",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "scripts/compare_v08_arms.py",
+      "snapshot": "evidence/code-v09/scripts/compare_v08_arms.py",
+      "sha256": "87983727362ecdd445dc86df14211103283c8030ff339347125971feef513168",
+      "source_sha256": "87983727362ecdd445dc86df14211103283c8030ff339347125971feef513168",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tests/test_auto_researcher_contract.py",
+      "snapshot": "evidence/code-v09/tests/test_auto_researcher_contract.py",
+      "sha256": "3dc51f80efe23b4987e26fbe15eea7dee9739bda8723966ee8f0fcaa380b40de",
+      "source_sha256": "3dc51f80efe23b4987e26fbe15eea7dee9739bda8723966ee8f0fcaa380b40de",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tests/test_reflexion.py",
+      "snapshot": "evidence/code-v09/tests/test_reflexion.py",
+      "sha256": "c3500e848cc502ad947aa5856adb60e5fd5477227c877df40f5181ad462d53b3",
+      "source_sha256": "c3500e848cc502ad947aa5856adb60e5fd5477227c877df40f5181ad462d53b3",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tests/test_auto_researcher_backtrack.py",
+      "snapshot": "evidence/code-v09/tests/test_auto_researcher_backtrack.py",
+      "sha256": "f93c6a2c7d97e46174613b5fe9ad9cbd7bf2c2ff85aa4aa26bee62c517588920",
+      "source_sha256": "f93c6a2c7d97e46174613b5fe9ad9cbd7bf2c2ff85aa4aa26bee62c517588920",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "events/store.py",
+      "snapshot": "evidence/code-v09/events/store.py",
+      "sha256": "db007a2f2b2145f7780f16c3ccd9302db34e6b54680db5cc704f6b5ff40281f7",
+      "source_sha256": "db007a2f2b2145f7780f16c3ccd9302db34e6b54680db5cc704f6b5ff40281f7",
+      "origin": "git:377a614b5e792d4ba22e66fcd747f635d8fced59",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-off_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v08/acq-v05_reflexion-off_seed-42/metrics.json",
+      "sha256": "304db94d2ffc6367f5cae5308570662880c898e743b54fa37001d7e5b8a0f18f",
+      "source_sha256": "304db94d2ffc6367f5cae5308570662880c898e743b54fa37001d7e5b8a0f18f",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-off_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v08/acq-v05_reflexion-off_seed-42/events.jsonl.gz",
+      "sha256": "7d89acaee6ee8f739dead27a8081f0a4da08558ea2a1896c94a0909e908179cb",
+      "source_sha256": "cd5654086adef93ea30b6ce2d4b541db379249588875c57b0c09182b80265f8d",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-off_seed-42.stdout.log",
+      "snapshot": "evidence/v08/acq-v05_reflexion-off_seed-42/stdout.log",
+      "sha256": "6f3fa61273f51c209472ef8471b653d72e03c587224928a5a53267a58e95714e",
+      "source_sha256": "6f3fa61273f51c209472ef8471b653d72e03c587224928a5a53267a58e95714e",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-off_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v08/acq-v05_reflexion-off_seed-42/wall-seconds.txt",
+      "sha256": "e4150f95f4c8ee60d27c7e7fbf59f1f3eebe130e1262cb9ea4788a1a20c109e6",
+      "source_sha256": "e4150f95f4c8ee60d27c7e7fbf59f1f3eebe130e1262cb9ea4788a1a20c109e6",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-on_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v08/acq-v05_reflexion-on_seed-42/metrics.json",
+      "sha256": "7ed3dfdc58e11983b5ab4318aaa3eaeda3bca7ca92c79874e072d0c6ec7991d5",
+      "source_sha256": "7ed3dfdc58e11983b5ab4318aaa3eaeda3bca7ca92c79874e072d0c6ec7991d5",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-on_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v08/acq-v05_reflexion-on_seed-42/events.jsonl.gz",
+      "sha256": "b2744a8470733ee83191643d18cb7890e86d83b78eef346365badc43629a3068",
+      "source_sha256": "5ae7411fc3b81116d81b4c702cde01be890bb3d5fbe614ca21625765a2113aed",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-on_seed-42.stdout.log",
+      "snapshot": "evidence/v08/acq-v05_reflexion-on_seed-42/stdout.log",
+      "sha256": "b63746bf56abb7ee26b35dc64375d0dd8054540ce54a13dcbd762647b952ce44",
+      "source_sha256": "b63746bf56abb7ee26b35dc64375d0dd8054540ce54a13dcbd762647b952ce44",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v05_reflexion-on_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v08/acq-v05_reflexion-on_seed-42/wall-seconds.txt",
+      "sha256": "b68cad9cd8e420a3e041a1b00ea41d0b5ae935301d48473a5636b9d1decebee8",
+      "source_sha256": "b68cad9cd8e420a3e041a1b00ea41d0b5ae935301d48473a5636b9d1decebee8",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-off_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v08/acq-v06_reflexion-off_seed-42/metrics.json",
+      "sha256": "c9b6c60b58692e95e79133830866cdc3442037997516803aadbc180ff8d95e5b",
+      "source_sha256": "c9b6c60b58692e95e79133830866cdc3442037997516803aadbc180ff8d95e5b",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-off_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v08/acq-v06_reflexion-off_seed-42/events.jsonl.gz",
+      "sha256": "82504da4faddf4adafcaedef78096bb47e1ec1eb4ca25f0e93576716f7cd57e2",
+      "source_sha256": "8cb2f73592cc6fe485168ead8f84e95b197fb7fd3e98e2ca3daf4220f3c688a3",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-off_seed-42.stdout.log",
+      "snapshot": "evidence/v08/acq-v06_reflexion-off_seed-42/stdout.log",
+      "sha256": "c6a8f84372b23c3a935f7a7ca80492720d6004ef0925de1a7bcd510a5abb919f",
+      "source_sha256": "c6a8f84372b23c3a935f7a7ca80492720d6004ef0925de1a7bcd510a5abb919f",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-off_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v08/acq-v06_reflexion-off_seed-42/wall-seconds.txt",
+      "sha256": "253f8ae765c234707a579bbc99dbda340e0e8c4a3cedeef0bed58a10ebcc23d1",
+      "source_sha256": "253f8ae765c234707a579bbc99dbda340e0e8c4a3cedeef0bed58a10ebcc23d1",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-on_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v08/acq-v06_reflexion-on_seed-42/metrics.json",
+      "sha256": "77e7a41f44fccea1eb702f2796668b3dccc3c6a09fbff6cbc3b2c11934488d54",
+      "source_sha256": "77e7a41f44fccea1eb702f2796668b3dccc3c6a09fbff6cbc3b2c11934488d54",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-on_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v08/acq-v06_reflexion-on_seed-42/events.jsonl.gz",
+      "sha256": "0b76216e25972d39c410d5901d64307205788d9d3300ea6a1927b2b367cd5160",
+      "source_sha256": "c5e2a3915b342809cc5a3cb3b24bdbf8e548abeb89819a60ccb3a8b3476cb42c",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-on_seed-42.stdout.log",
+      "snapshot": "evidence/v08/acq-v06_reflexion-on_seed-42/stdout.log",
+      "sha256": "49da030a103e11e7f08fa0e60ceeb3aef35865e52bcbf01957c2ba8e80ccb38e",
+      "source_sha256": "49da030a103e11e7f08fa0e60ceeb3aef35865e52bcbf01957c2ba8e80ccb38e",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v08-factorial/acq-v06_reflexion-on_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v08/acq-v06_reflexion-on_seed-42/wall-seconds.txt",
+      "sha256": "309df7146066039424ec4267e9301dec379e48551a52fcb85118fb0e2fd3f098",
+      "source_sha256": "309df7146066039424ec4267e9301dec379e48551a52fcb85118fb0e2fd3f098",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v08_reflexion-off_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09/contract-v08_reflexion-off_seed-42/metrics.json",
+      "sha256": "292175268807dec4a7250e821091495b15bdd74fa5656b9281e5a21d67cf71bc",
+      "source_sha256": "292175268807dec4a7250e821091495b15bdd74fa5656b9281e5a21d67cf71bc",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v08_reflexion-off_seed-42/agentic.events.jsonl.gz",
+      "snapshot": "evidence/v09/contract-v08_reflexion-off_seed-42/events.jsonl.gz",
+      "sha256": "a11e89387546f91cb8c6f3a5fd115e7ea57b43c9b2fc2f172dfc3c76330e6241",
+      "source_sha256": "a11e89387546f91cb8c6f3a5fd115e7ea57b43c9b2fc2f172dfc3c76330e6241",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v08_reflexion-off_seed-42.stdout.log",
+      "snapshot": "evidence/v09/contract-v08_reflexion-off_seed-42/stdout.log",
+      "sha256": "7eb532ce62b3ead68a3be0835dedb73ed7bbc7922f85c6b5f35fd3844821c3a3",
+      "source_sha256": "7eb532ce62b3ead68a3be0835dedb73ed7bbc7922f85c6b5f35fd3844821c3a3",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v08_reflexion-off_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09/contract-v08_reflexion-off_seed-42/wall-seconds.txt",
+      "sha256": "e4150f95f4c8ee60d27c7e7fbf59f1f3eebe130e1262cb9ea4788a1a20c109e6",
+      "source_sha256": "e4150f95f4c8ee60d27c7e7fbf59f1f3eebe130e1262cb9ea4788a1a20c109e6",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v08_reflexion-on_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09/contract-v08_reflexion-on_seed-42/metrics.json",
+      "sha256": "dedb34b7076dd3ccb362895017043c0b2ea8956f711e3c49a187800632a220e9",
+      "source_sha256": "dedb34b7076dd3ccb362895017043c0b2ea8956f711e3c49a187800632a220e9",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v08_reflexion-on_seed-42/agentic.events.jsonl.gz",
+      "snapshot": "evidence/v09/contract-v08_reflexion-on_seed-42/events.jsonl.gz",
+      "sha256": "ef201167d3e9ca54b6fce9d52ffc49bfbd8672ec220eeeaa92ed691716d371cc",
+      "source_sha256": "ef201167d3e9ca54b6fce9d52ffc49bfbd8672ec220eeeaa92ed691716d371cc",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v08_reflexion-on_seed-42.stdout.log",
+      "snapshot": "evidence/v09/contract-v08_reflexion-on_seed-42/stdout.log",
+      "sha256": "12c884913c440b29cf811d67c777474186d0ffdd4dbbababf70a535b86699641",
+      "source_sha256": "12c884913c440b29cf811d67c777474186d0ffdd4dbbababf70a535b86699641",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v08_reflexion-on_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09/contract-v08_reflexion-on_seed-42/wall-seconds.txt",
+      "sha256": "6c284b869e1e68a49e89036fb53c90f6669e21791f3d0a864989de7f9a5097e7",
+      "source_sha256": "6c284b869e1e68a49e89036fb53c90f6669e21791f3d0a864989de7f9a5097e7",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v09_reflexion-off_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09/contract-v09_reflexion-off_seed-42/metrics.json",
+      "sha256": "1d1a14635223d71d4ac5bb26aa8e14119cd4b881ded19c66c96ab6455910ba7d",
+      "source_sha256": "1d1a14635223d71d4ac5bb26aa8e14119cd4b881ded19c66c96ab6455910ba7d",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v09_reflexion-off_seed-42/agentic.events.jsonl.gz",
+      "snapshot": "evidence/v09/contract-v09_reflexion-off_seed-42/events.jsonl.gz",
+      "sha256": "2afae393cbdf9740526ed43ce868a2e4b161bd25300fe05157d7c5ff252dba5b",
+      "source_sha256": "2afae393cbdf9740526ed43ce868a2e4b161bd25300fe05157d7c5ff252dba5b",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v09_reflexion-off_seed-42.stdout.log",
+      "snapshot": "evidence/v09/contract-v09_reflexion-off_seed-42/stdout.log",
+      "sha256": "c16361d2224555271448e1115bd2a1f0dbe2a9ec95568b66a299be944480d623",
+      "source_sha256": "c16361d2224555271448e1115bd2a1f0dbe2a9ec95568b66a299be944480d623",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v09_reflexion-off_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09/contract-v09_reflexion-off_seed-42/wall-seconds.txt",
+      "sha256": "52384599adf1624d3997e1595df10cfa185024d4e2821f56874bedded47a2e50",
+      "source_sha256": "52384599adf1624d3997e1595df10cfa185024d4e2821f56874bedded47a2e50",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09/contract-v09_reflexion-on_seed-42/metrics.json",
+      "sha256": "d5f6663e98b2ed1c2ca3776c20460ec960ef633f6f24b63a35e508e1e8014a27",
+      "source_sha256": "d5f6663e98b2ed1c2ca3776c20460ec960ef633f6f24b63a35e508e1e8014a27",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.events.jsonl.gz",
+      "snapshot": "evidence/v09/contract-v09_reflexion-on_seed-42/events.jsonl.gz",
+      "sha256": "0cbeb4b201721030d2019bac0a4c4f0bf9ef6a77c0192038bf5825853b8ca602",
+      "source_sha256": "0cbeb4b201721030d2019bac0a4c4f0bf9ef6a77c0192038bf5825853b8ca602",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v09_reflexion-on_seed-42.stdout.log",
+      "snapshot": "evidence/v09/contract-v09_reflexion-on_seed-42/stdout.log",
+      "sha256": "eb8477b90b1192500b62a9253fda5e1adb60d2d5fdd7b2e21cf261477ad60c35",
+      "source_sha256": "eb8477b90b1192500b62a9253fda5e1adb60d2d5fdd7b2e21cf261477ad60c35",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-contract/contract-v09_reflexion-on_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09/contract-v09_reflexion-on_seed-42/wall-seconds.txt",
+      "sha256": "4f71540bf256c1e2363171b46e558bf9f8957ae7f8ebc5165ef2e0bc1627bd49",
+      "source_sha256": "4f71540bf256c1e2363171b46e558bf9f8957ae7f8ebc5165ef2e0bc1627bd49",
+      "origin": "new v0.7 input captured 2026-09-13",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "events/reflexion.py",
+      "snapshot": "evidence/code-metrics/reflexion.py",
+      "sha256": "a9a93ef8a38ee6627a77a73525d377e43690faa90659b1730a08141e1f586032",
+      "origin": "git:04cf186; reporting-only metric aggregation and budget parameter"
+    },
+    {
+      "path": "scripts/compare_v08_arms.py",
+      "snapshot": "evidence/code-metrics/compare_v08_arms.py",
+      "sha256": "f93064664c7ee1c96fc2d1f4ef20de8cc6da805d1372d0eecb8822cffad21e4c",
+      "origin": "git:04cf186; reporting-only metric aggregation and budget parameter"
+    },
+    {
+      "path": "scripts/run_v09_contract.sh",
+      "snapshot": "evidence/code-metrics/run_v09_contract.sh",
+      "sha256": "82269a1a40934c9fb8b966231582dbecf7e9bb4bd9088bf75965781ec9c79680",
+      "origin": "git:04cf186; reporting-only metric aggregation and budget parameter"
+    },
+    {
+      "path": "tests/test_reflexion.py",
+      "snapshot": "evidence/code-metrics/test_reflexion.py",
+      "sha256": "4c0082287da90d90ecf42c720878b25f5350e773de16a148ac0150ef6f7916e3",
+      "origin": "git:04cf186; reporting-only metric aggregation and budget parameter"
+    },
+    {
+      "path": "data/aav/full_data.csv",
+      "snapshot": "evidence/aav-domain/cleaned.csv.gz",
+      "sha256": "24c5ff0a2d97bd04f4173e4d078081b77613e9ee08d6b5890c24e8252c40ca6d",
+      "source_sha256": "520c7c6545e61d3c23b41616fbb6afe3396c3ca11da1fe14ead92846dfeffa77",
+      "origin": "local measured table; transformed using frozen load_aav filters and deduplication",
+      "encoding": "gzip CSV of mutated_region,score,number_of_mutations; complete cleaned subset"
+    },
+    {
+      "path": "evolution/datasets.py",
+      "snapshot": "evidence/code-v09/evolution/datasets.py",
+      "sha256": "2eec16b752682b796dac816ac956489f682fdd794e40024643eaa937e0167ce8",
+      "origin": "git:377a614; dataset cleaning definition"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-off_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-off_seed-42/metrics.json",
+      "sha256": "8a0a7ec0bdcae9420286ed9242ec8cf917e0e79f47ba8cfdbf9642de16aa9442",
+      "source_sha256": "8a0a7ec0bdcae9420286ed9242ec8cf917e0e79f47ba8cfdbf9642de16aa9442",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-off_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-off_seed-42/events.jsonl.gz",
+      "sha256": "a2261ae70dc4ae310616df5fc52a0a81bace3ae89b1d03020745670992f05cf0",
+      "source_sha256": "11aa64566094103aec5f50192e1369480882dc5ea50a75d7ce9861137756af4f",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-off_seed-42.stdout.log",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-off_seed-42/stdout.log",
+      "sha256": "baf90e6a62e53b5f89954085302e7f9c622b5de3bef36f67394ed948ad0a1b23",
+      "source_sha256": "baf90e6a62e53b5f89954085302e7f9c622b5de3bef36f67394ed948ad0a1b23",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-off_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-off_seed-42/wall-seconds.txt",
+      "sha256": "03e8fe7d126766df4c04c4f90f71a8101e3f5f60fb9c36532639f9f3a86c2f3b",
+      "source_sha256": "03e8fe7d126766df4c04c4f90f71a8101e3f5f60fb9c36532639f9f3a86c2f3b",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-on_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-on_seed-42/metrics.json",
+      "sha256": "abe420226a2343fc935f11cfbc6dbef7a47978da004b1d3912b28fdfea5f0455",
+      "source_sha256": "abe420226a2343fc935f11cfbc6dbef7a47978da004b1d3912b28fdfea5f0455",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-on_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-on_seed-42/events.jsonl.gz",
+      "sha256": "0c671044b33db81763eafa9145187287fb1326e78da1318b72d600e4e3b69044",
+      "source_sha256": "78925fc87226cc17d2a8fabae7e04c72f1d697aea447a93c9adac9e3c0a820d1",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-on_seed-42.stdout.log",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-on_seed-42/stdout.log",
+      "sha256": "7c3ba857288c2ff9181e4cc4b2aca2946fd5f1da794bb8318a023514c808aabb",
+      "source_sha256": "7c3ba857288c2ff9181e4cc4b2aca2946fd5f1da794bb8318a023514c808aabb",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v08_reflexion-on_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09-b12/contract-v08_reflexion-on_seed-42/wall-seconds.txt",
+      "sha256": "c730812f002668e7c68d8c0a2f2c4d96f430b9364ec4928329ddd2f25e0f1534",
+      "source_sha256": "c730812f002668e7c68d8c0a2f2c4d96f430b9364ec4928329ddd2f25e0f1534",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-off_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-off_seed-42/metrics.json",
+      "sha256": "56b12583e91529b0baa7dd792530dddc227d9d04311534bfe58c652f98da862c",
+      "source_sha256": "56b12583e91529b0baa7dd792530dddc227d9d04311534bfe58c652f98da862c",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-off_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-off_seed-42/events.jsonl.gz",
+      "sha256": "89d2df4a2ed5865426bc2626d8aebb45b6421b25bb03d229d5cb99500fab9a7a",
+      "source_sha256": "96afe4660b5fbb8c0979239d4ff3ab613313697cb7dcfb21f214bd11dfe8ac4f",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-off_seed-42.stdout.log",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-off_seed-42/stdout.log",
+      "sha256": "9cae064f442a038f48f29d887f072df01abf8decc50b915a37c52af2a6da2deb",
+      "source_sha256": "9cae064f442a038f48f29d887f072df01abf8decc50b915a37c52af2a6da2deb",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-off_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-off_seed-42/wall-seconds.txt",
+      "sha256": "08bcad2f042235d60ca60e3def0fe98988520d131fd5b5c2ab679f9707baea1b",
+      "source_sha256": "08bcad2f042235d60ca60e3def0fe98988520d131fd5b5c2ab679f9707baea1b",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-on_seed-42/agentic.metrics.json",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-on_seed-42/metrics.json",
+      "sha256": "53878a3259234e4dcb08bcef5e3e67465c8785e25733d412b3346789fac35b18",
+      "source_sha256": "53878a3259234e4dcb08bcef5e3e67465c8785e25733d412b3346789fac35b18",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-on_seed-42/agentic.events.jsonl",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-on_seed-42/events.jsonl.gz",
+      "sha256": "8f29a8b00034f69fa54b7299672ad737206a51b52a0d731a8432feaeb4e7cbd2",
+      "source_sha256": "f46fdcc31c8148f115a57d344820a0b3f9d1b9423964027fc4340bc2d05ce4f9",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "gzip of original bytes"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-on_seed-42.stdout.log",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-on_seed-42/stdout.log",
+      "sha256": "374e1e8b5b33921c368ec907c8570e8f71c0765348b2a0ce9bf43d2b8857c5c4",
+      "source_sha256": "374e1e8b5b33921c368ec907c8570e8f71c0765348b2a0ce9bf43d2b8857c5c4",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "tmp/v09-b12/contract-v09_reflexion-on_seed-42.wall-seconds.txt",
+      "snapshot": "evidence/v09-b12/contract-v09_reflexion-on_seed-42/wall-seconds.txt",
+      "sha256": "862db587c4257f71293cf07cafc521961712c088a52981f3d81be056eaabc95e",
+      "source_sha256": "862db587c4257f71293cf07cafc521961712c088a52981f3d81be056eaabc95e",
+      "origin": "12x6 completed run; core agent unchanged from377a614, runner budget parameter at04cf186",
+      "encoding": "byte copy"
+    },
+    {
+      "path": "reports/final-report-v0.6/v07-handoff-02-protocol-and-chapter8.md",
+      "snapshot": "evidence/v07-handoff-02-protocol-and-chapter8.md",
+      "sha256": "ea60fce44aa9b8fe5de0cd8a2aa9640b594703cf7ae053c309c23f20abf0a1c3",
+      "origin": "engineering handoff supplied by user",
+      "report_role": "protocol and chapter8 suggestions, checked against pinned code and events"
+    }
+  ],
+  "report_version": "v0.7",
+  "base_report": "final-report-v0.6",
+  "new_experiment_code": "377a614b5e792d4ba22e66fcd747f635d8fced59",
+  "new_experiment_results": "359154195e9b4cc18154bae9f740051b64fcb7b1"
+}
