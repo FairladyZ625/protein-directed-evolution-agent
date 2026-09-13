@@ -1,6 +1,9 @@
 # 数据缓存不入库
 data/*.zip
-data/four_mutations_full_data.csv
+# GB1 真值表现已入库(44 MB,GitHub 单文件上限内)。评审 clone 后模块③的自动推荐
+# 需要它做真值校验;不入库的话页面只能给模型预测,拿不到实测对照。
+# AAV 的 full_data.csv 是 267 MB,超过 GitHub 100 MB 硬上限,仍不入库——
+# 但看板不需要它(AAV 面板读的是已入库的预计算 JSON),只有重跑 AAV 实验才需要。
 data/splits/
 data/*.fasta
 # SQLite 运行时产物

@@ -705,10 +705,18 @@ def _render_scorer(has_landscape: bool, wild_type: str) -> None:
     if true_fitness is None:
         cols[2].metric("真实 fitness", "—")
         cols[3].metric("全表分位", "—")
-        st.warning(
-            f"`{normalized}` **不在 149,361 可测空间内**（真值表缺失该组合，属于已知的 10,639 个缺数据）。"
-            "以上仅是模型预测，无真值可校验。"
-        )
+        if not truth:
+            # 真值表整张没加载时，绝不能说成「该组合缺数据」——那是在编造一条关于数据的
+            # 事实。查不到与不存在是两回事，页面必须能区分，否则读者会以为野生型本身缺测。
+            st.warning(
+                "真值表未加载（缺 `data/four_mutations_full_data.csv`），**无法判断该变体是否有实测值**。"
+                "以上仅是模型预测。补齐数据见 `data/README.md`。"
+            )
+        else:
+            st.warning(
+                f"`{normalized}` **不在 149,361 可测空间内**（真值表缺失该组合，属于已知的 10,639 个缺数据）。"
+                "以上仅是模型预测，无真值可校验。"
+            )
     elif fitness_sorted is not None:
         pct = float((fitness_sorted < true_fitness).mean() * 100)
         rank = int((fitness_sorted > true_fitness).sum()) + 1
