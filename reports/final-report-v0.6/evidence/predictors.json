@@ -1,0 +1,101 @@
+{
+  "schema_version": "predictor-metrics/v1",
+  "workflow_version": "workflow-v1.1",
+  "feature": "one_hot",
+  "split": {
+    "train": 5000,
+    "validation": 2000,
+    "test": 2000
+  },
+  "alpha_policy": "train-only deterministic holdout; independently selected per representation",
+  "models": {
+    "ridge": {
+      "train": {
+        "spearman": 0.5051079884063734,
+        "pearson": 0.45079355889932593,
+        "mse": 0.12762924916755133,
+        "top_k": 0.46,
+        "variance_min": 1.0079360296541869e-05,
+        "variance_max": 0.018288389800172937
+      },
+      "validation": {
+        "spearman": 0.5496379915439834,
+        "pearson": 0.4268872349929568,
+        "mse": 0.17315182631932782,
+        "top_k": 0.35,
+        "variance_min": 1.1231567270369565e-05,
+        "variance_max": 0.01638055203690806
+      },
+      "test": {
+        "spearman": 0.5119196870611251,
+        "pearson": 0.4116329855186992,
+        "mse": 0.10171009182687013,
+        "top_k": 0.5,
+        "variance_min": 9.669044255226806e-06,
+        "variance_max": 0.01764458258187183
+      },
+      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-ridge.joblib",
+      "alpha_selected": 0.01
+    },
+    "xgboost": {
+      "train": {
+        "spearman": 0.5018940810527155,
+        "pearson": 0.8243950221164211,
+        "mse": 0.06267075223812887,
+        "top_k": 0.7,
+        "variance_min": 9.811315567765214e-07,
+        "variance_max": 3.145872463965021
+      },
+      "validation": {
+        "spearman": 0.5430695980257271,
+        "pearson": 0.6128243796808797,
+        "mse": 0.13988049493137475,
+        "top_k": 0.4,
+        "variance_min": 5.758637402675356e-07,
+        "variance_max": 0.725307541996228
+      },
+      "test": {
+        "spearman": 0.5033551088120943,
+        "pearson": 0.6012845058785474,
+        "mse": 0.07801337250935114,
+        "top_k": 0.5,
+        "variance_min": 1.2488513397666582e-06,
+        "variance_max": 0.6461275495195227
+      },
+      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-xgboost.joblib"
+    },
+    "mlp": {
+      "train": {
+        "spearman": 0.5225949396193991,
+        "pearson": 0.9689854343038544,
+        "mse": 0.01256631416270947,
+        "top_k": 0.86,
+        "variance_min": 4.741152415966637e-06,
+        "variance_max": 2.727427645526511
+      },
+      "validation": {
+        "spearman": 0.48543088833967485,
+        "pearson": 0.8177529010710788,
+        "mse": 0.07798800975786782,
+        "top_k": 0.6,
+        "variance_min": 8.687026794222702e-06,
+        "variance_max": 0.7448552039158217
+      },
+      "test": {
+        "spearman": 0.44988604054260517,
+        "pearson": 0.8190707677901563,
+        "mse": 0.04095156291901156,
+        "top_k": 0.65,
+        "variance_min": 3.562300771676353e-05,
+        "variance_max": 0.5684202735509991
+      },
+      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-mlp.joblib"
+    }
+  },
+  "high_fitness_analysis": {
+    "best_model": "ridge",
+    "top_1pct_recall": 0.5,
+    "conclusion": "detects high-fitness variants above random expectation"
+  },
+  "figure": "harness/reports/workflow-v1.1/gb1/figures/predictor_comparison.png"
+}

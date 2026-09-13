@@ -1,0 +1,95 @@
+{
+  "snapshot_count": 41,
+  "v08": {
+    "control": {
+      "batches": {
+        "1": {
+          "sha256": "1a40ec8a51decdd8c4ca3347da87ed06019184f67bf28f54a593264350bcea12",
+          "count": 48
+        },
+        "2": {
+          "sha256": "e36169014d1a2314cd8a0e4b7bc46b4291bf48532b76d6fd7d29bf49e91d96e8",
+          "count": 48
+        },
+        "3": {
+          "sha256": "fcd1d680043a9bb6cba366fc4d7b8a4d6d28cc21daea991a0cfabedb265f9a8c",
+          "count": 48
+        },
+        "4": {
+          "sha256": "b406c065ce5f71ca56f1bd78f62a1c19e67ed5f7b70009e5bebf76497c2e4fa0",
+          "count": 48
+        },
+        "5": {
+          "sha256": "2f007b3a22a28c9be139cd5317ff1b973fe88d2c96d51dc0b37dde9685776b1c",
+          "count": 48
+        },
+        "6": {
+          "sha256": "99d19743516198781ca38ebb7c273c2f2d0cdac70568e02b4b78f23c8f463d65",
+          "count": 48
+        }
+      },
+      "compose_events": 5,
+      "redirects": [
+        {
+          "round": 5,
+          "signature_size": 0
+        }
+      ],
+      "timeout_s": 240.0
+    },
+    "reflexion": {
+      "batches": {
+        "1": {
+          "sha256": "1a40ec8a51decdd8c4ca3347da87ed06019184f67bf28f54a593264350bcea12",
+          "count": 48
+        },
+        "2": {
+          "sha256": "e36169014d1a2314cd8a0e4b7bc46b4291bf48532b76d6fd7d29bf49e91d96e8",
+          "count": 48
+        },
+        "3": {
+          "sha256": "fcd1d680043a9bb6cba366fc4d7b8a4d6d28cc21daea991a0cfabedb265f9a8c",
+          "count": 48
+        },
+        "4": {
+          "sha256": "b406c065ce5f71ca56f1bd78f62a1c19e67ed5f7b70009e5bebf76497c2e4fa0",
+          "count": 48
+        },
+        "5": {
+          "sha256": "2f007b3a22a28c9be139cd5317ff1b973fe88d2c96d51dc0b37dde9685776b1c",
+          "count": 48
+        },
+        "6": {
+          "sha256": "99d19743516198781ca38ebb7c273c2f2d0cdac70568e02b4b78f23c8f463d65",
+          "count": 48
+        }
+      },
+      "compose_events": 5,
+      "redirects": [
+        {
+          "round": 2,
+          "signature_size": 0
+        },
+        {
+          "round": 5,
+          "signature_size": 0
+        }
+      ],
+      "timeout_s": 240.0
+    },
+    "all_six_sequence_sets_equal": true
+  },
+  "gb1_actual_queries": {
+    "hard": {
+      "agent_no_knowledge": 288,
+      "knowledge_agent": 288
+    },
+    "llm": {
+      "agent_no_knowledge": 105,
+      "knowledge_agent": 197
+    }
+  },
+  "layout_pages": 18,
+  "layout_overflow": 0,
+  "pdf_pages": 18
+}
