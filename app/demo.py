@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -61,6 +62,18 @@ BASELINE_JSON = next(
 )
 TRAIN_POOL = ROOT / "data" / "pools" / "train_pool.csv"
 LANDSCAPE_CSV = ROOT / "data" / "four_mutations_full_data.csv"
+
+# ---- 模块⑥（AAV agentic 线）的数据源：v0.9 工具契约 2x2 的四臂归档 ----
+# 前五个模块全部消费 GB1 workflow 线（evolution/campaign.py + agent/pipeline.py）。
+# agentic 线（agent/auto_researcher.py，AAV）此前在看板上完全不可见，而试题
+# 「Agent 是否真学到科学家思维，还是只是调用预测模型」的答案恰恰在那条线上。
+V09_CONTRACT_DIR = ROOT / "harness" / "reports" / "v09-contract"
+V09_ARMS = {
+    "contract-v08_reflexion-off_seed-42": ("v0.8 契约", "反思关"),
+    "contract-v08_reflexion-on_seed-42": ("v0.8 契约", "反思开"),
+    "contract-v09_reflexion-off_seed-42": ("v0.9 契约", "反思关"),
+    "contract-v09_reflexion-on_seed-42": ("v0.9 契约", "反思开"),
+}
 
 # ---- 模块④⑤（分析面板）的数据源：全部只读，见 harness/reports/ 的版本化产物树 ----
 RATIONALES_JSON = report_dir("workflow") / "agent_combination_rationales.json"
@@ -1227,6 +1240,150 @@ def render_alpha_sweep_panel() -> None:
     st.caption("选法：训练集内 80/20 留出选 alpha（answer-agnostic，不看测试集），再在测试集上报分。")
 
 
+# ---------------------------------------------------------------- 模块⑥：Agent 工具契约（AAV agentic 线）
+
+
+def arm_batches(arm_dir: Path) -> dict[int, list[str]]:
+    """每轮真正被 oracle 测过的那批变体（`agent.tool.test.residuals` 的 records[].seq）。
+
+    刻意不取 `compose_batch` 的暂存批次，也不取 LLM 在总结里声称测了什么：
+    v0.8 那一轮的教训就是工具调用数、redirect 轮次、叙述措辞全都在变，
+    而实际花掉预算的 288 个变体逐位相同。
+    """
+    out: dict[int, list[str]] = {}
+    for event in iter_stream(arm_dir / "agentic.events.jsonl"):
+        if event["event_type"] == "agent.tool.test.residuals":
+            out[int(event["round_id"])] = [r["seq"] for r in event["payload"]["records"]]
+    return out
+
+
+def batch_overlap(off: dict[int, list[str]], on: dict[int, list[str]]) -> list[dict]:
+    """逐轮比较反思关/开两臂的实测批次重叠度。"""
+    rows = []
+    for rnd in sorted(set(off) | set(on)):
+        a, b = set(off.get(rnd, [])), set(on.get(rnd, []))
+        if not a or not b:
+            continue
+        rows.append({"轮次": rnd, "重叠": len(a & b), "批量": max(len(a), len(b)),
+                     "是否分叉": "否" if a == b else "是"})
+    return rows
+
+
+def exclusion_audit(arm_dir: Path) -> list[dict]:
+    """核对 agent 排除的 motif 是否真来自被注入的残差证据，还是它自己编的。
+
+    这是「它在响应证据」与「它随手排一堆」的分界线，也是本面板唯一真正的判据。
+    证据集按累积口径：第 r 轮可以引用第 1..r 轮所有卡片里标为致死（over>0）的替换。
+    """
+    lethal_re = re.compile(r"([A-Z]\d+[A-Z]) \(over=([1-9]\d*)")
+    cards: dict[int, set[str]] = {}
+    excluded: dict[int, list[str]] = {}
+    for event in iter_stream(arm_dir / "agentic.events.jsonl"):
+        if event["event_type"] == "agent.reflexion.injected":
+            cards[int(event["round_id"])] = {m[0] for m in lethal_re.findall(event["payload"]["prompt_text"])}
+        elif event["event_type"] == "agent.tool.compose_batch":
+            excluded[int(event["round_id"])] = list(event["payload"].get("excluded_motifs") or [])
+    cumulative: set[str] = set()
+    rows = []
+    for rnd in sorted(excluded):
+        cumulative |= cards.get(rnd, set())
+        ex = set(excluded[rnd])
+        rows.append({"轮次": rnd, "排除数": len(ex), "有据可查": len(ex & cumulative),
+                     "凭空捏造": ", ".join(sorted(ex - cumulative)) or "无",
+                     "累积证据池": len(cumulative)})
+    return rows
+
+
+def render_contract_module() -> None:
+    st.subheader("⑥ Agent 工具契约——同一模型，改契约后提名是否分叉（AAV agentic 线，只读）")
+    st.caption(
+        "前五个模块看的是 GB1 workflow 线。本模块看的是另一条独立的线："
+        "`agent/auto_researcher.py` 的自主 agent 在 AAV 上跑 2×2 因子实验"
+        "（工具契约 × 残差反思，seed 42，48×6=288 预算，四格固定 `--backtrack semi --acquisition v05`）。"
+        "复现：`scripts/run_v09_contract.sh`。"
+    )
+    arms = {name: V09_CONTRACT_DIR / name for name in V09_ARMS
+            if (V09_CONTRACT_DIR / name / "agentic.metrics.json").exists()}
+    if len(arms) < 4:
+        st.warning(
+            f"缺 v0.9 四臂归档（现有 {len(arms)}/4，目录 `harness/reports/v09-contract/`）——"
+            "先跑 `scripts/run_v09_contract.sh tmp/v09-contract 42` 再归档。本模块停等，其余模块不受影响。"
+        )
+        return
+
+    st.markdown("**四臂总览**——注意最右两列：agent 是否真的行使了能改变批次的杠杆。")
+    table, batches = [], {}
+    for name, path in arms.items():
+        metrics = load_metrics(str(path / "agentic.metrics.json")) or {}
+        batches[name] = arm_batches(path)
+        composes = [e["payload"] for e in metrics.get("tool_trace", [])
+                    if e.get("event_type") == "agent.tool.compose_batch"]
+        n_req = sum(p.get("allocation_source") == "agent_requested" for p in composes)
+        n_excl = sum(bool(p.get("excluded_motifs")) for p in composes)
+        contract, reflexion = V09_ARMS[name]
+        table.append({
+            "契约": contract, "反思": reflexion,
+            "峰值": round(metrics.get("summary", {}).get("final_cum_top10_max", 0), 4),
+            "strong": metrics.get("summary", {}).get("final_cum_n_strong", 0),
+            "预算": f"{metrics.get('budget_spent')}/288",
+            "自设 exploit_ratio": f"{n_req}/{len(composes)}",
+            "用 motif 排除入口": f"{n_excl}/{len(composes)}",
+            "basin hop 轮次": str(metrics.get("redirect_rounds")),
+            "LLM": f"{metrics.get('llm_round_successes')}/{metrics.get('llm_round_attempts')}",
+        })
+    st.dataframe(pd.DataFrame(table), hide_index=True, width="stretch")
+    st.caption(
+        "v0.8 契约两臂的「自设 exploit_ratio」是 **0/5**——不是模型偷懒：当时提示词写着"
+        "「Prefer that default」、每轮模板把 `compose_batch(n=48)` 写死且没有参数位，"
+        "利用比地板又恰好只禁止残差该触发的「调低利用比」方向（实测第 4 轮起可行区间为空集）。"
+        "更根本的是 `exploit_ratio` 是个标量，**没有任何取值能表达「别选带 N21D 的候选」**。"
+    )
+
+    st.markdown("**批次是否分叉**——判据是每轮实测批次的集合，不是 agent 说了什么。")
+    cols = st.columns(2)
+    for col, contract in zip(cols, ("v08", "v09")):
+        off = batches.get(f"contract-{contract}_reflexion-off_seed-42", {})
+        on = batches.get(f"contract-{contract}_reflexion-on_seed-42", {})
+        rows = batch_overlap(off, on)
+        with col:
+            label = "v0.8 契约" if contract == "v08" else "v0.9 契约"
+            diverged = any(r["是否分叉"] == "是" for r in rows)
+            st.markdown(f"**{label}**：{'批次已分叉' if diverged else '批次未分叉'}")
+            st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+    st.caption(
+        "同一个判据在 v0.9 下看得见差异、在 v0.8 下看不见——**所以「未分叉」是关于契约的结论，"
+        "不是判据不灵敏**。v0.9 的分歧还是逐轮发散的（不是一次性跳变），是累积学习的形状。"
+    )
+
+    on_arm = arms.get("contract-v09_reflexion-on_seed-42")
+    if on_arm:
+        st.markdown("**它排除的 motif 是真来自证据，还是自己编的**")
+        audit = exclusion_audit(on_arm)
+        st.dataframe(pd.DataFrame(audit), hide_index=True, width="stretch")
+        fabricated = [r for r in audit if r["凭空捏造"] != "无"]
+        if fabricated:
+            st.error(f"发现 {len(fabricated)} 轮排除了证据里没有的 motif——该结论需要重新审视。")
+        else:
+            st.success(
+                "零凭空：每一个被排除的替换都能在此前注入的残差证据里找到出处。"
+                "而且它没有一刀切——证据池里的致死 motif 它只排了一部分。"
+            )
+        with st.expander("看一眼真正被注入的残差证据长什么样（原文，未加工）"):
+            for event in iter_stream(on_arm / "agentic.events.jsonl"):
+                if event["event_type"] == "agent.reflexion.injected":
+                    st.markdown(f"**注入到第 {event['round_id']} 轮**（观察的是第 "
+                                f"{event['payload']['source_round']} 轮）")
+                    st.code(event["payload"]["prompt_text"], language="text")
+                    break
+
+    st.info(
+        "**引用纪律**：这是 seed 42 的 n=1。「批次逐位相同/分叉」与「排除集 ⊆ 证据集」是确定性事实、"
+        "可独立复核；行为类观察（例如 v0.9 反思臂是四臂中唯一没触发 basin hop 的）单次不可信。"
+        "契约是**复合处理**（提示词中性化 + 地板释放 + 排除入口），本轮未拆开测各自贡献。"
+        "四臂峰值同为池内峰 8.4162，而冷启动已含 incumbent 9.536457——达峰不等于超越已知最优。"
+    )
+
+
 # ---------------------------------------------------------------- 入口
 
 
@@ -1236,14 +1393,16 @@ def main() -> None:
         "四策略闭环对比 + 五角色 Agent 思考回放 + 实时试玩 + 分析面板（位点集中 / 组合理由 / "
         "突变阶数 / 保守位点 / alpha 扫描）。数据：GB1 四位点组合空间"
         "（V39/D40/G41/V54，野生型 `VDGV`），真值表 149,361 / 160,000。"
+        "**模块⑥是另一条线**：AAV 上的自主 agent，看的是工具契约如何决定它的自主性。"
     )
     st.caption(
         "本看板**只读**消费 T7/T4/T3 产物与 `harness/reports/` 分析产物（`@st.cache_data` / `@st.cache_resource`），"
         "不写事件流、不覆盖 `reports/` 或 `harness/reports/`。运行：`streamlit run app/demo.py`（或 `make demo`）。"
     )
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(
-        ["① 四策略对比", "② Agent 思考回放", "③ 实时试玩", "④ 位点集中 & 组合理由", "⑤ 阶数 · 保守性 · alpha"]
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        ["① 四策略对比", "② Agent 思考回放", "③ 实时试玩", "④ 位点集中 & 组合理由",
+         "⑤ 阶数 · 保守性 · alpha", "⑥ Agent 工具契约（AAV）"]
     )
     with tab1:
         available = {label: p for label, p in REGIMES.items() if p.exists()}
@@ -1268,6 +1427,8 @@ def main() -> None:
         render_conservation_panel()
         st.divider()
         render_alpha_sweep_panel()
+    with tab6:
+        render_contract_module()
 
     st.divider()
     st.caption(

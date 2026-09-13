@@ -262,3 +262,62 @@ def test_demo_module_is_read_only_source():
     for banned in ("write_text", "to_json", "to_csv", ".open(", "EventStore("):
         assert banned not in source, banned
     assert "_MemoryRecorder" in source
+
+
+# ---- 模块⑥：AAV agentic 线的工具契约面板 ----------------------------------------
+# 前五个 tab 全部消费 GB1 workflow 线；agentic 线此前在看板上完全不可见，
+# 而试题「Agent 是否真学到科学家思维」的答案恰恰在那条线上。
+
+def test_contract_tab_present(app: AppTest):
+    labels = [t.label for t in app.tabs]
+    assert "⑥ Agent 工具契约（AAV）" in labels
+    assert labels.index("⑥ Agent 工具契约（AAV）") > labels.index("⑤ 阶数 · 保守性 · alpha")
+
+
+def test_arm_batches_reads_the_tested_batch_not_the_staged_one():
+    """批次身份必须取真正花掉预算的那批，不能取 compose_batch 的暂存批次。
+
+    v0.8 的教训:LLM 的工具调用数、redirect 轮次、总结措辞都会变，
+    而实际被 oracle 测过的 288 个变体逐位相同。
+    """
+    from app.demo import V09_CONTRACT_DIR, arm_batches
+    arm = V09_CONTRACT_DIR / "contract-v08_reflexion-off_seed-42"
+    if not (arm / "agentic.metrics.json").exists():
+        pytest.skip("v0.9 四臂归档不在本检出中")
+    batches = arm_batches(arm)
+    assert sorted(batches) == [1, 2, 3, 4, 5, 6]
+    assert all(len(v) == 48 for v in batches.values())
+
+
+def test_batch_overlap_separates_the_two_contracts():
+    """本面板的全部说服力都压在这一条上:同一判据在 v0.9 下看得见差异、v0.8 下看不见。
+
+    若两个契约都报「未分叉」，那是判据不灵敏；若都报「已分叉」，那是对照被污染。
+    """
+    from app.demo import V09_CONTRACT_DIR, arm_batches, batch_overlap
+    if not (V09_CONTRACT_DIR / "contract-v09_reflexion-on_seed-42" / "agentic.metrics.json").exists():
+        pytest.skip("v0.9 四臂归档不在本检出中")
+    def rows(contract):
+        return batch_overlap(arm_batches(V09_CONTRACT_DIR / f"contract-{contract}_reflexion-off_seed-42"),
+                             arm_batches(V09_CONTRACT_DIR / f"contract-{contract}_reflexion-on_seed-42"))
+    v08, v09 = rows("v08"), rows("v09")
+    assert all(r["是否分叉"] == "否" for r in v08), "v0.8 对照臂不该分叉——对照可能被污染"
+    assert all(r["是否分叉"] == "是" for r in v09), "v0.9 该分叉——判据可能失灵"
+    # 逐轮发散(累积学习的形状),不是一次性跳变
+    overlaps = [r["重叠"] for r in v09]
+    assert overlaps[0] > overlaps[-1] and overlaps[-1] <= 8
+
+
+def test_exclusion_audit_flags_motifs_without_evidence():
+    """审计必须能抓出「凭空排除」。这里同时给阳性对照:真实数据应当零凭空。"""
+    from app.demo import V09_CONTRACT_DIR, exclusion_audit
+    arm = V09_CONTRACT_DIR / "contract-v09_reflexion-on_seed-42"
+    if not (arm / "agentic.metrics.json").exists():
+        pytest.skip("v0.9 四臂归档不在本检出中")
+    audit = exclusion_audit(arm)
+    assert audit, "反思臂应当有 compose_batch 记录"
+    for row in audit:
+        assert row["凭空捏造"] == "无", f"第 {row['轮次']} 轮排除了证据里没有的 motif:{row['凭空捏造']}"
+        assert row["排除数"] == row["有据可查"]
+    # 有选择地排，不是一刀切:最后一轮的证据池明显大于排除数
+    assert audit[-1]["累积证据池"] > audit[-1]["排除数"]
