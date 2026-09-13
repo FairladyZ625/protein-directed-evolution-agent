@@ -1,0 +1,35 @@
+---
+schema: task-package/v2
+task_id: task_7cfeb55823f022cb9626308aaa
+title: "Report v0.7：工具契约与残差反思的实验整合"
+parent: task_ee0e0b26e540664dac1e6c3f29
+lifecycle:
+  engine: kernel/task-lifecycle/v1
+  status: done
+packageDisposition: active
+workKind: docs
+vertical: software/coding
+preset: docs-task
+profile: baseline
+packagePath: tasks/task_7cfeb55823f022cb9626308aaa-report-v07
+owner: machine
+---
+# Report v0.7：工具契约与残差反思的实验整合
+
+Preset: docs-task/baseline
+
+## Documents
+
+- `INDEX.md` — machine
+- `task-contract.json` — machine
+- `task_plan.md` — doc-sync
+- `closeout.md` — doc-sync
+- `artifacts/.gitkeep` — doc-sync
+
+## Next
+
+Task complete.
+
+## Gate Checks
+
+- none

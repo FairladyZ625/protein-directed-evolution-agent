@@ -1,0 +1,230 @@
+# Execution exe_522aacfece4939df640a39e7c5
+
+Managed by `ha task start/submit`; hand edits are rejected.
+
+- Task: task_7cfeb55823f022cb9626308aaa
+- Iteration: 0
+- State: accepted
+- Claimed: 2026-09-13T05:28:59.184Z
+- Submitted: 2026-09-13T06:42:12.347Z
+- Closed: 2026-09-13T06:45:56.181Z
+- Commit: fbfd5c64ed74660d8e29fd5be200497102316368
+- Completion claim: 交付提交 fbfd5c64ed74660d8e29fd5be200497102316368 ，隔离分支codex/report-v07。v0.7完整PDF/HTML/MD，正文八章12页，总41页；112来源、12实验臂、17图，恢复数学与首页GitHub，整合两份工程交接及第八章设计。v0.6未改。
+- Reviews: v07-science-20260913/approved
+- Selected review: v07-science-20260913
+- Consent: consent-357e17c30eb590b55896d1fe
+- Checker witnesses: pending
+- Code-doc witness: pending
+
+## Deliverables
+
+- reports/final-report-v0.7/README.md
+- reports/final-report-v0.7/build/audit_contract.py
+- reports/final-report-v0.7/build/build.py
+- reports/final-report-v0.7/build/contract_figures.py
+- reports/final-report-v0.7/build/figures.py
+- reports/final-report-v0.7/build/render.cjs
+- reports/final-report-v0.7/build/snapshot.py
+- reports/final-report-v0.7/build/source_index.py
+- reports/final-report-v0.7/build/verify.py
+- reports/final-report-v0.7/chapter-mapping.md
+- reports/final-report-v0.7/discussion_summary_and_epistemology.md
+- reports/final-report-v0.7/evidence/aav-domain/cleaned.csv.gz
+- reports/final-report-v0.7/evidence/aav-domain/summary.json
+- reports/final-report-v0.7/evidence/aav_atomic.json
+- reports/final-report-v0.7/evidence/aav_checkpoint.json
+- reports/final-report-v0.7/evidence/aav_conservation.json
+- reports/final-report-v0.7/evidence/aav_mechanism.md
+- reports/final-report-v0.7/evidence/aav_multiseed.json
+- reports/final-report-v0.7/evidence/aav_mutation_order.json
+- reports/final-report-v0.7/evidence/alpha.json
+- reports/final-report-v0.7/evidence/bibliography-audit.json
+- reports/final-report-v0.7/evidence/code-metrics/compare_v08_arms.py
+- reports/final-report-v0.7/evidence/code-metrics/reflexion.py
+- reports/final-report-v0.7/evidence/code-metrics/run_v09_contract.sh
+- reports/final-report-v0.7/evidence/code-metrics/test_reflexion.py
+- reports/final-report-v0.7/evidence/code-v09/agent/auto_researcher.py
+- reports/final-report-v0.7/evidence/code-v09/events/reflexion.py
+- reports/final-report-v0.7/evidence/code-v09/events/store.py
+- reports/final-report-v0.7/evidence/code-v09/evolution/datasets.py
+- reports/final-report-v0.7/evidence/code-v09/scripts/compare_v08_arms.py
+- reports/final-report-v0.7/evidence/code-v09/scripts/run_v08_factorial.sh
+- reports/final-report-v0.7/evidence/code-v09/scripts/run_v09_contract.sh
+- reports/final-report-v0.7/evidence/code-v09/tests/test_auto_researcher_backtrack.py
+- reports/final-report-v0.7/evidence/code-v09/tests/test_auto_researcher_contract.py
+- reports/final-report-v0.7/evidence/code-v09/tests/test_reflexion.py
+- reports/final-report-v0.7/evidence/code/agent/auto_researcher.py
+- reports/final-report-v0.7/evidence/code/agent/llm.py
+- reports/final-report-v0.7/evidence/code/agent/pipeline.py
+- reports/final-report-v0.7/evidence/code/analysis/mutation_order.py
+- reports/final-report-v0.7/evidence/code/app/demo.py
+- reports/final-report-v0.7/evidence/code/events/store.py
+- reports/final-report-v0.7/evidence/code/evolution/campaign.py
+- reports/final-report-v0.7/evidence/code/features/conservation.py
+- reports/final-report-v0.7/evidence/code/knowledge/rules.yaml
+- reports/final-report-v0.7/evidence/code/knowledge/validators.py
+- reports/final-report-v0.7/evidence/code/models/alpha_sweep.py
+- reports/final-report-v0.7/evidence/code/models/train_ladder.py
+- reports/final-report-v0.7/evidence/contract-audit.json
+- reports/final-report-v0.7/evidence/engineering/handoff-current.md
+- reports/final-report-v0.7/evidence/engineering/v07-handoff.md
+- reports/final-report-v0.7/evidence/engineering/v08-factorial.md
+- reports/final-report-v0.7/evidence/engineering/v09-contract.md
+- reports/final-report-v0.7/evidence/epistasis.json
+- reports/final-report-v0.7/evidence/event-audit.json
+- reports/final-report-v0.7/evidence/formula-inventory.json
+- reports/final-report-v0.7/evidence/gb1_conservation.json
+- reports/final-report-v0.7/evidence/gb1_easy.events.jsonl.gz
+- reports/final-report-v0.7/evidence/gb1_easy.json
+- reports/final-report-v0.7/evidence/gb1_hard.events.jsonl.gz
+- reports/final-report-v0.7/evidence/gb1_hard.json
+- reports/final-report-v0.7/evidence/gb1_llm.events.jsonl.gz
+- reports/final-report-v0.7/evidence/gb1_llm.json
+- reports/final-report-v0.7/evidence/gb1_llm_replication.events.jsonl
+- reports/final-report-v0.7/evidence/gb1_llm_replication.json
+- reports/final-report-v0.7/evidence/gb1_mutation_order.json
+- reports/final-report-v0.7/evidence/gb1_sparse.events.jsonl.gz
+- reports/final-report-v0.7/evidence/gb1_sparse.json
+- reports/final-report-v0.7/evidence/handoff-update-replication.md
+- reports/final-report-v0.7/evidence/handoff-update-v08.md
+- reports/final-report-v0.7/evidence/handoff.md
+- reports/final-report-v0.7/evidence/imagegen-prompts.json
+- reports/final-report-v0.7/evidence/layout-check.json
+- reports/final-report-v0.7/evidence/multiseed_protocol.md
+- reports/final-report-v0.7/evidence/new-experiment-arms.json
+- reports/final-report-v0.7/evidence/predictors.json
+- reports/final-report-v0.7/evidence/report-before-appendix-polish.md
+- reports/final-report-v0.7/evidence/report-before-section-alignment.md
+- reports/final-report-v0.7/evidence/report-v06-base.md
+- reports/final-report-v0.7/evidence/scaling.json
+- reports/final-report-v0.7/evidence/sources.json
+- reports/final-report-v0.7/evidence/v05-base.md
+- reports/final-report-v0.7/evidence/v05-imagegen-prompts.json
+- reports/final-report-v0.7/evidence/v07-handoff-02-protocol-and-chapter8.md
+- reports/final-report-v0.7/evidence/v07-image-edit.json
+- reports/final-report-v0.7/evidence/v08-control.events.jsonl.gz
+- reports/final-report-v0.7/evidence/v08-control.metrics.json
+- reports/final-report-v0.7/evidence/v08-proposal-received.md
+- reports/final-report-v0.7/evidence/v08-reflexion.events.jsonl.gz
+- reports/final-report-v0.7/evidence/v08-reflexion.metrics.json
+- reports/final-report-v0.7/evidence/v08-smoke-1seed.md
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-off_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-off_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-off_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-off_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-on_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-on_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-on_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v08/acq-v05_reflexion-on_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-off_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-off_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-off_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-off_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-on_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-on_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-on_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v08/acq-v06_reflexion-on_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-off_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-off_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-off_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-off_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-on_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-on_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-on_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09-b12/contract-v08_reflexion-on_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-off_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-off_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-off_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-off_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-on_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-on_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-on_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09-b12/contract-v09_reflexion-on_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-off_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-off_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-off_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-off_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-on_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-on_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-on_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09/contract-v08_reflexion-on_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-off_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-off_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-off_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-off_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-on_seed-42/events.jsonl.gz
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-on_seed-42/metrics.json
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-on_seed-42/stdout.log
+- reports/final-report-v0.7/evidence/v09/contract-v09_reflexion-on_seed-42/wall-seconds.txt
+- reports/final-report-v0.7/evidence/verification.json
+- reports/final-report-v0.7/evidence/visual-qa/pages-01-06.png
+- reports/final-report-v0.7/evidence/visual-qa/pages-07-12.png
+- reports/final-report-v0.7/evidence/visual-qa/pages-13-18.png
+- reports/final-report-v0.7/evidence/visual-qa/pages-19-24.png
+- reports/final-report-v0.7/evidence/visual-qa/pages-25-30.png
+- reports/final-report-v0.7/evidence/visual-qa/pages-31-36.png
+- reports/final-report-v0.7/evidence/visual-qa/pages-37-41.png
+- reports/final-report-v0.7/figures/f01_predictors.png
+- reports/final-report-v0.7/figures/f01_predictors.svg
+- reports/final-report-v0.7/figures/f02_alpha.png
+- reports/final-report-v0.7/figures/f02_alpha.svg
+- reports/final-report-v0.7/figures/f03_workflow.png
+- reports/final-report-v0.7/figures/f03_workflow.svg
+- reports/final-report-v0.7/figures/f03_workflow_imagegen.png
+- reports/final-report-v0.7/figures/f04_feedback.png
+- reports/final-report-v0.7/figures/f04_feedback.svg
+- reports/final-report-v0.7/figures/f04_feedback_imagegen.png
+- reports/final-report-v0.7/figures/f05_knowledge.png
+- reports/final-report-v0.7/figures/f05_knowledge.svg
+- reports/final-report-v0.7/figures/f06_regimes.png
+- reports/final-report-v0.7/figures/f06_regimes.svg
+- reports/final-report-v0.7/figures/f07_llm.png
+- reports/final-report-v0.7/figures/f07_llm.svg
+- reports/final-report-v0.7/figures/f08_aav_ablation.png
+- reports/final-report-v0.7/figures/f08_aav_ablation.svg
+- reports/final-report-v0.7/figures/f09_aav_fixed.png
+- reports/final-report-v0.7/figures/f09_aav_fixed.svg
+- reports/final-report-v0.7/figures/f10_order.png
+- reports/final-report-v0.7/figures/f10_order.svg
+- reports/final-report-v0.7/figures/f11_epistasis.png
+- reports/final-report-v0.7/figures/f11_epistasis.svg
+- reports/final-report-v0.7/figures/f12_contract_imagegen.png
+- reports/final-report-v0.7/figures/f12_v08.png
+- reports/final-report-v0.7/figures/f12_v08.svg
+- reports/final-report-v0.7/figures/f12_v08_imagegen.png
+- reports/final-report-v0.7/figures/f13_future_architecture_imagegen.png
+- reports/final-report-v0.7/figures/f14_contract_behavior.png
+- reports/final-report-v0.7/figures/f14_contract_behavior.svg
+- reports/final-report-v0.7/figures/f15_evidence_actions.png
+- reports/final-report-v0.7/figures/f15_evidence_actions.svg
+- reports/final-report-v0.7/figures/f16_budget_comparison.png
+- reports/final-report-v0.7/figures/f16_budget_comparison.svg
+- reports/final-report-v0.7/figures/fs1_alpha_full.png
+- reports/final-report-v0.7/figures/fs1_alpha_full.svg
+- reports/final-report-v0.7/reference_received/README.md
+- reports/final-report-v0.7/reference_received/discussion_summary_and_epistemology.md
+- reports/final-report-v0.7/reference_received/report.md
+- reports/final-report-v0.7/report.md
+- reports/final-report-v0.7/scientific_report_v0.7_two_column.html
+- reports/final-report-v0.7/scientific_report_v0.7_two_column.pdf
+- reports/final-report-v0.7/v07-data-receipt.md
+- reports/final-report-v0.7/v07-handoff-from-engineering.md
+- reports/final-report-v0.7/verification.md
+
+## Outputs
+
+- none
+
+## Verification
+
+- 在.worktrees/report-v07运行build/audit_contract.py、build/build.py、build/render.cjs、build/verify.py通过；12事件链、预算、残差、批次、比例分配、复现分母与112源hash通过，41页无溢出，全部页面联系图目视复核。事实F-C6A9A47D。Python使用/Users/lizeyu/miniforge/bin/python3。
+
+## Known gaps
+
+- 新实验均seed42；契约为复合处理，单次产量差不作总体因果效应。v09在48×6首轮差异先于卡片，跨契约卡片不相同；12×6后段指标两臂相同。无新增实验。生成机制图已目检，数值图来自冻结数据。
+- allocation_source与实际整数分配共同审计；不能仅凭requested字段证明主动选择。历史实验与当前协议分别呈现。附录H.7核对第二份交接：不将探索税、无证据或地板强制纯利用的解释直接采信；公式按当前代码含义恢复。
+
+## Residual risks
+
+- 新实验均seed42；契约为复合处理，单次产量差不作总体因果效应。v09在48×6首轮差异先于卡片，跨契约卡片不相同；12×6后段指标两臂相同。无新增实验。生成机制图已目检，数值图来自冻结数据。
+- allocation_source与实际整数分配共同审计；不能仅凭requested字段证明主动选择。历史实验与当前协议分别呈现。附录H.7核对第二份交接：不将探索税、无证据或地板强制纯利用的解释直接采信；公式按当前代码含义恢复。
