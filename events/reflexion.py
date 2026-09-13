@@ -170,6 +170,44 @@ def format_reflexion_prompt(reflexion: RoundReflexion, *,
     return "\n".join(lines)
 
 
+def summarise_motif_recurrence(rows: Sequence[Mapping[str, object]],
+                               *, late_from_round: int = 4) -> dict[str, Any]:
+    """把逐轮复现率汇成可跨臂比较的一个数。
+
+    为什么需要这个:AAV 上峰值指标已经饱和(八个臂全部在第 2 轮达到候选池真实最优
+    8.416205,此后四轮不变),样本效率同样饱和,两者都失去区分力。复现率——
+    「上一轮被测死的替换,这一轮还有多少候选带着它」——是目前唯一既不饱和、
+    臂间差异又达一个量级的指标。
+
+    取**合并率**(总复现候选数 / 总候选数)而不是逐轮率的平均:各轮候选数虽然相等,
+    但合并率对轮数不齐的跑批仍然正确,而平均率会被小轮次放大。
+
+    ``late_from_round`` 之后的合并率单列:第 2 轮各臂尚未分叉,证据来自同一个第 1 轮,
+    复现率必然接近,把它算进总数会稀释真实差异。
+    """
+    total = repeats = late_total = late_repeats = 0
+    for row in rows:
+        try:
+            n = int(row["n_candidates"])
+            k = int(row["n_with_previous_lethal_motif"])
+            rnd = int(row["round"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        total += n
+        repeats += k
+        if rnd >= int(late_from_round):
+            late_total += n
+            late_repeats += k
+    return {
+        "rounds": len(rows),
+        "pooled_rate": repeats / total if total else None,
+        "late_pooled_rate": late_repeats / late_total if late_total else None,
+        "late_from_round": int(late_from_round),
+        "n_candidates": total,
+        "n_with_previous_lethal_motif": repeats,
+    }
+
+
 def motif_recurrence_rate(
     previous_residuals: Sequence[Mapping[str, object]],
     current_candidates: Sequence[str],

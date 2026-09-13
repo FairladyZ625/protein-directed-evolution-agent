@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from events.store import iter_stream  # noqa: E402
+from events.reflexion import summarise_motif_recurrence  # noqa: E402
 
 
 def tested_batches(arm_dir: Path) -> dict[int, list[str]]:
@@ -43,8 +44,9 @@ def main() -> int:
         print(f"{root} 下没有完成的臂")
         return 1
 
-    print(f"{'臂':38s}{'峰':>8s}{'strong':>7s}  {'采集档':<26s}{'自设ratio':>9s}"
-          f"{'排除motif':>10s}{'redirect':>9s}  {'LLM':<5s}{'秒':>5s}  逐轮批次哈希")
+    print(f"{'臂':38s}{'峰':>8s}{'达峰轮':>7s}{'strong':>7s}{'复现率':>8s}{'后段':>7s}  "
+          f"{'采集档':<26s}{'自设ratio':>9s}{'排除motif':>10s}{'redirect':>9s}  "
+          f"{'LLM':<5s}{'秒':>5s}  逐轮批次哈希")
     batches = {}
     for arm in arms:
         m = json.loads((arm / "agentic.metrics.json").read_text())
@@ -64,8 +66,19 @@ def main() -> int:
         n_requested = sum(p.get("allocation_source") == "agent_requested" for p in composes)
         n_excl_calls = sum(bool(p.get("excluded_motifs")) for p in composes)
         motifs = sorted({m0 for p in composes for m0 in (p.get("excluded_motifs") or [])})
+        # 峰值与样本效率在 48x6 下都饱和(八臂全部第 2 轮达到候选池真实最优 8.416205),
+        # 所以这两列单独看没有区分力;复现率是目前唯一不饱和的指标,必须同屏。
+        history = m.get("top10_max_history") or []
+        peak_round = (next((i + 1 for i, v in enumerate(history)
+                            if abs(v - max(history)) < 1e-9), 0) if history else 0)
+        rec = summarise_motif_recurrence(m.get("motif_recurrence") or [])
+        pooled = rec["pooled_rate"]
+        late = rec["late_pooled_rate"]
         print(f"{arm.name:38s}{summary.get('final_cum_top10_max', 0):8.4f}"
-              f"{summary.get('final_cum_n_strong', 0):7d}  "
+              f"{('r' + str(peak_round)) if peak_round else '?':>7s}"
+              f"{summary.get('final_cum_n_strong', 0):7d}"
+              f"{(f'{pooled:.1%}' if pooled is not None else '—'):>8s}"
+              f"{(f'{late:.1%}' if late is not None else '—'):>7s}  "
               f"{'/'.join(sorted(s or '?' for s in sources)):<28s}"
               f"{f'{n_requested}/{len(composes)}':>9s}"
               f"{f'{n_excl_calls}/{len(composes)}':>10s}"

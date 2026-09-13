@@ -148,3 +148,38 @@ def test_residual_event_keeps_nomination_time_prediction_across_retraining(
     test_event = next(event for event in store.iter_events()
                       if event["event_type"] == "agent.tool.test")
     assert set(test_event["payload"]) == {"requested", "measured", "spent", "batch_max"}
+
+
+# ---- 复现率聚合口径 -------------------------------------------------------------
+# 为什么需要它:AAV 上峰值与样本效率两个指标都已饱和(八个臂全部在第 2 轮达到候选池
+# 真实最优 8.416205,此后四轮不变),复现率是目前唯一不饱和、臂间差异达一个量级的指标。
+
+def test_pooled_rate_is_not_the_mean_of_per_round_rates():
+    """必须取合并率。逐轮率取平均会让候选数少的轮次获得同等权重。"""
+    from events.reflexion import summarise_motif_recurrence
+    rows = [{"round": 1, "n_candidates": 100, "n_with_previous_lethal_motif": 10},
+            {"round": 2, "n_candidates": 2, "n_with_previous_lethal_motif": 2}]
+    out = summarise_motif_recurrence(rows)
+    assert out["pooled_rate"] == pytest.approx(12 / 102)
+    assert out["pooled_rate"] != pytest.approx((0.10 + 1.0) / 2)
+
+
+def test_late_window_excludes_the_rounds_where_arms_have_not_diverged():
+    from events.reflexion import summarise_motif_recurrence
+    rows = [{"round": r, "n_candidates": 10, "n_with_previous_lethal_motif": k}
+            for r, k in [(2, 6), (3, 5), (4, 1), (5, 0), (6, 0)]]
+    out = summarise_motif_recurrence(rows, late_from_round=4)
+    assert out["pooled_rate"] == pytest.approx(12 / 50)
+    assert out["late_pooled_rate"] == pytest.approx(1 / 30)  # 只有 r4-r6
+    assert out["late_from_round"] == 4
+
+
+def test_empty_and_malformed_rows_do_not_fabricate_a_rate():
+    """没有数据时必须回 None,不能回 0.0——0.0 会被读成「一次都没复现」。"""
+    from events.reflexion import summarise_motif_recurrence
+    assert summarise_motif_recurrence([])["pooled_rate"] is None
+    assert summarise_motif_recurrence([{"round": 1}])["pooled_rate"] is None
+    out = summarise_motif_recurrence([{"round": 2, "n_candidates": 10,
+                                       "n_with_previous_lethal_motif": 3}])
+    assert out["pooled_rate"] == pytest.approx(0.3)
+    assert out["late_pooled_rate"] is None  # r2 不在后段窗口内

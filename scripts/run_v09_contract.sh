@@ -26,6 +26,11 @@ shift || true
 seeds=("$@")
 [ ${#seeds[@]} -eq 0 ] && seeds=(42)
 model="${V09_MODEL:-gpt-5.6-sol}"
+# 每轮预算可调。48x6 下八个臂全部在第 2 轮(96/288 次 oracle)达到候选池真实最优
+# 8.416205,此后四轮峰值不再变化 —— 67% 的预算花在答案已经找到之后,任何 r3-r6 的
+# 策略差异按构造都无法体现在峰值上。把每轮预算压到 12,让峰不在前两轮就被够到,
+# 峰值指标才重新具备区分力。
+budget="${V09_BUDGET:-48}"
 mkdir -p "$out_root"
 
 cd "$repo_root"
@@ -35,7 +40,7 @@ for seed in "${seeds[@]}"; do
       arm="contract-${contract}_reflexion-${reflexion}_seed-${seed}"
       [ -f "$out_root/$arm/agentic.metrics.json" ] && { echo "skip $arm (已存在)"; continue; }
       flags=(--dataset aav --feature one_hot --guardrail --surrogate epistasis
-             --budget 48 --n-rounds 6 --seed "$seed" --model "$model"
+             --budget "$budget" --n-rounds 6 --seed "$seed" --model "$model"
              --backtrack semi --acquisition v05 --skip-experiment-log)
       [ "$contract" = "v09" ] && flags+=(--contract v09)
       [ "$reflexion" = "on" ] && flags+=(--reflexion)

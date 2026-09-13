@@ -35,6 +35,7 @@ from agent.llm import llm_config  # noqa: E402
 from evolution.mutations import validate_variant  # noqa: E402
 
 from events.store import iter_stream, resolve_stream_path  # noqa: E402
+from events.reflexion import summarise_motif_recurrence  # noqa: E402
 
 from evolution.results_layout import report_dir, run_dir  # noqa: E402
 _GB1 = run_dir("workflow", "gb1", create=False)
@@ -1321,11 +1322,19 @@ def render_contract_module() -> None:
         n_req = sum(p.get("allocation_source") == "agent_requested" for p in composes)
         n_excl = sum(bool(p.get("excluded_motifs")) for p in composes)
         contract, reflexion = V09_ARMS[name]
+        history = metrics.get("top10_max_history") or []
+        peak_round = (next((i + 1 for i, v in enumerate(history)
+                            if abs(v - max(history)) < 1e-9), None) if history else None)
+        rec = summarise_motif_recurrence(metrics.get("motif_recurrence") or [])
         table.append({
             "契约": contract, "反思": reflexion,
             "峰值": round(metrics.get("summary", {}).get("final_cum_top10_max", 0), 4),
+            "达峰轮": f"r{peak_round}" if peak_round else "—",
             "strong": metrics.get("summary", {}).get("final_cum_n_strong", 0),
-            "预算": f"{metrics.get('budget_spent')}/288",
+            "致死 motif 复现率": f"{rec['pooled_rate']:.1%}" if rec["pooled_rate"] is not None else "—",
+            f"复现率(r{rec['late_from_round']}+)":
+                f"{rec['late_pooled_rate']:.1%}" if rec["late_pooled_rate"] is not None else "—",
+            "预算": f"{metrics.get('budget_spent')}/{metrics.get('total_budget')}",
             "自设 exploit_ratio": f"{n_req}/{len(composes)}",
             "用 motif 排除入口": f"{n_excl}/{len(composes)}",
             "basin hop 轮次": str(metrics.get("redirect_rounds")),
@@ -1333,7 +1342,15 @@ def render_contract_module() -> None:
         })
     st.dataframe(pd.DataFrame(table), hide_index=True, width="stretch")
     st.caption(
-        "v0.8 契约两臂的「自设 exploit_ratio」是 **0/5**——不是模型偷懒：当时提示词写着"
+        "**先看「峰值」和「达峰轮」这两列——四臂完全一样,所以它们不能用来分辨好坏。** "
+        "8.416205 是候选池(HD>2,27,832 条)的**真实最优**,八个臂都拿到了,而且都在第 2 轮"
+        "(96/288 次 oracle)就拿到;之后四轮峰值不再变化,即 67% 的预算花在答案已经找到之后。"
+        "冷启动里那个 9.536457 是全表最优、落在 HD≤2,**候选池里没有任何东西能超过它**——"
+        "所以「没超越冷启动最优」是数据集构造,不是 agent 的失败。"
+        "真正有区分力的是「致死 motif 复现率」:上一轮被测死的替换,这一轮还有多少候选带着它。"
+    )
+    st.caption(
+        "再看「自设 exploit_ratio」这列：v0.8 契约两臂是 **0/5**——不是模型偷懒：当时提示词写着"
         "「Prefer that default」、每轮模板把 `compose_batch(n=48)` 写死且没有参数位，"
         "利用比地板又恰好只禁止残差该触发的「调低利用比」方向（实测第 4 轮起可行区间为空集）。"
         "更根本的是 `exploit_ratio` 是个标量，**没有任何取值能表达「别选带 N21D 的候选」**。"
