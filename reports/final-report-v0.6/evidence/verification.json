@@ -93,9 +93,19 @@
     "agent_no_knowledge": 5,
     "knowledge_agent": 5
   },
-  "layout_pages": 23,
+  "assignment_chapters": [
+    "背景与问题定义",
+    "数据集介绍",
+    "适应度预测模型",
+    "LLM Agent 设计",
+    "知识增强方法",
+    "虚拟定向进化实验结果",
+    "失败案例分析",
+    "改进建议与未来拓展"
+  ],
+  "layout_pages": 25,
   "layout_overflow": 0,
-  "pdf_pages": 23,
-  "active_figures": 13,
-  "generated_diagrams": 3
+  "pdf_pages": 25,
+  "active_figures": 14,
+  "generated_diagrams": 4
 }

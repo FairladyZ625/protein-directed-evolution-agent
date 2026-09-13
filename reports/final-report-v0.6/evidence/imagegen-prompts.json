@@ -34,6 +34,13 @@
       "path": "figures/f12_v08_imagegen.png",
       "source_file": "exec-015e783f-ec94-41a9-bfb8-f482a0860775.png",
       "sha256": "226e6c0144398127aa750d467c640a39df20267e885d494290ff3d9bf5dbf1fb"
+    },
+    {
+      "path": "figures/f13_future_architecture_imagegen.png",
+      "source_file": "reports/final-report-v0.5/figures/fig5_proposal.png",
+      "sha256": "38dc68c1228f1157b9494376219a0aea6fff2b8c81a821fcbdb163d50e9bfa6c",
+      "mode": "byte-identical reuse of previously generated image",
+      "prompt_record": "evidence/v05-imagegen-prompts.json"
     }
   ]
 }
