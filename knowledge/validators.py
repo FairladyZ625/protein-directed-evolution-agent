@@ -92,6 +92,28 @@ def validate_mutations(mutations: Iterable[Any], *, no_knowledge: bool = False,
         bool(matched),
         "historically high-fitness single mutants: " + (", ".join(matched) if matched else "none"),
     )
+    # Advisory: name the physicochemical class changes a candidate makes. The amino_acids
+    # table was previously read only by the knowledge graph; this surfaces it as a rule so the
+    # property knowledge is visible to a reader of the validation output too. It never gates —
+    # every consumer filters on enforcement == "gate" before rejecting anything.
+    props = cfg.get("amino_acids", {})
+    crossings = []
+    for a, pos, b in muts:
+        pa, pb = props.get(a), props.get(b)
+        if not pa or not pb:
+            continue
+        changed = [f"{axis} {pa[axis]}→{pb[axis]}"
+                   for axis in ("charge", "polarity", "size")
+                   if pa.get(axis) != pb.get(axis)]
+        if abs(float(pa.get("hydrophobicity", 0)) - float(pb.get("hydrophobicity", 0))) >= 4.0:
+            changed.append(f"hydropathy {pa['hydrophobicity']}→{pb['hydrophobicity']}")
+        if changed:
+            crossings.append(f"{a}{pos}{b}: " + "; ".join(changed))
+    add(
+        "R-PHYSICOCHEMICAL",
+        not crossings,
+        "class changes — " + ("; ".join(crossings) if crossings else "none (all substitutions stay in class)"),
+    )
     return out
 
 def validate_candidate(candidate: Any, *, no_knowledge: bool = False,

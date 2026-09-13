@@ -79,9 +79,14 @@ body, .stApp {
   backdrop-filter: blur(10px) !important;
 }
 
+/* 只覆盖宽度与左右/底部留白。**不要动 padding-top**：Streamlit 的顶部固定头靠它
+   让位，压掉之后本页第一个控件会被顶到头部下面看不见（合并前 timeline 是整页第一个
+   元素所以看不出来，挂到主看板下、上面多了视图切换控件之后立刻暴露）。 */
 .block-container {
   max-width: 96% !important;
-  padding: 1.8rem 2.5rem 4rem 2.5rem !important;
+  padding-left: 2.5rem !important;
+  padding-right: 2.5rem !important;
+  padding-bottom: 4rem !important;
 }
 
 h1, h2, h3, h4 {

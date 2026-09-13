@@ -1,0 +1,13 @@
+# 全站单一主题。合并前两个看板各跑各的：实验看板跟随系统（多数时候是暗色），
+# 研究演进自带一套 Slate + Emerald 亮色 CSS，切换视图时整页明暗翻转。
+#
+# 选亮色而不是暗色，是因为亮色这边已经有两处既成事实：研究演进的 674 行卡片样式
+# 是按亮色设计的；实验看板的 matplotlib 图版（app/demo.py::_analysis_axes）画布是
+# #fcfcfb，在暗色页面上本来就是一块块白板。统一到亮色，两边都不用重画。
+[theme]
+base = "light"
+primaryColor = "#059669"
+backgroundColor = "#f8fafc"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#0f172a"
+font = "sans serif"

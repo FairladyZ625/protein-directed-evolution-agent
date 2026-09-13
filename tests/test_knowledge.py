@@ -113,3 +113,35 @@ def test_load_rules_parses_yaml_once_but_still_notices_a_changed_file(monkeypatc
     copy.write_text(copy.read_text(encoding="utf-8") + "\n# changed\n", encoding="utf-8")
     V.load_rules(copy)
     assert calls["n"] == after_first_copy + 1, "文件改了却没重新解析，缓存把更新吃掉了"
+
+
+# ---- R-PHYSICOCHEMICAL:理化性质从「只喂知识图谱」升为具名规则 -----------------------
+# rules.yaml 的 amino_acids 表此前只被知识图谱的 has_property 边读取,而试题把理化性质
+# 列为帮助 agent 决策的知识。做成 advisory 而非 gate 是刻意的:所有消费者都按
+# enforcement == "gate" 过滤,因此这一行不可能改变任何已提名的候选,历史实验无需重跑。
+
+def test_physicochemical_rule_names_the_class_crossings():
+    from knowledge.validators import validate_candidate
+    rows = {r["rule_id"]: r for r in validate_candidate(["D40W"])}
+    row = rows["R-PHYSICOCHEMICAL"]
+    assert row["enforcement"] == "advisory"
+    assert row["pass"] is False          # 跨了类 -> advisory 报 False
+    for axis in ("charge -1→0", "polarity polar→nonpolar", "size medium→large"):
+        assert axis in row["note"], axis
+
+
+def test_physicochemical_rule_stays_quiet_within_class():
+    """阴性对照:V→F 同为 large / nonpolar / charge 0,疏水差 1.4,不该报跨类。"""
+    from knowledge.validators import validate_candidate
+    row = {r["rule_id"]: r for r in validate_candidate(["V39F"])}["R-PHYSICOCHEMICAL"]
+    assert row["pass"] is True
+    assert "none" in row["note"]
+
+
+def test_physicochemical_rule_cannot_gate_anything():
+    """它必须对门禁完全惰性——否则所有历史实验数据都要作废重跑。"""
+    from knowledge.validators import validate_candidate
+    for muts in (["D40W"], ["V39F"], ["V39A", "D40E", "G41S"]):
+        rows = validate_candidate(muts)
+        gating = [r for r in rows if r["enforcement"] == "gate"]
+        assert all(r["rule_id"] != "R-PHYSICOCHEMICAL" for r in gating)

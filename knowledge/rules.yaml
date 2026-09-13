@@ -50,3 +50,9 @@ rules:
   - {id: R-BLOSUM-AGGRESSIVE, type: blosum, enforcement: gate, max_score: -1, note: "BLOSUM62 score <= -1 is an aggressive substitution"}
   - {id: R-GB1-SITES, type: positions, enforcement: gate, allowed: [39, 40, 41, 54], wild_type: {39: V, 40: D, 41: G, 54: V}, note: "GB1 variable sites"}
   - {id: R-PRIORITIZE-HISTORICAL, type: historical, enforcement: advisory, note: "Prefer combinations containing historically high-fitness single mutants"}
+  # Advisory on purpose. The amino_acids block above was only ever read by the knowledge graph
+  # (has_property edges); the assignment lists physicochemical properties as decision knowledge,
+  # so they now also surface as a named rule. Keeping it advisory means it reports the class
+  # changes without gating: every consumer filters on enforcement == "gate", so this row cannot
+  # alter any candidate already nominated, and no prior experiment needs rerunning.
+  - {id: R-PHYSICOCHEMICAL, type: physicochemical, enforcement: advisory, note: "Report substitutions that cross a charge, polarity, size or hydropathy class boundary"}
