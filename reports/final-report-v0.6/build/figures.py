@@ -33,7 +33,7 @@ order=[f'{f}__{s}__{p}' for f in ['esm2','one_hot'] for s in ['hd_extrapolation'
 for ax,k in zip(axs.flat,order):
  row=a[k];xs=sorted(row['test_spearman_by_alpha'],key=float)
  ax.plot(list(map(float,xs)),[row['test_spearman_by_alpha'][x] for x in xs],color=C[1],label='Test');ax.plot(list(map(float,xs)),[row['val_spearman_by_alpha'][x] for x in xs],color='#9d9f9d',ls='--',label='Validation')
- ax.scatter(row['alpha_selected'],row['test_spearman_at_selected'],c=C[2],zorder=4,s=25);f,s,p=k.split('__');ax.set(xscale='log',title=f'{f}\n{s.replace("hd_extrapolation","HD extrapolation")} / {p}',xlabel='alpha');ax.tick_params(labelsize=8);clean(ax)
+ ax.scatter(row['alpha_selected'],row['test_spearman_at_selected'],c=C[2],zorder=4,s=25);f,s,p=k.split('__');ax.set(xscale='log',title=f'{f}\n{s.replace("hd_extrapolation","HD extrapolation")}\n{p}',xlabel='alpha');ax.tick_params(labelsize=8);ax.title.set_fontsize(9);clean(ax)
 axs[0,0].legend(fontsize=8,frameon=False);fig.tight_layout(w_pad=1.5,h_pad=2);save(fig,'fs1_alpha_full')
 # Diagram helpers use vector geometry, exact labels and explicit causal/operational boundaries.
 def canvas(title,h=4.2):

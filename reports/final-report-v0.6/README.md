@@ -1,30 +1,34 @@
-# 研究报告 v0.6
+# 研究报告 v0.6 · 附录与插画修订
 
-入口为 `scientific_report_v0.6_two_column.pdf`（18 页）或同名离线 HTML；正文源文件为 `report.md`。
+入口：`scientific_report_v0.6_two_column.pdf` 或同名离线 HTML。全文 23 页：正文 8 页、参考文献 1 页、附录 14 页。Markdown 正文为 `report.md`。
 
-本版在本会话 v0.5 底稿上重写，保留收到的另一版 v0.6 与讨论纪要于 `reference_received/`。正文补齐五角色实际数据流、GB1/AAV 跨轮反馈差异、预测器与 α 扫描、三种冷启动、LLM 实际预算、AAV 知识消融与固定采集矩阵、突变阶数和保守性。第八章纳入用户最新提供的 V0.8 首轮单 seed 冒烟，并将第二轮 2×2 保持为进行中的实验。
+## 本轮调整
 
-## 产物
+首页压紧标题与摘要，并加入五角色生图总览和完整研究问题。图 1、3、8 使用内置 ImageGen，延续用户认可的 v0.5 插画风格：纯白背景、柔和蓝绿桃色、深色轮廓、简洁图标与英文标签。已逐项核对标签和箭头，修正 Hypothesis→Designer 连线、Critic→Event log 路径以及 GB1 四残基示意。
 
-- `report.md`：八章正文、附录与 30 条参考文献。
-- `figures/`：12 张主图与 1 张附图，各含 300 dpi PNG 和 SVG。
-- `evidence/sources.json`：44 项冻结输入的原路径、快照位置和 SHA-256；基础代码为 `80f4447c5f8ee26267e98199e900230459b785b8`。
-- `evidence/v08-*`：另行收到的 V0.8 冒烟报告、两臂指标与原始压缩事件；不是基础代码版本生成的实验。
-- `evidence/verification.json`：源文件哈希、V0.8 逐轮集合哈希、残差恒等式、GB1 实际查询、PDF 页数与布局检查。
-- `v07-data-receipt.md`：下一版的数据接收与比较条件。
-- `verification.md`：本次实际验证记录。
+正文集中在模型、角色、搜索结果、组合效应和研究者定位。完整模型表、参数扫描、消费者接线、调用审计、采集矩阵、逐阶分析、保守性统计、首轮 V0.8 条件、复现与数据交接，以及全部44项证据来源索引，均已编入附录 A–K。
 
-参考资料中有部分过度结论，正文按代码和数据校正。例如：直接低阶覆盖指所有 k 个（k−1）阶组成变体；GB1 LLM 产量比较需使用实际查询分母；AAV 低阶缺测限制机制分解，但不阻止找到池内 ABC；V0.8 第一轮改变工具动作却没有改变送测集合。
+实验数字与44项冻结输入不变。本次是呈现修订；V0.8后续轮次由报告v0.7单独整合。重排前稿保存在 `evidence/report-before-appendix-polish.md`，用户提供的参考稿和讨论纪要仍完整保留。
+
+## 文件导航
+
+- `report.md`：8节正文、30条参考文献和完整附录。
+- `figures/*_imagegen.png`：3张正式生成插画。旧矢量机制图保留作版本记录，不再用于PDF。
+- `evidence/imagegen-prompts.json`：完整生成/修图提示词、内置工具说明、选定输出路径与SHA-256。工具接口未暴露具体模型版本选择。
+- `figures/`：正式采用13张图，其中8张正文图、5张补充图；数值图保留PNG/SVG。
+- `evidence/sources.json`：44项原始输入快照及哈希。
+- `evidence/verification.json`、`layout-check.json`、`visual-qa/`：数值、图像完整性及逐页验证。
+- `verification.md`：实际检查记录。
 
 ## 离线重建
 
-依赖 Python（numpy、matplotlib、beautifulsoup4、PyMuPDF）、Pandoc、Node.js（playwright）和 Chrome。首次捕获证据脚本 `build/snapshot.py` 依赖原仓库和可用的历史资料；常规重建直接使用已冻结的 evidence，不再捕获活动实验。
+依赖 Python（numpy、matplotlib、beautifulsoup4、PyMuPDF）、Pandoc、Node.js（playwright）及 Chrome。
 
 ```bash
 python3 build/figures.py
 python3 build/build.py
 NODE_PATH=/Users/lizeyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node build/render.cjs
-python3 build/verify.py
+/Users/lizeyu/miniforge/bin/python3 build/verify.py
 ```
 
-其他机器可配置 Node 模块路径与 `CHROME_EXECUTABLE`。以上流程只重建报告，不训练模型、不运行 campaign、不调用在线 LLM。HTML 内嵌全部图像，可离线打开。PNG/SVG 图表由冻结数值生成；机制图用精确标注的矢量绘图重建，以对应当前执行路径。
+其他机器配置自己的Python、Node模块路径与 `CHROME_EXECUTABLE`。重建使用已冻结数据和已保存生图，不运行实验、不在线生成图像；PDF页数与实际引用图片动态核验。HTML内嵌全部图像，可离线阅读。

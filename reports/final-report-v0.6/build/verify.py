@@ -1,5 +1,5 @@
 from pathlib import Path
-import json,gzip,hashlib,math
+import json,gzip,hashlib,math,re
 R=Path(__file__).resolve().parents[1];E=R/'evidence'
 def load(n):return json.loads((E/n).read_text())
 def digest(x):return hashlib.sha256(x).hexdigest()
@@ -28,12 +28,22 @@ assert audit['gb1_actual_queries']=={'hard':{'agent_no_knowledge':288,'knowledge
 rep=load('gb1_llm_replication.json')
 audit['gb1_replication_queries']={k:sum(x['n_nominated'] for x in rep['strategies'][k]['rounds']) for k in ['agent_no_knowledge','knowledge_agent']}
 assert list(audit['gb1_replication_queries'].values())==[5,5]
-layout=load('layout-check.json');assert len(layout)==18
+manuscript=(R/'report.md').read_text()
+expected_pages=len(manuscript.split('<!-- PAGE -->'))
+active_images=re.findall(r'!\[[^\n]*\]\((figures/[^)]+)\)',manuscript)
+assert len(active_images)==13 and len(set(active_images))==13
+assert sum('_imagegen.png' in x for x in active_images)==3
+for row in load('imagegen-prompts.json')['outputs']:
+ assert digest((R/row['path']).read_bytes())==row['sha256']
+layout=load('layout-check.json');assert len(layout)==expected_pages
 assert all(not x['bad'] and all(i['ok'] for i in x['images']) for x in layout),'Layout overflow / missing image'
 audit['layout_pages']=len(layout);audit['layout_overflow']=0
 import fitz
-pdf=fitz.open(R/'scientific_report_v0.6_two_column.pdf');assert len(pdf)==18
+pdf=fitz.open(R/'scientific_report_v0.6_two_column.pdf');assert len(pdf)==expected_pages
 assert all(p.get_text().strip() for p in pdf);audit['pdf_pages']=len(pdf)
-assert len(list((R/'figures').glob('*.png')))==13
+audit['active_figures']=len(active_images)
+audit['generated_diagrams']=3
+assert all((R/p).is_file() for p in active_images)
+assert '附录 K.2' in manuscript and '附录 I' in manuscript
 (E/'verification.json').write_text(json.dumps(audit,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps({'verified_sources':len(sources['inputs']),'PDF_pages':len(pdf),'figures':13,'V08_equal_batches':6,'overflow':0}))

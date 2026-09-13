@@ -49,7 +49,19 @@ math[display="block"] {margin:2mm 0;}
 .refs {column-count:2;column-gap:8mm;font-family:"Times New Roman",serif;font-size:8.1pt;line-height:1.3;}
 .refs p {margin-bottom:2.1mm;text-align:left;break-inside:avoid;overflow-wrap:anywhere;}
 .refs a {font-size:8pt;}
-.page[data-page="17"] figure img {max-height:130mm;}
+.page[data-page="1"] h1 {margin:2mm 0 2mm;font-size:20pt;line-height:1.35;}
+.page[data-page="1"] .metadata {margin-bottom:3mm;}
+.page[data-page="1"] .abstract {margin:2mm 0 3mm;padding-top:2mm;}
+.page[data-page="1"] figure img {max-height:80mm;}
+.page[data-page="1"] .cols {margin-top:2mm;}
+.page[data-page="1"] figure {margin-bottom:2mm;}
+.page.appendix {font-size:10.4pt;line-height:1.65;}
+.page.alpha-full figure img {max-height:130mm;}
+.page.source-index table {font-size:8.4pt;table-layout:fixed;}
+.page.source-index th:first-child {width:6%;}
+.page.source-index th:nth-child(2) {width:34%;}
+.page.source-index th:nth-child(3) {width:60%;}
+.page.source-index code {font-size:7.5pt;line-height:1.4;overflow-wrap:anywhere;}
 td {padding-top:1.65mm;padding-bottom:1.65mm;}
 @media screen {body {background:#e8edf0;padding:12px 0;} .page {margin:0 auto 18px;box-shadow:0 2px 8px #0001;} }
 '''
@@ -61,7 +73,14 @@ for i,c in enumerate(chunks,1):
   if img.parent.name=='p':
    fig=soup.new_tag('figure'); img.parent.replace_with(fig); fig.append(img)
    cap=soup.new_tag('figcaption'); cap.string=img.get('alt',''); fig.append(cap)
+ if '证据文件与原始来源索引' in c:
+  for table in soup.find_all('table'):
+   cols=table.find_all('col')
+   for col,width in zip(cols,['6%','34%','60%']): col['style']='width: '+width
  html=str(soup)
+ kind='appendix' if '## 附录' in c else ('references' if '<!-- REFERENCES -->' in c else 'main')
+ extra=' alpha-full' if 'fs1_alpha_full.png' in c else (' source-index' if '证据文件与原始来源索引' in c else '')
+ running='SUPPLEMENTARY MATERIAL · v0.6' if kind=='appendix' else 'RESEARCH REPORT · v0.6'
  # Embed project images so the HTML is a portable, offline artifact.
  def emb(m):
   rel=m.group(1); f=ROOT/rel
@@ -69,7 +88,7 @@ for i,c in enumerate(chunks,1):
   typ='image/svg+xml' if f.suffix=='.svg' else 'image/png'
   return 'src="data:'+typ+';base64,'+base64.b64encode(f.read_bytes()).decode()+'"'
  html=re.sub(r'src="(figures/[^\"]+)"',emb,html)
- pages.append(f'<section class="page" data-page="{i}"><div class="running"><span>CONTROLLED DIRECTED EVOLUTION</span><span>RESEARCH REPORT · v0.6</span></div><main class="content">{html}</main><div class="footer"><span>Zeyu Li · 2026</span><span>{i} / {len(chunks)}</span></div></section>')
+ pages.append(f'<section class="page {kind}{extra}" data-page="{i}"><div class="running"><span>CONTROLLED DIRECTED EVOLUTION</span><span>{running}</span></div><main class="content">{html}</main><div class="footer"><span>Zeyu Li · 2026</span><span>{i} / {len(chunks)}</span></div></section>')
 out='<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>受控科学智能体研究报告 v0.6</title><style>'+css+'</style></head><body>'+''.join(pages)+'</body></html>'
 (ROOT/'scientific_report_v0.6_two_column.html').write_text(out)
 print('Built HTML pages:',len(chunks))
