@@ -44,6 +44,18 @@ differences (158 / 153 / 160) are too small to be an effect size. Replication un
 and one earlier claim it falsified, are in
 [`reports/final-report-v0.6/v07-handoff-02-protocol-and-chapter8.md`](reports/final-report-v0.6/v07-handoff-02-protocol-and-chapter8.md).
 
+## Companion repository
+
+The research bookkeeping — tasks, decisions, append-only facts and their relations — lives in its
+own repo with its own 1,457-commit history:
+**[protein-directed-evolution-agent-harness](https://github.com/FairladyZ625/protein-directed-evolution-agent-harness)**.
+
+You do **not** need it to run anything here. This repository is self-contained: `harness/` is tracked
+in full, so a plain `git clone` gives you every artifact the dashboard and the report cite. The
+companion repo is the same content plus the commit-by-commit record of how it accumulated — useful
+if you want to see when a decision was taken or when a fact was first recorded, not required to
+reproduce a result.
+
 ## Repository layout: two trees, two jobs
 
 - **`reports/`** — the *report authoring* tree: `final-report-v0.x/` holds each report version's

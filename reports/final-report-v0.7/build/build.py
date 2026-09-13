@@ -83,7 +83,7 @@ for i,c in enumerate(chunks,1):
  html=str(soup)
  kind='appendix' if '## 附录' in c else ('references' if '<!-- REFERENCES -->' in c else 'main')
  extra=' alpha-full' if 'fs1_alpha_full.png' in c else (' source-index' if '证据文件与原始来源索引' in c else '')
- running='SUPPLEMENTARY MATERIAL · v0.7' if kind=='appendix' else 'RESEARCH REPORT · v0.7'
+ running='SUPPLEMENTARY MATERIAL' if kind=='appendix' else 'RESEARCH REPORT'
  # Embed project images so the HTML is a portable, offline artifact.
  def emb(m):
   rel=m.group(1); f=ROOT/rel
