@@ -30,9 +30,14 @@ audit['gb1_replication_queries']={k:sum(x['n_nominated'] for x in rep['strategie
 assert list(audit['gb1_replication_queries'].values())==[5,5]
 manuscript=(R/'report.md').read_text()
 expected_pages=len(manuscript.split('<!-- PAGE -->'))
+expected_titles=['背景与问题定义','数据集介绍','适应度预测模型','LLM Agent 设计','知识增强方法','虚拟定向进化实验结果','失败案例分析','改进建议与未来拓展']
+actual_titles=re.findall(r'^## [1-8]　(.+)$',manuscript,re.M)
+assert actual_titles==expected_titles
+audit['assignment_chapters']=actual_titles
+assert '内环执行与外环改进' in manuscript and '独立回归门' in manuscript
 active_images=re.findall(r'!\[[^\n]*\]\((figures/[^)]+)\)',manuscript)
-assert len(active_images)==13 and len(set(active_images))==13
-assert sum('_imagegen.png' in x for x in active_images)==3
+assert len(active_images)==14 and len(set(active_images))==14
+assert sum('_imagegen.png' in x for x in active_images)==4
 for row in load('imagegen-prompts.json')['outputs']:
  assert digest((R/row['path']).read_bytes())==row['sha256']
 layout=load('layout-check.json');assert len(layout)==expected_pages
@@ -42,8 +47,8 @@ import fitz
 pdf=fitz.open(R/'scientific_report_v0.6_two_column.pdf');assert len(pdf)==expected_pages
 assert all(p.get_text().strip() for p in pdf);audit['pdf_pages']=len(pdf)
 audit['active_figures']=len(active_images)
-audit['generated_diagrams']=3
+audit['generated_diagrams']=4
 assert all((R/p).is_file() for p in active_images)
 assert '附录 K.2' in manuscript and '附录 I' in manuscript
 (E/'verification.json').write_text(json.dumps(audit,ensure_ascii=False,indent=2)+'\n')
-print(json.dumps({'verified_sources':len(sources['inputs']),'PDF_pages':len(pdf),'figures':13,'V08_equal_batches':6,'overflow':0}))
+print(json.dumps({'verified_sources':len(sources['inputs']),'PDF_pages':len(pdf),'figures':len(active_images),'V08_equal_batches':6,'overflow':0}))
