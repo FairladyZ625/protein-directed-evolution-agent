@@ -1,0 +1,2406 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "knowledge_agent",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 12,
+  "n_rounds": 6,
+  "total_budget": 72,
+  "budget_spent": 72,
+  "strong_threshold": 2.6159,
+  "guardrail": true,
+  "no_knowledge": false,
+  "knowledge_graph_enabled": true,
+  "max_hd": 4,
+  "blosum_min": 0.0,
+  "n_gate_rejected": 0,
+  "gate_pass_pool_size": 2515,
+  "surrogate": "epistasis",
+  "backtrack": "semi",
+  "reflexion": false,
+  "acquisition": "v05",
+  "contract": "v09",
+  "fatal_fitness_threshold": 0.2,
+  "motif_recurrence": [
+    {
+      "round": 2,
+      "n_candidates": 12,
+      "n_with_previous_lethal_motif": 0,
+      "rate": 0.0,
+      "previous_lethal_motifs": []
+    },
+    {
+      "round": 3,
+      "n_candidates": 12,
+      "n_with_previous_lethal_motif": 3,
+      "rate": 0.25,
+      "previous_lethal_motifs": [
+        "N21D",
+        "R27Q",
+        "R5S",
+        "T6Q"
+      ]
+    },
+    {
+      "round": 4,
+      "n_candidates": 12,
+      "n_with_previous_lethal_motif": 0,
+      "rate": 0.0,
+      "previous_lethal_motifs": [
+        "D0K",
+        "E13Q",
+        "N21D",
+        "N26E"
+      ]
+    },
+    {
+      "round": 5,
+      "n_candidates": 12,
+      "n_with_previous_lethal_motif": 0,
+      "rate": 0.0,
+      "previous_lethal_motifs": []
+    },
+    {
+      "round": 6,
+      "n_candidates": 12,
+      "n_with_previous_lethal_motif": 1,
+      "rate": 0.08333333333333333,
+      "previous_lethal_motifs": [
+        "D0K",
+        "E2Q",
+        "N21D",
+        "R27M"
+      ]
+    }
+  ],
+  "stall_threshold": 2,
+  "redirect_rounds": [
+    4
+  ],
+  "stall_flag_rounds": [],
+  "top10_max_history": [
+    7.391,
+    7.391,
+    7.391,
+    8.4162,
+    8.4162,
+    8.4162
+  ],
+  "llm_used": true,
+  "llm_summary": "Round 6 completed and the experiment budget is exhausted.\n\nThe surrogate remained highly reliable (`cv_spearman=0.9076`), so I used full exploitation (`exploit_ratio=1.0`) in the final round. I excluded `E2Q` because all four newly tested `DEQE...` variants were poor, with fitness from `0.768` to `2.062`; the exclusion removed 375 candidates while retaining 2,080 eligible gate-passing variants.\n\nNo final-round variant exceeded the campaign best of `9.536`:\n\n`DEEEIRTTNPVATEQYGSYSTNLQQGNR`: `9.536`\n\nThe strongest final-round measurements were:\n\n- `DEEEIRTTNPVSTEQYGSVSENLQHGGR`: `6.079`\n- `SEEEIRTTNPVATEQYGSVSENLQQGNR`: `5.256`\n- `DEEEIRTTNPVATEQYGEVSTQLQRGQR`: `4.216`\n- `QEEEIRTTNPVATEQYGEVSTNLQHGNR`: `3.905`\n\nThe redirected `QEEE` and `SEEE` backgrounds remained inferior to the original bes",
+  "agent_model": "gpt-5.6-sol",
+  "llm_round_timeout_seconds": 240.0,
+  "llm_round_attempts": 6,
+  "llm_round_successes": 6,
+  "llm_round_success_rate": 1.0,
+  "llm_timeout_errors": 0,
+  "llm_direct_test_rounds": 6,
+  "llm_no_test_rounds": 0,
+  "llm_round_errors": 0,
+  "n_tool_calls": 36,
+  "summary": {
+    "final_cum_top10_max": 8.4162,
+    "final_cum_top10_mean": 6.2944,
+    "final_cum_n_strong": 39,
+    "cum_top10_max_curve": [
+      7.391,
+      7.391,
+      7.391,
+      8.4162,
+      8.4162,
+      8.4162
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 12,
+      "top10_max": 7.391,
+      "top10_mean": 4.4651,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 4.4651,
+      "n_hit_strong": 10,
+      "cum_n_strong": 10,
+      "top10": [
+        [
+          "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+          7.391
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENIQRGNA",
+          5.9988
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+          5.9521
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+          5.1849
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGDR",
+          4.1989
+        ],
+        [
+          "DEQEIRTTNPVATEQWGSVSENLQRGNM",
+          3.6678
+        ],
+        [
+          "DEEEIATTNPTATEQFGSVSTNLQQGNR",
+          3.394
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDYSTNLQQGNR",
+          3.155
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+          2.8659
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLMRGNA",
+          2.8427
+        ]
+      ],
+      "spent_after": 12
+    },
+    {
+      "round": 2,
+      "n_nominated": 12,
+      "top10_max": 4.0877,
+      "top10_mean": 2.874,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 4.7659,
+      "n_hit_strong": 6,
+      "cum_n_strong": 16,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+          4.0877
+        ],
+        [
+          "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+          3.9115
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTNLQHGGR",
+          3.6991
+        ],
+        [
+          "DEDEIATTNPVATEQYGEVSTNLQRGNR",
+          3.5668
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVGNNLQRGTQ",
+          3.2322
+        ],
+        [
+          "NEEEVATTNPVATEQYGSVSTNLQRGNQ",
+          2.9264
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTNLQNGNN",
+          2.0936
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTDLQHGER",
+          2.0214
+        ],
+        [
+          "DEEEIATTNPVATEQYGDVATNLQRGNR",
+          1.8304
+        ],
+        [
+          "DENEIRTTNPVATEQYGSVSTNLERGTL",
+          1.371
+        ]
+      ],
+      "spent_after": 24
+    },
+    {
+      "round": 3,
+      "n_nominated": 12,
+      "top10_max": 5.8728,
+      "top10_mean": 2.7723,
+      "cum_top10_max": 7.391,
+      "cum_top10_mean": 5.0898,
+      "n_hit_strong": 4,
+      "cum_n_strong": 20,
+      "top10": [
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+          5.8728
+        ],
+        [
+          "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+          4.601
+        ],
+        [
+          "DEEEIRCTNPVCTEQYGSVSDNIQRGNR",
+          3.2244
+        ],
+        [
+          "DEEEIRTVNPVATEMYGTVSTNLQHGNR",
+          2.7504
+        ],
+        [
+          "DEEEIRSTNPVATEQYGSVSDNIQRGNR",
+          2.553
+        ],
+        [
+          "SEEEIRTTNPIATEQYGSVSTNLQRGNF",
+          2.4152
+        ],
+        [
+          "DDEEIRTTNPVATEQYGSVSENVQRGNR",
+          2.2214
+        ],
+        [
+          "NEEEIRTTNPCATEQYGSVSMDLQRGNR",
+          1.588
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQQGNN",
+          1.4712
+        ],
+        [
+          "DEEEIRATNPAATEQYGSVSTNLQQGNR",
+          1.0253
+        ]
+      ],
+      "spent_after": 36
+    },
+    {
+      "round": 4,
+      "n_nominated": 12,
+      "top10_max": 8.4162,
+      "top10_mean": 4.2724,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.0428,
+      "n_hit_strong": 8,
+      "cum_n_strong": 28,
+      "top10": [
+        [
+          "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+          8.4162
+        ],
+        [
+          "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+          6.5309
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGTR",
+          6.262
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+          4.2182
+        ],
+        [
+          "DEEEIRTTNPVATEQFGDVSTNLQRGNI",
+          3.6276
+        ],
+        [
+          "DEHEIRTTNPVATEQYGSVSDNLQRGNQ",
+          3.4243
+        ],
+        [
+          "DEEEIRTTNPVATEHYGSVGTNLQHGNR",
+          3.3068
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVATNLQIGNR",
+          3.1863
+        ],
+        [
+          "DEEEIRTTNPVATEQYGCVSTNLQQGNH",
+          1.9473
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTNLQRGPQ",
+          1.8048
+        ]
+      ],
+      "spent_after": 48
+    },
+    {
+      "round": 5,
+      "n_nominated": 12,
+      "top10_max": 4.6066,
+      "top10_mean": 3.319,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.0816,
+      "n_hit_strong": 6,
+      "cum_n_strong": 34,
+      "top10": [
+        [
+          "DEEEIATTNPVATEQYGTASTNLQQGNR",
+          4.6066
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+          4.6002
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGGR",
+          4.5899
+        ],
+        [
+          "DEEEIRTTNPVATENYGEVSTNLQHGNR",
+          4.2364
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQHGNR",
+          3.7422
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGDR",
+          3.1866
+        ],
+        [
+          "DEEEIATTNPTATEQYGSVSTNVQRGDR",
+          2.3297
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLQRGNM",
+          2.0619
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTDLQRGER",
+          1.9834
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLQQGNQ",
+          1.8536
+        ]
+      ],
+      "spent_after": 60
+    },
+    {
+      "round": 6,
+      "n_nominated": 12,
+      "top10_max": 6.0791,
+      "top10_mean": 3.3089,
+      "cum_top10_max": 8.4162,
+      "cum_top10_mean": 6.2944,
+      "n_hit_strong": 5,
+      "cum_n_strong": 39,
+      "top10": [
+        [
+          "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+          6.0791
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQQGNR",
+          5.2559
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTQLQRGQR",
+          4.2156
+        ],
+        [
+          "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+          3.9054
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQMGNR",
+          2.9644
+        ],
+        [
+          "QEEEIRTTNPVATEQYGSVSANLQQGNH",
+          2.4301
+        ],
+        [
+          "SEEEIRTTNPVATEQFGSVSENLQRGNR",
+          2.2843
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTELQRGNM",
+          2.1285
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSTSMNLERGDR",
+          2.0952
+        ],
+        [
+          "DEEEVRTTNPVATEQYGSVSDNLQSGNR",
+          1.7301
+        ]
+      ],
+      "spent_after": 72
+    }
+  ],
+  "nominations": [
+    {
+      "round": 1,
+      "variants": [
+        [
+          "DEEEIATTNPTATEQFGSVSTNLQQGNR",
+          3.39399568708
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSEDLQRGNF",
+          2.0829070182
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLMRGNA",
+          2.84268260172
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQHGDR",
+          4.19887960376
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDYSTNLQQGNR",
+          3.1549858593
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+          5.95213756811
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+          5.184858233469999
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENIQRGNA",
+          5.9987682548
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+          2.86589824367
+        ],
+        [
+          "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+          7.39100378895
+        ],
+        [
+          "DEQEIRTTNPVATEQWGSVSENLQRGNM",
+          3.66780705328
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLERGNN",
+          1.97923971674
+        ]
+      ]
+    },
+    {
+      "round": 2,
+      "variants": [
+        [
+          "DEDEIATTNPVATEQYGEVSTNLQRGNR",
+          3.5667719587300004
+        ],
+        [
+          "DEEEIATTNPVATEQYGDVATNLQRGNR",
+          1.83038044025
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTDLQHGER",
+          2.02143397742
+        ],
+        [
+          "DEEEIRATNPVATEQYGSVSTNLQHGGR",
+          3.699089712
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+          4.08771894101
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVGNNLQRGTQ",
+          3.2321985370200004
+        ],
+        [
+          "DEEEISQTNPVATEQYGSVSTDLQRGNQ",
+          -0.223543999307
+        ],
+        [
+          "DEEEVRAVNPVATEQYGSVSTNLQRGNQ",
+          0.728277909597
+        ],
+        [
+          "DENEIRTTNPVATEQYGSVSTNLERGTL",
+          1.37098440702
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTNLQNGNN",
+          2.09355552605
+        ],
+        [
+          "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+          3.91150032309
+        ],
+        [
+          "NEEEVATTNPVATEQYGSVSTNLQRGNQ",
+          2.92638715681
+        ]
+      ]
+    },
+    {
+      "round": 3,
+      "variants": [
+        [
+          "DDEEIRTTNPVATEQYGSVSENVQRGNR",
+          2.22144385228
+        ],
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+          5.87276892038
+        ],
+        [
+          "DEEEIRATNPAATEQYGSVSTNLQQGNR",
+          1.02533296797
+        ],
+        [
+          "DEEEIRCTNPVCTEQYGSVSDNIQRGNR",
+          3.2244307563800003
+        ],
+        [
+          "DEEEIRSTNPVATEQYGSVSDNIQRGNR",
+          2.55300475775
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSENLQQGNN",
+          1.4712133585299998
+        ],
+        [
+          "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+          4.60100407249
+        ],
+        [
+          "DEEEIRTVNPVATEMYGTVSTNLQHGNR",
+          2.75038002052
+        ],
+        [
+          "DEEEISTTNPVATEQYGSMSTELQRGER",
+          0.994377600074
+        ],
+        [
+          "KEEEIRTTNPVATQQYGSVSTDLQRGER",
+          -1.01805962755
+        ],
+        [
+          "NEEEIRTTNPCATEQYGSVSMDLQRGNR",
+          1.58802441996
+        ],
+        [
+          "SEEEIRTTNPIATEQYGSVSTNLQRGNF",
+          2.41523683466
+        ]
+      ]
+    },
+    {
+      "round": 4,
+      "variants": [
+        [
+          "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+          6.53091633888
+        ],
+        [
+          "DEEEIRTTNPVATECWGSVSTNLQRGDQ",
+          1.5003180484099998
+        ],
+        [
+          "DEEEIRTTNPVATEHYGSVGTNLQHGNR",
+          3.30680938358
+        ],
+        [
+          "DEEEIRTTNPVATEQFGDVSTNLQRGNI",
+          3.6276444831
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVATNLQIGNR",
+          3.18625984227
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+          4.21817875349
+        ],
+        [
+          "DEEEIRTTNPVATEQYGCVSTNLQQGNH",
+          1.9472690803
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGTR",
+          6.26196793591
+        ],
+        [
+          "DEHEIRTTNPVATEQYGSVSDNLQRGNQ",
+          3.42429454577
+        ],
+        [
+          "DENEIRTTNPVATEQYGSVDTNLMRGNQ",
+          1.1961523867
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTNLQRGPQ",
+          1.80483985425
+        ],
+        [
+          "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+          8.416205130560002
+        ]
+      ]
+    },
+    {
+      "round": 5,
+      "variants": [
+        [
+          "DEEEIATTNPTATEQYGSVSTNVQRGDR",
+          2.3296998107
+        ],
+        [
+          "DEEEIATTNPVATEQYGTASTNLQQGNR",
+          4.60660083607
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQHGNR",
+          3.74217462877
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGGR",
+          4.5898953136400005
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+          4.6001657046
+        ],
+        [
+          "DEEEIRTTNPVATENYGEVSTNLQHGNR",
+          4.23636700397
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSENLQRGDR",
+          3.18663197645
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSASENLQRGNR",
+          0.7684112173326376
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLQQGNQ",
+          1.85356326287
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSENLQRGNM",
+          2.06188018254
+        ],
+        [
+          "DEQEIRTTNPVATEQYGSVSTDLQRGER",
+          1.98335407713
+        ],
+        [
+          "KEQEIRTTNPVATEQYGSVSTDLQRGNM",
+          -0.149848356941
+        ]
+      ]
+    },
+    {
+      "round": 6,
+      "variants": [
+        [
+          "DEEEIRTTNPCATEQYGSASENLERGNR",
+          0.8393528677140001
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQMGNR",
+          2.964414550521333
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSTELQRGNM",
+          2.12848269076
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTQLQRGQR",
+          4.21557972464
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSTSMNLERGDR",
+          2.0952145323099995
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLQQGEH",
+          1.22378733465
+        ],
+        [
+          "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+          6.0790601727
+        ],
+        [
+          "DEEEVRTTNPVATEQYGSVSDNLQSGNR",
+          1.7301095292099995
+        ],
+        [
+          "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+          3.90542285637
+        ],
+        [
+          "QEEEIRTTNPVATEQYGSVSANLQQGNH",
+          2.4300781541900003
+        ],
+        [
+          "SEEEIRTTNPVATEQFGSVSENLQRGNR",
+          2.2842671165
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQQGNR",
+          5.25591491884
+        ]
+      ]
+    }
+  ],
+  "tool_trace": [
+    {
+      "event_type": "agent.llm.model",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "agent",
+      "payload": {
+        "model": "gpt-5.6-sol",
+        "base_url": "https://token.qianbaner.top/v1",
+        "llm_timeout_s": 240.0
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 72,
+        "current_round": "1 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9059,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [],
+          "rounds_since_improvement": 0,
+          "redirect_rounds_so_far": [],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEEEIRTTNPVATEQYGSASENIQRGNA",
+            "rationale": "KG: V18A (n=78, measured-association mean=0.865, max=8.078; target properties: charge=0, size=small, polarity=nonpolar); T20E (n=172, measured-association mean=2.784, max=8.645; target properties: charge=-1, size=medium, polarity=polar); L22I (n=45, measured-association mean=0.210, max=5.811; target properties: charge=0, size=large, polarity=nonpolar); R27A (n=103, measured-association mean=2.008, max=6.478; target properties: charge=0, size=small, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+            "rationale": "KG: S17E (n=78, measured-association mean=2.686, max=7.636; target properties: charge=-1, size=medium, polarity=polar); V18A (n=78, measured-association mean=0.865, max=8.078; target properties: charge=0, size=small, polarity=nonpolar); S19A (n=77, measured-association mean=0.036, max=6.637; target properties: charge=0, size=small, polarity=nonpolar); N26G (n=48, measured-association mean=0.539, max=5.925; target properties: charge=0, size=small, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+            "rationale": "KG: V18A (n=78, measured-association mean=0.865, max=8.078; target properties: charge=0, size=small, polarity=nonpolar); T20E (n=172, measured-association mean=2.784, max=8.645; target properties: charge=-1, size=medium, polarity=polar); R24H (n=101, measured-association mean=2.056, max=6.007; target properties: charge=0, size=medium, polarity=polar); R27Q (n=98, measured-association mean=2.501, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.9,
+        "exploit_ratio": 0.9,
+        "adaptive_default_ratio": 0.8707,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [],
+        "n_excluded": 0,
+        "n_eligible_after_exclusion": 2515,
+        "n_exploit": 11,
+        "n_explore": 1,
+        "n": 12
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 12,
+        "measured": 12,
+        "spent": 12,
+        "batch_max": 7.391,
+        "cum_top10_max": 7.391
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 1,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DEEEIATTNPTATEQFGSVSTNLQQGNR",
+            "predicted_mean": 11.184376359207395,
+            "predicted_var": 7.6514884771655005,
+            "measured_fitness": 3.39399568708,
+            "residual": -7.7903806721273945
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSEDLQRGNF",
+            "predicted_mean": 10.751685487281996,
+            "predicted_var": 5.681621575104553,
+            "measured_fitness": 2.0829070182,
+            "residual": -8.668778469081996
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSENLMRGNA",
+            "predicted_mean": 10.167249701078184,
+            "predicted_var": 4.055749246295466,
+            "measured_fitness": 2.84268260172,
+            "residual": -7.324567099358184
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDVSENLQHGDR",
+            "predicted_mean": 11.123133317762974,
+            "predicted_var": 0.5847949323365303,
+            "measured_fitness": 4.19887960376,
+            "residual": -6.924253714002974
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGDYSTNLQQGNR",
+            "predicted_mean": 11.841716124031361,
+            "predicted_var": 13.247947482937944,
+            "measured_fitness": 3.1549858593,
+            "residual": -8.686730264731361
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+            "predicted_mean": 12.196881173827919,
+            "predicted_var": 2.2762845485008496,
+            "measured_fitness": 5.95213756811,
+            "residual": -6.244743605717918
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+            "predicted_mean": 10.762534466128951,
+            "predicted_var": 13.350016505005202,
+            "measured_fitness": 5.184858233469999,
+            "residual": -5.577676232658952
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSASENIQRGNA",
+            "predicted_mean": 13.558154769236882,
+            "predicted_var": 1.3049545758148913,
+            "measured_fitness": 5.9987682548,
+            "residual": -7.559386514436882
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSASENLQHGNQ",
+            "predicted_mean": 12.037531976445244,
+            "predicted_var": 0.1636088082302309,
+            "measured_fitness": 2.86589824367,
+            "residual": -9.171633732775245
+          },
+          {
+            "seq": "DEQEIATTNPVATEQYGDVSDNLQRGNR",
+            "predicted_mean": 10.132880606289635,
+            "predicted_var": 0.5888180266349556,
+            "measured_fitness": 7.39100378895,
+            "residual": -2.7418768173396355
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQWGSVSENLQRGNM",
+            "predicted_mean": 10.459884290196587,
+            "predicted_var": 6.750081274264986,
+            "measured_fitness": 3.66780705328,
+            "residual": -6.792077236916588
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSENLERGNN",
+            "predicted_mean": 8.464473007103969,
+            "predicted_var": 7.276499248605719,
+            "measured_fitness": 1.97923971674,
+            "residual": -6.4852332903639685
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 12,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10445,
+        "n_pool_unmeasured": 27820,
+        "budget_remaining": 60,
+        "current_round": "2 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.807
+          ],
+          [
+            "S17E",
+            2.758
+          ],
+          [
+            "R27Q",
+            2.504
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.26
+          ],
+          [
+            "T20D",
+            2.251
+          ],
+          [
+            "R27M",
+            2.211
+          ],
+          [
+            "R24H",
+            2.084
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.054
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9074,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391
+          ],
+          "rounds_since_improvement": 0,
+          "redirect_rounds_so_far": [],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEEEIRTTNPVATEQYGSVGNNLQRGTQ",
+            "rationale": "KG: S19G (n=74, measured-association mean=-0.263, max=5.147; target properties: charge=0, size=small, polarity=nonpolar); T20N (n=50, measured-association mean=-0.667, max=5.263; target properties: charge=0, size=medium, polarity=polar); N26T (n=79, measured-association mean=0.956, max=5.837; target properties: charge=0, size=medium, polarity=polar); R27Q (n=99, measured-association mean=2.504, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEVRAVNPVATEQYGSVSTNLQRGNQ",
+            "rationale": "KG: I4V (n=66, measured-association mean=-0.887, max=5.755; target properties: charge=0, size=large, polarity=nonpolar); T6A (n=92, measured-association mean=-0.004, max=5.390; target properties: charge=0, size=small, polarity=nonpolar); T7V (n=99, measured-association mean=-0.359, max=4.638; target properties: charge=0, size=large, polarity=nonpolar); R27Q (n=99, measured-association mean=2.504, max=8.390; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+            "rationale": "KG: D0N (n=47, measured-association mean=0.069, max=3.610; target properties: charge=0, size=medium, polarity=polar); S19G (n=74, measured-association mean=-0.263, max=5.147; target properties: charge=0, size=small, polarity=nonpolar); T20N (n=50, measured-association mean=-0.667, max=5.263; target properties: charge=0, size=medium, polarity=polar); N26T (n=79, measured-association mean=0.956, max=5.837; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.9,
+        "exploit_ratio": 0.9,
+        "adaptive_default_ratio": 0.9233,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [],
+        "n_excluded": 0,
+        "n_eligible_after_exclusion": 2503,
+        "n_exploit": 11,
+        "n_explore": 1,
+        "n": 12
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 12,
+        "measured": 12,
+        "spent": 24,
+        "batch_max": 4.088,
+        "cum_top10_max": 7.391
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 2,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DEDEIATTNPVATEQYGEVSTNLQRGNR",
+            "predicted_mean": 7.290166894409966,
+            "predicted_var": 2.243482269378673,
+            "measured_fitness": 3.5667719587300004,
+            "residual": -3.7233949356799654
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGDVATNLQRGNR",
+            "predicted_mean": 7.269149592159918,
+            "predicted_var": 2.2731532332284847,
+            "measured_fitness": 1.83038044025,
+            "residual": -5.438769151909918
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSTDLQHGER",
+            "predicted_mean": 7.1021659737410925,
+            "predicted_var": 7.298743635891735,
+            "measured_fitness": 2.02143397742,
+            "residual": -5.080731996321092
+          },
+          {
+            "seq": "DEEEIRATNPVATEQYGSVSTNLQHGGR",
+            "predicted_mean": 7.265001464615844,
+            "predicted_var": 3.315909879907809,
+            "measured_fitness": 3.699089712,
+            "residual": -3.565911752615844
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+            "predicted_mean": 7.970376240463343,
+            "predicted_var": 2.358884017186673,
+            "measured_fitness": 4.08771894101,
+            "residual": -3.882657299453343
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVGNNLQRGTQ",
+            "predicted_mean": 9.405442332403508,
+            "predicted_var": 0.8020307650230607,
+            "measured_fitness": 3.2321985370200004,
+            "residual": -6.173243795383508
+          },
+          {
+            "seq": "DEEEISQTNPVATEQYGSVSTDLQRGNQ",
+            "predicted_mean": 8.008421007465861,
+            "predicted_var": 1.0699004865084858,
+            "measured_fitness": -0.223543999307,
+            "residual": -8.23196500677286
+          },
+          {
+            "seq": "DEEEVRAVNPVATEQYGSVSTNLQRGNQ",
+            "predicted_mean": 9.376963611954656,
+            "predicted_var": 3.4527595121402683,
+            "measured_fitness": 0.728277909597,
+            "residual": -8.648685702357655
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGSVSTNLERGTL",
+            "predicted_mean": 7.739972728435864,
+            "predicted_var": 0.31654329802519077,
+            "measured_fitness": 1.37098440702,
+            "residual": -6.3689883214158645
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSTNLQNGNN",
+            "predicted_mean": 7.3865025626453775,
+            "predicted_var": 2.1053083293796013,
+            "measured_fitness": 2.09355552605,
+            "residual": -5.292947036595377
+          },
+          {
+            "seq": "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+            "predicted_mean": 8.345643111335077,
+            "predicted_var": 1.2925327162814317,
+            "measured_fitness": 3.91150032309,
+            "residual": -4.434142788245078
+          },
+          {
+            "seq": "NEEEVATTNPVATEQYGSVSTNLQRGNQ",
+            "predicted_mean": 7.950091410894915,
+            "predicted_var": 0.09520727786559485,
+            "measured_fitness": 2.92638715681,
+            "residual": -5.023704254084915
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 12,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10457,
+        "n_pool_unmeasured": 27808,
+        "budget_remaining": 48,
+        "current_round": "3 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.807
+          ],
+          [
+            "S17E",
+            2.784
+          ],
+          [
+            "R27Q",
+            2.472
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.26
+          ],
+          [
+            "T20D",
+            2.251
+          ],
+          [
+            "R27M",
+            2.211
+          ],
+          [
+            "R24H",
+            2.099
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.054
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9083,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            7.391
+          ],
+          "rounds_since_improvement": 1,
+          "redirect_rounds_so_far": [],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEEEISTTNPVATEQYGSMSTELQRGER",
+            "rationale": "KG: R5S (n=52, measured-association mean=0.558, max=6.618; target properties: charge=0, size=small, polarity=polar); V18M (n=40, measured-association mean=-1.476, max=3.736; target properties: charge=0, size=large, polarity=nonpolar); N21E (n=85, measured-association mean=1.126, max=4.897; target properties: charge=-1, size=medium, polarity=polar); N26E (n=122, measured-association mean=1.881, max=5.666; target properties: charge=-1, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRCTNPVCTEQYGSVSDNIQRGNR",
+            "rationale": "KG: T6C (n=90, measured-association mean=0.187, max=4.867; target properties: charge=0, size=medium, polarity=polar); A11C (n=67, measured-association mean=-0.241, max=4.387; target properties: charge=0, size=medium, polarity=polar); T20D (n=120, measured-association mean=2.251, max=8.438; target properties: charge=-1, size=medium, polarity=polar); L22I (n=46, measured-association mean=0.336, max=5.999; target properties: charge=0, size=large, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+            "rationale": "KG: S17T (n=64, measured-association mean=-0.006, max=5.112; target properties: charge=0, size=medium, polarity=polar); T20E (n=179, measured-association mean=2.807, max=8.645; target properties: charge=-1, size=medium, polarity=polar); L22I (n=46, measured-association mean=0.336, max=5.999; target properties: charge=0, size=large, polarity=nonpolar); R24N (n=84, measured-association mean=1.761, max=5.507; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.9,
+        "exploit_ratio": 0.9,
+        "adaptive_default_ratio": 0.975,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [],
+        "n_excluded": 0,
+        "n_eligible_after_exclusion": 2491,
+        "n_exploit": 11,
+        "n_explore": 1,
+        "n": 12
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 12,
+        "measured": 12,
+        "spent": 36,
+        "batch_max": 5.873,
+        "cum_top10_max": 7.391
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 3,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DDEEIRTTNPVATEQYGSVSENVQRGNR",
+            "predicted_mean": 6.4287187585976415,
+            "predicted_var": 3.1974322547337266,
+            "measured_fitness": 2.22144385228,
+            "residual": -4.207274906317641
+          },
+          {
+            "seq": "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+            "predicted_mean": 6.391738541224344,
+            "predicted_var": 0.4075943860471663,
+            "measured_fitness": 5.87276892038,
+            "residual": -0.5189696208443433
+          },
+          {
+            "seq": "DEEEIRATNPAATEQYGSVSTNLQQGNR",
+            "predicted_mean": 6.798370861918054,
+            "predicted_var": 2.5162070814807542,
+            "measured_fitness": 1.02533296797,
+            "residual": -5.773037893948054
+          },
+          {
+            "seq": "DEEEIRCTNPVCTEQYGSVSDNIQRGNR",
+            "predicted_mean": 6.957776010560449,
+            "predicted_var": 1.2971914550865897,
+            "measured_fitness": 3.2244307563800003,
+            "residual": -3.733345254180449
+          },
+          {
+            "seq": "DEEEIRSTNPVATEQYGSVSDNIQRGNR",
+            "predicted_mean": 6.568946683408624,
+            "predicted_var": 0.17012348206759234,
+            "measured_fitness": 2.55300475775,
+            "residual": -4.015941925658624
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSENLQQGNN",
+            "predicted_mean": 6.579101144619679,
+            "predicted_var": 0.8991815700136784,
+            "measured_fitness": 1.4712133585299998,
+            "residual": -5.107887786089679
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGTVSENIQNGNR",
+            "predicted_mean": 6.893656428253349,
+            "predicted_var": 2.863581117632456,
+            "measured_fitness": 4.60100407249,
+            "residual": -2.292652355763349
+          },
+          {
+            "seq": "DEEEIRTVNPVATEMYGTVSTNLQHGNR",
+            "predicted_mean": 6.550469451224631,
+            "predicted_var": 3.25625697830858,
+            "measured_fitness": 2.75038002052,
+            "residual": -3.8000894307046305
+          },
+          {
+            "seq": "DEEEISTTNPVATEQYGSMSTELQRGER",
+            "predicted_mean": 7.006159961629907,
+            "predicted_var": 0.12402609803386351,
+            "measured_fitness": 0.994377600074,
+            "residual": -6.011782361555906
+          },
+          {
+            "seq": "KEEEIRTTNPVATQQYGSVSTDLQRGER",
+            "predicted_mean": 6.00742072381418,
+            "predicted_var": 8.020616741585707,
+            "measured_fitness": -1.01805962755,
+            "residual": -7.02548035136418
+          },
+          {
+            "seq": "NEEEIRTTNPCATEQYGSVSMDLQRGNR",
+            "predicted_mean": 6.7012037925200705,
+            "predicted_var": 1.2842034917107081,
+            "measured_fitness": 1.58802441996,
+            "residual": -5.1131793725600705
+          },
+          {
+            "seq": "SEEEIRTTNPIATEQYGSVSTNLQRGNF",
+            "predicted_mean": 6.566648209948307,
+            "predicted_var": 1.3158733883689913,
+            "measured_fitness": 2.41523683466,
+            "residual": -4.151411375288307
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 12,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10469,
+        "n_pool_unmeasured": 27796,
+        "budget_remaining": 36,
+        "current_round": "4 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.822
+          ],
+          [
+            "T20E",
+            2.806
+          ],
+          [
+            "R27Q",
+            2.472
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "T20D",
+            2.261
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "R27M",
+            2.211
+          ],
+          [
+            "R24H",
+            2.105
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.054
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9075,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            7.391,
+            7.391
+          ],
+          "rounds_since_improvement": 2,
+          "redirect_rounds_so_far": [],
+          "stalled": true
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.redirect_batch",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "n": 12,
+        "max_overlap": 0.5,
+        "signature_size": 0,
+        "n_hop_eligible": 2479,
+        "n_fill": 0,
+        "picks_overlap_mean": 0.0,
+        "predicted_mean_top": 6.3531
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 12,
+        "measured": 12,
+        "spent": 48,
+        "batch_max": 8.416,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 4,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+            "predicted_mean": 6.129066529159587,
+            "predicted_var": 0.17818275076410406,
+            "measured_fitness": 6.53091633888,
+            "residual": 0.40184980972041284
+          },
+          {
+            "seq": "DEEEIRTTNPVATECWGSVSTNLQRGDQ",
+            "predicted_mean": 5.991580551387628,
+            "predicted_var": 1.5008392038960727,
+            "measured_fitness": 1.5003180484099998,
+            "residual": -4.491262502977628
+          },
+          {
+            "seq": "DEEEIRTTNPVATEHYGSVGTNLQHGNR",
+            "predicted_mean": 5.837334386713778,
+            "predicted_var": 3.6159747493135086,
+            "measured_fitness": 3.30680938358,
+            "residual": -2.5305250031337776
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGDVSTNLQRGNI",
+            "predicted_mean": 6.353125564224516,
+            "predicted_var": 0.002545246732747326,
+            "measured_fitness": 3.6276444831,
+            "residual": -2.7254810811245163
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVATNLQIGNR",
+            "predicted_mean": 5.9618842902240985,
+            "predicted_var": 0.0374388526475825,
+            "measured_fitness": 3.18625984227,
+            "residual": -2.7756244479540984
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+            "predicted_mean": 6.219564207070988,
+            "predicted_var": 6.321478280731217,
+            "measured_fitness": 4.21817875349,
+            "residual": -2.001385453580988
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGCVSTNLQQGNH",
+            "predicted_mean": 6.17243575343333,
+            "predicted_var": 2.330929097275701,
+            "measured_fitness": 1.9472690803,
+            "residual": -4.22516667313333
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEASTNLQRGTR",
+            "predicted_mean": 5.933690534886857,
+            "predicted_var": 0.04991361509831821,
+            "measured_fitness": 6.26196793591,
+            "residual": 0.3282774010231426
+          },
+          {
+            "seq": "DEHEIRTTNPVATEQYGSVSDNLQRGNQ",
+            "predicted_mean": 5.859256781904495,
+            "predicted_var": 2.602244128002471,
+            "measured_fitness": 3.42429454577,
+            "residual": -2.434962236134495
+          },
+          {
+            "seq": "DENEIRTTNPVATEQYGSVDTNLMRGNQ",
+            "predicted_mean": 5.968295933188191,
+            "predicted_var": 7.892804571419627,
+            "measured_fitness": 1.1961523867,
+            "residual": -4.772143546488191
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSTNLQRGPQ",
+            "predicted_mean": 6.069103711575867,
+            "predicted_var": 3.2689782694660643,
+            "measured_fitness": 1.80483985425,
+            "residual": -4.264263857325867
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            "predicted_mean": 6.152009609137959,
+            "predicted_var": 0.34925580932256534,
+            "measured_fitness": 8.416205130560002,
+            "residual": 2.2641955214220424
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 12,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10481,
+        "n_pool_unmeasured": 27784,
+        "budget_remaining": 24,
+        "current_round": "5 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.928
+          ],
+          [
+            "T20E",
+            2.814
+          ],
+          [
+            "R27Q",
+            2.491
+          ],
+          [
+            "R27I",
+            2.367
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "T20D",
+            2.271
+          ],
+          [
+            "R24Q",
+            2.239
+          ],
+          [
+            "R27M",
+            2.235
+          ],
+          [
+            "R24H",
+            2.116
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.054
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9018,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            7.391,
+            7.391,
+            8.4162
+          ],
+          "rounds_since_improvement": 0,
+          "redirect_rounds_so_far": [
+            4
+          ],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "DEQEIRTTNPVATEQYGSASENLQRGNR",
+            "rationale": "KG: E2Q (n=107, measured-association mean=-0.183, max=7.391; target properties: charge=0, size=medium, polarity=polar); V18A (n=83, measured-association mean=1.168, max=8.416; target properties: charge=0, size=small, polarity=nonpolar); T20E (n=183, measured-association mean=2.814, max=8.645; target properties: charge=-1, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEQEIRTTNPVATEQYGSVSENLQRGNM",
+            "rationale": "KG: E2Q (n=107, measured-association mean=-0.183, max=7.391; target properties: charge=0, size=medium, polarity=polar); T20E (n=183, measured-association mean=2.814, max=8.645; target properties: charge=-1, size=medium, polarity=polar); R27M (n=83, measured-association mean=2.235, max=6.283; target properties: charge=0, size=large, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIKTTNPVATEQYGSVSENLQHGNR",
+            "rationale": "KG: R5K (n=43, measured-association mean=-1.265, max=5.873; target properties: charge=1, size=large, polarity=polar); T20E (n=183, measured-association mean=2.814, max=8.645; target properties: charge=-1, size=medium, polarity=polar); R24H (n=107, measured-association mean=2.116, max=6.007; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 0.95,
+        "exploit_ratio": 0.95,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [],
+        "n_excluded": 0,
+        "n_eligible_after_exclusion": 2467,
+        "n_exploit": 11,
+        "n_explore": 1,
+        "n": 12
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 12,
+        "measured": 12,
+        "spent": 60,
+        "batch_max": 4.607,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 5,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DEEEIATTNPTATEQYGSVSTNVQRGDR",
+            "predicted_mean": 5.698241446848005,
+            "predicted_var": 0.5261199423142329,
+            "measured_fitness": 2.3296998107,
+            "residual": -3.368541636148005
+          },
+          {
+            "seq": "DEEEIATTNPVATEQYGTASTNLQQGNR",
+            "predicted_mean": 5.676833628029513,
+            "predicted_var": 1.5343403758236038,
+            "measured_fitness": 4.60660083607,
+            "residual": -1.070232791959513
+          },
+          {
+            "seq": "DEEEIKTTNPVATEQYGSVSENLQHGNR",
+            "predicted_mean": 5.9056979007006625,
+            "predicted_var": 2.0030797102782025,
+            "measured_fitness": 3.74217462877,
+            "residual": -2.1635232719306625
+          },
+          {
+            "seq": "DEEEIKTTNPVATEQYGSVSENLQRGGR",
+            "predicted_mean": 5.738050583389114,
+            "predicted_var": 0.015656937733192055,
+            "measured_fitness": 4.5898953136400005,
+            "residual": -1.1481552697491137
+          },
+          {
+            "seq": "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+            "predicted_mean": 5.700278375921517,
+            "predicted_var": 0.018274257292405654,
+            "measured_fitness": 4.6001657046,
+            "residual": -1.1001126713215168
+          },
+          {
+            "seq": "DEEEIRTTNPVATENYGEVSTNLQHGNR",
+            "predicted_mean": 5.72556379462549,
+            "predicted_var": 1.0160435143635975,
+            "measured_fitness": 4.23636700397,
+            "residual": -1.4891967906554902
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVSENLQRGDR",
+            "predicted_mean": 5.589757036671575,
+            "predicted_var": 1.566664153853865,
+            "measured_fitness": 3.18663197645,
+            "residual": -2.4031250602215746
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSASENLQRGNR",
+            "predicted_mean": 6.118378526215444,
+            "predicted_var": 6.457669365622613,
+            "measured_fitness": 0.7684112173326376,
+            "residual": -5.349967308882807
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSENLQQGNQ",
+            "predicted_mean": -2.5966674051957916,
+            "predicted_var": 32.65686483331798,
+            "measured_fitness": 1.85356326287,
+            "residual": 4.4502306680657915
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSENLQRGNM",
+            "predicted_mean": 5.910446578808767,
+            "predicted_var": 2.8743157277716,
+            "measured_fitness": 2.06188018254,
+            "residual": -3.8485663962687666
+          },
+          {
+            "seq": "DEQEIRTTNPVATEQYGSVSTDLQRGER",
+            "predicted_mean": 5.766875967618645,
+            "predicted_var": 1.0205909111293536,
+            "measured_fitness": 1.98335407713,
+            "residual": -3.7835218904886454
+          },
+          {
+            "seq": "KEQEIRTTNPVATEQYGSVSTDLQRGNM",
+            "predicted_mean": 5.84935839470025,
+            "predicted_var": 0.14352972414140214,
+            "measured_fitness": -0.149848356941,
+            "residual": -5.99920675164125
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 12,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10493,
+        "n_pool_unmeasured": 27772,
+        "budget_remaining": 12,
+        "current_round": "6 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "QEEEIRTTNPVATEQYGEASTNLQRGNR",
+            8.416
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.946
+          ],
+          [
+            "T20E",
+            2.82
+          ],
+          [
+            "R27Q",
+            2.485
+          ],
+          [
+            "R27I",
+            2.367
+          ],
+          [
+            "R27L",
+            2.313
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "T20D",
+            2.271
+          ],
+          [
+            "R24Q",
+            2.256
+          ],
+          [
+            "R27M",
+            2.205
+          ],
+          [
+            "R24H",
+            2.151
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.054
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9076,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        },
+        "campaign": {
+          "top10_max_history": [
+            7.391,
+            7.391,
+            7.391,
+            8.4162,
+            8.4162
+          ],
+          "rounds_since_improvement": 1,
+          "redirect_rounds_so_far": [
+            4
+          ],
+          "stalled": false
+        },
+        "best_cluster_signature": []
+      }
+    },
+    {
+      "event_type": "agent.tool.knowledge_graph",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "scientific_critic",
+      "payload": {
+        "stage": "compose_batch",
+        "measured_only": true,
+        "rationales": [
+          {
+            "variant": "SEEEIRTTNPVATEQYGSVSENLQQGNR",
+            "rationale": "KG: D0S (n=68, measured-association mean=0.378, max=5.772; target properties: charge=0, size=small, polarity=polar); T20E (n=190, measured-association mean=2.820, max=8.645; target properties: charge=-1, size=medium, polarity=polar); R24Q (n=113, measured-association mean=2.256, max=9.536; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          },
+          {
+            "variant": "DEEEIRTTNPVATEQWGSVSTELQRGNM",
+            "rationale": "KG: Y15W (n=70, measured-association mean=0.034, max=4.809; target properties: charge=0, size=large, polarity=nonpolar); N21E (n=86, measured-association mean=1.124, max=4.897; target properties: charge=-1, size=medium, polarity=polar); R27M (n=85, measured-association mean=2.205, max=6.283; target properties: charge=0, size=large, polarity=nonpolar). Associations are not causal effects."
+          },
+          {
+            "variant": "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+            "rationale": "KG: D0Q (n=53, measured-association mean=0.149, max=8.416; target properties: charge=0, size=medium, polarity=polar); S17E (n=87, measured-association mean=2.946, max=8.416; target properties: charge=-1, size=medium, polarity=polar); R24H (n=109, measured-association mean=2.151, max=6.007; target properties: charge=0, size=medium, polarity=polar). Associations are not causal effects."
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "agent_requested",
+        "requested_exploit_ratio": 1.0,
+        "exploit_ratio": 1.0,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.0,
+        "exploit_floor_enforced": false,
+        "excluded_motifs": [
+          "E2Q"
+        ],
+        "n_excluded": 375,
+        "n_eligible_after_exclusion": 2080,
+        "n_exploit": 12,
+        "n_explore": 0,
+        "n": 12
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "round_id": 7,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "requested": 12,
+        "measured": 12,
+        "spent": 72,
+        "batch_max": 6.079,
+        "cum_top10_max": 8.4162
+      }
+    },
+    {
+      "event_type": "agent.tool.test.residuals",
+      "round_id": 6,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "residual_definition": "measured_fitness - predicted_mean",
+        "prediction_timing": "before oracle labels were added and before surrogate retraining",
+        "records": [
+          {
+            "seq": "DEEEIRTTNPCATEQYGSASENLERGNR",
+            "predicted_mean": 5.224234513297333,
+            "predicted_var": 0.19919551418194245,
+            "measured_fitness": 0.8393528677140001,
+            "residual": -4.384881645583333
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQFGSVSENLQMGNR",
+            "predicted_mean": 5.377815128847228,
+            "predicted_var": 5.265387646255935,
+            "measured_fitness": 2.964414550521333,
+            "residual": -2.413400578325895
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQWGSVSTELQRGNM",
+            "predicted_mean": 5.5061105132819534,
+            "predicted_var": 1.9987464220139943,
+            "measured_fitness": 2.12848269076,
+            "residual": -3.3776278225219536
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGEVSTQLQRGQR",
+            "predicted_mean": 5.260053581616017,
+            "predicted_var": 0.3098979327108095,
+            "measured_fitness": 4.21557972464,
+            "residual": -1.0444738569760164
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSTSMNLERGDR",
+            "predicted_mean": 5.218721303008454,
+            "predicted_var": 4.468214439356912,
+            "measured_fitness": 2.0952145323099995,
+            "residual": -3.1235067706984547
+          },
+          {
+            "seq": "DEEEIRTTNPVATEQYGSVSTNLQQGEH",
+            "predicted_mean": 5.162418760669418,
+            "predicted_var": 0.08095406280345147,
+            "measured_fitness": 1.22378733465,
+            "residual": -3.938631426019418
+          },
+          {
+            "seq": "DEEEIRTTNPVSTEQYGSVSENLQHGGR",
+            "predicted_mean": 5.179338717665853,
+            "predicted_var": 2.745720210682167,
+            "measured_fitness": 6.0790601727,
+            "residual": 0.8997214550341468
+          },
+          {
+            "seq": "DEEEVRTTNPVATEQYGSVSDNLQSGNR",
+            "predicted_mean": 5.2457555177124355,
+            "predicted_var": 0.2586764564418344,
+            "measured_fitness": 1.7301095292099995,
+            "residual": -3.515645988502436
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGEVSTNLQHGNR",
+            "predicted_mean": 5.457981163313725,
+            "predicted_var": 1.5497862413809858,
+            "measured_fitness": 3.90542285637,
+            "residual": -1.5525583069437254
+          },
+          {
+            "seq": "QEEEIRTTNPVATEQYGSVSANLQQGNH",
+            "predicted_mean": 5.180248727443779,
+            "predicted_var": 0.038282668733750976,
+            "measured_fitness": 2.4300781541900003,
+            "residual": -2.7501705732537784
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQFGSVSENLQRGNR",
+            "predicted_mean": 5.3960510035274005,
+            "predicted_var": 6.635663763584748,
+            "measured_fitness": 2.2842671165,
+            "residual": -3.1117838870274004
+          },
+          {
+            "seq": "SEEEIRTTNPVATEQYGSVSENLQQGNR",
+            "predicted_mean": 5.565529394861027,
+            "predicted_var": 0.3701330439826764,
+            "measured_fitness": 5.25591491884,
+            "residual": -0.3096144760210269
+          }
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "round_id": 7,
+      "strategy": "knowledge_agent",
+      "actor": "experiment",
+      "payload": {
+        "n": 12,
+        "status": "ok"
+      }
+    }
+  ]
+}

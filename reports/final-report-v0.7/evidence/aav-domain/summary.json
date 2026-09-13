@@ -1,0 +1,26 @@
+{
+  "raw_sha256": "520c7c6545e61d3c23b41616fbb6afe3396c3ca11da1fe14ead92846dfeffa77",
+  "cleaned_count": 38265,
+  "cold_count": 10433,
+  "candidate_count": 27832,
+  "candidate_max": 8.416205130560002,
+  "cold_max": 9.53645667061,
+  "candidate_above_cold_max": 0,
+  "cold_above_candidate_max": [
+    {
+      "mutated_region": "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+      "score": 9.53645667061,
+      "number_of_mutations": 2
+    },
+    {
+      "mutated_region": "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+      "score": 8.645017001389999,
+      "number_of_mutations": 2
+    },
+    {
+      "mutated_region": "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+      "score": 8.438084181039999,
+      "number_of_mutations": 2
+    }
+  ]
+}

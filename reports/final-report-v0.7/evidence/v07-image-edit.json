@@ -1,0 +1,6 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Edit the attached academic illustration for the completed AAV v0.8/v0.9 contract study. Keep the entire pastel scientific illustration style, pure white background, navy outlines, all six cards, their positions, icons and arrows unchanged. Make only these exact text updates: subtitle below the main title becomes \"AAV: trace evidence, tool arguments and measured batches\". Researcher agent card subtitle becomes \"Ratio + motif exclusions\". Bottom lavender strip main label becomes \"Tested intervention: tool contract x reflection\". Bottom first pill becomes \"v08 / v09 contract\"; second pill stays \"Off / On\". Remove any wording \"Next study\" and any claim that the acquisition-policy experiment is still future. Keep main title \"From residual evidence to experimental action\", and all other card labels and captions exactly as they are. This is a mechanism illustration, not an effectiveness claim. No numerical results or improvement arrows added. Crisp perfectly legible English typography, preserve aspect ratio and illustration quality.",
+  "source": "figures/f12_v08_imagegen.png",
+  "output": "figures/f12_contract_imagegen.png"
+}
