@@ -1,16 +1,12 @@
-# v0.6 验证记录
+# v0.6 附录与插画修订：验证记录
 
-2026-09-13，在隔离 worktree codex/report-v06 完成。
+2026-09-13；隔离分支 codex/report-v06-polish。正文8页、参考文献1页、附录14页，合计23页。
 
-- `python3 build/figures.py`：成功生成 13 张图的 PNG/SVG。
-- `python3 build/build.py` 与 `node build/render.cjs`：18 页，全部图片加载成功；逐页检查段落、标题、表、图、公式元素，无正文框溢出。
-- `python3 build/verify.py`：44 项源快照 SHA-256 一致；PDF 18 页均有文本；GB1 hard 实际查询 288/288、LLM 105/197 与表格一致。
-- V0.8 两臂各六个残差事件、每轮 48 条；每条 residual = measured − nominated predicted；六轮序列集合 SHA-256 完全相同。提前跳转 signature_size=0；compose 事件均为纯利用 requested/effective=1.0。完整机器结果在 evidence/verification.json。
-- 主控已查看渲染后的全部 18 页（evidence/visual-qa），并修复图 5 的 S17E 标签与标题重叠。图 12 已从旧预案四组描述改为实际 2×2 构型×反思设计。
-- 收到的参考稿、讨论纪要与 v0.5 原稿保留。未改实验代码、未重跑实验，未填写第二轮结果。
+- 使用内置ImageGen生成三张机制图，保留提示词与输出SHA-256。两次局部修图纠正缺失箭头、Critic日志箭头及GB1四残基示意；未用SVG冒充生图。
+- 44项原始证据快照不变，独立于三张新增图像的哈希清单；既有预算、残差及候选集合断言保留。
+- `build/build.py` 与 `build/render.cjs` 成功生成23页。页面元素无溢出，13张正式引用图均加载成功，其中3张为生图、10张为数据绘图。
+- `/Users/lizeyu/miniforge/bin/python3 build/verify.py` 通过：44项源哈希、3张生成图哈希、动态页数、13张唯一图、V0.8六轮集合一致与GB1实际查询数。
+- 逐页渲染并目视检查首页、正文、参考文献和全部附录。完整参数扫描图的面板标题改成三行，避免相邻标题贴合；证据索引列宽重新分配，使44条路径在两页可读展示。
+- 完整模型表、调用/预算审计、AAV矩阵、阶数、保守性、V0.8条件与数据接收说明已写入附录A–K。重排前正文保留为 evidence/report-before-appendix-polish.md。
 
-验证覆盖报告重建、源证据完整性、关键数值和视觉排版；并不表示重新执行了历史模型训练或 campaign。
-
-## 同轮复现补充
-
-workflow-v1.2 两条 LLM 臂 rounds[].n_nominated 均只有一轮、值为5，强命中各3。补充源文件和原始事件后，44项快照、18页及原有验证重新通过；第9页重新渲染并查看。独立评审的默认 Python 缺少 fitz，主控用 `/Users/lizeyu/miniforge/bin/python3 build/verify.py` 补跑通过，定向复核使用相同明确运行时。
+未变更实验代码、未重跑实验、未改写既有结果。数值图重建与生图产出分别记录；插画图标是机制示意，不作为实验序列或定量证据。

@@ -93,7 +93,9 @@
     "agent_no_knowledge": 5,
     "knowledge_agent": 5
   },
-  "layout_pages": 18,
+  "layout_pages": 23,
   "layout_overflow": 0,
-  "pdf_pages": 18
+  "pdf_pages": 23,
+  "active_figures": 13,
+  "generated_diagrams": 3
 }
