@@ -231,3 +231,83 @@ def test_scientific_critic_caps_live_llm_critiques_but_gates_every_candidate():
     assert len(seen) == 1, f"LLM 调用应被预算限制为 1 次,实际 {len(seen)} 次"
     assert checks[0].note == "live" and checks[1].note == "accepted"
     assert len(accepted) == 3
+
+
+class _PayloadProbe:
+    """Keeps payloads (unlike _EventProbe), so residual rows can be inspected."""
+
+    def __init__(self):
+        self.events = []
+
+    def append(self, name, *, round_id=1, strategy="agent", actor=None, payload=None):
+        self.events.append({"name": name, "round_id": round_id,
+                            "strategy": strategy, "payload": payload or {}})
+
+    def residuals(self, strategy, round_id):
+        return next(e["payload"] for e in self.events
+                    if e["name"] == "campaign.oracle.residuals"
+                    and e["strategy"] == strategy and e["round_id"] == round_id)
+
+
+def test_residuals_record_the_nomination_time_prediction_not_the_refit_one():
+    """残差必须对着「提名当时」的模型算,不能对着回填后重训的模型算。
+
+    重训后的预测器**已经看过这批候选的真值**,拿它算出来的差值不是「模型看走眼了」,
+    是穿越——而且穿越出来的残差会小得多,让任何基于残差的反思看起来特别准。
+    emit 因此必须发生在 `_run_strategy` 重新 fit 之前。
+
+    这里独立复现第 1 轮 greedy 的提名时刻预测并逐位比对;下半段是本测试自己的阴性对照:
+    先证明「重训后的预测」确实是另一组数,否则上半段的相等断言可能是平凡成立的。
+    """
+    import numpy as np
+
+    from evolution.random_baseline import build_cold_start_pool
+
+    df, seed, budget, pool_size = landscape(), 3, 2, 8
+    probe = _PayloadProbe()
+    run_campaign(df, seed=seed, n_rounds=1, budget=budget, pool_size=pool_size,
+                 event_store=probe)
+
+    recorded = probe.residuals("greedy", 1)
+    assert recorded["predictor_consulted"] is True
+    by_variant = {row["variant"]: row for row in recorded["residuals"]}
+    assert by_variant, "greedy 这一轮没有留下任何残差行"
+
+    # 复现 _run_strategy 第 1 轮 greedy 的入口状态
+    pool = build_cold_start_pool(df, np.random.default_rng(seed), pool_size)
+    train = pool[["Variants", "Fitness"]].copy()
+    _picks, nomination_preds = campaign._greedy_propose(df, set(pool.Variants), train, budget)
+
+    for variant, row in by_variant.items():
+        assert row["predicted_mean"] == pytest.approx(
+            nomination_preds[variant]["mean"], abs=1e-6), f"{variant} 记的不是提名时刻的预测"
+        assert row["residual"] == pytest.approx(
+            row["measured_fitness"] - row["predicted_mean"], abs=1e-6)
+
+    # 阴性对照:回填重训之后,同一批变体的预测确实会变。若两者本就相同,
+    # 上面的相等断言就区分不了「提名时刻」与「重训之后」,这条测试也就没有意义。
+    oracle = df.set_index("Variants")
+    refit_train = pd.concat(
+        [train, oracle.loc[list(by_variant)].reset_index()[["Variants", "Fitness"]]],
+        ignore_index=True)
+    refit = campaign._predictor_factory()
+    refit.fit(campaign._features(refit_train.Variants.tolist()),
+              refit_train.Fitness.to_numpy())
+    refit_mean, _ = refit.predict(campaign._features(list(by_variant)))
+    assert any(abs(float(m) - by_variant[v]["predicted_mean"]) > 1e-6
+               for v, m in zip(by_variant, refit_mean)), \
+        "重训前后预测完全一致,本测试无法区分穿越与否——换个更有区分度的夹具"
+
+
+def test_random_baseline_records_no_prediction_rather_than_a_fake_zero():
+    """random 不查模型,所以没有「提名时刻的预测」可言,必须记 None 而不是 0.0。
+
+    填 0.0 会被读成「模型预测它是死的,而且猜对了」,是凭空捏造的一条模型行为。
+    """
+    probe = _PayloadProbe()
+    run_campaign(landscape(), seed=3, n_rounds=1, budget=2, pool_size=8, event_store=probe)
+    payload = probe.residuals("random", 1)
+    assert payload["predictor_consulted"] is False
+    for row in payload["residuals"]:
+        assert row["predicted_mean"] is None and row["residual"] is None
+        assert row["measured_fitness"] is not None  # 真值照记

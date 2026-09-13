@@ -248,6 +248,7 @@ def _agent_propose(strategy, df, measured, train, budget, event_store, round_id,
 
     known = set(df.Variants)
     rows = []
+    preds: dict[str, dict[str, float]] = {}
     for c in result.candidates:
         seq = c.sequence
         if seq in measured or seq not in known:
@@ -256,20 +257,49 @@ def _agent_propose(strategy, df, measured, train, budget, event_store, round_id,
         if strategy == "knowledge_agent":
             acq = c.mean + LAMBDA_UCB * float(np.sqrt(max(c.variance, 0.0))) + BETA_BLOSUM * _blosum_prior(seq, blosum_score)
         rows.append((acq, seq))
+        preds[seq] = {"mean": float(c.mean), "var": float(c.variance), "acq": float(acq)}
     if not rows:
-        return np.array([], dtype=object)
+        return np.array([], dtype=object), {}
     # Deterministic ordering: acquisition desc, then sequence for stable tie-breaking.
     rows.sort(key=lambda t: (-t[0], t[1]))
-    return np.array([seq for _, seq in rows[:budget]], dtype=object)
+    picks = [seq for _, seq in rows[:budget]]
+    return np.array(picks, dtype=object), {seq: preds[seq] for seq in picks}
 
 
 def _greedy_propose(df, measured, train, budget):
     predictor = _predictor_factory()
     predictor.fit(_features(train.Variants.tolist()), train.Fitness.to_numpy())
     cand = df.loc[~df.Variants.isin(measured), "Variants"].to_numpy()
-    mean, _ = predictor.predict(_features(cand.tolist()))
+    mean, var = predictor.predict(_features(cand.tolist()))
     order = np.lexsort((cand, -mean))  # mean desc, sequence tie-break
-    return cand[order[:budget]]
+    chosen = order[:budget]
+    picks = cand[chosen]
+    preds = {str(cand[i]): {"mean": float(mean[i]), "var": float(var[i]), "acq": float(mean[i])}
+             for i in chosen}
+    return picks, preds
+
+
+def _residual_rows(batch, preds: dict[str, dict[str, float]]) -> list[dict]:
+    """One row per measured nomination: what the model said, what the oracle said.
+
+    ``preds`` is keyed by variant and carries the nomination-time prediction. A variant
+    missing from it (the random baseline nominates without a model) gets ``None`` rather
+    than 0.0 — a fabricated zero would read as "the model predicted dead and was right".
+    """
+    rows = []
+    for variant, fitness in zip(batch.Variants, batch.Fitness):
+        variant = str(variant)
+        measured_fitness = float(fitness)
+        prediction = preds.get(variant)
+        row = {"variant": variant, "measured_fitness": round(measured_fitness, 6),
+               "predicted_mean": None, "predicted_var": None, "residual": None}
+        if prediction is not None:
+            row["predicted_mean"] = round(prediction["mean"], 6)
+            row["predicted_var"] = round(prediction["var"], 8)
+            # residual = truth - prediction: negative = the model oversold it.
+            row["residual"] = round(measured_fitness - prediction["mean"], 6)
+        rows.append(row)
+    return rows
 
 
 def _topk_concentration(rounds: list[dict]) -> dict:
@@ -325,11 +355,14 @@ def _run_strategy(strategy, df, *, seed, n_rounds, budget, pool_size, event_stor
         if strategy == "random":
             cand = df.loc[~df.Variants.isin(measured), "Variants"].to_numpy()
             picks = propose_random(cand, budget, rng)
+            # The random baseline consults no model, so there is no nomination-time
+            # prediction to be wrong about. Empty (not zeros) keeps that honest.
+            preds: dict[str, dict[str, float]] = {}
         elif strategy == "greedy":
-            picks = _greedy_propose(df, measured, train, budget)
+            picks, preds = _greedy_propose(df, measured, train, budget)
         else:
-            picks = _agent_propose(strategy, df, measured, train, budget,
-                                   event_store, round_id, blosum_score, use_llm, llm_state)
+            picks, preds = _agent_propose(strategy, df, measured, train, budget,
+                                          event_store, round_id, blosum_score, use_llm, llm_state)
         if len(picks) == 0:
             break
         _event(event_store, "campaign.propose.completed", strategy, round_id,
@@ -338,6 +371,21 @@ def _run_strategy(strategy, df, *, seed, n_rounds, budget, pool_size, event_stor
         batch["Fitness"] = pd.to_numeric(batch["Fitness"], errors="raise").astype(float)
         _event(event_store, "campaign.oracle.completed", strategy, round_id,
                {"seed": seed, "oracle": "measured table lookup", "n_lookups": len(batch)})
+        # Per-variant prediction-vs-truth. Emitted HERE, before the predictor is refit
+        # below, because `preds` holds what the model believed AT NOMINATION TIME. A
+        # residual computed against the refreshed model would be measured against a
+        # predictor that has already seen these very labels — not a miss, a peek.
+        #
+        # This is the record that answers the exam's "哪些推荐失败,原因可能是什么": until
+        # now the only per-variant truth in the stream sat in `campaign.round.completed`'s
+        # top10 field, and a lethal nomination by definition never reaches a top-10 list,
+        # so every failure was structurally unrecorded. Kept as its own event so the
+        # existing `campaign.oracle.completed` payload stays byte-compatible for readers.
+        _event(event_store, "campaign.oracle.residuals", strategy, round_id,
+               {"seed": seed,
+                "predictor_consulted": bool(preds),
+                "n": len(batch),
+                "residuals": _residual_rows(batch, preds)})
         measured.update(picks.tolist())
         train = pd.concat([train, batch[["Variants", "Fitness"]]], ignore_index=True)
         train["Fitness"] = pd.to_numeric(train["Fitness"], errors="raise").astype(float)
