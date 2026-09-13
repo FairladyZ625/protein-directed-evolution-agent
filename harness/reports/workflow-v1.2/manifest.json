@@ -1,0 +1,192 @@
+{
+  "schema": "report-manifest/v1",
+  "line": "workflow",
+  "version": "v1.2",
+  "dataset": "gb1",
+  "produced_at": "2026-09-13T03:49:38Z",
+  "git_commit": "1d217b634783b25db59d7a1bef39e50a695623c7",
+  "what_changed_vs_v1_1": "事件流新增 campaign.oracle.residuals(逐变体提名时刻预测 vs oracle 真值);确定性三档逐位复现 v1.1,证明该改动对结果惰性;llm 档为独立复现检验",
+  "per_regime_summary": {
+    "easy": {
+      "random": {
+        "cum_top10_max": 2.373537,
+        "strong": 0,
+        "beneficial_hits": 6,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "greedy": {
+        "cum_top10_max": 8.761966,
+        "strong": 81,
+        "beneficial_hits": 239,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "agent_no_knowledge": {
+        "cum_top10_max": 8.761966,
+        "strong": 95,
+        "beneficial_hits": 244,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "knowledge_agent": {
+        "cum_top10_max": 8.761966,
+        "strong": 86,
+        "beneficial_hits": 250,
+        "nominations": 288,
+        "budget_complete": true
+      }
+    },
+    "hard": {
+      "random": {
+        "cum_top10_max": 5.081244,
+        "strong": 1,
+        "beneficial_hits": 7,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "greedy": {
+        "cum_top10_max": 8.761966,
+        "strong": 43,
+        "beneficial_hits": 178,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "agent_no_knowledge": {
+        "cum_top10_max": 8.761966,
+        "strong": 50,
+        "beneficial_hits": 182,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "knowledge_agent": {
+        "cum_top10_max": 8.761966,
+        "strong": 65,
+        "beneficial_hits": 204,
+        "nominations": 288,
+        "budget_complete": true
+      }
+    },
+    "sparse": {
+      "random": {
+        "cum_top10_max": 3.993242,
+        "strong": 0,
+        "beneficial_hits": 9,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "greedy": {
+        "cum_top10_max": 5.772032,
+        "strong": 29,
+        "beneficial_hits": 180,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "agent_no_knowledge": {
+        "cum_top10_max": 5.772032,
+        "strong": 27,
+        "beneficial_hits": 213,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "knowledge_agent": {
+        "cum_top10_max": 8.761966,
+        "strong": 33,
+        "beneficial_hits": 202,
+        "nominations": 288,
+        "budget_complete": true
+      }
+    },
+    "llm": {
+      "random": {
+        "cum_top10_max": 5.081244,
+        "strong": 1,
+        "beneficial_hits": 7,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "greedy": {
+        "cum_top10_max": 8.761966,
+        "strong": 43,
+        "beneficial_hits": 178,
+        "nominations": 288,
+        "budget_complete": true
+      },
+      "agent_no_knowledge": {
+        "cum_top10_max": 8.761966,
+        "strong": 3,
+        "beneficial_hits": 4,
+        "nominations": 5,
+        "budget_complete": false
+      },
+      "knowledge_agent": {
+        "cum_top10_max": 8.761966,
+        "strong": 3,
+        "beneficial_hits": 4,
+        "nominations": 5,
+        "budget_complete": false
+      }
+    }
+  },
+  "citation_caveats": [
+    "llm 档两次运行均未花满预算(v1.1 提名 105/197,v1.2 提名 5/5,名义 288)。其计数型指标与确定性档不可比,引用时必须同时给出实际提名数。",
+    "workflow-v1.1 报告 §④「接入 LLM 后 agent 策略变差」已被本版推翻:那是预算差不是质量差,归一化后 LLM 臂命中率更高。",
+    "确定性三档仍为单 seed(42),仅随机基线做了 5 seed;策略间差值无误差棒。",
+    "llm 档不可复现——依赖商业 LLM 当次输出。",
+    "random 策略不查模型,其残差字段为 null 而非 0。"
+  ],
+  "artifacts": {
+    "gb1/campaign_easy.events.jsonl.gz": {
+      "sha256": "21c449af367cac9df0d79876900eb5935743923e69cb756da385f095a0086644",
+      "bytes": 2934490
+    },
+    "gb1/campaign_easy.metrics.json": {
+      "sha256": "eca6511871d1800c7a6ac3f9b53597140a900e5030f5aa0c2b0e1c537c5763f3",
+      "bytes": 24462
+    },
+    "gb1/campaign_hard.events.jsonl.gz": {
+      "sha256": "e5d8c197b18d59cf7fc4fdeb246941276d193f727c85630e17b57b865ceb9606",
+      "bytes": 2912605
+    },
+    "gb1/campaign_hard.metrics.json": {
+      "sha256": "12a82fbfe29a72568828dedb4170119c7b23dc0fe5282a58b1b1bd7a384e4107",
+      "bytes": 24455
+    },
+    "gb1/campaign_llm.events.jsonl.gz": {
+      "sha256": "c5b5ac86005d0dd017333ef205a8ee44abc14fac336847a9f9481566d1c5ae28",
+      "bytes": 49828
+    },
+    "gb1/campaign_llm.metrics.json": {
+      "sha256": "825bd5f9ecac0e02a6798c7df3222e3e00d63c62017c5f543edbcffed9eb0758",
+      "bytes": 18161
+    },
+    "gb1/campaign_sparse.events.jsonl.gz": {
+      "sha256": "cb0b4a1e1a521c7d8a28505820874aed6625762b27a322b06e23c63fd9b134a3",
+      "bytes": 2912221
+    },
+    "gb1/campaign_sparse.metrics.json": {
+      "sha256": "b74d06678ce65ce7ea0c8cb3f4c97b34c7d1c9be8ad20acc6ee659be276b1477",
+      "bytes": 24430
+    },
+    "gb1/figures/campaign_easy.png": {
+      "sha256": "1cc0296c25ba266c996fb4fc04aa970e505d926216df5943a58ff69d39a145ad",
+      "bytes": 54949
+    },
+    "gb1/figures/campaign_hard.png": {
+      "sha256": "bccbdc6684f5d5eca9d41b7f4c77acea30287ecc97fa62c4793d487346add2d8",
+      "bytes": 71278
+    },
+    "gb1/figures/campaign_llm.png": {
+      "sha256": "da521275d23fb302cf5962cb1bd13f4c65b42eca6bc23ca4c3b6c2328b24b2ff",
+      "bytes": 62557
+    },
+    "gb1/figures/campaign_sparse.png": {
+      "sha256": "a7749ea6755b8e1bedbcddb80505c81298f1afe44a5dac23ac81d36ac33319c8",
+      "bytes": 57174
+    },
+    "report.md": {
+      "sha256": "a0c3a554ee06108b813644f3a2f546d00872169caa7ae5cad81827d1bea1f37f",
+      "bytes": 7229
+    }
+  }
+}
