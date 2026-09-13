@@ -33,6 +33,8 @@ if str(ROOT) not in sys.path:  # streamlit run 不保证把仓库根加进 sys.p
 from agent.llm import llm_config  # noqa: E402
 from evolution.mutations import validate_variant  # noqa: E402
 
+from events.store import iter_stream, resolve_stream_path  # noqa: E402
+
 from evolution.results_layout import report_dir, run_dir  # noqa: E402
 _GB1 = run_dir("workflow", "gb1", create=False)
 METRICS_JSON = _GB1 / "campaign_easy.metrics.json"
@@ -46,8 +48,17 @@ REGIMES = {
 }
 EVENTS_JSONL = _GB1 / "campaign_easy.events.jsonl"
 EVENTS_LLM_JSONL = _GB1 / "campaign_llm.events.jsonl"
-BASELINE_JSON = _GB1 / "random_baseline.metrics.json"
-PREDICTOR_JSON = _GB1 / "predictor_ladder.json"
+PREDICTOR_JSON = _GB1 / "predictor_metrics.json"
+# The landscape reference lines (top-1% mean / oracle max) describe the 149,361-entry
+# truth table itself, not any one campaign cycle, so the v1.0 snapshot stays valid and
+# v1.1 never regenerated one. Resolved across cycles rather than pinned to _GB1: pinning
+# made both reference lines vanish from the chart with no warning at all.
+BASELINE_JSON = next(
+    (p for p in (_GB1 / "random_baseline.metrics.json",
+                 run_dir("workflow", "gb1", version="v1.0", create=False) / "random_baseline.metrics.json")
+     if p.exists()),
+    _GB1 / "random_baseline.metrics.json",
+)
 TRAIN_POOL = ROOT / "data" / "pools" / "train_pool.csv"
 LANDSCAPE_CSV = ROOT / "data" / "four_mutations_full_data.csv"
 
@@ -110,10 +121,11 @@ def load_metrics(path_str: str) -> dict | None:
 
 @st.cache_data(show_spinner="读取 T4 事件流 …")
 def load_events(path_str: str) -> list[dict] | None:
-    path = Path(path_str)
-    if not path.exists():
+    # Goes through the store's own resolver so an archived `.jsonl.gz` reads the same as
+    # a plain `.jsonl`. Reading the file here directly is what silently emptied this panel.
+    if not resolve_stream_path(path_str).exists():
         return None
-    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    return list(iter_stream(path_str))
 
 
 @st.cache_data(show_spinner="加载 149,361 真值表 …")
@@ -381,6 +393,9 @@ def _chain_status(events: list[dict]) -> str:
     return f"哈希链校验 ✅ 通过（{len(events)} 事件）· head `{prev_hash[:16]}…`"
 
 
+_CRITIC_EXAMPLES = 8  # 逐条展开的拒稿上限；其余走「原因分布」聚合
+
+
 def render_critic(critiques: list[dict]) -> None:
     rejected = [c for c in critiques if not c.get("accepted", True)]
     accepted_n = len(critiques) - len(rejected)
@@ -396,13 +411,33 @@ def render_critic(critiques: list[dict]) -> None:
             "想在页面上看知识规则「打架」，到模块③勾选「严格知识校验预演」。"
         )
         return
+    # A round now gates a 6,539-candidate library, so knowledge_agent can reject >6,500 at
+    # once. Rendering one markdown line plus one dataframe each froze the page. Aggregate
+    # first — which rule fired how often actually answers "why were these rejected",
+    # which 6,500 identical lines never did — then show a few worked examples.
+    by_rule: dict[str, int] = {}
     for c in rejected:
+        for check in (c.get("rule_check") or []):
+            if not check.get("pass") and check.get("enforcement") == "gate":
+                by_rule[check["rule_id"]] = by_rule.get(check["rule_id"], 0) + 1
+    if by_rule:
+        st.markdown("**拒稿原因分布**（按触发的门禁规则计数，一个候选可触发多条）")
+        st.dataframe(
+            pd.DataFrame(sorted(by_rule.items(), key=lambda kv: -kv[1]),
+                         columns=["rule_id", "触发次数"]),
+            width='stretch', hide_index=True)
+
+    shown = rejected[:_CRITIC_EXAMPLES]
+    st.markdown(f"**拒稿明细**（{len(rejected):,} 条中的前 {len(shown)} 条）")
+    for c in shown:
         st.markdown(
             f"🚫 **拒稿** score={c.get('score', float('nan')):.3f} — {c.get('note', '')}"
         )
         checks = c.get("rule_check") or []
         if checks:
             st.dataframe(pd.DataFrame(checks).set_index("rule_id"), width='stretch')
+    if len(rejected) > len(shown):
+        st.caption(f"… 其余 {len(rejected) - len(shown):,} 条拒稿未逐条展开（原因分布见上表）。")
 
 
 def render_role_chain(chain: dict[str, dict], strategy: str, round_id: int) -> None:
@@ -464,16 +499,18 @@ def render_replay_module() -> None:
              "campaign_events_llm.jsonl（LLM 池跑）": str(EVENTS_LLM_JSONL)}
     events = None
     chosen = None
-    if EVENTS_JSONL.exists() or EVENTS_LLM_JSONL.exists():
-        available = {k: v for k, v in files.items() if Path(v).exists()}
+    available = {k: v for k, v in files.items() if resolve_stream_path(v).exists()}
+    if available:
         chosen = st.selectbox("事件流文件", list(available), key="m2_file")
         events = load_events(available[chosen])
     if not events:
         st.warning(
-            "未找到 `reports/campaign_events*.jsonl`——先跑 `make campaign` 生成事件流。"
-            "本模块占位停等，其余模块不受影响。"
+            f"未找到 `{EVENTS_JSONL.relative_to(ROOT)}`（`.gz` 归档亦无）——"
+            "先跑 `make campaign` 生成事件流。本模块占位停等，其余模块不受影响。"
         )
         return
+    if resolve_stream_path(available[chosen]).suffix == ".gz":
+        st.caption("读的是 gzip 归档（原始流 ~80 MB / 归档 ~3 MB），内容与未压缩流逐字节等同。")
 
     st.caption(
         f"每行一个 JSON 事件（`seq/ts/event_type/round_id/strategy/actor/payload/prev_hash/hash`）。"
@@ -611,24 +648,28 @@ def _render_scorer(has_landscape: bool, wild_type: str) -> None:
         "Ridge 集成（`models.train_ladder.RidgePredictor`，在 `data/pools/train_pool.csv` 上拟合）"
         "输出预测 mean/var；有真值表时同时给出真实 fitness 与全表分位。"
     )
-    default = st.session_state.get("m3_variant", wild_type)
-    variant = st.text_input("变体（4 个标准氨基酸）", value=default, key="m3_input").strip().upper()
+    # The preset buttons MUST write the text_input's own key. A keyed widget takes its
+    # value from st.session_state[key] on every rerun and ignores the `value=` argument,
+    # so the earlier version — which wrote a separate "m3_variant" key and reran — left
+    # the box untouched: both buttons were dead from the second render onward.
+    st.session_state.setdefault("m3_input", wild_type)
+
+    def _preset(value: str) -> None:
+        st.session_state["m3_input"] = value
+
+    variant = st.text_input("变体（4 个标准氨基酸）", key="m3_input").strip().upper()
     c1, c2, c3 = st.columns(3)
     c1.caption("试试已知名次：")
-    if c2.button("FWAA（全表最高 8.762）"):
-        st.session_state["m3_variant"] = "FWAA"
-        st.rerun()
-    if c3.button("VDGV（野生型）"):
-        st.session_state["m3_variant"] = wild_type
-        st.rerun()
+    c2.button("FWAA（全表最高 8.762）", on_click=_preset, args=("FWAA",), key="m3_preset_peak")
+    c3.button("VDGV（野生型）", on_click=_preset, args=(wild_type,), key="m3_preset_wt")
 
     try:
         normalized = validate_variant(variant)
     except ValueError as exc:
         st.error(str(exc))
         return
-    if normalized != variant:
-        st.session_state["m3_variant"] = normalized
+    if normalized != st.session_state["m3_input"]:
+        st.caption(f"按 `{normalized}` 计算（已去空格并转大写）。")
 
     model, _ = fit_predictor()
     from features.one_hot import encode_one_hot
@@ -664,15 +705,25 @@ def _render_scorer(has_landscape: bool, wild_type: str) -> None:
         else:
             st.caption(f"真实 fitness {float(true_fitness):.3f} ≤ 1.0，未超野生型。")
 
-    predictor_metrics = load_metrics(str(PREDICTOR_JSON))
-    card = ((predictor_metrics or {}).get("one_hot__random", {}) or {}).get("ridge", {})
+    # workflow-v1.1 replaced the v1.0 ladder schema ({feature__split: {model: …}}) with
+    # {feature, split, models: {model: {train|validation|test: …}}}. Reading the old shape
+    # against the new file yields {} and the card just disappears, so both are handled and
+    # a genuinely absent card says so instead of rendering nothing.
+    predictor_metrics = load_metrics(str(PREDICTOR_JSON)) or {}
+    ridge = (predictor_metrics.get("models") or {}).get("ridge") or {}
+    card = ridge.get("test") or ridge  # v1.1 reports per split; v1.0 reported one card
+    if not card:
+        card = ((predictor_metrics.get("one_hot__random") or {}).get("ridge")) or {}
     if card:
         st.caption(
-            "模型卡片（`reports/predictor_metrics.json` · one_hot__random · ridge）："
+            f"模型卡片（`{PREDICTOR_JSON.relative_to(ROOT)}` · "
+            f"{predictor_metrics.get('feature', 'one_hot')} · ridge · test 划分）："
             f"Spearman {card.get('spearman', float('nan')):.3f} · "
             f"top-1% 命中 {card.get('top_k', float('nan')):.2f} · "
-            f"MSE {card.get('mse', float('nan')):.3f}（Ridge 种子间同构，var≈0 属预期）"
+            f"MSE {card.get('mse', float('nan')):.3f}"
         )
+    else:
+        st.caption(f"缺 `{PREDICTOR_JSON.relative_to(ROOT)}` 的 ridge 卡片——打分不受影响。")
 
 
 def _strict_knowledge_check(variants: list[str], wild_type: str) -> pd.DataFrame | None:

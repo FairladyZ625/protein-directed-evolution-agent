@@ -20,7 +20,12 @@ jobs:
       # torch, so they run locally; CI covers the self-contained modules.
       #
       # 门控范围以前只有三个文件(events / knowledge / agent),结果 tests/test_demo_app.py
-      # 坏了很久都没人发现——没被门控的测试等于不存在(fact F-6B21C4E8)。下面按
+      # 坏了很久都没人发现——没被门控的测试等于不存在(fact F-6B21C4E8)。
+      #
+      # 上一轮扩门时写下了这段注释,却仍然没有把 test_demo_app.py 本身加进清单,于是同一个
+      # 机制第三次生效:事件流被 gzip 归档后,看板的回放面板整块失效、预设按钮是死键、
+      # 自动推荐要跑 90 秒,而 test_demo_app.py 里那条本该拦住的断言一直是红的——
+      # 只是从没有人跑它,CI 照样报绿。诊断出机制、写下注释,不等于关上门。下面按
       # 「不需要 44MB 地形、不需要 torch」这一条标准把所有自包含测试都列进来;
       # 新增自包含测试文件时必须同步加到这里,否则它同样会静默腐烂。
       # 这份手写清单与 requirements.txt 漂移过一次,代价是 CI 连续多次 push 全红而没人发现:
@@ -43,6 +48,7 @@ jobs:
             tests/test_agent.py \
             tests/test_campaign.py \
             tests/test_demo.py \
+            tests/test_demo_app.py \
             tests/test_predictor.py
 
       # 产出 Harness 任务完成门所需的 CI 见证。只在测试通过后运行,因此工件的存在

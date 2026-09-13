@@ -77,3 +77,39 @@ def test_graph_queries_use_measured_associations_and_properties():
     assert "not a causal" in context["interpretation"]
     leaders = query_position_mutations(graph, 0)
     assert [row["mutation"] for row in leaders] == ["A0S", "A0G"]
+
+
+def test_load_rules_parses_yaml_once_but_still_notices_a_changed_file(monkeypatch, tmp_path):
+    """门禁一轮要过 6,539 个候选，规则文件只能解析一次。
+
+    改前 validate_candidate 每次调用都重新打开并 yaml.safe_load 一遍 rules.yaml：
+    14.32 ms/次 × 6,539 ≈ 94 s，这就是看板「自动推荐」看起来卡死、以及每次
+    knowledge_agent 跑批都慢的原因。缓存按 (路径, mtime, size) 记，所以
+    测试改写规则文件后仍能读到新内容——缓存不能变成「改了规则也不生效」。
+    """
+    import knowledge.validators as V
+
+    real_safe_load = V.yaml.safe_load
+    calls = {"n": 0}
+
+    def counting(stream):
+        calls["n"] += 1
+        return real_safe_load(stream)
+
+    monkeypatch.setattr(V.yaml, "safe_load", counting)
+    V._parse_rules.cache_clear()
+
+    for _ in range(50):
+        validate_candidate(["V39I", "D40E"], no_knowledge=False)
+    assert calls["n"] == 1, f"rules.yaml 被解析了 {calls['n']} 次，缓存没生效"
+
+    # 阴性对照：换一个文件、再改写它，必须重新解析并读到新内容
+    copy = tmp_path / "rules.yaml"
+    copy.write_text(V.ROOT.read_text(encoding="utf-8"), encoding="utf-8")
+    assert V.load_rules(copy)["rules"], "副本应能正常解析"
+    after_first_copy = calls["n"]
+    assert after_first_copy == 2
+
+    copy.write_text(copy.read_text(encoding="utf-8") + "\n# changed\n", encoding="utf-8")
+    V.load_rules(copy)
+    assert calls["n"] == after_first_copy + 1, "文件改了却没重新解析，缓存把更新吃掉了"

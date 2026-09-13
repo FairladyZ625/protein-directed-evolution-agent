@@ -1,4 +1,5 @@
 """Deterministic mutation validators and a lightweight NetworkX triple graph."""
+from functools import lru_cache
 from pathlib import Path
 import re
 from typing import Any, Iterable
@@ -14,11 +15,29 @@ import networkx as nx
 ROOT = Path(__file__).with_name("rules.yaml")
 AA = set("ACDEFGHIKLMNPQRSTVWY")
 
-def load_rules(path: str | Path = ROOT) -> dict:
+@lru_cache(maxsize=8)
+def _parse_rules(path: str, _stamp: tuple[float, int]) -> dict:
     if yaml is None:
         raise RuntimeError("PyYAML is required to read knowledge/rules.yaml")
     with open(path, encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def load_rules(path: str | Path = ROOT) -> dict:
+    """Load the rule set, parsing the YAML at most once per (path, mtime, size).
+
+    ``validate_mutations`` calls this on every candidate, and one campaign round now
+    gates a library of up to 6,561 candidates. Re-parsing the YAML each time cost
+    14 ms/call — 94 s per knowledge_agent round, which is where the demo's
+    "auto-recommend" button appeared to hang and why every knowledge run was slow.
+    Keying on (mtime, size) rather than the path alone keeps tests that write a
+    modified rules file to the same path honest.
+
+    The returned dict is shared between callers; treat it as read-only.
+    """
+    resolved = Path(path)
+    stat = resolved.stat()
+    return _parse_rules(str(resolved), (stat.st_mtime, stat.st_size))
 
 def _parse(item: Any) -> tuple[str, int, str]:
     if isinstance(item, dict):

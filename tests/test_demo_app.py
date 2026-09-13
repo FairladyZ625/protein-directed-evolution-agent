@@ -175,6 +175,87 @@ def test_conservation_panel_degrades_when_artifact_missing():
         backup.rename(path)
 
 
+def test_declared_artifacts_resolve_on_the_real_tree():
+    """看板声明的每个产物路径，必须在真实仓库树上解析得到。
+
+    这条测试是为一整族缺陷立的门，而不是为某一个 bug：本仓已经三次因为「产物换了名字 /
+    换了周期目录 / 被 gzip 归档」而让面板静默退化，页面照样打开、只是内容没了——
+    单元测试用 fixture 跑，看不见真实树，所以一次都没拦住。
+
+    事件流走 resolve_stream_path（`.jsonl` 与归档 `.jsonl.gz` 等价），其余按文件存在判断。
+    """
+    from app.demo import (ALPHA_SWEEP_JSON, ANALYSIS_DIR, BASELINE_JSON, EVENTS_JSONL,
+                          EVENTS_LLM_JSONL, METRICS_JSON, PREDICTOR_JSON, RATIONALES_JSON,
+                          REGIMES, SCALING_ABLATION_JSON)
+    from events.store import resolve_stream_path
+
+    missing = []
+    for name, path in [("METRICS_JSON", METRICS_JSON), ("PREDICTOR_JSON", PREDICTOR_JSON),
+                       ("BASELINE_JSON", BASELINE_JSON), ("RATIONALES_JSON", RATIONALES_JSON),
+                       ("ALPHA_SWEEP_JSON", ALPHA_SWEEP_JSON),
+                       ("SCALING_ABLATION_JSON", SCALING_ABLATION_JSON),
+                       *[(f"REGIMES[{k[:6]}]", v) for k, v in REGIMES.items()],
+                       *[(f"analysis/{ds}/{f}", ANALYSIS_DIR[ds] / f)
+                         for ds in ANALYSIS_DIR for f in ("mutation_order.json", "conservation.json")]]:
+        if not path.exists():
+            missing.append(f"{name} -> {path}")
+    for name, path in [("EVENTS_JSONL", EVENTS_JSONL), ("EVENTS_LLM_JSONL", EVENTS_LLM_JSONL)]:
+        if not resolve_stream_path(path).exists():
+            missing.append(f"{name} -> {path}（.gz 归档亦无）")
+    assert not missing, "看板声明了这些产物但树上没有:\n  " + "\n  ".join(missing)
+
+
+def test_preset_buttons_actually_change_the_scored_variant():
+    """回归门：预设按钮必须真的改到打分结果，而不只是改一个没人读的影子 state。
+
+    带 key 的 widget 在后续 rerun 只认 st.session_state[key]、无视 value=，
+    所以「写影子 key + rerun」的写法从第二次渲染起就是死键——页面不报错，按了没反应。
+    """
+    if not HAS_DATA:
+        pytest.skip("landscape csv not present")
+    def true_fitness(at: AppTest) -> str:
+        return next(str(m.value) for m in at.metric if str(m.label) == "真实 fitness")
+
+    at = AppTest.from_file(str(APP), default_timeout=300)
+    at.run()
+    at.text_input(key="m3_input").set_value("VDGV").run()
+    assert true_fitness(at) == "1.000"  # 阴性对照：按之前是野生型
+
+    at.button(key="m3_preset_peak").click().run()
+    assert not at.exception, [e.value for e in at.exception]
+    assert at.session_state["m3_input"] == "FWAA"   # 按钮写的是控件自己的 key
+    assert true_fitness(at) == "8.762"              # 打分结果确实跟着变了
+
+
+def test_critic_rejections_are_aggregated_not_dumped_one_by_one():
+    """一轮会门禁 6,539 个候选，knowledge_agent 能一次拒掉 6,500+。
+
+    逐条渲染（每条还带一张 dataframe）会把页面撑死，所以先给「按规则聚合的原因分布」，
+    再只展开前几条。这里直接喂 500 条拒稿，断言展开条数有界。
+    """
+    from app.demo import _CRITIC_EXAMPLES, render_critic
+
+    critiques = [{"accepted": False, "score": 0.5, "note": "rejected by knowledge rules",
+                  "rule_check": [{"rule_id": "R-MAX-MUTATIONS", "enforcement": "gate",
+                                  "pass": False, "note": "too many"}]}
+                 for _ in range(500)]
+    rendered: list[str] = []
+    import streamlit as st
+    real_markdown, real_dataframe, real_caption = st.markdown, st.dataframe, st.caption
+    st.markdown = lambda *a, **k: rendered.append(str(a[0]) if a else "")
+    st.dataframe = lambda *a, **k: rendered.append("<dataframe>")
+    st.caption = lambda *a, **k: rendered.append(str(a[0]) if a else "")
+    try:
+        render_critic(critiques)
+    finally:
+        st.markdown, st.dataframe, st.caption = real_markdown, real_dataframe, real_caption
+
+    detail_lines = [r for r in rendered if r.startswith("🚫")]
+    assert len(detail_lines) == _CRITIC_EXAMPLES, f"逐条展开了 {len(detail_lines)} 条"
+    assert any("拒稿原因分布" in r for r in rendered)
+    assert any("其余 492" in r for r in rendered)
+
+
 def test_demo_module_is_read_only_source():
     source = APP.read_text()
     # 红线：demo 不向磁盘写任何文件（唯一 append 是 _MemoryRecorder 内存录制器）

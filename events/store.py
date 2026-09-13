@@ -24,6 +24,39 @@ def _event_hash(prev_hash: str, body: Mapping[str, Any]) -> str:
     return hashlib.sha256((prev_hash + _canonical(body)).encode("utf-8")).hexdigest()
 
 
+def resolve_stream_path(path: str | Path) -> Path:
+    """Map a logical ``.jsonl`` path to the file that actually holds the stream.
+
+    Archived streams live as ``<name>.jsonl.gz``. Every reader must go through this
+    function rather than testing ``path.exists()`` itself: the demo did the latter and
+    silently lost its whole replay panel the day the streams were archived, because a
+    plain existence check on the logical path is False and the reader read that as
+    "no experiment has been run yet".
+    """
+    path = Path(path)
+    if path.suffix == ".gz" or path.exists():
+        return path
+    archived = path.with_suffix(path.suffix + ".gz")
+    return archived if archived.exists() else path
+
+
+def iter_stream(path: str | Path) -> Iterator[dict[str, Any]]:
+    """Yield records from a stream, gzip-transparently, tolerating a torn final write.
+
+    Standalone so read-only consumers do not pay for ``EventStore.__init__``, which
+    walks the whole stream to recover the chain tail before it can hand back a reader.
+    """
+    actual = resolve_stream_path(path)
+    if not actual.exists():
+        return
+    opener = gzip.open if actual.suffix == ".gz" else (lambda p, mode: p.open(mode))
+    with opener(actual, "rb") as stream:
+        for line in stream:
+            if not line.endswith(b"\n"):
+                break
+            yield json.loads(line)
+
+
 class EventStore:
     """The campaign-owned writer for a single JSONL event stream.
 
@@ -44,12 +77,8 @@ class EventStore:
         # Compressed streams are READ-ONLY: append() needs O_APPEND + fsync on a plain file,
         # which gzip member framing cannot give, so writing to one is refused outright
         # rather than silently corrupting a chain.
+        self.path = resolve_stream_path(self.path)
         self._compressed = self.path.suffix == ".gz"
-        if not self._compressed and not self.path.exists():
-            archived = self.path.with_suffix(self.path.suffix + ".gz")
-            if archived.exists():
-                self.path = archived
-                self._compressed = True
         self._discard_interrupted_tail()
         self._next_seq, self._last_hash = self._tail()
         # An agentic LLM turn can fire several tool calls at once; pydantic-ai runs the
@@ -133,14 +162,7 @@ class EventStore:
 
     def iter_events(self) -> Iterator[dict[str, Any]]:
         """Yield complete JSONL records, tolerating an interrupted final write."""
-        if not self.path.exists():
-            return
-        opener = gzip.open if self._compressed else (lambda path, mode: path.open(mode))
-        with opener(self.path, "rb") as stream:
-            for line in stream:
-                if not line.endswith(b"\n"):
-                    break
-                yield json.loads(line)
+        yield from iter_stream(self.path)
 
     def verify(self) -> None:
         """Raise ``ValueError`` at the first broken link or malformed complete record."""
