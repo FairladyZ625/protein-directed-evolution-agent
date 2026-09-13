@@ -4,7 +4,7 @@ task_id: task_feb731c779788be5bfff65e979
 title: "v0.9 工具契约改造:让残差证据有落点"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: active
+  status: in_review
 packageDisposition: active
 vertical: software/coding
 preset: standard-task
@@ -26,9 +26,9 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task submit task_feb731c779788be5bfff65e979`.
+Run `ha task complete task_feb731c779788be5bfff65e979`.
 
 ## Gate Checks
 
 - ci: blocked
-- code-doc-reconciliation: blocked
+- code-doc-reconciliation: pass
