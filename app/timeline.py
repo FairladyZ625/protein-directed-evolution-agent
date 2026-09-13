@@ -735,15 +735,15 @@ def render_hero():
   <div class="hero-eyebrow">🧬 AI4SCIENCE · 蛋白质定向进化科学智能体学术全景看板</div>
   <div class="hero-title">从无约束探索到可验证的科学发现：AI 驱动蛋白质定向进化的诚实边界与工程实践</div>
   <div class="hero-deck">
-    基于真实湿实验基准（FLIP-AAV 适应度景观），全景记录 v0.1 到 v0.7 七代算法研发的<b>实证检验、因果归因、认知自证伪与系统演化</b>。<br>
+    基于真实湿实验基准（FLIP-AAV 适应度景观），全景记录 v0.1 到 v0.9 九代算法研发的<b>实证检验、因果归因、认知自证伪与系统演化</b>。<br>
     内环呈现蛋白质工程智能体的微观闭环实验证据链（严格带 SHA-256 密码学存证），外环展示科研专家与 Harness 系统的宏观决策流与方法论演进。
   </div>
   <div class="hero-stats-row">
-    <div class="hero-stat-pill"><span class="hero-stat-num">7 代演进</span><span class="hero-stat-lbl">v0.1 → v0.7 闭环演进</span></div>
+    <div class="hero-stat-pill"><span class="hero-stat-num">9 代演进</span><span class="hero-stat-lbl">v0.1 → v0.9 闭环演进</span></div>
     <div class="hero-stat-pill"><span class="hero-stat-num">288 步</span><span class="hero-stat-lbl">微观实测预算约束</span></div>
     <div class="hero-stat-pill"><span class="hero-stat-num">8.4162</span><span class="hero-stat-lbl">未测候选池唯一全局真峰</span></div>
-    <div class="hero-stat-pill"><span class="hero-stat-num">30 / 30 (100%)</span><span class="hero-stat-lbl">UCB β=3 稳健达峰</span></div>
-    <div class="hero-stat-pill"><span class="hero-stat-num">71.88%</span><span class="hero-stat-lbl">冷启动残基对缺测盲区</span></div>
+    <div class="hero-stat-pill"><span class="hero-stat-num">0/20 → 11/11</span><span class="hero-stat-lbl">改契约后智能体自设采集比例的次数</span></div>
+    <div class="hero-stat-pill"><span class="hero-stat-num">48/48 × 6</span><span class="hero-stat-lbl">v0.8 反思开/关送测集合逐位相同</span></div>
   </div>
 </div>''', unsafe_allow_html=True)
 

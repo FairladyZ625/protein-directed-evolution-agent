@@ -80,5 +80,29 @@
     "transform": "First occurrence per sequence, matching evolution.datasets.load_aav; selected WT, top10 sequences and single/double backgrounds only.",
     "sha256": "d5dfb1b886bafccea554f9b8b98296536b11b5b260816b68a215e8a6a2c5bc20",
     "source_sha256": "520c7c6545e61d3c23b41616fbb6afe3396c3ca11da1fe14ead92846dfeffa77"
+  },
+  "v0.6/agentic.metrics.json": {
+    "source": "harness/reports/agentic-v0.6/aav/semi/agentic.metrics.json",
+    "sha256": "8994f5b35b4b4368a822669484c59ddb9118338c613315c8f1a2f8b943ff00bd"
+  },
+  "v0.6/agentic.events.jsonl": {
+    "source": "harness/reports/agentic-v0.6/aav/semi/agentic.events.jsonl",
+    "sha256": "270e1eb08d0f28d65f597be3a85f1748325afaabb61fbd04da7b4b7b5b30f636"
+  },
+  "v0.8/agentic.metrics.json": {
+    "source": "tmp/v08-factorial/acq-v05_reflexion-on_seed-42/agentic.metrics.json",
+    "sha256": "7ed3dfdc58e11983b5ab4318aaa3eaeda3bca7ca92c79874e072d0c6ec7991d5"
+  },
+  "v0.8/agentic.events.jsonl": {
+    "source": "tmp/v08-factorial/acq-v05_reflexion-on_seed-42/agentic.events.jsonl",
+    "sha256": "5ae7411fc3b81116d81b4c702cde01be890bb3d5fbe614ca21625765a2113aed"
+  },
+  "v0.9/agentic.metrics.json": {
+    "source": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.metrics.json",
+    "sha256": "d5f6663e98b2ed1c2ca3776c20460ec960ef633f6f24b63a35e508e1e8014a27"
+  },
+  "v0.9/agentic.events.jsonl": {
+    "source": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.events.jsonl",
+    "sha256": "e7280854dabd3e5514f8d75024982c78dc318dc0d734f4b2830f17b9d84d7dfc"
   }
 }
