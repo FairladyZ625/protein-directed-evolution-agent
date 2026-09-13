@@ -265,7 +265,7 @@ fact:`F-E158724C`。相关论述已改入
 | mlp | 0.4499 | 3.56e-05 | 0.5684 |
 
 产物:`harness/reports/workflow-v1.1/gb1/predictor_metrics.json` +
-`figures/predictor_comparison.png`;测试 `tests/test_predictor.py`。
+`harness/reports/workflow-v1.1/gb1/figures/predictor_comparison.png`;测试 `tests/test_predictor.py`。
 
 ### 3.6 小规模复现路径(试题「代码」硬要求)
 
@@ -679,7 +679,7 @@ knowledge_agent 第 1 轮 LLM 预算花了 0/10,因为 15 个候选全被知识�
 **结构性的一条(值得写进「工程严谨性」那段)**:
 `tests/test_demo_app.py` 里本该拦住第 ① 处的断言**一直是红的**,不是假绿 —— 是从没人跑过它,
 因为该文件不在 CI 门控清单里。上一轮扩门时已经写下「没被门控的测试等于不存在」这句注释,
-却没有把这个文件本身加进清单,于是同一机制(fact `F-6B21C4E8`)**第三次生效**。
+却没有把这个文件本身加进清单,于是同一机制(fact `F-89963893`)**第三次生效**。
 **诊断出机制、写下注释,不等于关上门。** 现已把该文件加进 CI 门。
 
 同时补了四条守护测试(全部反向验证过:打回原样必红、恢复必绿),

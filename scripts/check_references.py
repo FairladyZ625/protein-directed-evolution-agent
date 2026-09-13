@@ -37,7 +37,10 @@ TARGETS = [
 ]
 
 # 带目录分隔符才当路径;裸文件名(conservation.json 之类)在散文里是指代,不是路径
-PATH_RE = re.compile(r"[`(]((?:[A-Za-z0-9_.-]+/)+[A-Za-z0-9_.-]+\.[A-Za-z0-9]{1,6})[`)]")
+# 扩展名必须含字母:否则 `agentic-v0.1/v0.3/v0.5/v0.6/v0.7` 这种**版本枚举**
+# 会因为末段 ".7" 命中 [A-Za-z0-9]{1,6} 而被当成路径,报出一个不存在的死链。
+PATH_RE = re.compile(
+    r"[`(]((?:[A-Za-z0-9_.-]+/)+[A-Za-z0-9_.-]+\.[A-Za-z0-9]{0,5}[A-Za-z][A-Za-z0-9]{0,5})[`)]")
 FACT_RE = re.compile(r"\bF-[0-9A-F]{8}\b")
 COMMIT_RE = re.compile(r"`([0-9a-f]{7,40})`")
 
@@ -65,7 +68,23 @@ def check(doc: str) -> list[str]:
         # 一份版本报告写 `figures/x.png` 时,可能指自己同级的 figures/,也可能指
         # 数据集子目录下的 <dataset>/figures/。两种都算可达,否则误报淹没真死链。
         candidates = [ROOT / rel, path.parent / rel, *path.parent.glob(f"*/{rel}")]
-        if not any(c.exists() for c in candidates):
+        if any(c.exists() for c in candidates):
+            continue
+        # 再往深处找一次,并把结果分成两类。此前只 glob 一层,于是
+        # REPORT-HANDOFF.md 里的 `figures/predictor_comparison.png`(实际在
+        # workflow-v1.1/gb1/figures/ 下,深两层)被报成「路径不存在」——
+        # 一个会喊狼来了的检查器,最后连真死链一起没人看。
+        # 「不存在」与「写得不完整」是两种不同的毛病,不能混报。
+        deep = [c for c in path.parent.rglob(rel) if c.is_file()]
+        if len(deep) == 1:
+            problems.append(
+                f"{doc}: 路径写得不完整(文件在,但读者按字面找不到)→ {rel} "
+                f"实际位于 {deep[0].relative_to(ROOT)}")
+        elif len(deep) > 1:
+            problems.append(
+                f"{doc}: 路径有歧义,{len(deep)} 处同名文件 → {rel} "
+                f"(如 {deep[0].relative_to(ROOT)})")
+        else:
             problems.append(f"{doc}: 路径不存在 → {rel}")
 
     for fact in sorted(set(FACT_RE.findall(text))):
