@@ -26,16 +26,21 @@ from timeline_data import (
     variants,
 )
 
-st.set_page_config(
-    page_title='SADE · 蛋白质自演进科学智能体学术看板',
-    page_icon='🧬',
-    layout='wide',
-)
+# 本文件既可独立运行（streamlit run app/timeline.py），也可被 app/demo.py 作为
+# 「研究演进」视图挂载。两种入口只能有一个 set_page_config，因此它只在独立运行时执行；
+# 样式同理改为按需注入，避免被挂载时污染主看板的布局。
+def _standalone_page_config() -> None:
+    st.set_page_config(
+        page_title='SADE · 蛋白质自演进科学智能体学术看板',
+        page_icon='🧬',
+        layout='wide',
+    )
+
 
 # ---------------------------------------------------------------------------
 # 全局视觉样式：现代 Slate + Emerald 配色方案 (严格保持 96% 宽幅与卡片质感)
 # ---------------------------------------------------------------------------
-st.markdown('''<style>
+_STYLE = '''<style>
 :root {
   color-scheme: light;
   --bg-main: #f8fafc;
@@ -709,7 +714,12 @@ h1, h2, h3, h4 {
   .hero-title { font-size: 22px; }
   .seq-residue { width: 25px; font-size: 12px; }
 }
-</style>''', unsafe_allow_html=True)
+</style>'''
+
+
+def inject_style() -> None:
+    """注入本视图的卡片/排版样式。挂载在主看板下时只在切到本视图后调用。"""
+    st.markdown(_STYLE, unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -1090,7 +1100,11 @@ def render_research_insights():
 # ---------------------------------------------------------------------------
 # 主函数与路由
 # ---------------------------------------------------------------------------
-def main():
+def main(*, standalone: bool = False):
+    """渲染「研究演进」视图。standalone=True 时自己负责 page_config。"""
+    if standalone:
+        _standalone_page_config()
+    inject_style()
     render_hero()
     render_executive_summary()
 
@@ -1160,4 +1174,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(standalone=True)

@@ -321,3 +321,37 @@ def test_exclusion_audit_flags_motifs_without_evidence():
         assert row["排除数"] == row["有据可查"]
     # 有选择地排，不是一刀切:最后一轮的证据池明显大于排除数
     assert audit[-1]["累积证据池"] > audit[-1]["排除数"]
+
+
+# ---- 两个前端融合后的顶层视图切换 -------------------------------------------------
+# 融合前 app/demo.py 与 app/timeline.py 是两个独立 streamlit 应用，跑在不同端口、
+# 各自 set_page_config，读者要开两个网址才能看全。融合后 timeline 变成 demo 的一个
+# 视图，两处风险必须钉住：①两次 set_page_config 会直接抛异常；②timeline 的全局 CSS
+# 若在模块导入时注入，会污染实验看板的布局。
+
+def test_default_view_is_the_experiment_dashboard(app: AppTest):
+    labels = [t.label for t in app.tabs]
+    assert "① 四策略对比" in labels, "默认应停在实验看板"
+
+
+def test_research_timeline_view_renders_without_exception():
+    """切到研究演进视图必须能渲染——这是融合唯一的新失败面。"""
+    at = AppTest.from_file(str(APP), default_timeout=300)
+    at.run()
+    view = next((r for r in at.radio if r.key == "top_view"), None)
+    assert view is not None, "顶层视图切换控件不存在"
+    assert view.options == ["🔬 实验看板", "🛰️ 研究演进"]
+    view.set_value("🛰️ 研究演进").run()
+    assert not at.exception, [e.value for e in at.exception]
+    body = " ".join(m.value for m in at.markdown)
+    assert "AI4SCIENCE" in body or "演进" in body, "研究演进视图没有渲染出内容"
+
+
+def test_timeline_module_injects_no_style_at_import_time():
+    """timeline 的全局 CSS 必须按需注入。模块级注入会污染实验看板。"""
+    import app.timeline as timeline
+    assert hasattr(timeline, "inject_style"), "CSS 应收进 inject_style()"
+    assert timeline._STYLE.lstrip().startswith("<style>")
+    # 独立运行时才配置页面；被挂载时由 demo.py 负责，两次调用会抛异常
+    import inspect
+    assert "standalone" in inspect.signature(timeline.main).parameters

@@ -119,7 +119,10 @@ ROLE_LABELS = {
     "scientific_critic": ("5️⃣", "Scientific Critic 科学审稿"),
 }
 
-st.set_page_config(page_title="GB1 定向进化看板", page_icon="🧬", layout="wide")
+# 单一入口:本文件既渲染「实验看板」(GB1 workflow 线 + AAV agentic 线),也挂载
+# app/timeline.py 的「研究演进」视图。此前两者是两个独立 streamlit 应用,跑在不同
+# 端口、各自 set_page_config,读者要开两个网址才能看全,而且没有任何地方说它们的关系。
+st.set_page_config(page_title="GB1 × AAV 定向进化科学智能体看板", page_icon="🧬", layout="wide")
 
 
 # ---------------------------------------------------------------- 基础加载（全部只读、缓存）
@@ -1404,13 +1407,15 @@ def render_contract_module() -> None:
 # ---------------------------------------------------------------- 入口
 
 
-def main() -> None:
-    st.title("🧬 GB1 蛋白定向进化 · 科学智能体看板")
+def render_experiment_dashboard() -> None:
+    st.title("🧬 GB1 × AAV 蛋白定向进化 · 科学智能体看板")
     st.markdown(
-        "四策略闭环对比 + 五角色 Agent 思考回放 + 实时试玩 + 分析面板（位点集中 / 组合理由 / "
-        "突变阶数 / 保守位点 / alpha 扫描）。数据：GB1 四位点组合空间"
-        "（V39/D40/G41/V54，野生型 `VDGV`），真值表 149,361 / 160,000。"
-        "**模块⑥是另一条线**：AAV 上的自主 agent，看的是工具契约如何决定它的自主性。"
+        "**两个数据集、两条独立的 agent 线。** "
+        "**GB1**（四位点组合空间 V39/D40/G41/V54，野生型 `VDGV`，真值表 149,361 / 160,000）走"
+        "五角色 workflow 线，对应模块①–⑤：四策略闭环对比、Agent 思考回放、实时试玩、"
+        "位点集中 / 组合理由 / 突变阶数 / 保守位点 / alpha 扫描。"
+        "**AAV**（28 aa，可测变体 38,265）走自主 agent 线，对应模块⑥:"
+        "看工具契约如何决定 agent 的自主性；突变阶数面板（⑤-a）用的也是 AAV。"
     )
     st.caption(
         "本看板**只读**消费 T7/T4/T3 产物与 `harness/reports/` 分析产物（`@st.cache_data` / `@st.cache_resource`），"
@@ -1452,6 +1457,31 @@ def main() -> None:
         "ai4s-directed-evolution-agent · T8 demo · 上游：T7 campaign / T4 事件流 / T3 Ridge 预测器 / "
         "analysis-v0.1 只读分析线"
     )
+
+
+VIEWS = {
+    "🔬 实验看板": "两个数据集的实测结果：四策略对比、Agent 回放、实时试玩、分析面板、工具契约。",
+    "🛰️ 研究演进": "这套系统自己是怎么长出来的：逐代的认知转折、当时的证据与被推翻的结论。",
+}
+
+
+def main() -> None:
+    # 顶层只有两个视图,不是两个应用。左边看「系统现在能做什么」,右边看「它为什么长成这样」。
+    view = st.radio("视图", list(VIEWS), horizontal=True, key="top_view",
+                    label_visibility="collapsed")
+    st.caption(VIEWS[view])
+    if view == "🛰️ 研究演进":
+        try:
+            from app.timeline import main as render_research_timeline
+        except Exception as exc:  # noqa: BLE001 — 缺依赖时降级,不拖垮实验看板
+            st.warning(
+                f"研究演进视图无法加载（{type(exc).__name__}: {exc}）。"
+                "它需要 `altair`；实验看板不受影响，切回左边即可。"
+            )
+            return
+        render_research_timeline()
+        return
+    render_experiment_dashboard()
 
 
 if __name__ == "__main__":

@@ -49,6 +49,7 @@ jobs:
             tests/test_campaign.py \
             tests/test_demo.py \
             tests/test_demo_app.py \
+            tests/test_timeline.py \
             tests/test_predictor.py
 
       # 产出 Harness 任务完成门所需的 CI 见证。只在测试通过后运行,因此工件的存在
