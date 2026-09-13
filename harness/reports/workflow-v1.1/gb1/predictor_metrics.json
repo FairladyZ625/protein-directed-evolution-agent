@@ -35,34 +35,36 @@
         "variance_max": 0.01764458258187183
       },
       "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-ridge.joblib",
-      "alpha_selected": 0.01
+      "alpha_selected": 0.01,
+      "backend": "scikit-learn-1.9.0"
     },
     "xgboost": {
       "train": {
-        "spearman": 0.5018940810527155,
-        "pearson": 0.8243950221164211,
-        "mse": 0.06267075223812887,
-        "top_k": 0.7,
-        "variance_min": 9.811315567765214e-07,
-        "variance_max": 3.145872463965021
+        "spearman": 0.5417513300127794,
+        "pearson": 0.9239910340640605,
+        "mse": 0.029000731847469426,
+        "top_k": 0.82,
+        "variance_min": 8.927567862422603e-08,
+        "variance_max": 3.3831418822910884
       },
       "validation": {
-        "spearman": 0.5430695980257271,
-        "pearson": 0.6128243796808797,
-        "mse": 0.13988049493137475,
+        "spearman": 0.5623001760362311,
+        "pearson": 0.6569440465057341,
+        "mse": 0.12382165777283997,
         "top_k": 0.4,
-        "variance_min": 5.758637402675356e-07,
-        "variance_max": 0.725307541996228
+        "variance_min": 2.612693996666485e-08,
+        "variance_max": 1.1900800766813198
       },
       "test": {
-        "spearman": 0.5033551088120943,
-        "pearson": 0.6012845058785474,
-        "mse": 0.07801337250935114,
+        "spearman": 0.5431782013044868,
+        "pearson": 0.6568829502980218,
+        "mse": 0.06875739929068017,
         "top_k": 0.5,
-        "variance_min": 1.2488513397666582e-06,
-        "variance_max": 0.6461275495195227
+        "variance_min": 1.8030249994714642e-07,
+        "variance_max": 0.692953853329717
       },
-      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-xgboost.joblib"
+      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-xgboost.joblib",
+      "backend": "xgboost-3.4.1"
     },
     "mlp": {
       "train": {
@@ -89,11 +91,12 @@
         "variance_min": 3.562300771676353e-05,
         "variance_max": 0.5684202735509991
       },
-      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-mlp.joblib"
+      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-mlp.joblib",
+      "backend": "scikit-learn-1.9.0"
     }
   },
   "high_fitness_analysis": {
-    "best_model": "ridge",
+    "best_model": "xgboost",
     "top_1pct_recall": 0.5,
     "conclusion": "detects high-fitness variants above random expectation"
   },

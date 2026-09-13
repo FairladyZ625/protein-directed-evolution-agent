@@ -46,8 +46,8 @@
     {
       "path": "harness/reports/workflow-v1.1/gb1/predictor_metrics.json",
       "snapshot": "evidence/predictors.json",
-      "sha256": "d7fe3d7f81786bd0e2e3e13439b73ff091a92bf1a975bca56fa30f7739e9843b",
-      "origin": "frozen checkout",
+      "sha256": "0e4962bd4008784c96261000ef93a59d8b9859ec9e614ccdb8bcdc89db207e7a",
+      "origin": "rerun 2026-09-13 with xgboost 3.4.1 installed; git:8492368",
       "report_role": "historical v0.6 input"
     },
     {
@@ -187,8 +187,8 @@
     {
       "path": "models/train_ladder.py",
       "snapshot": "evidence/code/models/train_ladder.py",
-      "sha256": "b379ad09e368eab5c694fb1e7e1f13985befcd49c79ec332f72aed2e32c36bbe",
-      "origin": "frozen checkout",
+      "sha256": "29b3974a42917aa969f82a6919a0de9fbc917c7187db529d743e0c830c489d2d",
+      "origin": "rerun 2026-09-13 with xgboost 3.4.1 installed; git:8492368",
       "report_role": "historical v0.6 input"
     },
     {
@@ -844,6 +844,20 @@
       "sha256": "ea60fce44aa9b8fe5de0cd8a2aa9640b594703cf7ae053c309c23f20abf0a1c3",
       "origin": "engineering handoff supplied by user",
       "report_role": "protocol and chapter8 suggestions, checked against pinned code and events"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/knowledge_component_ablation.json",
+      "snapshot": "evidence/knowledge_components.json",
+      "sha256": "7874c8c9a012cc55fe669d2b1a095dde5d961748c24680f64aa9a3015cafcba5",
+      "origin": "new v0.7 input captured 2026-09-13; git:8492368",
+      "report_role": "GB1 knowledge component 2x2 (UCB term x BLOSUM prior); corner cells reproduce the published arms"
+    },
+    {
+      "path": "scripts/knowledge_component_ablation.py",
+      "snapshot": "evidence/code/scripts_knowledge_component_ablation.py",
+      "sha256": "17727d4ea181c70fe66577c96f1f4e73ab3d4f04acc291d05be97d879254ed68",
+      "origin": "new v0.7 input captured 2026-09-13; git:8492368",
+      "report_role": "runner for the component 2x2"
     }
   ],
   "report_version": "v0.7",

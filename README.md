@@ -126,7 +126,13 @@ everything else is deterministic and auditable:
 3. **Mutation Designer** — enumerates a combinatorial library (≤1 substitution per site).
 4. **Fitness Evaluator** — scores candidates with the predictor `(mean, var)`.
 5. **Scientific Critic** *(LLM port + knowledge rules)* — validates/accepts/rejects with reasons; the
-   `no_knowledge` switch disables the knowledge gate for ablation.
+   `no_knowledge` switch disables the knowledge gate for ablation. Read this one carefully before
+   citing it: on the frozen GB1 path the selector reads *all scored candidates*, not the Critic's
+   `accepted` subset, so the gate is an audit record there and not a filter — it passes only 11–23 of
+   ~6,540 candidates a round, which cannot fill a batch of 96. What the GB1 knowledge arm actually
+   changes is the acquisition score (`mean + 0.75·√var + 0.30·BLOSUM62 prior`); §6.3 of the report
+   decomposes those two terms. The AAV line enforces its HD/BLOSUM gate at the test entry, where
+   rejected candidates really are dropped.
 
 ### 2. Autonomous researcher line — `agent/auto_researcher.py` (AAV)
 

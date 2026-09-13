@@ -7,6 +7,7 @@ from typing import Any
 
 import joblib
 import numpy as np
+from sklearn import __version__ as sklearn_version
 from sklearn.linear_model import Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import GradientBoostingRegressor
@@ -158,15 +159,38 @@ class EpistasisRidgePredictor(_Base):
 
 
 class XGBoostPredictor(_Base):
-    """Gradient boosting implementation; uses XGBoost when available."""
+    """Gradient boosting ensemble backed by XGBoost.
+
+    The earlier version silently fell back to ``GradientBoostingRegressor`` when xgboost
+    was not importable — with *different* hyper-parameters (150 trees / depth 3 instead of
+    200 / depth 6 / lr .05 / subsample .8). Nothing recorded which one had run, so a table
+    row labelled "XGBoost" could have been produced by either implementation depending on
+    the machine. Reported numbers must not depend on an invisible environment difference,
+    so the fallback is now opt-in and always names itself in ``backend``.
+    """
+
+    def __init__(self, *, allow_sklearn_fallback: bool = False, **kwargs):
+        super().__init__(**kwargs)
+        self.allow_sklearn_fallback = allow_sklearn_fallback
+        self.backend: str | None = None
+
     def _make(self, seed):
         try:
-            from xgboost import XGBRegressor
-            return XGBRegressor(n_estimators=200, max_depth=6, learning_rate=.05,
-                                subsample=.8, colsample_bytree=.8, objective="reg:squarederror",
-                                random_state=seed, n_jobs=1)
+            from xgboost import XGBRegressor, __version__ as xgb_version
         except ImportError:
+            if not self.allow_sklearn_fallback:
+                raise ImportError(
+                    "XGBoostPredictor needs the xgboost package (pip install xgboost; it is "
+                    "pinned in requirements.txt). Pass allow_sklearn_fallback=True to run a "
+                    "sklearn GradientBoosting stand-in — its metrics are NOT XGBoost metrics "
+                    "and must be labelled by the recorded `backend`."
+                ) from None
+            self.backend = f"sklearn-gradient-boosting-{sklearn_version}"
             return GradientBoostingRegressor(n_estimators=150, max_depth=3, random_state=seed)
+        self.backend = f"xgboost-{xgb_version}"
+        return XGBRegressor(n_estimators=200, max_depth=6, learning_rate=.05,
+                            subsample=.8, colsample_bytree=.8, objective="reg:squarederror",
+                            random_state=seed, n_jobs=1)
 
 
 class MLPPredictor(_Base):
@@ -319,6 +343,9 @@ def train_from_t2(*, feature: str = "one_hot", eval_n: int = 2000,
         entry["artifact"] = str(artifact.relative_to(Path.cwd()))
         if isinstance(restored, RidgePredictor):
             entry["alpha_selected"] = restored.alpha_
+        # Which implementation actually produced the row — see XGBoostPredictor's docstring.
+        backend = getattr(restored, "backend", None)
+        entry["backend"] = backend or f"scikit-learn-{sklearn_version}"
         result["models"][name] = entry
 
     best = max(result["models"], key=lambda name: result["models"][name]["test"]["spearman"])

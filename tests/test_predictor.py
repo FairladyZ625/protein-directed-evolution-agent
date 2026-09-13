@@ -63,3 +63,35 @@ def test_alpha_selection_uses_training_data_and_persistence_roundtrip(tmp_path):
 def test_save_rejects_unfitted_predictor(tmp_path):
     with pytest.raises(RuntimeError, match="fitted"):
         save_predictor(RidgePredictor(), tmp_path / "bad.joblib")
+
+
+def test_xgboost_predictor_names_its_backend_and_refuses_a_silent_substitute(monkeypatch):
+    """A row labelled "XGBoost" must not be producible by a different library.
+
+    The old ``_make`` caught ImportError and returned a sklearn GradientBoostingRegressor
+    with different hyper-parameters, recording nothing; the published v0.7 ladder was in
+    fact produced that way on a machine without xgboost. Two guarantees are asserted here:
+    the fitted model names the implementation that ran, and a missing xgboost raises
+    instead of quietly substituting one.
+    """
+    X_train, y_train, _, _ = synthetic()
+
+    fitted = XGBoostPredictor(seeds=2).fit(X_train, y_train)
+    assert fitted.backend is not None and fitted.backend.startswith("xgboost-")
+
+    import builtins
+
+    real_import = builtins.__import__
+
+    def without_xgboost(name, *args, **kwargs):
+        if name == "xgboost":
+            raise ImportError("No module named 'xgboost'")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", without_xgboost)
+    with pytest.raises(ImportError, match="xgboost"):
+        XGBoostPredictor(seeds=2).fit(X_train, y_train)
+
+    # The stand-in stays available, but only on request and only while saying so.
+    fallback = XGBoostPredictor(seeds=2, allow_sklearn_fallback=True).fit(X_train, y_train)
+    assert fallback.backend.startswith("sklearn-gradient-boosting-")

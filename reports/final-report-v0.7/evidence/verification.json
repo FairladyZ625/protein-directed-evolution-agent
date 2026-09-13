@@ -1,5 +1,5 @@
 {
-  "snapshot_count": 112,
+  "snapshot_count": 114,
   "v08": {
     "control": {
       "batches": {
@@ -103,9 +103,9 @@
     "失败案例分析",
     "改进建议与未来拓展"
   ],
-  "layout_pages": 43,
+  "layout_pages": 44,
   "layout_overflow": 0,
-  "pdf_pages": 43,
+  "pdf_pages": 44,
   "mathml_elements": 80,
   "github_link_on_first_page": true,
   "active_figures": 17,

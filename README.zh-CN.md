@@ -105,7 +105,12 @@ agent 排除的每一个 motif 都能追溯到此前注入的残差证据——2
 3. **Mutation Designer** —— 枚举组合文库(每位点最多 1 个替换)。
 4. **Fitness Evaluator** —— 用预测器给候选打分 `(mean, var)`。
 5. **Scientific Critic**(*LLM 端口 + 知识规则*)—— 带理由地校验/接受/拒稿;
-   `no_knowledge` 开关可关闭知识门禁用于消融。
+   `no_knowledge` 开关可关闭知识门禁用于消融。**引用前请看清**:冻结的 GB1 路径上,
+   selector 读取的是*全部已评分候选*,不是 Critic 的 `accepted` 子集,所以门禁在那里
+   只是审计记录、不是过滤器——它每轮只放行约 6,540 个候选中的 11–23 个,填不满 96 的
+   预算。GB1 知识臂真正改变的是采集分(`mean + 0.75·√var + 0.30·BLOSUM62 先验`),
+   这两项的分解见报告 6.3。AAV 线的 HD/BLOSUM 门禁则在送测入口强制执行,被拒候选真的
+   不进批次。
 
 ### 二、自主研究者线 —— `agent/auto_researcher.py`(AAV)
 
