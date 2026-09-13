@@ -638,3 +638,50 @@ knowledge_agent 第 1 轮 LLM 预算花了 0/10,因为 15 个候选全被知识�
 
 数据:`harness/reports/workflow-v1.1/gb1/campaign_{hard,llm}.metrics.json`;
 完整读法见 `harness/reports/workflow-v1.1/report.md` 第 ④ 条。
+
+### 7.12 【交付面·2026-09-13】看板三处失效已修,并牵出一个 94 秒/轮的核心性能 bug
+
+用户实际点开 demo 后报告「事件流看不到、点击预测没用、后面几个面板全不好使」。
+逐面板实跑冒烟,确认四处缺陷 —— **其中三处是前几次提交的下游后果,而 CI 全程报绿**。
+
+| 面板 | 症状 | 根因 | 状态 |
+|---|---|---|---|
+| ② 五角色回放 | 整块空白,提示「先跑 make campaign」 | 事件流 gzip 归档成 `.jsonl.gz`,demo 对逻辑路径做 `exists()` 判 False | 已修 |
+| ③(a) 预设按钮 | 点 FWAA/VDGV 毫无反应 | 带 key 的 Streamlit widget 只认 `session_state[key]`、无视 `value=`;按钮写的是影子 key | 已修 |
+| ③(b) 自动推荐 | 转圈 >3 分钟不出结果 | `validate_candidate` 每次调用重新解析 `rules.yaml` | 已修 |
+| ① 参考线 / 模型卡片 | 静默消失 | 产物路径指向不存在的文件名与旧 schema | 已修 |
+
+**写报告时唯一需要留意的一条**:③(b) 的根因不在看板,在 `knowledge/validators.py`。
+`load_rules()` 此前每次调用都重新打开并 `yaml.safe_load` 一遍 `rules.yaml`,
+14.32 ms/次;`measurable_variants` 修复后组合库从 0 涨到 6,539 个候选,
+于是 **knowledge_agent 每轮光在重复解析同一个 YAML 上就花 94 秒**。
+四个 regime 的正式重跑每一轮都付了这笔钱。
+
+改为按 `(路径, mtime, size)` 缓存后:14.32ms → 0.014ms(1000x),
+整轮四策略 campaign 89.1s → 2.1s(42x)。
+
+**这个改动不影响任何已发布的数字**,已用同种子对照实测验证:
+带缓存与关掉缓存跑同一条 `knowledge_agent`,结果 JSON 与事件流的 SHA-256 逐位相同
+(见本节末尾的验证命令)。缓存按 mtime+size 记而非只按路径,
+所以改了规则文件仍然生效 —— 缓存不能变成「改了规则也不认」。
+
+**结构性的一条(值得写进「工程严谨性」那段)**:
+`tests/test_demo_app.py` 里本该拦住第 ① 处的断言**一直是红的**,不是假绿 —— 是从没人跑过它,
+因为该文件不在 CI 门控清单里。上一轮扩门时已经写下「没被门控的测试等于不存在」这句注释,
+却没有把这个文件本身加进清单,于是同一机制(fact `F-6B21C4E8`)**第三次生效**。
+**诊断出机制、写下注释,不等于关上门。** 现已把该文件加进 CI 门。
+
+同时补了四条守护测试(全部反向验证过:打回原样必红、恢复必绿),
+其中最重要的一条是为**整族缺陷**立门而不是为这次的 bug:
+`test_declared_artifacts_resolve_on_the_real_tree` —— 看板声明的每个产物路径
+必须在真实仓库树上解析得到。此前的单元测试全部用 fixture 跑,看不见真实树,
+所以「产物改名 / 换周期目录 / 被 gzip 归档」三次都没被拦住。
+
+相关 fact:`F-0B584CB1`。修复 commit:`4b73bea`。
+
+验证命令:
+
+```bash
+PYTHONPATH=. pytest -q tests/test_demo_app.py tests/test_knowledge.py
+streamlit run app/demo.py     # 五个面板逐个点过去
+```
