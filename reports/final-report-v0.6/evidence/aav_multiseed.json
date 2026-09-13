@@ -1,0 +1,720 @@
+{
+  "mean": {
+    "hits": 0,
+    "n": 30,
+    "rate": 0.0,
+    "wilson95": [
+      0.0,
+      0.11351339317396876
+    ],
+    "unique_trajectories": 1,
+    "maximum": {
+      "mean": 7.828967551339996,
+      "sd": 2.710086169960177e-15,
+      "quantiles": [
+        7.828967551339999,
+        7.828967551339999,
+        7.828967551339999,
+        7.828967551339999,
+        7.828967551339999
+      ],
+      "frequencies": [
+        {
+          "value": 7.828967551339999,
+          "count": 30
+        }
+      ]
+    },
+    "strong": {
+      "mean": 166.0,
+      "sd": 0.0,
+      "quantiles": [
+        166.0,
+        166.0,
+        166.0,
+        166.0,
+        166.0
+      ],
+      "frequencies": [
+        {
+          "value": 166.0,
+          "count": 30
+        }
+      ]
+    }
+  },
+  "alternating": {
+    "hits": 2,
+    "n": 30,
+    "rate": 0.06666666666666667,
+    "wilson95": [
+      0.018477023791270378,
+      0.2132345836261692
+    ],
+    "unique_trajectories": 30,
+    "maximum": {
+      "mean": 7.868116723287996,
+      "sd": 0.14898694908938362,
+      "quantiles": [
+        7.828967551339999,
+        7.828967551339999,
+        7.828967551339999,
+        7.828967551339999,
+        8.416205130560002
+      ],
+      "frequencies": [
+        {
+          "value": 7.828967551339999,
+          "count": 28
+        },
+        {
+          "value": 8.416205130560002,
+          "count": 2
+        }
+      ]
+    },
+    "strong": {
+      "mean": 148.73333333333332,
+      "sd": 3.4931789033163922,
+      "quantiles": [
+        140.0,
+        147.0,
+        149.0,
+        151.0,
+        155.0
+      ],
+      "frequencies": [
+        {
+          "value": 140.0,
+          "count": 1
+        },
+        {
+          "value": 142.0,
+          "count": 1
+        },
+        {
+          "value": 143.0,
+          "count": 1
+        },
+        {
+          "value": 145.0,
+          "count": 1
+        },
+        {
+          "value": 146.0,
+          "count": 3
+        },
+        {
+          "value": 147.0,
+          "count": 5
+        },
+        {
+          "value": 149.0,
+          "count": 4
+        },
+        {
+          "value": 150.0,
+          "count": 3
+        },
+        {
+          "value": 151.0,
+          "count": 5
+        },
+        {
+          "value": 152.0,
+          "count": 3
+        },
+        {
+          "value": 153.0,
+          "count": 1
+        },
+        {
+          "value": 154.0,
+          "count": 1
+        },
+        {
+          "value": 155.0,
+          "count": 1
+        }
+      ]
+    },
+    "p_greater_one_third": 0.9999165584791865,
+    "p_holm": 1.0,
+    "greedy_strong_comparison": {
+      "delta": {
+        "mean": 17.266666666666666,
+        "sd": 3.493178903316392,
+        "quantiles": [
+          11.0,
+          15.0,
+          17.0,
+          19.0,
+          26.0
+        ],
+        "frequencies": [
+          {
+            "value": 11.0,
+            "count": 1
+          },
+          {
+            "value": 12.0,
+            "count": 1
+          },
+          {
+            "value": 13.0,
+            "count": 1
+          },
+          {
+            "value": 14.0,
+            "count": 3
+          },
+          {
+            "value": 15.0,
+            "count": 5
+          },
+          {
+            "value": 16.0,
+            "count": 3
+          },
+          {
+            "value": 17.0,
+            "count": 4
+          },
+          {
+            "value": 19.0,
+            "count": 5
+          },
+          {
+            "value": 20.0,
+            "count": 3
+          },
+          {
+            "value": 21.0,
+            "count": 1
+          },
+          {
+            "value": 23.0,
+            "count": 1
+          },
+          {
+            "value": 24.0,
+            "count": 1
+          },
+          {
+            "value": 26.0,
+            "count": 1
+          }
+        ]
+      },
+      "wins": 30,
+      "ties": 0,
+      "losses": 0,
+      "sign_test_p": 9.313225746154785e-10
+    }
+  },
+  "ucb0.5": {
+    "hits": 0,
+    "n": 30,
+    "rate": 0.0,
+    "wilson95": [
+      0.0,
+      0.11351339317396876
+    ],
+    "unique_trajectories": 1,
+    "maximum": {
+      "mean": 6.530916338879998,
+      "sd": 1.8067241133067846e-15,
+      "quantiles": [
+        6.53091633888,
+        6.53091633888,
+        6.53091633888,
+        6.53091633888,
+        6.53091633888
+      ],
+      "frequencies": [
+        {
+          "value": 6.53091633888,
+          "count": 30
+        }
+      ]
+    },
+    "strong": {
+      "mean": 153.0,
+      "sd": 0.0,
+      "quantiles": [
+        153.0,
+        153.0,
+        153.0,
+        153.0,
+        153.0
+      ],
+      "frequencies": [
+        {
+          "value": 153.0,
+          "count": 30
+        }
+      ]
+    },
+    "greedy_strong_comparison": {
+      "delta": {
+        "mean": 13.0,
+        "sd": 0.0,
+        "quantiles": [
+          13.0,
+          13.0,
+          13.0,
+          13.0,
+          13.0
+        ],
+        "frequencies": [
+          {
+            "value": 13.0,
+            "count": 30
+          }
+        ]
+      },
+      "wins": 30,
+      "ties": 0,
+      "losses": 0,
+      "sign_test_p": null
+    }
+  },
+  "ucb1": {
+    "hits": 0,
+    "n": 30,
+    "rate": 0.0,
+    "wilson95": [
+      0.0,
+      0.11351339317396876
+    ],
+    "unique_trajectories": 1,
+    "maximum": {
+      "mean": 6.530916338879998,
+      "sd": 1.8067241133067846e-15,
+      "quantiles": [
+        6.53091633888,
+        6.53091633888,
+        6.53091633888,
+        6.53091633888,
+        6.53091633888
+      ],
+      "frequencies": [
+        {
+          "value": 6.53091633888,
+          "count": 30
+        }
+      ]
+    },
+    "strong": {
+      "mean": 151.0,
+      "sd": 0.0,
+      "quantiles": [
+        151.0,
+        151.0,
+        151.0,
+        151.0,
+        151.0
+      ],
+      "frequencies": [
+        {
+          "value": 151.0,
+          "count": 30
+        }
+      ]
+    },
+    "greedy_strong_comparison": {
+      "delta": {
+        "mean": 15.0,
+        "sd": 0.0,
+        "quantiles": [
+          15.0,
+          15.0,
+          15.0,
+          15.0,
+          15.0
+        ],
+        "frequencies": [
+          {
+            "value": 15.0,
+            "count": 30
+          }
+        ]
+      },
+      "wins": 30,
+      "ties": 0,
+      "losses": 0,
+      "sign_test_p": null
+    }
+  },
+  "ucb2": {
+    "hits": 0,
+    "n": 30,
+    "rate": 0.0,
+    "wilson95": [
+      0.0,
+      0.11351339317396876
+    ],
+    "unique_trajectories": 1,
+    "maximum": {
+      "mean": 6.530916338879998,
+      "sd": 1.8067241133067846e-15,
+      "quantiles": [
+        6.53091633888,
+        6.53091633888,
+        6.53091633888,
+        6.53091633888,
+        6.53091633888
+      ],
+      "frequencies": [
+        {
+          "value": 6.53091633888,
+          "count": 30
+        }
+      ]
+    },
+    "strong": {
+      "mean": 139.0,
+      "sd": 0.0,
+      "quantiles": [
+        139.0,
+        139.0,
+        139.0,
+        139.0,
+        139.0
+      ],
+      "frequencies": [
+        {
+          "value": 139.0,
+          "count": 30
+        }
+      ]
+    },
+    "greedy_strong_comparison": {
+      "delta": {
+        "mean": 27.0,
+        "sd": 0.0,
+        "quantiles": [
+          27.0,
+          27.0,
+          27.0,
+          27.0,
+          27.0
+        ],
+        "frequencies": [
+          {
+            "value": 27.0,
+            "count": 30
+          }
+        ]
+      },
+      "wins": 30,
+      "ties": 0,
+      "losses": 0,
+      "sign_test_p": null
+    }
+  },
+  "ucb3": {
+    "hits": 30,
+    "n": 30,
+    "rate": 1.0,
+    "wilson95": [
+      0.8864866068260312,
+      0.9999999999999999
+    ],
+    "unique_trajectories": 1,
+    "maximum": {
+      "mean": 8.416205130560002,
+      "sd": 0.0,
+      "quantiles": [
+        8.416205130560002,
+        8.416205130560002,
+        8.416205130560002,
+        8.416205130560002,
+        8.416205130560002
+      ],
+      "frequencies": [
+        {
+          "value": 8.416205130560002,
+          "count": 30
+        }
+      ]
+    },
+    "strong": {
+      "mean": 128.0,
+      "sd": 0.0,
+      "quantiles": [
+        128.0,
+        128.0,
+        128.0,
+        128.0,
+        128.0
+      ],
+      "frequencies": [
+        {
+          "value": 128.0,
+          "count": 30
+        }
+      ]
+    },
+    "greedy_strong_comparison": {
+      "delta": {
+        "mean": 38.0,
+        "sd": 0.0,
+        "quantiles": [
+          38.0,
+          38.0,
+          38.0,
+          38.0,
+          38.0
+        ],
+        "frequencies": [
+          {
+            "value": 38.0,
+            "count": 30
+          }
+        ]
+      },
+      "wins": 30,
+      "ties": 0,
+      "losses": 0,
+      "sign_test_p": null
+    }
+  },
+  "thompson_gaussian": {
+    "hits": 3,
+    "n": 30,
+    "rate": 0.1,
+    "wilson95": [
+      0.03459988874733419,
+      0.25621082579184085
+    ],
+    "unique_trajectories": 30,
+    "maximum": {
+      "mean": 7.301684689089998,
+      "sd": 0.6683998246632613,
+      "quantiles": [
+        6.28567428133,
+        6.568500999782501,
+        7.39100378895,
+        7.828967551339999,
+        8.416205130560002
+      ],
+      "frequencies": [
+        {
+          "value": 6.28567428133,
+          "count": 1
+        },
+        {
+          "value": 6.403561439010001,
+          "count": 1
+        },
+        {
+          "value": 6.439235266390001,
+          "count": 2
+        },
+        {
+          "value": 6.53091633888,
+          "count": 4
+        },
+        {
+          "value": 6.6812549824900005,
+          "count": 2
+        },
+        {
+          "value": 7.03187855893,
+          "count": 1
+        },
+        {
+          "value": 7.080691889610001,
+          "count": 2
+        },
+        {
+          "value": 7.39100378895,
+          "count": 4
+        },
+        {
+          "value": 7.530058251389999,
+          "count": 1
+        },
+        {
+          "value": 7.828967551339999,
+          "count": 9
+        },
+        {
+          "value": 8.416205130560002,
+          "count": 3
+        }
+      ]
+    },
+    "strong": {
+      "mean": 140.03333333333333,
+      "sd": 6.0599495464687765,
+      "quantiles": [
+        129.0,
+        136.0,
+        140.0,
+        144.0,
+        155.0
+      ],
+      "frequencies": [
+        {
+          "value": 129.0,
+          "count": 1
+        },
+        {
+          "value": 131.0,
+          "count": 1
+        },
+        {
+          "value": 132.0,
+          "count": 2
+        },
+        {
+          "value": 133.0,
+          "count": 2
+        },
+        {
+          "value": 136.0,
+          "count": 3
+        },
+        {
+          "value": 137.0,
+          "count": 1
+        },
+        {
+          "value": 138.0,
+          "count": 1
+        },
+        {
+          "value": 139.0,
+          "count": 3
+        },
+        {
+          "value": 140.0,
+          "count": 3
+        },
+        {
+          "value": 141.0,
+          "count": 1
+        },
+        {
+          "value": 142.0,
+          "count": 1
+        },
+        {
+          "value": 143.0,
+          "count": 2
+        },
+        {
+          "value": 144.0,
+          "count": 5
+        },
+        {
+          "value": 148.0,
+          "count": 1
+        },
+        {
+          "value": 149.0,
+          "count": 1
+        },
+        {
+          "value": 150.0,
+          "count": 1
+        },
+        {
+          "value": 155.0,
+          "count": 1
+        }
+      ]
+    },
+    "p_greater_one_third": 0.9993494168924069,
+    "p_holm": 1.0,
+    "greedy_strong_comparison": {
+      "delta": {
+        "mean": 25.966666666666665,
+        "sd": 6.059949546468776,
+        "quantiles": [
+          11.0,
+          22.0,
+          26.0,
+          30.0,
+          37.0
+        ],
+        "frequencies": [
+          {
+            "value": 11.0,
+            "count": 1
+          },
+          {
+            "value": 16.0,
+            "count": 1
+          },
+          {
+            "value": 17.0,
+            "count": 1
+          },
+          {
+            "value": 18.0,
+            "count": 1
+          },
+          {
+            "value": 22.0,
+            "count": 5
+          },
+          {
+            "value": 23.0,
+            "count": 2
+          },
+          {
+            "value": 24.0,
+            "count": 1
+          },
+          {
+            "value": 25.0,
+            "count": 1
+          },
+          {
+            "value": 26.0,
+            "count": 3
+          },
+          {
+            "value": 27.0,
+            "count": 3
+          },
+          {
+            "value": 28.0,
+            "count": 1
+          },
+          {
+            "value": 29.0,
+            "count": 1
+          },
+          {
+            "value": 30.0,
+            "count": 3
+          },
+          {
+            "value": 33.0,
+            "count": 2
+          },
+          {
+            "value": 34.0,
+            "count": 2
+          },
+          {
+            "value": 35.0,
+            "count": 1
+          },
+          {
+            "value": 37.0,
+            "count": 1
+          }
+        ]
+      },
+      "wins": 30,
+      "ties": 0,
+      "losses": 0,
+      "sign_test_p": 9.313225746154785e-10
+    }
+  }
+}

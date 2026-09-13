@@ -1,0 +1,269 @@
+{
+  "code_commit": "80f4447c5f8ee26267e98199e900230459b785b8",
+  "inputs": [
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_easy.metrics.json",
+      "snapshot": "evidence/gb1_easy.json",
+      "sha256": "eca6511871d1800c7a6ac3f9b53597140a900e5030f5aa0c2b0e1c537c5763f3",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_hard.metrics.json",
+      "snapshot": "evidence/gb1_hard.json",
+      "sha256": "12a82fbfe29a72568828dedb4170119c7b23dc0fe5282a58b1b1bd7a384e4107",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_sparse.metrics.json",
+      "snapshot": "evidence/gb1_sparse.json",
+      "sha256": "b74d06678ce65ce7ea0c8cb3f4c97b34c7d1c9be8ad20acc6ee659be276b1477",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_llm.metrics.json",
+      "snapshot": "evidence/gb1_llm.json",
+      "sha256": "ca9ec8ad9183be6779c323d2a851aa1ee5da8421cc303d87c6e2424f4d1901ac",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json",
+      "snapshot": "evidence/alpha.json",
+      "sha256": "61e28b71753ea62891fcd033f7c9af707f20fe5817fd07211bbd9cd227f42008",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json",
+      "snapshot": "evidence/scaling.json",
+      "sha256": "eef6f9ccc93a06f8f974476b4e290b302f0aac0862c0b811a3e7598112c6e3de",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/predictor_metrics.json",
+      "snapshot": "evidence/predictors.json",
+      "sha256": "d7fe3d7f81786bd0e2e3e13439b73ff091a92bf1a975bca56fa30f7739e9843b",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/knowledge-ablation/atomic-seed0/metrics.json",
+      "snapshot": "evidence/aav_atomic.json",
+      "sha256": "729ec91b17c8e0f61ef71a818e856be5abfc758b22b9a5944c3665f3f6190d27",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/knowledge-ablation/checkpoint-seed0/metrics.json",
+      "snapshot": "evidence/aav_checkpoint.json",
+      "sha256": "94e8f86d0591266d8072a00cff19842b3d6afdede4617783c7efc16105e603cc",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/context/research/v07-multiseed-evidence/summary.json",
+      "snapshot": "evidence/aav_multiseed.json",
+      "sha256": "3dab829b65beee7eae48ebb3a0e3330820e458dff9c5d54e48b966bf667484ea",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "reports/final-report-v0.5/evidence/epistasis.json",
+      "snapshot": "evidence/epistasis.json",
+      "sha256": "6cb883ba6f330b32454e34781464e82a7150b2c81163707b39cdf200fd3895d9",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/context/research/v07-peak-mechanism.md",
+      "snapshot": "evidence/aav_mechanism.md",
+      "sha256": "f429610c1b191a83af9ed74aa07f819de035e73d09ac95365afd80dc11b70c48",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/context/research/v07-multiseed-robustness.md",
+      "snapshot": "evidence/multiseed_protocol.md",
+      "sha256": "c025bbd0bb7a7eecae092e3b3ca45d4cadf5e170ded3f5c3dbd7f2630c12ba24",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/handoff.md",
+      "sha256": "8fe9e6da654c5d3a8e028973a0f45b39e64bad4b9d2b02bcc23f85d924e5382e",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "reports/v0.8-proposal-event-stream-reflexion.md",
+      "snapshot": "evidence/v08-proposal-received.md",
+      "sha256": "2933e85eb22e4210c78f667e64d9a044e4d2f10f051e6c510085ef9215bbef56",
+      "origin": "user-provided working document"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/gb1/mutation_order.json",
+      "snapshot": "evidence/gb1_mutation_order.json",
+      "sha256": "05f23b240017f0bedbb35af043a59e36ac66ab2c73bdf51fae691953d107587d",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/gb1/conservation.json",
+      "snapshot": "evidence/gb1_conservation.json",
+      "sha256": "0346b053d4edda4b609bd8bcbc64af2b96fab21038bd66a19f62bc4538c4eba1",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/aav/mutation_order.json",
+      "snapshot": "evidence/aav_mutation_order.json",
+      "sha256": "f83fb8ed83d4bc58e80a71a6abdd0b8f3d0aeb7d4f6668086461994e0655dc4b",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/analysis-v0.1/aav/conservation.json",
+      "snapshot": "evidence/aav_conservation.json",
+      "sha256": "12bc6db61cfa42b3a22ba6781085c64fa39c7167d9fb30c7036feb1b17bf6a52",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "agent/pipeline.py",
+      "snapshot": "evidence/code/agent/pipeline.py",
+      "sha256": "1b28c2156820ccd4de3a192ebb239d218119a54d9c753836e7a3d13059e922be",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "evolution/campaign.py",
+      "snapshot": "evidence/code/evolution/campaign.py",
+      "sha256": "0911f4913d6b2445f9fa0a270c79dd6184741af1ed2af45d43358f35cde3e630",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "agent/auto_researcher.py",
+      "snapshot": "evidence/code/agent/auto_researcher.py",
+      "sha256": "401fbce2d1c2f4f3d4698fc78032f6c814c206313798b2a9f7e3bcd9284ac132",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "agent/llm.py",
+      "snapshot": "evidence/code/agent/llm.py",
+      "sha256": "6e498f6042fd886f5ae5d32605affeef9a74841e1234f19c293b966ca2cf9549",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "knowledge/validators.py",
+      "snapshot": "evidence/code/knowledge/validators.py",
+      "sha256": "9b2f1842b820e900ba14d76b87563313f688ef50bf6fbd675c92666ab7e86928",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "knowledge/rules.yaml",
+      "snapshot": "evidence/code/knowledge/rules.yaml",
+      "sha256": "2b546f191a64354a91fa2947e7e7ebea086fa931ad063c9adf0201c14f2ed667",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "events/store.py",
+      "snapshot": "evidence/code/events/store.py",
+      "sha256": "db007a2f2b2145f7780f16c3ccd9302db34e6b54680db5cc704f6b5ff40281f7",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "models/train_ladder.py",
+      "snapshot": "evidence/code/models/train_ladder.py",
+      "sha256": "b379ad09e368eab5c694fb1e7e1f13985befcd49c79ec332f72aed2e32c36bbe",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "models/alpha_sweep.py",
+      "snapshot": "evidence/code/models/alpha_sweep.py",
+      "sha256": "b3b0506809e9ae49a73f7dffcaad084cb2546de31b184989e8235aa79bc2ae10",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "features/conservation.py",
+      "snapshot": "evidence/code/features/conservation.py",
+      "sha256": "3299902e4a2ebbe0aaa2f8a2a705fedde1c04c47f1bc1379f9d22fafd631d3ea",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "analysis/mutation_order.py",
+      "snapshot": "evidence/code/analysis/mutation_order.py",
+      "sha256": "72bca6a0954e0b031fb06219d38ef72c94eef0d754bb8ea9da3337b9ed707101",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "app/demo.py",
+      "snapshot": "evidence/code/app/demo.py",
+      "sha256": "99515e478732d7484597b15ddfcdf7981013c0057cd5ad962b0cad039d425b8a",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl.gz",
+      "snapshot": "evidence/gb1_easy.events.jsonl.gz",
+      "sha256": "7367ecea390e8cbac2db67edd73fd255aa4724b0f5cc3550c533103c053793ce",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_hard.events.jsonl.gz",
+      "snapshot": "evidence/gb1_hard.events.jsonl.gz",
+      "sha256": "4f1a5dfadeb1a189ad2ab5ad9f0e46f06202b404bb95c74a0c02250e3da9741d",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_sparse.events.jsonl.gz",
+      "snapshot": "evidence/gb1_sparse.events.jsonl.gz",
+      "sha256": "649ba3b3e200b485d28f5bdab1925408cccf1dd004eec6455bb4c7b0da7e6786",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/reports/workflow-v1.1/gb1/campaign_llm.events.jsonl.gz",
+      "snapshot": "evidence/gb1_llm.events.jsonl.gz",
+      "sha256": "70891d8a56613a089dfeb30ccde5457b09a4c2c6406132ab59301132c2d17dee",
+      "origin": "frozen checkout"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-1seed.md",
+      "snapshot": "evidence/v08-smoke-1seed.md",
+      "sha256": "1b6de52c92e723c043084b36011ae1249e89913540380d142be890d34fbcb54f",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/handoff-update-v08.md",
+      "sha256": "cb92b0f56c1cb910d61569538a5b179c66eb097d9e133238ff294e8bf2b9f62e",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.metrics.json",
+      "snapshot": "evidence/v08-control.metrics.json",
+      "sha256": "8641d7ca844359115c75b7b2c1f21a5259768bff4b5c7e93ffde25d5e74c5630",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.events.jsonl.gz",
+      "snapshot": "evidence/v08-control.events.jsonl.gz",
+      "sha256": "e0adf60958831c800c6fbb656e0754fbb1f617aad8c90b6535b3928db6dc6c97",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.metrics.json",
+      "snapshot": "evidence/v08-reflexion.metrics.json",
+      "sha256": "2459cffe063805f42b7a269a3138c42e03ab2ae28684c46a12d9b360beafe8c5",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline"
+    },
+    {
+      "path": "harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.events.jsonl.gz",
+      "snapshot": "evidence/v08-reflexion.events.jsonl.gz",
+      "sha256": "ad59754e7443e9eb4b74bb477606498c267a6fc97393a6427f4ccafe56d96559",
+      "origin": "V0.8 first smoke supplement supplied 2026-09-13; separate from baseline"
+    },
+    {
+      "path": "harness/reports/workflow-v1.2/gb1/campaign_llm.metrics.json",
+      "snapshot": "evidence/gb1_llm_replication.json",
+      "sha256": "825bd5f9ecac0e02a6798c7df3222e3e00d63c62017c5f543edbcffed9eb0758",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run"
+    },
+    {
+      "path": "harness/reports/workflow-v1.2/gb1/campaign_llm.events.jsonl",
+      "snapshot": "evidence/gb1_llm_replication.events.jsonl",
+      "sha256": "01734421ce25d895a992e2863d46fad92013e367d352dd496a5ccc3ec6f01710",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run"
+    },
+    {
+      "path": "harness/reports/REPORT-HANDOFF.md",
+      "snapshot": "evidence/handoff-update-replication.md",
+      "sha256": "c179f04e9ce95b4bed2b6334dba4edcdeb8965895269d126c37ecb458650ddce",
+      "origin": "workflow-v1.2 supplement at main 57cfd40; separate run"
+    }
+  ]
+}
