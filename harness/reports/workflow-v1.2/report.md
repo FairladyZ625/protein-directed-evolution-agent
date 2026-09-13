@@ -100,7 +100,7 @@ LLM 每次只给寥寥几个,库塌到个位数。
 |---|---|
 | `harness/reports/workflow-v1.2/gb1/campaign_{easy,hard,sparse,llm}.metrics.json` | 四 regime 四策略逐轮指标,含预算完成度与归一化指标 |
 | `harness/reports/workflow-v1.2/gb1/campaign_{easy,hard,sparse}.events.jsonl.gz` | 链式 SHA-256 事件流(gzip 归档),各 190 事件、24 条 `campaign.oracle.residuals` |
-| `harness/reports/workflow-v1.2/gb1/campaign_llm.events.jsonl` | llm 档事件流(156 事件,该档提前终止) |
+| `harness/reports/workflow-v1.2/gb1/campaign_llm.events.jsonl.gz` | llm 档事件流(156 事件,该档提前终止;`EventStore` 传逻辑 `.jsonl` 路径会透明回退到 `.gz`) |
 | `harness/reports/workflow-v1.2/gb1/figures/campaign_*.png` | 四条累计曲线 |
 
 ## 复现
