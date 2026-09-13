@@ -236,11 +236,22 @@ def _enforce_exploit_floor(ratio: float, val_spearman: float | None, round_numbe
     return max(float(ratio), floor), floor
 
 
-def _default_exploit_ratio(backtrack, val_spearman, round_number, n_rounds) -> tuple[float, str]:
-    """Default compose_batch ratio: v0.6 backtrack campaigns use pure predicted-mean
-    exploitation (the v0.5 rank-45 lesson: no forced early-exploration tax); v0.5 keeps
-    the CV/round adaptive rule."""
-    if backtrack:
+def _default_exploit_ratio(backtrack, val_spearman, round_number, n_rounds,
+                           acquisition: str | None = None) -> tuple[float, str]:
+    """Default compose_batch ratio: v0.6 uses pure predicted-mean exploitation (the
+    rank-45 lesson: no forced early-exploration tax); v0.5 keeps the CV/round adaptive rule.
+
+    ``acquisition`` overrides which of the two applies. It exists because the policy was
+    coupled to ``backtrack`` in TWO places — the system-prompt paragraph and this
+    tool-level default — and fixing only the prompt is worse than fixing neither: the
+    prompt then tells the agent to use the adaptive rule while ``compose_batch`` silently
+    keeps returning pure exploitation, so an experiment looks controlled and is not.
+    That is exactly what the first v0.8 2x2 attempt did; all four arms came back with
+    ``allocation_source="v06_pure_exploit_default"`` and byte-identical batches.
+    ``None`` keeps the historical pairing, so v0.5 and v0.6 stay reproducible.
+    """
+    want_v06 = (acquisition == "v06") if acquisition else bool(backtrack)
+    if want_v06:
         return 1.0, "v06_pure_exploit_default"
     return _adaptive_exploit_ratio(val_spearman, round_number, n_rounds), "adaptive_default"
 
@@ -558,7 +569,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         adaptive_ratio = _adaptive_exploit_ratio(cv, state["current_round"], n_rounds)
         if exploit_ratio is None:
             requested_ratio, source = _default_exploit_ratio(
-                backtrack, cv, state["current_round"], n_rounds)
+                backtrack, cv, state["current_round"], n_rounds, acquisition)
         else:
             requested_ratio = float(exploit_ratio)
             if not np.isfinite(requested_ratio) or not 0.0 <= requested_ratio <= 1.0:

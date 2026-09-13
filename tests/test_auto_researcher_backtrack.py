@@ -242,3 +242,30 @@ def test_acquisition_flag_decouples_policy_from_backtrack_without_moving_v05_or_
     assert _V06_ACQUISITION_PARAGRAPH in v06_semi and _V05_ACQUISITION_PARAGRAPH not in v06_semi
     # stall note 在两格里都在 —— 这正是解耦要保住的「其余条件不变」
     assert v05_semi.endswith(_BACKTRACK_SEMI_NOTE) and v06_semi.endswith(_BACKTRACK_SEMI_NOTE)
+
+
+def test_acquisition_switch_moves_both_layers_not_just_the_prompt():
+    """采集档位有两层:系统提示词段落,和 compose_batch 的工具级默认。两层必须一起动。
+
+    第一次 v0.8 的 2x2 就栽在这里:只解耦了提示词层,工具层的默认仍挂在 backtrack 上。
+    结果四个臂全部返回 allocation_source='v06_pure_exploit_default'、批次逐位相同——
+    提示词告诉 agent「用自适应规则」,而 compose_batch 照样给纯利用。
+    **只修一层比两层都不修更危险**,因为实验看起来是受控的,其实不是。
+    """
+    from agent.auto_researcher import (_V05_ACQUISITION_PARAGRAPH, _V06_ACQUISITION_PARAGRAPH,
+                                       _default_exploit_ratio, compose_system_prompt)
+
+    # 工具层:同样固定 backtrack='semi',只切 acquisition
+    v05_ratio, v05_src = _default_exploit_ratio("semi", 0.90, 1, 6, "v05")
+    v06_ratio, v06_src = _default_exploit_ratio("semi", 0.90, 1, 6, "v06")
+    assert v06_src == "v06_pure_exploit_default" and v06_ratio == 1.0
+    assert v05_src == "adaptive_default", "工具层没跟着切——这正是第一次 2x2 失败的原因"
+    assert v05_ratio < 1.0, "自适应档位不应等于纯利用"
+
+    # 提示词层:同一组参数下也必须切
+    assert _V05_ACQUISITION_PARAGRAPH in compose_system_prompt("semi", "v05")
+    assert _V06_ACQUISITION_PARAGRAPH in compose_system_prompt("semi", "v06")
+
+    # 历史配对(acquisition=None)两层都必须保持原样,否则 v0.5/v0.6 不可复现
+    assert _default_exploit_ratio("semi", 0.90, 1, 6)[1] == "v06_pure_exploit_default"
+    assert _default_exploit_ratio(None, 0.90, 1, 6)[1] == "adaptive_default"
