@@ -33,6 +33,12 @@ import numpy as np
 import pandas as pd
 
 from evolution.pool_campaign import DatasetSpec, _stats
+from events.reflexion import (
+    DEAD_FITNESS_THRESHOLD,
+    extract_round_reflexion,
+    format_reflexion_prompt,
+    motif_recurrence_rate,
+)
 from models.train_ladder import RidgePredictor
 from knowledge.validators import build_knowledge_graph, query_mutation_context, validate_candidate
 
@@ -294,9 +300,11 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                      request_limit: int = 60, model: str | None = None,
                      guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0,
                      surrogate: str = "ridge", no_knowledge: bool = False,
-                     backtrack: str | None = None) -> dict:
+                     backtrack: str | None = None, reflexion: bool = False) -> dict:
     if guardrail and no_knowledge:
         raise ValueError("guardrail and no_knowledge are mutually exclusive treatment modes")
+    if reflexion and event_store is None:
+        raise ValueError("reflexion requires an event_store so prompt input comes from the audit stream")
     fit_col = spec.fitness_col
     total_budget = budget * n_rounds
     strong_thr = float(np.quantile(spec.df[fit_col], 0.9))
@@ -319,6 +327,9 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         "top10_max_history": [],  # cumulative top-10 max after each completed batch
         "redirect_rounds": [],    # rounds where redirect_batch staged the tested batch
         "stall_flag_rounds": [],  # rounds where the semi hard rule fired (semi only)
+        "llm_round_attempts": 0,
+        "llm_round_successes": 0,
+        "llm_timeout_errors": 0,
     }
     knowledge_enabled = bool(guardrail and not no_knowledge)
     tool_lock = threading.RLock()
@@ -352,12 +363,13 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         _allowed, _ = _gate(state["pool"].seq.tolist())
         gate_pass = set(_allowed)
 
-    def emit(kind, actor, payload):
+    def emit(kind, actor, payload, *, round_id=None):
         strategy = "knowledge_agent" if knowledge_enabled else "agent_no_knowledge"
-        state["trace"].append({"event_type": kind, "round_id": len(state["batches"]) + 1,
+        event_round = len(state["batches"]) + 1 if round_id is None else int(round_id)
+        state["trace"].append({"event_type": kind, "round_id": event_round,
                                "strategy": strategy, "actor": actor, "payload": payload})
         if event_store is not None:
-            event_store.append(kind, round_id=len(state["batches"]) + 1,
+            event_store.append(kind, round_id=event_round,
                                strategy=strategy,
                                actor=actor, payload=payload)
 
@@ -659,6 +671,29 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             requested = allowed
         chosen = requested[:remaining]
         rows = state["pool"][state["pool"].seq.isin(chosen)].copy()
+        # Capture the predictor snapshot before either the measured set or the pool changes.
+        # Re-fitting after the oracle labels are appended would leak the answer into the
+        # historical prediction and turn a residual into a post-hoc fitted error.
+        residual_records = []
+        if len(rows):
+            scores = _pool_scores()
+            if scores is None:  # Defensive invariant: measured rows came from a non-empty pool.
+                raise RuntimeError("nomination-time pool predictions are unavailable")
+            _model, nomination_mean, nomination_var = scores
+            pool_positions = {str(sequence): position
+                              for position, sequence in enumerate(state["pool"].seq)}
+            for sequence, measured_fitness in zip(rows.seq, rows[fit_col]):
+                position = pool_positions[str(sequence)]
+                predicted_mean = float(nomination_mean[position])
+                predicted_var = float(nomination_var[position])
+                measured = float(measured_fitness)
+                residual_records.append({
+                    "seq": str(sequence),
+                    "predicted_mean": predicted_mean,
+                    "predicted_var": predicted_var,
+                    "measured_fitness": measured,
+                    "residual": measured - predicted_mean,
+                })
         state["measured"] = pd.concat([state["measured"], rows], ignore_index=True)
         state["pool"] = state["pool"].drop(rows.index)
         state["pred_cache"] = None  # measured changed -> refit next time
@@ -684,6 +719,11 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         if backtrack and state["top10_max_history"]:
             test_payload["cum_top10_max"] = round(float(state["top10_max_history"][-1]), 4)
         emit("agent.tool.test", "experiment", test_payload)
+        emit("agent.tool.test.residuals", "experiment", {
+            "residual_definition": "measured_fitness - predicted_mean",
+            "prediction_timing": "before oracle labels were added and before surrogate retraining",
+            "records": residual_records,
+        }, round_id=state["current_round"])
         return out
 
     def test_composed_batch() -> dict:
@@ -762,7 +802,11 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                 base_prompt = SYSTEM_PROMPT
             ag = Agent(oa, system_prompt=base_prompt + gate_note)
             agent_model = model_id
-            emit("agent.llm.model", "agent", {"model": model_id, "base_url": cfg["base_url"]})
+            emit("agent.llm.model", "agent", {
+                "model": model_id,
+                "base_url": cfg["base_url"],
+                "llm_timeout_s": llm_round_timeout_seconds,
+            })
             def safe_tool(fn):
                 @functools.wraps(fn)
                 def wrapped(*args, **kwargs):
@@ -837,12 +881,27 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                               f"Follow the >=80% high-CV exploitation rule and "
                               f">=90% exploitation rule in the final two rounds. "
                               f"After testing, note what you learned for the next round.")
+                if reflexion and rnd > 1:
+                    reflection = extract_round_reflexion(
+                        event_store.path, last_round_id=rnd - 1, wt=spec.wt,
+                    )
+                    reflection_text = format_reflexion_prompt(reflection)
+                    prompt += "\n\n" + reflection_text
+                    emit("agent.reflexion.injected", "agent", {
+                        "source_round": rnd - 1,
+                        "target_round": rnd,
+                        "prompt_text": reflection_text,
+                    }, round_id=rnd)
+                state["llm_round_attempts"] += 1
                 try:
                     with _wall_clock_timeout(cfg["timeout"]):
                         result = ag.run_sync(prompt, message_history=history, **kwargs)
                     history = result.all_messages()
                     llm_summary = str(getattr(result, "output", ""))[:800]
+                    state["llm_round_successes"] += 1
                 except Exception as exc:  # noqa: BLE001
+                    if "timeout" in str(exc).lower() or isinstance(exc, TimeoutError):
+                        state["llm_timeout_errors"] += 1
                     emit("agent.llm.round_error", "agent", {"round": rnd, "error": str(exc)[:200]})
                 # Guarantee progress: if the LLM analysed but did not test, the harness
                 # spends this round's budget on its own exploit pick (recorded honestly).
@@ -887,6 +946,21 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                       for sequence, fitness in zip(batch.seq, batch.fitness)]}
         for round_id, batch in enumerate(state["batches"], 1)
     ]
+    residuals_by_round = {
+        int(event["round_id"]): event["payload"].get("records", [])
+        for event in state["trace"]
+        if event["event_type"] == "agent.tool.test.residuals"
+    }
+    motif_recurrence = []
+    for round_id, batch in enumerate(state["batches"], 1):
+        if round_id <= 1:
+            continue
+        metric = motif_recurrence_rate(
+            residuals_by_round.get(round_id - 1, []),
+            batch.seq.tolist(),
+            wt=spec.wt,
+        )
+        motif_recurrence.append({"round": round_id, **metric})
     n_llm_no_test = sum(event["event_type"] == "agent.llm.no_test"
                         for event in state["trace"])
     return {"schema_version": "pool.v1", "dataset": spec.name,
@@ -905,12 +979,22 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "gate_pass_pool_size": len(gate_pass) if gate_pass is not None else None,
             "surrogate": surrogate,
             "backtrack": backtrack,
+            "reflexion": reflexion,
+            "fatal_fitness_threshold": DEAD_FITNESS_THRESHOLD,
+            "motif_recurrence": motif_recurrence,
             "stall_threshold": STALL_THRESHOLD if backtrack else None,
             "redirect_rounds": list(state["redirect_rounds"]),
             "stall_flag_rounds": list(state["stall_flag_rounds"]),
             "top10_max_history": [round(float(v), 4) for v in state["top10_max_history"]],
             "llm_used": llm_used, "llm_summary": llm_summary, "agent_model": agent_model,
             "llm_round_timeout_seconds": llm_round_timeout_seconds,
+            "llm_round_attempts": state["llm_round_attempts"],
+            "llm_round_successes": state["llm_round_successes"],
+            "llm_round_success_rate": (
+                state["llm_round_successes"] / state["llm_round_attempts"]
+                if state["llm_round_attempts"] else None
+            ),
+            "llm_timeout_errors": state["llm_timeout_errors"],
             "llm_direct_test_rounds": max(0, len(rounds) - n_llm_no_test) if llm_used else 0,
             "llm_no_test_rounds": n_llm_no_test,
             "llm_round_errors": sum(event["event_type"] == "agent.llm.round_error"
@@ -949,8 +1033,12 @@ def main(argv=None):
                         "may redirect_batch; 'semi' = a hard rule flags stalls "
                         "(no cum_top10_max improvement for >=2 rounds) in the prompt. Default "
                         "acquisition in both modes is pure predicted-mean exploitation.")
+    p.add_argument("--reflexion", action="store_true",
+                   help="v0.8 treatment: inject the previous round's observed residual event")
     p.add_argument("--out-dir", type=Path, default=None,
                    help="default: harness/reports/<agentic-version>/<dataset>/")
+    p.add_argument("--skip-experiment-log", action="store_true",
+                   help="keep a task-local smoke run out of the shared experiment log")
     a = p.parse_args(argv)
 
     from evolution.results_layout import run_dir
@@ -972,7 +1060,7 @@ def main(argv=None):
                            event_store=store, llm=not a.no_llm, model=a.model,
                            guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min,
                            surrogate=a.surrogate, no_knowledge=a.no_knowledge,
-                           backtrack=a.backtrack)
+                           backtrack=a.backtrack, reflexion=a.reflexion)
     store.verify()
     out = out_dir / "agentic.metrics.json"
     fig = out_dir / "figures" / "agentic.png"
@@ -997,18 +1085,23 @@ def main(argv=None):
     _kflag = " --no-knowledge" if a.no_knowledge else ""
     _sflag = (f" --surrogate {a.surrogate}" if a.surrogate != "ridge" else "")
     _bflag = (f" --backtrack {a.backtrack}" if a.backtrack else "")
-    log_run("agentic",
-            command=(f"python -m agent.auto_researcher --dataset {a.dataset} --feature {a.feature} "
-                     f"--budget {a.budget} --n-rounds {a.n_rounds} --seed {a.seed} --model {a.model}"
-                     f"{_gflag}{_kflag}{_sflag}{_bflag}"),
-            params={"dataset": a.dataset, "feature": a.feature, "budget": a.budget, "n_rounds": a.n_rounds,
-                    "seed": a.seed, "llm": not a.no_llm, "model": a.model,
-                    "guardrail": a.guardrail, "max_hd": a.max_hd if a.guardrail else None,
-                    "blosum_min": a.blosum_min if a.guardrail else None,
-                    "no_knowledge": a.no_knowledge, "surrogate": a.surrogate,
-                    "backtrack": a.backtrack},
-            artifacts=[str(out.relative_to(ROOT)), str(ev.relative_to(ROOT))],
-            summary={**rep["summary"], "llm_used": rep["llm_used"], "budget_spent": rep["budget_spent"]})
+    _rflag = " --reflexion" if a.reflexion else ""
+    if not a.skip_experiment_log:
+        log_run("agentic",
+                command=(f"python -m agent.auto_researcher --dataset {a.dataset} --feature {a.feature} "
+                         f"--budget {a.budget} --n-rounds {a.n_rounds} --seed {a.seed} --model {a.model}"
+                         f"{_gflag}{_kflag}{_sflag}{_bflag}{_rflag}"),
+                params={"dataset": a.dataset, "feature": a.feature, "budget": a.budget,
+                        "n_rounds": a.n_rounds, "seed": a.seed, "llm": not a.no_llm,
+                        "model": a.model, "guardrail": a.guardrail,
+                        "max_hd": a.max_hd if a.guardrail else None,
+                        "blosum_min": a.blosum_min if a.guardrail else None,
+                        "no_knowledge": a.no_knowledge, "surrogate": a.surrogate,
+                        "backtrack": a.backtrack, "reflexion": a.reflexion,
+                        "llm_timeout_s": rep["llm_round_timeout_seconds"]},
+                artifacts=[str(out.relative_to(ROOT)), str(ev.relative_to(ROOT))],
+                summary={**rep["summary"], "llm_used": rep["llm_used"],
+                         "budget_spent": rep["budget_spent"]})
     return rep
 
 
