@@ -4,7 +4,7 @@ task_id: task_6a18b55b9ee78b0609b7290f85
 title: "合并 agentic v0.6 的 backtrack 实现进主线:数据在主线而代码不在(19 处冲突,须保住 v0.5 默认行为)"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: active
+  status: in_review
 packageDisposition: active
 vertical: software/coding
 preset: standard-task
@@ -26,9 +26,9 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task submit task_6a18b55b9ee78b0609b7290f85`.
+Run `ha task complete task_6a18b55b9ee78b0609b7290f85`.
 
 ## Gate Checks
 
 - ci: blocked
-- code-doc-reconciliation: blocked
+- code-doc-reconciliation: pass

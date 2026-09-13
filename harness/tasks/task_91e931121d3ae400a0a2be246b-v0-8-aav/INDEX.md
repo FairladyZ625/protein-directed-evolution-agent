@@ -4,7 +4,7 @@ task_id: task_91e931121d3ae400a0a2be246b
 title: "v0.8 残差反思(AAV 主战场):补齐逐变体预测残差事件 + 轮首强制注入 + 单因子对照实验"
 lifecycle:
   engine: kernel/task-lifecycle/v1
-  status: planned
+  status: active
 packageDisposition: active
 vertical: software/coding
 preset: standard-task
@@ -26,7 +26,7 @@ Preset: standard-task/baseline
 
 ## Next
 
-Run `ha task complete task_91e931121d3ae400a0a2be246b`.
+Run `ha task submit task_91e931121d3ae400a0a2be246b`.
 
 ## Gate Checks
 

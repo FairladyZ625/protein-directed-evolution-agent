@@ -1,9 +1,9 @@
 {
   "schema": "task-contract/v1",
   "contractVersion": 1,
-  "taskId": "task_04a5ba5ffed50ef0e629686819",
-  "packagePath": "tasks/task_04a5ba5ffed50ef0e629686819-report-v06-sections",
-  "title": "Report v0.6：对齐试题八章并恢复未来架构",
+  "taskId": "task_5455e0628aa237d1553e69befb",
+  "packagePath": "tasks/task_5455e0628aa237d1553e69befb-report-v06-demo-figures",
+  "title": "Report v0.6：实看Demo并筛选可入报告的图表",
   "taskClass": "standard",
   "verticalId": "software/coding",
   "presetId": "docs-task",
@@ -13,11 +13,11 @@
     "fromLegacyId": null,
     "idempotencyKey": null,
     "moduleKey": null,
-    "parentTaskId": "task_ee0e0b26e540664dac1e6c3f29",
+    "parentTaskId": "task_7e641e8ff76735bb43b0449f53",
     "presetId": "docs-task",
     "profileId": "baseline",
     "riskTier": null,
-    "slug": "report-v06-sections",
+    "slug": "report-v06-demo-figures",
     "surfaces": [],
     "urgency": null,
     "verticalId": "software/coding",
@@ -72,7 +72,7 @@
         "## Verification"
       ],
       "templateRef": "template://planning/task-plan@1",
-      "contentSha256": "98c9c2f5c9ca9554f534bb36c8ac92f36784896fb871d0f57ee8dd9504bb39d1"
+      "contentSha256": "39e8507902865f6c7007c4e1ebbdaa2889add9733364ec0dc41f73d292a8b58e"
     },
     {
       "slot": "task.closeout",

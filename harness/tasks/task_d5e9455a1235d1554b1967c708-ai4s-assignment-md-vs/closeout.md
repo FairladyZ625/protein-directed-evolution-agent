@@ -2,6 +2,9 @@
 
 完成 `harness/context/research/assignment-coverage-audit.md`：逐条审计 53 项硬要求与 7 项加分项，给出工具证据、四态判定、五条锁定 decision 复核、三张汇总表和七个按优先级排序的修复包。Verdict 为 changes requested：40 项硬要求已交付、13 项部分交付、0 项完全未做；D2、D4、D5 未通过。
 
+
+交付锚点:`artifact:tasks/task_d5e9455a1235d1554b1967c708-ai4s-assignment-md-vs/artifacts/assignment-coverage-audit.md@1537`
+
 ## Verification
 
 - `.venv/bin/pytest -q tests/test_data_pipeline.py tests/test_agent.py tests/test_campaign.py tests/test_knowledge.py tests/test_events.py tests/test_demo_app.py tests/test_pool_campaign.py`：`38 passed in 6.88s`。

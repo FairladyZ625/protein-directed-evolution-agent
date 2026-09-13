@@ -1,38 +1,21 @@
-# Closeout
-
-Replace this file's placeholder content before closeout; `ha task complete` rejects placeholder text. Closeout summarizes the verdict, but it does not replace the fact ledger or decision/relation records.
-
 ## Summary
 
-Summarize the completed behavior change.
+Merged the agentic v0.6 backtrack capability onto current `origin/main` while preserving the v0.5 default prompt and adaptive acquisition. The merge retains mainline timeout, tool-lock, knowledge-graph, and no-knowledge behavior; adds the full/semi backtrack mode, trajectory state, redirect tool, CLI/output routing, and a byte-level v0.5 prompt regression test. Local commit: `80c9bce79b7b34388af93b9a7ce3725b16a00ebf`.
 
 ## Verification
 
-List passing applicable checks, the Review result, and any explicitly promoted
-`F-...` Facts. CI belongs here only when the resolved completion contract
-declares it; Facts remain optional `0..N` promotions (dec_mrg3z1we/CH4;
-ADR-0027 D7).
+- Assigned packet after rebase: `58 passed, 1 warning in 6.24s`.
+- Pre/post default `SYSTEM_PROMPT` diff: empty; SHA-256 `191ae4c066f2441a455cbedd127e518f18778bb49c5477e1609add028bed0409`.
+- Reverse control: switching the default paragraph to v0.6 made the byte-identity test fail with exit 1; restoring v0.5 made the packet pass.
+- `scripts/check_data_has_code.py`: `agentic-v0.6` ✅.
+- `scripts/check_references.py`: `harness/reports/agentic-v0.6/report.md` ✅.
+- `origin/main` is an ancestor of HEAD; final diff against it contains only `agent/auto_researcher.py` and `tests/test_auto_researcher_backtrack.py`.
+- Promoted fact: `F-E34909AE`.
 
 ## Residual Risk
 
-Record accepted non-blocking risks; if a risk affects later choices, create or relate a decision.
+The commercial-LLM AAV seed-42 campaign was intentionally not rerun, so existing experiment outputs were not regenerated. Whole-repository audits still report one unrelated code/data lineage gap (`pkgA-mainline-truth`) and seven unrelated stale references; these are outside this task's execution surface.
 
 ## Same Mechanism Elsewhere
 
-State what this task found as one sentence about a **mechanism**, with the
-caller, the resource type, and the symptom stripped out. Then search the
-repository for that sentence and write down what came back.
-
-A defect named after where it surfaced only ever finds itself. "The first paint
-is slow" searches the interface code and stops there. The same defect named
-after its mechanism — "one read request's downstream call count grows with the
-size of its result set" — finds the sibling sitting in the server.
-
-Answer all three parts: the mechanism sentence, how you searched for it, and
-what you found. "Nothing else" is a valid answer when it is the honest one, and
-it is worth more than silence because it says the search happened. If this task
-changed no behavior, say why the question does not apply here instead of
-deleting the section.
-
-This is a question, not a checkbox. Answering it with a tick mark defeats the
-only thing it is for.
+Mechanism: versioned experimental data can enter the mainline without the exact feature code that produced it. Search: ran `python3 scripts/check_data_has_code.py`, which checks referenced code paths and commit ancestry across report versions. Finding: agentic-v0.6 is now clean, while the same mechanism remains visible in the unrelated `pkgA-mainline-truth` report as unmerged commit `1bcf2e9b05f594f6323e83bd3e02d057a58ea298`.
