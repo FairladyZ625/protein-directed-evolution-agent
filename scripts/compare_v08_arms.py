@@ -43,8 +43,8 @@ def main() -> int:
         print(f"{root} 下没有完成的臂")
         return 1
 
-    print(f"{'臂':36s}{'峰':>8s}{'strong':>7s}  {'采集档':<24s}{'redirect':>8s}  "
-          f"{'LLM':<5s}{'秒':>5s}  逐轮批次哈希")
+    print(f"{'臂':38s}{'峰':>8s}{'strong':>7s}  {'采集档':<26s}{'自设ratio':>9s}"
+          f"{'排除motif':>10s}{'redirect':>9s}  {'LLM':<5s}{'秒':>5s}  逐轮批次哈希")
     batches = {}
     for arm in arms:
         m = json.loads((arm / "agentic.metrics.json").read_text())
@@ -56,14 +56,23 @@ def main() -> int:
         summary = m.get("summary", {})
         # 采集档位取实际生效值,不取命令行意图 —— 两者曾经不一致(工具层耦合未解),
         # 那一轮四个臂看起来是 2x2、实际是同一个档位。
-        sources = {e["payload"].get("allocation_source")
-                   for e in m.get("tool_trace", [])
-                   if e.get("event_type") == "agent.tool.compose_batch"}
-        print(f"{arm.name:36s}{summary.get('final_cum_top10_max', 0):8.4f}"
+        composes = [e["payload"] for e in m.get("tool_trace", [])
+                    if e.get("event_type") == "agent.tool.compose_batch"]
+        sources = {p.get("allocation_source") for p in composes}
+        # v0.9 的两个杠杆各自是否被真的行使 —— v0.8 里 agent_requested 是 0/20,
+        # 而 exclude_motifs 当时根本不在工具 schema 里,所以「没用」是结构性的。
+        n_requested = sum(p.get("allocation_source") == "agent_requested" for p in composes)
+        n_excl_calls = sum(bool(p.get("excluded_motifs")) for p in composes)
+        motifs = sorted({m0 for p in composes for m0 in (p.get("excluded_motifs") or [])})
+        print(f"{arm.name:38s}{summary.get('final_cum_top10_max', 0):8.4f}"
               f"{summary.get('final_cum_n_strong', 0):7d}  "
-              f"{'/'.join(sorted(s or '?' for s in sources)):<26s}"
-              f"{str(m.get('redirect_rounds')):>8s}  "
+              f"{'/'.join(sorted(s or '?' for s in sources)):<28s}"
+              f"{f'{n_requested}/{len(composes)}':>9s}"
+              f"{f'{n_excl_calls}/{len(composes)}':>10s}"
+              f"{str(m.get('redirect_rounds')):>9s}  "
               f"{m.get('llm_round_successes')}/{m.get('llm_round_attempts'):<3}{wall_s:>5s}  {digests}")
+        if motifs:
+            print(f"{'':38s}└─ 被排除的 motif: {', '.join(motifs)}")
 
     # 同一 seed、同一采集档位下,反思开/关是否让批次分叉
     print("\n=== 反思开 vs 关(同 seed、同采集档位)===")

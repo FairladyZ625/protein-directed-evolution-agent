@@ -80,6 +80,23 @@ predicted-mean exploitation: the top-n candidates by predicted mean, with no for
 tax. Prefer that default while the CV evidence is high; do not dilute batches with diverse or
 uncertainty picks unless the CV evidence itself demands it."""
 
+# v0.9 contract paragraph. The v0.8 2x2 showed reflexion changes zero nominations, and the
+# cause was the contract, not the model: both paragraphs above say "Prefer that default", the
+# round prompt hard-codes `compose_batch(n=48)` with no ratio slot, the exploit floor forbids
+# exactly the direction residual evidence argues for, and — the root cause — `exploit_ratio`
+# is a scalar that CANNOT express "do not pick candidates carrying N21D". This paragraph
+# removes the discouragement and names the motif-level entry point that v0.9 adds.
+_V09_ACQUISITION_PARAGRAPH = """Use `compose_batch` as the primary acquisition tool. You OWN both of its levers and are
+expected to set them deliberately, not to accept defaults:
+- `exploit_ratio` (0-1): the split between predicted-mean exploitation and diverse exploration.
+  State the measured evidence behind the value you pick. Omitting it falls back to the
+  CV-quality/round annealing rule, which is a fallback, not a recommendation.
+- `exclude_motifs`: a list of `W<zero-based position>M` substitutions (e.g. "N21D") to drop from
+  the candidate set before scoring. This is how measured failures act on future nominations:
+  when residual evidence shows a substitution is lethal, exclude it here rather than only
+  mentioning it in prose. Exclusions are audited; over-excluding is reported back to you as
+  `exclusion_too_strict` rather than silently shrinking the batch."""
+
 SYSTEM_PROMPT = SYSTEM_PROMPT.format(acquisition_paragraph=_V05_ACQUISITION_PARAGRAPH)
 
 _BACKTRACK_FULL_NOTE = """
@@ -106,7 +123,8 @@ basin hop; lower `max_overlap` = a harder hop). The default acquisition stays pu
 exploitation. Where to redirect — and whether to redirect at all — is your judgment, based only on
 measured fitness and surrogate predictions."""
 
-def compose_system_prompt(backtrack: str | None, acquisition: str | None = None) -> str:
+def compose_system_prompt(backtrack: str | None, acquisition: str | None = None,
+                          contract: str | None = None) -> str:
     """Assemble the agent's system prompt from an acquisition policy and a backtrack note.
 
     Until v0.8 these two were one knob: passing ``backtrack`` silently ALSO swapped v0.5's
@@ -118,7 +136,18 @@ def compose_system_prompt(backtrack: str | None, acquisition: str | None = None)
     ``acquisition=None`` reproduces the historical pairing byte-for-byte (v0.6 paragraph iff
     ``backtrack``), so v0.5 and v0.6 stay reproducible; pass "v05"/"v06" to vary it
     independently of the backtrack note.
+
+    ``contract="v09"`` overrides both with the v0.9 paragraph, which stops discouraging an
+    explicit ratio and names the motif-exclusion entry point. Any other value (including
+    ``None`` and ``"v08"``) leaves the prompt byte-identical to v0.8.
     """
+    if contract == "v09":
+        prompt = SYSTEM_PROMPT.replace(_V05_ACQUISITION_PARAGRAPH, _V09_ACQUISITION_PARAGRAPH)
+        if prompt == SYSTEM_PROMPT:  # prompt text drifted; never mis-prompt silently
+            raise RuntimeError("v0.9 acquisition paragraph no longer matches SYSTEM_PROMPT")
+        if backtrack:
+            prompt += _BACKTRACK_FULL_NOTE if backtrack == "full" else _BACKTRACK_SEMI_NOTE
+        return prompt
     want_v06 = (acquisition == "v06") if acquisition else bool(backtrack)
     if want_v06:
         prompt = SYSTEM_PROMPT.replace(_V05_ACQUISITION_PARAGRAPH, _V06_ACQUISITION_PARAGRAPH)
@@ -236,6 +265,40 @@ def _enforce_exploit_floor(ratio: float, val_spearman: float | None, round_numbe
     return max(float(ratio), floor), floor
 
 
+def _apply_exploit_floor(ratio: float, val_spearman: float | None, round_number: int,
+                         n_rounds: int, *, enforced: bool) -> tuple[float, float]:
+    """``_enforce_exploit_floor`` behind the v0.9 release switch.
+
+    The floor exists to protect the campaign from wasting late budget on exploration. But it
+    also makes the v0.8 reflexion experiment unfalsifiable: the action residual evidence argues
+    for is *lowering* the exploit ratio, and from round 4 on the floor leaves an empty feasible
+    interval. Releasing it is part of the v0.9 contract treatment, not a general relaxation.
+    """
+    if not enforced:
+        return float(ratio), 0.0
+    return _enforce_exploit_floor(ratio, val_spearman, round_number, n_rounds)
+
+
+def _exclude_motif_indices(seqs, wt: str, eligible_indices, motifs) -> tuple[list[int], list[str]]:
+    """Drop every eligible candidate carrying any of ``motifs`` ('W<zero-based pos>M').
+
+    This is the v0.9 entry point that makes measured failures act on future nominations. Under
+    the v0.8 contract the only lever was the scalar ``exploit_ratio``, which cannot express
+    "do not pick candidates carrying N21D" at any value — so the reflexion card's ACTION
+    CONSTRAINT was unactionable by construction and could only be honoured in prose.
+
+    Returns the surviving indices and the normalised motif list. Invalid notation raises.
+    """
+    normalised = sorted({str(m).strip().upper() for m in motifs if str(m).strip()})
+    bad = [m for m in normalised if not _MUTATION_NOTATION.match(m)]
+    if bad:
+        raise ValueError(f"exclude_motifs must be 'W<zero-based position>M' codes; got {bad}")
+    blocked = frozenset(normalised)
+    kept = [int(i) for i in eligible_indices
+            if not (_mutation_set(str(seqs[i]), wt) & blocked)]
+    return kept, normalised
+
+
 def _default_exploit_ratio(backtrack, val_spearman, round_number, n_rounds,
                            acquisition: str | None = None) -> tuple[float, str]:
     """Default compose_batch ratio: v0.6 uses pure predicted-mean exploitation (the
@@ -337,7 +400,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                      guardrail: bool = False, max_hd: int = 4, blosum_min: float = 0.0,
                      surrogate: str = "ridge", no_knowledge: bool = False,
                      backtrack: str | None = None, reflexion: bool = False,
-                     acquisition: str | None = None) -> dict:
+                     acquisition: str | None = None, contract: str | None = None) -> dict:
     if guardrail and no_knowledge:
         raise ValueError("guardrail and no_knowledge are mutually exclusive treatment modes")
     if reflexion and event_store is None:
@@ -369,6 +432,10 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
         "llm_timeout_errors": 0,
     }
     knowledge_enabled = bool(guardrail and not no_knowledge)
+    # v0.9 contract: the whole treatment is "does the tool contract have room for the evidence".
+    # It moves three things at once on purpose — a neutral prompt, a released exploit floor and
+    # a motif-exclusion parameter — because v0.8 proved each one alone is blocked by the others.
+    contract_v09 = contract == "v09"
     tool_lock = threading.RLock()
 
     # v0.2 Knowledge Guardrail: an unbypassable gate BEFORE budget is spent, rejecting
@@ -556,11 +623,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
              {"by": by, "n": len(picks), "gated": gate_pass is not None})
         return picks
 
-    def compose_batch(exploit_ratio: float | None = None, n: int = 48) -> dict:
-        """Compose a gate-safe batch from predicted-mean exploit and diverse explore picks.
-
-        Omit exploit_ratio to use the answer-agnostic CV-quality/round annealing rule.
-        """
+    def _compose_batch_core(exploit_ratio: float | None, n: int,
+                            exclude_motifs: list[str] | None) -> dict:
         if state["pool"].empty:
             return {"status": "pool_exhausted", "candidates": []}
         n = int(max(1, min(int(n), 60)))
@@ -575,13 +639,36 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             if not np.isfinite(requested_ratio) or not 0.0 <= requested_ratio <= 1.0:
                 return {"status": "invalid_argument", "error": "exploit_ratio must be within [0, 1]"}
             source = "agent_requested"
-        ratio, policy_floor = _enforce_exploit_floor(
-            requested_ratio, cv, state["current_round"], n_rounds,
+        # v0.9 releases the floor: with it on, the one direction residual evidence argues for
+        # (lower the exploit ratio) is unreachable from round 4 on, so the dependent variable
+        # is pinned to a constant and the experiment cannot fail honestly.
+        ratio, policy_floor = _apply_exploit_floor(
+            requested_ratio, cv, state["current_round"], n_rounds, enforced=not contract_v09,
         )
         seqs = state["pool"].seq.to_numpy()
         eligible = np.arange(len(seqs))
         if gate_pass is not None:
             eligible = np.asarray([i for i in eligible if seqs[i] in gate_pass], dtype=int)
+        motifs: list[str] = []
+        n_excluded = 0
+        if exclude_motifs:
+            before = len(eligible)
+            try:
+                kept, motifs = _exclude_motif_indices(seqs, spec.wt, eligible, exclude_motifs)
+            except ValueError as exc:
+                return {"status": "invalid_argument", "error": str(exc)}
+            eligible = np.asarray(kept, dtype=int)
+            n_excluded = before - len(eligible)
+            if len(eligible) < n:
+                # Never silently shrink the batch: a short batch would look like a strategy
+                # change in the batch hash while actually being an exhausted candidate set.
+                return {"status": "exclusion_too_strict",
+                        "error": (f"{len(eligible)} candidates remain after excluding {motifs}, "
+                                  f"fewer than the requested n={n}; relax the exclusion list"),
+                        "excluded_motifs": motifs,
+                        "n_excluded": n_excluded,
+                        "n_eligible_after_exclusion": int(len(eligible)),
+                        "candidates": []}
         picks, n_exploit, n_explore = _compose_batch_indices(
             mean, var, eligible_indices=eligible, exploit_ratio=ratio, n=n, rng=rng,
         )
@@ -594,6 +681,10 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "exploit_ratio": round(float(ratio), 4),
             "adaptive_default_ratio": round(float(adaptive_ratio), 4),
             "policy_min_ratio": round(float(policy_floor), 4),
+            "exploit_floor_enforced": not contract_v09,
+            "excluded_motifs": motifs,
+            "n_excluded": int(n_excluded),
+            "n_eligible_after_exclusion": int(len(eligible)),
             "n_exploit": n_exploit,
             "n_explore": n_explore,
             "n": len(candidates),
@@ -613,6 +704,28 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
              {k: v for k, v in out.items()
               if k not in {"candidates", "knowledge_graph_rationales"}})
         return out
+
+    # The two contracts must differ in the ADVERTISED tool schema, not just in the prompt:
+    # if `exclude_motifs` were visible in both, the v0.8 control arm would no longer be a
+    # control. Same tool name in both, so the prompt and round template stay identical.
+    if contract_v09:
+        def compose_batch(exploit_ratio: float | None = None, n: int = 48,
+                          exclude_motifs: list[str] | None = None) -> dict:
+            """Compose a gate-safe batch from predicted-mean exploit and diverse explore picks.
+
+            Set exploit_ratio deliberately from measured evidence; omitting it falls back to the
+            CV-quality/round annealing rule. Pass exclude_motifs as 'W<zero-based position>M'
+            codes (e.g. ["N21D"]) to drop every candidate carrying those substitutions before
+            scoring — this is how measured failures act on the next nomination.
+            """
+            return _compose_batch_core(exploit_ratio, n, exclude_motifs)
+    else:
+        def compose_batch(exploit_ratio: float | None = None, n: int = 48) -> dict:
+            """Compose a gate-safe batch from predicted-mean exploit and diverse explore picks.
+
+            Omit exploit_ratio to use the answer-agnostic CV-quality/round annealing rule.
+            """
+            return _compose_batch_core(exploit_ratio, n, None)
 
     def redirect_batch(n: int = 48, max_overlap: float = 0.5) -> dict:
         """Stage a gate-safe, predicted-mean basin hop away from the best cluster."""
@@ -829,7 +942,7 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                          f"`compose_batch` and `list_pool` ALREADY return only gate-passing candidates. Test a full "
                          f"composed batch each round; do not hand-craft high-order variants (they are rejected without "
                          f"spending budget). Use the reported CV evidence and round annealing to set allocation.")
-            base_prompt = compose_system_prompt(backtrack, acquisition)
+            base_prompt = compose_system_prompt(backtrack, acquisition, contract)
             ag = Agent(oa, system_prompt=base_prompt + gate_note)
             agent_model = model_id
             emit("agent.llm.model", "agent", {
@@ -877,7 +990,21 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                     break
                 this_batch = min(budget, remaining)
                 spent_before = state["spent"]
-                if backtrack:
+                if backtrack and contract_v09:
+                    # v0.9: the template must expose the parameter slots. In v0.8 it hard-coded
+                    # `compose_batch(n=48)`, so the only batch-changing lever never appeared in
+                    # front of the agent even once — `agent_requested` was 0 by construction.
+                    prompt = (f"Round {rnd} of {n_rounds}. Budget remaining: {remaining}. "
+                              f"Call `analyze_measured` (it includes the campaign trajectory), "
+                              f"then stage ONE batch: "
+                              f"`compose_batch(n={this_batch}, exploit_ratio=..., "
+                              f"exclude_motifs=[...])` — choose both arguments from measured "
+                              f"evidence and say why — or, if you judge the campaign stagnant, "
+                              f"`redirect_batch(n={this_batch})` (basin hop). Then "
+                              f"MUST call `test_composed_batch()` without copying any "
+                              f"sequences. Analysis alone makes no progress. After testing, "
+                              f"note what you learned for the next round.")
+                elif backtrack:
                     prompt = (f"Round {rnd} of {n_rounds}. Budget remaining: {remaining}. "
                               f"Call `analyze_measured` (it includes the campaign trajectory), "
                               f"then stage ONE batch: `compose_batch(n={this_batch})` "
@@ -915,7 +1042,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
                     reflection = extract_round_reflexion(
                         event_store.path, last_round_id=rnd - 1, wt=spec.wt,
                     )
-                    reflection_text = format_reflexion_prompt(reflection)
+                    reflection_text = format_reflexion_prompt(
+                        reflection, exclusion_entrypoint=contract_v09)
                     prompt += "\n\n" + reflection_text
                     emit("agent.reflexion.injected", "agent", {
                         "source_round": rnd - 1,
@@ -1010,6 +1138,8 @@ def run_autoresearch(spec: DatasetSpec, *, budget: int = 96, n_rounds: int = 3,
             "surrogate": surrogate,
             "backtrack": backtrack,
             "reflexion": reflexion,
+            "acquisition": acquisition,
+            "contract": contract or "v08",
             "fatal_fitness_threshold": DEAD_FITNESS_THRESHOLD,
             "motif_recurrence": motif_recurrence,
             "stall_threshold": STALL_THRESHOLD if backtrack else None,
@@ -1070,6 +1200,12 @@ def main(argv=None):
                         "'v05' = quality-aware adaptive mix (the LLM's exploit_ratio matters), "
                         "'v06' = pure predicted-mean exploitation. Omit to keep the historical "
                         "pairing (v06 iff --backtrack), which is what v0.5/v0.6 reproduce with.")
+    p.add_argument("--contract", choices=("v08", "v09"), default=None,
+                   help="v0.9 tool-contract treatment. 'v09' does three things the v0.8 2x2 "
+                        "proved are individually blocked by each other: it stops telling the "
+                        "agent to prefer the default ratio, releases the exploit floor, and "
+                        "adds `exclude_motifs` so measured lethal substitutions can act on the "
+                        "next nomination instead of only appearing in prose. Omit for v0.8.")
     p.add_argument("--out-dir", type=Path, default=None,
                    help="default: harness/reports/<agentic-version>/<dataset>/")
     p.add_argument("--skip-experiment-log", action="store_true",
@@ -1096,7 +1232,7 @@ def main(argv=None):
                            guardrail=a.guardrail, max_hd=a.max_hd, blosum_min=a.blosum_min,
                            surrogate=a.surrogate, no_knowledge=a.no_knowledge,
                            backtrack=a.backtrack, reflexion=a.reflexion,
-                           acquisition=a.acquisition)
+                           acquisition=a.acquisition, contract=a.contract)
     store.verify()
     out = out_dir / "agentic.metrics.json"
     fig = out_dir / "figures" / "agentic.png"
@@ -1122,11 +1258,13 @@ def main(argv=None):
     _sflag = (f" --surrogate {a.surrogate}" if a.surrogate != "ridge" else "")
     _bflag = (f" --backtrack {a.backtrack}" if a.backtrack else "")
     _rflag = " --reflexion" if a.reflexion else ""
+    _cflag = (f" --acquisition {a.acquisition}" if a.acquisition else "") + \
+             (f" --contract {a.contract}" if a.contract else "")
     if not a.skip_experiment_log:
         log_run("agentic",
                 command=(f"python -m agent.auto_researcher --dataset {a.dataset} --feature {a.feature} "
                          f"--budget {a.budget} --n-rounds {a.n_rounds} --seed {a.seed} --model {a.model}"
-                         f"{_gflag}{_kflag}{_sflag}{_bflag}{_rflag}"),
+                         f"{_gflag}{_kflag}{_sflag}{_bflag}{_rflag}{_cflag}"),
                 params={"dataset": a.dataset, "feature": a.feature, "budget": a.budget,
                         "n_rounds": a.n_rounds, "seed": a.seed, "llm": not a.no_llm,
                         "model": a.model, "guardrail": a.guardrail,
@@ -1134,6 +1272,7 @@ def main(argv=None):
                         "blosum_min": a.blosum_min if a.guardrail else None,
                         "no_knowledge": a.no_knowledge, "surrogate": a.surrogate,
                         "backtrack": a.backtrack, "reflexion": a.reflexion,
+                        "acquisition": a.acquisition, "contract": a.contract or "v08",
                         "llm_timeout_s": rep["llm_round_timeout_seconds"]},
                 artifacts=[str(out.relative_to(ROOT)), str(ev.relative_to(ROOT))],
                 summary={**rep["summary"], "llm_used": rep["llm_used"],

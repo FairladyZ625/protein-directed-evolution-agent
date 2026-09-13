@@ -113,8 +113,15 @@ def extract_round_reflexion(
     )
 
 
-def format_reflexion_prompt(reflexion: RoundReflexion) -> str:
-    """Render an observed-only reflexion card for deterministic prompt injection."""
+def format_reflexion_prompt(reflexion: RoundReflexion, *,
+                            exclusion_entrypoint: bool = False) -> str:
+    """Render an observed-only reflexion card for deterministic prompt injection.
+
+    ``exclusion_entrypoint`` names the v0.9 ``compose_batch(exclude_motifs=...)`` parameter in
+    the closing constraint. Under the v0.8 contract there was no parameter that could express
+    "do not pick candidates carrying N21D", so the constraint was unactionable by construction
+    and the agent could only honour it in prose; keep it False to reproduce v0.8 byte-for-byte.
+    """
     lines = [
         f"MANDATORY RESIDUAL REFLEXION (observed round {reflexion.round_id}):",
         "Residual definition: measured_fitness - nomination-time predicted_mean.",
@@ -147,10 +154,19 @@ def format_reflexion_prompt(reflexion: RoundReflexion) -> str:
             for row in reflexion.motif_summary
         )
         lines.append(f"Observed substitution motifs: {motif_text}.")
-    lines.append(
-        "ACTION CONSTRAINT: before selecting this round, explicitly account for the lethal "
-        "motifs above and avoid carrying them forward unless current measured evidence justifies it."
-    )
+    if exclusion_entrypoint:
+        lines.append(
+            "ACTION CONSTRAINT: before selecting this round, explicitly account for the lethal "
+            "motifs above. The actionable entry point is "
+            "`compose_batch(exclude_motifs=[...])`, which drops every candidate carrying the "
+            "listed substitutions before scoring; pass the motifs you judge lethal there rather "
+            "than only naming them in prose, and say which ones you deliberately kept and why."
+        )
+    else:
+        lines.append(
+            "ACTION CONSTRAINT: before selecting this round, explicitly account for the lethal "
+            "motifs above and avoid carrying them forward unless current measured evidence justifies it."
+        )
     return "\n".join(lines)
 
 
