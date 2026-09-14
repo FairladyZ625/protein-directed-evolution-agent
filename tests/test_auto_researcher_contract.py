@@ -126,6 +126,34 @@ def test_empty_exclusion_is_a_no_op():
     assert kept == [0, 1, 2, 3, 4] and motifs == []
 
 
+def test_exclusion_leaving_fewer_than_n_is_detectable_before_composing():
+    """排除后候选不足 n 时,compose 层返回 exclusion_too_strict 而不是静默缩批。
+
+    `_compose_batch_core` 是闭包(依赖 state/spec/gate_pass/rng 等九个自由变量),
+    无法直接 import;但它那个分支的判定实质就是 `len(kept) < n`,而 kept 由本函数产出。
+    所以这里钉住两件事:①不足的前提能被算出来;②真正危险的替代行为——让 compose
+    在候选不足时照样返回一个短批次——确实会发生,因此那个 early return 是必需的。
+    短批次在批次哈希上看起来像换了策略,实际只是候选集被排空了(auto_researcher.py:662-670)。
+    """
+    from agent.auto_researcher import _compose_batch_indices
+
+    seqs = _toy_seqs()
+    kept, motifs = _exclude_motif_indices(seqs, WT, range(5), ["A0S", "A1G"])
+    assert kept == [3, 4] and motifs == ["A0S", "A1G"]
+
+    n = 4
+    assert len(kept) < n  # ① 前提成立:排除后只剩 2 条,少于请求的 4 条
+
+    # ② 阳性对照:若不 early return,compose 会交出一个长度 2 的短批次而不报错
+    rng = np.random.default_rng(0)
+    mean = np.arange(len(seqs), dtype=float)
+    var = np.ones(len(seqs))
+    picks, _, _ = _compose_batch_indices(
+        mean, var, eligible_indices=np.asarray(kept), exploit_ratio=1.0, n=n, rng=rng,
+    )
+    assert len(picks) < n, "短批次确实会被交出来,所以 exclusion_too_strict 这道闸不能省"
+
+
 def test_exclusion_respects_a_prefiltered_eligible_set():
     # gate 已经筛过一轮,排除必须在其结果之上做,不能悄悄把 gate 拒掉的候选放回来
     kept, _ = _exclude_motif_indices(_toy_seqs(), WT, [1, 2, 3], ["A1G"])
