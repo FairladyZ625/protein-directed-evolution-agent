@@ -1,9 +1,0 @@
-{"kind": "start", "mode": "full", "seed": 42}
-{"kind": "result", "mode": "full", "seed": 42, "summary": {"final_cum_top10_max": 7.829, "final_cum_top10_mean": 6.5776, "final_cum_n_strong": 135, "cum_top10_max_curve": [7.391, 7.391, 7.391, 7.829, 7.829, 7.829]}, "llm_used": true, "model": "claude-sonnet-5", "spent": 288, "errors": {"agent.tool.error": 0, "agent.llm.round_error": 0, "agent.llm.no_test": 1, "agent.llm.fallback": 0}, "seconds": 1050.25}
-Traceback (most recent call last):
-  File "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-v07/harness/reports/agentic-v0.7/run_matrix.py", line 99, in <module>
-    if __name__=='__main__':main()
-                            ~~~~^^
-  File "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-v07/harness/reports/agentic-v0.7/run_matrix.py", line 55, in main
-    raise RuntimeError(f'refusing overwrite {folder}; every trial must be reported')
-RuntimeError: refusing overwrite /Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-v07/harness/reports/agentic-v0.7/aav/full-seed0; every trial must be reported

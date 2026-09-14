@@ -1,1 +1,0 @@
-error code=daemon_unavailable hint=Validation failed for entity=cli-command field=input; actual=daemon_unavailable; Local daemon request failed. Cause: workspace is not registered; run ha daemon repo register --repo-id <id> --root "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-astra-seeds".

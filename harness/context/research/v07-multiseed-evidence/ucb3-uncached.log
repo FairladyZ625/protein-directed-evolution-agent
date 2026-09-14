@@ -1,7 +1,0 @@
-{"round": 1, "exact_batch_match": true, "cum_max": 7.080691889610001}
-{"round": 2, "exact_batch_match": true, "cum_max": 7.080691889610001}
-{"round": 3, "exact_batch_match": true, "cum_max": 8.416205130560002}
-{"round": 4, "exact_batch_match": true, "cum_max": 8.416205130560002}
-{"round": 5, "exact_batch_match": true, "cum_max": 8.416205130560002}
-{"round": 6, "exact_batch_match": true, "cum_max": 8.416205130560002}
-{"uncached_replay": true, "matched_batches": 6, "matched_candidates": 288, "maximum": 8.416205130560002, "strong": 128}
