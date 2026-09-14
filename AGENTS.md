@@ -151,7 +151,17 @@ ha task complete <id>
 3. **纯文档任务 + worktree = 提交死锁**(fact `F-B1B5EABC`):产出全在 gitignored 的 `/harness/` 里 → worker 的交付提交是空提交 → `document_invalid`。未绑 worktree 的同类任务走 privateDelivery 路径可正常提交。
 4. **ci 完成门的真实判据**(fact `F-B0148E72`;2026-09-14 实测更正):见证只为 **`headBranch=='main'` 且 `status=='completed'`** 的运行发布,并要求 `workflowName` 落在 `settings.ci.workflows` 里——本仓 `harness.yaml:13-14` 配的是 `workflows: [ci]`。**见证与被审任务自己的 commit 无关**:它取 main 上的 `ci` 运行,所以只要 main 的 `ci` 是绿的,`complete` 会自行铸出 `Checker witnesses: ci/op_…`。2026-09-14 有两个任务据此真过了门(`task_2e485a1ae…`、`task_6a18b55b9…`,均为 approved → consent → complete)。
    **原写「standard-task 的 ci 门结构性不可满足(`rewrite-ci.yml` HTTP 404),`submit`/`complete` 必返 `service_rejected`」已作废**——`rewrite-ci` 在全局 CLI dist 里 `grep` **零命中**,该上游缺陷已修(见 `task_8cca79cbf…/task_plan.md:48`);那个 404 是拿错 workflow 名(`rewrite-ci.yml` 而非配置里的 `ci`)的历史状态。**照旧条推断会得出错误结论,2026-09-14 本会话即因此误判两次。**
-   仍然有效的红线不变:**不得**新建 workflow、改 CI 配置或 `transition --force`;门真红时记录进度后停手,交 CEO。
+   仍然有效的红线:**不得**新建 workflow、**不得**改 CI 配置、**不得**用 `transition --force`
+   硬闯一个真红的门;门真红时记录进度后停手,交 CEO。
+
+   **`transition --force` 的一处受限授权(用户 2026-09-14 明确解除,范围仅限本条)**:
+   为**销账**而改 `status` 是允许的——即任务的活已交付、只是生命周期没走完时,可用
+   `ha task transition <id> cancelled --force --reason <说明真实情况并指向对照记录>`。
+   判据是本次实测:`ha agenda` 的在飞线只看 `status`,归档(`packageDisposition`)完全不影响它,
+   而 `active → cancelled` 在执行已起之后强制要求 `--force`——**不给 force 就没有任何合法出路**。
+   授权**不扩展**到「硬闯红门」「绕过评审」「把未完成的活标成完成」这三类;
+   reason 必须写清真实状态,不得让台账读成「做过了」或「不用做了」。
+   本次批量处置的逐条对照见 `harness/context/development/lifecycle-archive-20260914.md`。
 
 ### 配方 4:把报告/工件登记为实体并挂到任务
 ```
