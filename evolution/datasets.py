@@ -66,7 +66,13 @@ AAV_CSV = ROOT / "data" / "aav" / "full_data.csv"
 def load_aav(feature: str = "one_hot") -> DatasetSpec:
     """FLIP AAV capsid (Bryant et al. 2021). Source: J-SNACKKB/FLIP splits/aav/full_data.csv.zip.
 
-    Clean substitution subset only (28-aa mutated region, no indel/stop/designed);
+    Equal-length substitution subset only: keeps rows whose `mutated_region` is
+    28 aa, matches ^[A-Z]+$ and carries no `*`, then de-duplicates on sequence.
+    This drops indels and stop codons as a side effect of the length/alphabet
+    filter, but `category` is NOT filtered: 30,932 of the 38,265 surviving rows
+    are `category=designed` (including the pool peak 8.416205 and the global
+    max 9.536457). An earlier version of this docstring claimed `no designed`,
+    which the code never did.
     fitness = `score`; hd = `number_of_mutations`.
     """
     if not AAV_CSV.exists():
