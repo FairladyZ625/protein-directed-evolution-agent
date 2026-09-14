@@ -69,6 +69,28 @@ This file contains stable repository operating rules. Current milestone state an
 - Use `ha script list` and `ha script inspect <id>` to inspect vertical script declarations.
 - A declaration is not proof of execution support. Run a script only when inspection explicitly reports execution as available.
 
+## 生命周期纪律(2026-09-14 立,针对 23 个在飞任务积压的根因)
+
+在飞线一度积压 23 个 `status=active` 的任务,其中 **17 个 Iteration 0**——产物早已落进仓库,
+但 `ha task start` / `submit` 压根没跑过。根因不是评审太严,是**开工与销账两头都没挂进生命周期**。
+
+**先记一条会误导人的机制**:`ha agenda` 的在飞线只看 `status`,**不看 `packageDisposition`**。
+实测 23 条里已有 8 条是 `archived` 却仍在在飞线;而不带 `--json` 的 `ha task show`
+只打印三行、**不显示 disposition**。所以「归档」不会让任务离开在飞线——
+要离开只有走完礼到 `done`,或 `ha task transition <id> cancelled`。
+
+- **开工即 `start`**:动手写第一行产物之前先 `ha task start <id>` 拿租约。事后补不回来——
+  执行记录只从 `closeout.md` 派生,而 lease 释放后 `progress append` 没有恢复路径。
+- **产物落盘当天就 `submit`**:不要等"做得更完整些"。`submit` 之后仍可 `--amend`,
+  但没 submit 就没有可评审对象,任务会无声停在 active。
+- **一个被审任务派一次评审**:`ha agent run de-reviewer --task <被审任务> --instance <inst>
+  --role reviewer --cwd <仓库根> --detach`。用「一个评审任务统管 N 个被审任务」的形态派工,
+  worker 会把活全干完、写入时才报 `executor_binding_invalid`,整轮作废。
+- **走完 consent 才算完**:`review-execution` → `review-consent` → `complete`。停在
+  `review-execution` 之后 = 前面几轮评审的成本全部沉没(本次归档的 5 个 Iteration 2 就是这样)。
+- **积压上限**:`ha agenda` 的在飞线超过 8 条就停止开新任务,先收口。23 条时单个任务的
+  关闭成本已经高到只能批量归档——那等于承认前面的流程记录作废。
+
 ## Repository Specifics
 
 Repository-specific rules may be added here after explicit diagnosis; the deterministic base and vertical overlay above remain unchanged.
