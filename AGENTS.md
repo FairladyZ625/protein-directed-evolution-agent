@@ -125,7 +125,7 @@ ha task complete <id>
 
 **四个实测坑**:
 1. **lease 接回**:worker 跑完后执行留在 active、无 lease,`ha task start <id>` 报 `lease_conflict` 或 `progress append` 报 `progress_lease_required` —— 用 `ha task start <id> --execution-id <exe_…>` 接回那个执行。反过来,执行处于 active 时用**新的** execution-id 起一个执行会被拒(`invalid_transition`)。
-2. **评审独立性**:自己提交的执行不能自审(`actor_unauthorized`)。派 reviewer 必须**一个被审任务派一次**:`ha runtime run <inst> --agent de-reviewer --role reviewer --task <被审任务>`。用"一个评审任务统管 N 个被审任务"的形态派工,worker 会把活全干完但写入时才报 `executor_binding_invalid`,整轮作废。
+2. **评审独立性**:自己提交的执行不能自审(`actor_unauthorized`)。派 reviewer 必须**一个被审任务派一次**:`ha agent run de-reviewer --task <被审任务> --instance <inst> --role reviewer --cwd <仓库根> --detach`(2026-09-14 实测:旧写法 `ha runtime run <inst> --agent …` 已被 `error code=invalid_field` 拒,CLI 自述 hint 为「Use ha agent run <agent-id> --task <task-id> for task-bound work」;派工回执形如 `runtime-run: detached dispatch_… ; next: ha runtime status runtime_… --wait`)。用"一个评审任务统管 N 个被审任务"的形态派工,worker 会把活全干完但写入时才报 `executor_binding_invalid`,整轮作废。
 3. **纯文档任务 + worktree = 提交死锁**(fact `F-B1B5EABC`):产出全在 gitignored 的 `/harness/` 里 → worker 的交付提交是空提交 → `document_invalid`。未绑 worktree 的同类任务走 privateDelivery 路径可正常提交。
 4. **本仓 standard-task 的 ci 门结构性不可满足**(fact `F-8ED77039`):`submit`/`complete` 必返回 `service_rejected`(`gh run list --workflow rewrite-ci.yml` HTTP 404)。**不得**新建 workflow、改 CI 配置或 `transition --force`;记录进度后停手,交 CEO。上游修复跟踪于 `task_7994263c6be22e8690ec8d5950`。
 
