@@ -1319,7 +1319,7 @@ def render_contract_module() -> None:
     if len(arms) < 4:
         st.warning(
             f"缺 v0.9 四臂归档（现有 {len(arms)}/4，目录 `harness/reports/v09-contract/`）——"
-            "先跑 `scripts/run_v09_contract.sh tmp/v09-contract 42` 再归档。本模块停等，其余模块不受影响。"
+            "先跑 `scripts/run_v09_contract.sh harness/reports/v09-contract 42` 再归档。本模块停等，其余模块不受影响。"
         )
         return
 
