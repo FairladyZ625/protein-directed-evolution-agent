@@ -14,7 +14,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          # requirements.txt 钉的 numpy==2.5.3 要求 Python>=3.12(3.11 上 pip 直接
+          # 报 No matching distribution),而本地开发与复现用的就是 3.12。CI 固定在
+          # 3.11 是环境漂移:它让"仓库声明的依赖"在门里装不上。
+          python-version: "3.12"
       # Lightweight deps only. The data-pipeline / predictor tests need the 44 MB
       # GB1 landscape (intentionally not committed, see data/README.md) and ESM-2 /
       # torch, so they run locally; CI covers the self-contained modules.
