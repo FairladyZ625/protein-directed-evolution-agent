@@ -74,10 +74,15 @@ This file contains stable repository operating rules. Current milestone state an
 在飞线一度积压 23 个 `status=active` 的任务,其中 **17 个 Iteration 0**——产物早已落进仓库,
 但 `ha task start` / `submit` 压根没跑过。根因不是评审太严,是**开工与销账两头都没挂进生命周期**。
 
-**先记一条会误导人的机制**:`ha agenda` 的在飞线只看 `status`,**不看 `packageDisposition`**。
-实测 23 条里已有 8 条是 `archived` 却仍在在飞线;而不带 `--json` 的 `ha task show`
-只打印三行、**不显示 disposition**。所以「归档」不会让任务离开在飞线——
-要离开只有走完礼到 `done`,或 `ha task transition <id> cancelled`。
+**先记两条会误导人的机制**:
+- `ha agenda` 的在飞线**不按 `packageDisposition` 过滤**——实测 23 条里已有 8 条是
+  `archived` 却仍在列;而不带 `--json` 的 `ha task show` 只打印三行、**不显示 disposition**。
+  所以「归档」不会让任务离开在飞线;要离开只有走完礼到 `done`,或
+  `ha task transition <id> cancelled`(后者需 `--force`,见下方受限授权)。
+- **执行处于 `changes_requested` 的任务在 agenda 的任何分组里都不出现。**
+  实测全仓 11 条 `status=active` 只有 3 条进在飞线,差出的 8 条全是 `changes_requested`。
+  **所以不要把 `ha agenda` 当成待办的全集**——查「评审打回等我修」的必须用
+  `ha task list --status active` 再逐条看执行状态,或直接读 `executions/` 里最新那份的 `State:`。
 
 - **开工即 `start`**:动手写第一行产物之前先 `ha task start <id>` 拿租约。事后补不回来——
   执行记录只从 `closeout.md` 派生,而 lease 释放后 `progress append` 没有恢复路径。
