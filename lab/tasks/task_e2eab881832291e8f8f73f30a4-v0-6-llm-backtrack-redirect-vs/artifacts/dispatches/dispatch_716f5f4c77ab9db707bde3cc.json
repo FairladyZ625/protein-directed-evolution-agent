@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_716f5f4c77ab9db707bde3cc",
+  "taskId": "task_e2eab881832291e8f8f73f30a4",
+  "executionId": "exe_c25a85dd42137a2a26d72624f1",
+  "agentId": "de-reviewer",
+  "agentName": "AI4S 独立评审",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent",
+  "missionRef": "tasks/task_e2eab881832291e8f8f73f30a4-v0-6-llm-backtrack-redirect-vs/artifacts/missions/dispatch_716f5f4c77ab9db707bde3cc.md",
+  "runtimeSessionId": "runtime_80e1707d66486479dc46005a",
+  "providerSessionId": "01a09f5b-6a8e-7462-8e40-a96326af05f5",
+  "startedAt": "2026-09-14T09:59:23.108Z",
+  "endedAt": "2026-09-14T10:02:08.739Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/7cdd8b5a7471269ba59d46e59b534e254679a2ad69efa0785e7f12de40b73326",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_716f5f4c77ab9db707bde3cc.jsonl",
+  "attemptGroupId": "dispatch_716f5f4c77ab9db707bde3cc",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-luna"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

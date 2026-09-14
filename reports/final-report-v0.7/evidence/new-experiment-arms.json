@@ -37,7 +37,7 @@
     "reflection": "off",
     "seed": 42,
     "path": "v09/contract-v08_reflexion-off_seed-42",
-    "original_path": "harness/reports/v09-contract/contract-v08_reflexion-off_seed-42"
+    "original_path": "lab/reports/v09-contract/contract-v08_reflexion-off_seed-42"
   },
   {
     "study": "v09",
@@ -45,7 +45,7 @@
     "reflection": "on",
     "seed": 42,
     "path": "v09/contract-v08_reflexion-on_seed-42",
-    "original_path": "harness/reports/v09-contract/contract-v08_reflexion-on_seed-42"
+    "original_path": "lab/reports/v09-contract/contract-v08_reflexion-on_seed-42"
   },
   {
     "study": "v09",
@@ -53,7 +53,7 @@
     "reflection": "off",
     "seed": 42,
     "path": "v09/contract-v09_reflexion-off_seed-42",
-    "original_path": "harness/reports/v09-contract/contract-v09_reflexion-off_seed-42"
+    "original_path": "lab/reports/v09-contract/contract-v09_reflexion-off_seed-42"
   },
   {
     "study": "v09",
@@ -61,7 +61,7 @@
     "reflection": "on",
     "seed": 42,
     "path": "v09/contract-v09_reflexion-on_seed-42",
-    "original_path": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42"
+    "original_path": "lab/reports/v09-contract/contract-v09_reflexion-on_seed-42"
   },
   {
     "study": "v09b12",

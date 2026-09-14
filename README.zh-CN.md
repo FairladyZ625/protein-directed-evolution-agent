@@ -42,12 +42,12 @@ agent 排除的每一个 motif 都能追溯到此前注入的残差证据——2
 
 - **`reports/`** —— *报告撰写*树:`final-report-v0.x/` 存放每一版报告的 markdown、
   图表、构建脚本与渲染出的 PDF。
-- **`harness/reports/`** —— *实验产物*树:每个研究周期一个自包含文件夹,命名
+- **`lab/reports/`** —— *实验产物*树:每个研究周期一个自包含文件夹,命名
   `<方法线>-v<版本>/`(布局的唯一真源是 `evolution/results_layout.py`)。当前的方法线:
   `workflow-v1.2`(GB1 上的交付流水线)、`agentic-v0.7`(AAV 上的自主研究者)、
   `v09-contract` / `v09-contract-b12`(工具契约因子实验)、`analysis-v0.1`(只读分析线)。
   给报告撰写者的修订摘要在
-  [`harness/reports/REPORT-HANDOFF.md`](harness/reports/REPORT-HANDOFF.md)。
+  [`lab/reports/REPORT-HANDOFF.md`](lab/reports/REPORT-HANDOFF.md)。
 
 ## 数据集
 
@@ -161,7 +161,7 @@ hard 档(HD≤2 外推),seed 42:
 每一个 campaign 步骤与 agent 工具调用都被记录且可 `verify()`,其中包含**逐变体的
 提名时刻预测与残差**(`campaign.oracle.residuals`、`agent.tool.test.residuals`)。
 另外,**每一次实验运行**都会向主台账
-[`harness/reports/experiment_log.jsonl`](harness/reports/experiment_log.jsonl)
+[`lab/reports/experiment_log.jsonl`](lab/reports/experiment_log.jsonl)
 追加一条不可变记录(命令、参数、git commit、产物 SHA-256、摘要)。
 
 **范围说明(诚实起见):** 该台账覆盖主要的闭环实验,但**尚未覆盖全部历史运行**——
@@ -246,7 +246,7 @@ analysis/         只读分析(突变阶数、ESM zero-shot 扫描)
 app/              Streamlit 看板(实验视图 + 研究演进视图)
 scripts/          安装、run_all、smoke、因子实验跑批、引用检查器
 reports/          报告撰写树(final-report-v0.x:markdown、图、构建、PDF)
-harness/reports/  实验产物,每周期一个文件夹 + 实验台账
+lab/reports/  实验产物,每周期一个文件夹 + 实验台账
 tests/            单元测试(CI 那组是自包含的:不需要 CSV、网络或 API key)
 ```
 

@@ -5,9 +5,9 @@
 > 附录 I「接收内容」列的字段交付;③你自己定的「分析次序」第 5 条**已经被触发了**,
 > 那一条需要你拍板。
 >
-> 权威原文:`harness/reports/REPORT-HANDOFF.md` §7.14 / §7.15 / §7.16。
-> 逐条证据:`harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/factorial-2x2-seed42.md`
-> 与 `harness/tasks/task_feb731c779788be5bfff65e979-v0-9/artifacts/contract-2x2-seed42.md`。
+> 权威原文:`lab/reports/REPORT-HANDOFF.md` §7.14 / §7.15 / §7.16。
+> 逐条证据:`lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/factorial-2x2-seed42.md`
+> 与 `lab/tasks/task_feb731c779788be5bfff65e979-v0-9/artifacts/contract-2x2-seed42.md`。
 
 ---
 
@@ -158,7 +158,7 @@ v0.8 的 2×2 四臂合计 **20 次 `compose_batch` 调用,`allocation_source` �
 | 完整命令 | ✅ | `scripts/run_v08_factorial.sh` / `scripts/run_v09_contract.sh`(脚本头部有完整 flags) |
 | seed / 特征 / surrogate / 门禁 / 采集构型 / 反思开关 | ✅ | 42 / one_hot / epistasis / `--guardrail` / `--acquisition v05` / `--reflexion` |
 | LLM 模型 / 超时 / 重试 | ✅ | `gpt-5.6-sol` / `LLM_TIMEOUT=240` / 无重试(失败即记 `agent.llm.round_error`) |
-| 原始压缩事件 | ✅ | `harness/reports/v09-contract/<臂>/agentic.events.jsonl.gz`(四臂) |
+| 原始压缩事件 | ✅ | `lab/reports/v09-contract/<臂>/agentic.events.jsonl.gz`(四臂) |
 | metrics | ✅ | 同目录 `agentic.metrics.json`,新增 `contract` 与 `acquisition` 字段 |
 | 运行日志 | ⚠️ | 在 `tmp/v09-contract/<臂>.stdout.log`,**未入库**(tmp 不进版本控制)。要的话我归档 |
 | 实际预算 | ✅ | 四臂均 `budget_spent=288` |
@@ -236,7 +236,7 @@ v0.8 的 2×2 四臂合计 **20 次 `compose_batch` 调用,`allocation_source` �
 ## ⑧ 两条流程提醒
 
 1. **证据快照要重取。** 你在附录 K 第 14 / 37 / 44 项快照了
-   `harness/reports/REPORT-HANDOFF.md` 三个时点。该文件此后有实质变动:
+   `lab/reports/REPORT-HANDOFF.md` 三个时点。该文件此后有实质变动:
    §7.11 加了 ⛔ 作废横幅、§7.15 做了**归因更正**(原标题「LLM 从未行使过它唯一能改变
    批次的杠杆」措辞会被读成指责模型,已改)、新增 §7.16。**v0.7 请重新取快照。**
 2. **报告全文没有按 § 号引用交接单**,只整文件快照。这没问题,但意味着交接单里的

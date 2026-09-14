@@ -156,7 +156,7 @@ def test_recommender_button_runs_one_round_in_memory():
 def test_conservation_panel_degrades_when_artifact_missing():
     """阳性对照：临时改名 AAV conservation.json，面板必须给「缺哪个文件 + 跑哪条命令」的提示，
     而不是空白或崩溃；口径标注（不依赖数据存在）仍在。结束后恢复原文件。"""
-    path = ROOT / "harness" / "reports" / "analysis-v0.1" / "aav" / "conservation.json"
+    path = ROOT / "lab" / "reports" / "analysis-v0.1" / "aav" / "conservation.json"
     if not path.exists():
         pytest.skip("aav conservation.json not present")
     backup = path.with_name("conservation.json.bak")

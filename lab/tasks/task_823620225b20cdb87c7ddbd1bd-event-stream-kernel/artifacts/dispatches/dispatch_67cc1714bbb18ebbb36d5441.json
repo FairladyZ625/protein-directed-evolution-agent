@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_67cc1714bbb18ebbb36d5441",
+  "taskId": "task_823620225b20cdb87c7ddbd1bd",
+  "executionId": "exe_c78866ca6efd21e75b4976d3dd",
+  "agentId": "de-infra",
+  "agentName": "AI4S 基础设施工程师",
+  "instanceId": "codex-api",
+  "model": "gpt-5.6-terra",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t4-events",
+  "missionRef": "tasks/task_823620225b20cdb87c7ddbd1bd-event-stream-kernel/artifacts/missions/dispatch_67cc1714bbb18ebbb36d5441.md",
+  "runtimeSessionId": "runtime_07a4d22f43e08f81f06af587",
+  "providerSessionId": "01a08e93-ac7e-7931-ad6b-f59895c6cfdf",
+  "startedAt": "2026-09-11T03:47:17.344Z",
+  "endedAt": "2026-09-11T03:47:54.326Z",
+  "outcome": "failed",
+  "exitCode": 1,
+  "resultRef": "artifact:runtime-result/sha256/d47d038e64166f667db0a2bd697bb6dfbb6936311e7719ebb1f4f28cf164966b",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_67cc1714bbb18ebbb36d5441.jsonl",
+  "attemptGroupId": "dispatch_67cc1714bbb18ebbb36d5441",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "codex-api",
+    "model": "gpt-5.6-terra"
+  },
+  "classification": "provider_fault",
+  "reason": "Provider exited with code 1 before any tool call."
+}

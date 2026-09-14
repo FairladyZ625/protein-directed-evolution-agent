@@ -34,7 +34,7 @@
         "variance_min": 9.669044255226806e-06,
         "variance_max": 0.01764458258187183
       },
-      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-ridge.joblib",
+      "artifact": "lab/reports/workflow-v1.1/gb1/models/one_hot-ridge.joblib",
       "alpha_selected": 0.01
     },
     "xgboost": {
@@ -62,7 +62,7 @@
         "variance_min": 1.2488513397666582e-06,
         "variance_max": 0.6461275495195227
       },
-      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-xgboost.joblib"
+      "artifact": "lab/reports/workflow-v1.1/gb1/models/one_hot-xgboost.joblib"
     },
     "mlp": {
       "train": {
@@ -89,7 +89,7 @@
         "variance_min": 3.562300771676353e-05,
         "variance_max": 0.5684202735509991
       },
-      "artifact": "harness/reports/workflow-v1.1/gb1/models/one_hot-mlp.joblib"
+      "artifact": "lab/reports/workflow-v1.1/gb1/models/one_hot-mlp.joblib"
     }
   },
   "high_fitness_analysis": {
@@ -97,5 +97,5 @@
     "top_1pct_recall": 0.5,
     "conclusion": "detects high-fitness variants above random expectation"
   },
-  "figure": "harness/reports/workflow-v1.1/gb1/figures/predictor_comparison.png"
+  "figure": "lab/reports/workflow-v1.1/gb1/figures/predictor_comparison.png"
 }

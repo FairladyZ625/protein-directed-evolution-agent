@@ -1,0 +1,6 @@
+chore: record AAV multiseed robustness findings
+
+Local handoff checkpoint; research artifacts remain in ignored harness/.
+210 fixed-protocol campaigns; UCB beta=3 reaches the pool peak, while greedy retains the strong-count advantage.
+Report SHA256: c025bbd0bb7a7eecae092e3b3ca45d4cadf5e170ded3f5c3dbd7f2630c12ba24
+Results SHA256: 2001088098e73c1ea268ec060d8bc63dfa36f97f75676dfdb6a561566cd4a912

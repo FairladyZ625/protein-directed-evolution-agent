@@ -1,0 +1,103 @@
+{
+  "schema": "task-contract/v1",
+  "contractVersion": 1,
+  "taskId": "task_570206eb243df06a2e8c90e064",
+  "packagePath": "tasks/task_570206eb243df06a2e8c90e064-agentic-v0-7-materialize-metrics",
+  "title": "agentic v0.7 数据 materialize:重跑产出机器可读 metrics/事件/图 + 脊柱登记",
+  "taskClass": "standard",
+  "verticalId": "software/coding",
+  "presetId": "standard-task",
+  "profileId": "baseline",
+  "locale": "en-US",
+  "metadata": {
+    "idempotencyKey": null,
+    "parentTaskId": null,
+    "workKind": null,
+    "riskTier": null,
+    "urgency": null,
+    "verticalId": "software/coding",
+    "presetId": "standard-task",
+    "profileId": "baseline",
+    "moduleKey": null,
+    "slug": "agentic-v0-7-materialize-metrics",
+    "surfaces": [],
+    "fromLegacyId": null
+  },
+  "registerModule": null,
+  "completionGates": [
+    "ci",
+    "code-doc-reconciliation"
+  ],
+  "presetSnapshotDigest": "sha256:7a2f83d61b56907d1615e7f4836ab2e5258363b772adcf2c6bc9a39c06fb9473",
+  "scaffold": {
+    "baseVersion": "software-coding/v1",
+    "overlayDigest": null,
+    "resolvedSelectionDigest": "sha256:65cf03275542bf095048fe71564cd7137f899c6a401cd38cf255cc1f23e8d623"
+  },
+  "documents": [
+    {
+      "slot": "task.index",
+      "path": "INDEX.md",
+      "owner": "machine",
+      "materializeAs": "INDEX.md",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.contract",
+      "path": "task-contract.json",
+      "owner": "machine",
+      "materializeAs": "task-contract.json",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.plan",
+      "path": "task_plan.md",
+      "owner": "doc-sync",
+      "materializeAs": "task_plan.md",
+      "requiredAnchors": [
+        "## Brief",
+        "## Goal",
+        "## Context",
+        "## Required Reading",
+        "## Entry Conditions",
+        "## Dependencies",
+        "## Execution Surface",
+        "## Constraints",
+        "## Checkpoint",
+        "## CI/Gate Authority Stop Condition",
+        "## Implementation Plan",
+        "## Deliverable Contract",
+        "## Evidence Protocol",
+        "## Verification"
+      ],
+      "templateRef": "template://planning/task-plan@1",
+      "contentSha256": "e6a42a6084510db260c45f0fbd1250a8511b289e77d394ae4b7247e43d294864"
+    },
+    {
+      "slot": "task.closeout",
+      "path": "closeout.md",
+      "owner": "doc-sync",
+      "materializeAs": "closeout.md",
+      "requiredAnchors": [
+        "## Summary",
+        "## Verification",
+        "## Residual Risk"
+      ],
+      "templateRef": "template://planning/closeout@1",
+      "contentSha256": "47b4e51587f789d5eb33df9c8578927be3936ead63cfb66b4b4d4fe941517e6f"
+    },
+    {
+      "slot": "task.artifacts.keep",
+      "path": "artifacts/.gitkeep",
+      "owner": "doc-sync",
+      "materializeAs": "artifacts/.gitkeep",
+      "requiredAnchors": [],
+      "templateRef": "template://planning/keep-file@1",
+      "contentSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ]
+}

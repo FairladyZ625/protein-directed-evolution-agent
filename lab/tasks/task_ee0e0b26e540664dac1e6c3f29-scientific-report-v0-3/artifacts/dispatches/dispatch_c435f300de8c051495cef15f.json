@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_c435f300de8c051495cef15f",
+  "taskId": "task_ee0e0b26e540664dac1e6c3f29",
+  "executionId": "exe_22b432031671f82e5c7c7558b3",
+  "agentId": "de-report-astra",
+  "agentName": "AI4S 学术主笔 (Astra)",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-6-astra",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent",
+  "missionRef": "tasks/task_ee0e0b26e540664dac1e6c3f29-scientific-report-v0-3/artifacts/missions/dispatch_c435f300de8c051495cef15f.md",
+  "runtimeSessionId": "runtime_895139d355cacac4da4e865a",
+  "providerSessionId": "01a094f0-8134-74e2-9bd5-254426a642ab",
+  "startedAt": "2026-09-12T09:26:24.376Z",
+  "endedAt": "2026-09-12T09:45:35.488Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/bdd71abfa1557823174fb47c70611ed285a9b5ef67ae4849e32cf1dbe878e15a",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_c435f300de8c051495cef15f.jsonl",
+  "attemptGroupId": "dispatch_c435f300de8c051495cef15f",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-6-astra"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

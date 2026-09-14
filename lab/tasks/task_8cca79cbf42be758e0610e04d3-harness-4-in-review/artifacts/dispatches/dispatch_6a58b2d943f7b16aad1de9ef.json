@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_6a58b2d943f7b16aad1de9ef",
+  "taskId": "task_8cca79cbf42be758e0610e04d3",
+  "executionId": "exe_bbe0b174cfe1fe179d3244d106",
+  "agentId": "de-agent",
+  "agentName": "AI4S Agent 流水线工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-sol",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent",
+  "missionRef": "tasks/task_8cca79cbf42be758e0610e04d3-harness-4-in-review/artifacts/missions/dispatch_6a58b2d943f7b16aad1de9ef.md",
+  "runtimeSessionId": "runtime_b34e383a73f7d784a5a053d7",
+  "providerSessionId": "01a09f17-1cbc-7ef3-87e2-7e3ff53c90b9",
+  "startedAt": "2026-09-14T08:44:44.791Z",
+  "endedAt": "2026-09-14T08:47:29.212Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/1cd23669ced3fb67c410d8b0c404e8b5c165d8a420bd342be5cb47c26a90a9f8",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_6a58b2d943f7b16aad1de9ef.jsonl",
+  "attemptGroupId": "dispatch_6a58b2d943f7b16aad1de9ef",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-sol"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

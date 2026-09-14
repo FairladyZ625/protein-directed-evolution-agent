@@ -15,7 +15,7 @@ manifest 指向一个随后被 gzip 归档的事件流、交接单按 fact ID �
 
 检查三类引用:
     1. Markdown 链接与反引号里的仓库相对路径 → 文件必须存在
-    2. `F-XXXXXXXX` 形式的 fact ID → harness/facts/<id>.md 必须存在且已被 git 跟踪
+    2. `F-XXXXXXXX` 形式的 fact ID → lab/facts/<id>.md 必须存在且已被 git 跟踪
     3. 40 位或 7 位十六进制 commit → git 里必须能解析
 """
 from __future__ import annotations
@@ -31,9 +31,9 @@ ROOT = Path(__file__).resolve().parents[1]
 # 只检查交付面文档;任务包里的过程记录允许引用已消失的中间状态
 TARGETS = [
     "README.md",
-    "harness/reports/REPORT-HANDOFF.md",
-    "harness/reports/migration-audit.md",
-    *[str(p.relative_to(ROOT)) for p in sorted((ROOT / "harness/reports").glob("*/report.md"))],
+    "lab/reports/REPORT-HANDOFF.md",
+    "lab/reports/migration-audit.md",
+    *[str(p.relative_to(ROOT)) for p in sorted((ROOT / "lab/reports").glob("*/report.md"))],
 ]
 
 # 带目录分隔符才当路径;裸文件名(conservation.json 之类)在散文里是指代,不是路径
@@ -88,7 +88,7 @@ def check(doc: str) -> list[str]:
             problems.append(f"{doc}: 路径不存在 → {rel}")
 
     for fact in sorted(set(FACT_RE.findall(text))):
-        rel = f"harness/facts/{fact}.md"
+        rel = f"lab/facts/{fact}.md"
         if not (ROOT / rel).exists():
             problems.append(f"{doc}: fact 文件不存在 → {fact}")
         elif not tracked(rel):

@@ -1,0 +1,583 @@
+{
+  "dataset": "gb1",
+  "n_measured_variants": 149361,
+  "wt_sequence": "VDGV",
+  "wt_fitness": 1.0,
+  "distribution_by_order": {
+    "0": {
+      "source": "measured",
+      "n_variants": 1,
+      "fitness_median": 1.0,
+      "fitness_q25": 1.0,
+      "fitness_q75": 1.0,
+      "fitness_max": 1.0,
+      "beneficial_fraction_vs_wt": 0.0
+    },
+    "1": {
+      "source": "measured",
+      "n_variants": 76,
+      "fitness_median": 0.1224388752435,
+      "fitness_q25": 0.011320159176725,
+      "fitness_q75": 1.0986200093175,
+      "fitness_max": 3.90146075608,
+      "beneficial_fraction_vs_wt": 0.2631578947368421
+    },
+    "2": {
+      "source": "measured",
+      "n_variants": 2091,
+      "fitness_median": 0.0186682147549,
+      "fitness_q25": 0.003272665995215,
+      "fitness_q75": 0.22032088308300002,
+      "fitness_max": 5.3907325057,
+      "beneficial_fraction_vs_wt": 0.09469153515064563
+    },
+    "3": {
+      "source": "measured",
+      "n_variants": 26019,
+      "fitness_median": 0.0047916666925,
+      "fitness_q25": 0.00187728311514,
+      "fitness_q75": 0.024868938787900002,
+      "fitness_max": 6.27494649523,
+      "beneficial_fraction_vs_wt": 0.04896421845574388
+    },
+    "4": {
+      "source": "measured",
+      "n_variants": 121174,
+      "fitness_median": 0.00316859346602,
+      "fitness_q25": 0.00125152207676,
+      "fitness_q75": 0.00761342596698,
+      "fitness_max": 8.76196565571,
+      "beneficial_fraction_vs_wt": 0.017751332794163764
+    }
+  },
+  "additive_extrapolation": [
+    {
+      "train_orders": "0..1",
+      "test_order": 2,
+      "n_train": 77,
+      "n_test": 2091,
+      "feature": "position-wise one-hot",
+      "model": "Ridge",
+      "alpha_selection": "80/20 training-only holdout, random_state=0",
+      "alpha_selected": 0.01,
+      "validation_spearman_by_alpha": {
+        "0.01": 0.7977732292056382,
+        "0.1": 0.7977732292056382,
+        "1.0": 0.7977732292056382,
+        "10.0": 0.7977732292056382,
+        "100.0": 0.7977732292056382,
+        "1000.0": 0.7977732292056382,
+        "10000.0": 0.7977732292056382
+      },
+      "test_spearman": 0.6579902547119055
+    },
+    {
+      "train_orders": "0..2",
+      "test_order": 3,
+      "n_train": 2168,
+      "n_test": 26019,
+      "feature": "position-wise one-hot",
+      "model": "Ridge",
+      "alpha_selection": "80/20 training-only holdout, random_state=0",
+      "alpha_selected": 10.0,
+      "validation_spearman_by_alpha": {
+        "0.01": 0.7624620287776582,
+        "0.1": 0.7625624454111274,
+        "1.0": 0.7647078500907902,
+        "10.0": 0.7813858261669396,
+        "100.0": 0.7640724412542812,
+        "1000.0": 0.7081804108415642,
+        "10000.0": 0.69117767841094
+      },
+      "test_spearman": 0.5588564275111084
+    }
+  ],
+  "epistasis_by_order": {
+    "2": {
+      "source": "estimated from measured fitness: observed - (WT + sum measured single effects)",
+      "n_with_all_single_mutants": 2091,
+      "n_with_all_lower_orders": 2091,
+      "residual_median": 0.1172653296850199,
+      "residual_q25": -0.5860513523597498,
+      "residual_q75": 0.76848600646483,
+      "residual_mean": -0.01286029956781923,
+      "strongest_positive": [
+        {
+          "sequence": "VDLG",
+          "order": 2,
+          "observed_fitness": 3.14527339094,
+          "additive_prediction": -0.7244094537035799,
+          "epistasis_residual": 3.86968284464358,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "VDAA",
+          "order": 2,
+          "observed_fitness": 4.15798312534,
+          "additive_prediction": 0.49352546011600007,
+          "epistasis_residual": 3.6644576652240004,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WDFV",
+          "order": 2,
+          "observed_fitness": 2.55275331409,
+          "additive_prediction": -0.9225809571203001,
+          "epistasis_residual": 3.4753342712102997,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "VDFG",
+          "order": 2,
+          "observed_fitness": 2.65086706264,
+          "additive_prediction": -0.6671574206147,
+          "epistasis_residual": 3.3180244832547,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "VDCA",
+          "order": 2,
+          "observed_fitness": 3.68714212514,
+          "additive_prediction": 0.4336619528904,
+          "epistasis_residual": 3.2534801722496,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WDLV",
+          "order": 2,
+          "observed_fitness": 2.08698313362,
+          "additive_prediction": -0.97983299020918,
+          "epistasis_residual": 3.06681612382918,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "VDAG",
+          "order": 2,
+          "observed_fitness": 2.36785396466,
+          "additive_prediction": -0.61360338761,
+          "epistasis_residual": 2.98145735227,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "VDCG",
+          "order": 2,
+          "observed_fitness": 1.91858334368,
+          "additive_prediction": -0.6734668948356,
+          "epistasis_residual": 2.5920502385155997,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "VHGM",
+          "order": 2,
+          "observed_fitness": 4.77448984763,
+          "additive_prediction": 2.6668146613770003,
+          "epistasis_residual": 2.1076751862529997,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "YDFV",
+          "order": 2,
+          "observed_fitness": 1.02365309391,
+          "additive_prediction": -0.8609553930885001,
+          "epistasis_residual": 1.8846084869985,
+          "lower_order_coverage": {
+            "n_required": 2,
+            "n_measured": 2,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        }
+      ]
+    },
+    "3": {
+      "source": "estimated from measured fitness: observed - (WT + sum measured single effects)",
+      "n_with_all_single_mutants": 26019,
+      "n_with_all_lower_orders": 25035,
+      "residual_median": 0.2982672452484101,
+      "residual_q25": -0.4798173782552002,
+      "residual_q75": 1.0619255962784901,
+      "residual_mean": 0.1964192013438294,
+      "strongest_positive": [
+        {
+          "sequence": "WRFV",
+          "order": 3,
+          "observed_fitness": 5.59337922227,
+          "additive_prediction": -0.2771093081803,
+          "epistasis_residual": 5.8704885304503005,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WKFV",
+          "order": 3,
+          "observed_fitness": 4.49044298538,
+          "additive_prediction": -0.7846961818003,
+          "epistasis_residual": 5.275139167180299,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WIFV",
+          "order": 3,
+          "observed_fitness": 4.92709517832,
+          "additive_prediction": -0.13086762619030012,
+          "epistasis_residual": 5.0579628045103,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WSFV",
+          "order": 3,
+          "observed_fitness": 5.26740537941,
+          "additive_prediction": 0.24101240264970003,
+          "epistasis_residual": 5.026392976760301,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WVFV",
+          "order": 3,
+          "observed_fitness": 4.95296022622,
+          "additive_prediction": 0.025086910909699833,
+          "epistasis_residual": 4.9278733153103005,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WDLG",
+          "order": 3,
+          "observed_fitness": 3.08751613768,
+          "additive_prediction": -1.7140125045451802,
+          "epistasis_residual": 4.801528642225181,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "EDLG",
+          "order": 3,
+          "observed_fitness": 2.99219003824,
+          "additive_prediction": -1.69169026911098,
+          "epistasis_residual": 4.6838803073509805,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "VNLG",
+          "order": 3,
+          "observed_fitness": 4.64959878129,
+          "additive_prediction": 0.07851334503642016,
+          "epistasis_residual": 4.57108543625358,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WRLV",
+          "order": 3,
+          "observed_fitness": 4.11853390455,
+          "additive_prediction": -0.33436134126917993,
+          "epistasis_residual": 4.45289524581918,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WAFV",
+          "order": 3,
+          "observed_fitness": 4.88098043902,
+          "additive_prediction": 0.4786625386197001,
+          "epistasis_residual": 4.4023179004003,
+          "lower_order_coverage": {
+            "n_required": 3,
+            "n_measured": 3,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        }
+      ]
+    },
+    "4": {
+      "source": "estimated from measured fitness: observed - (WT + sum measured single effects)",
+      "n_with_all_single_mutants": 121174,
+      "n_with_all_lower_orders": 114221,
+      "residual_median": 0.6654398865491701,
+      "residual_q25": -0.28843164325261755,
+      "residual_q75": 1.4030757228868898,
+      "residual_mean": 0.4881873662727923,
+      "strongest_positive": [
+        {
+          "sequence": "ANCA",
+          "order": 4,
+          "observed_fitness": 7.55686908836,
+          "additive_prediction": 0.2984944073446001,
+          "epistasis_residual": 7.2583746810154,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 2,
+            "fraction": 0.5,
+            "complete": false,
+            "missing_sequences": [
+              "ANCV",
+              "ADCA"
+            ]
+          }
+        },
+        {
+          "sequence": "WRFG",
+          "order": 4,
+          "observed_fitness": 5.48522622005,
+          "additive_prediction": -1.0112888225163,
+          "epistasis_residual": 6.4965150425663,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "ANLG",
+          "order": 4,
+          "observed_fitness": 5.59130003015,
+          "additive_prediction": -0.8595769992493798,
+          "epistasis_residual": 6.45087702939938,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WRLG",
+          "order": 4,
+          "observed_fitness": 5.30477775234,
+          "additive_prediction": -1.06854085560518,
+          "epistasis_residual": 6.37331860794518,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "FWAA",
+          "order": 4,
+          "observed_fitness": 8.76196565571,
+          "additive_prediction": 2.772086944621,
+          "epistasis_residual": 5.989878711089,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WIFG",
+          "order": 4,
+          "observed_fitness": 5.12297723033,
+          "additive_prediction": -0.8650471405263,
+          "epistasis_residual": 5.9880243708563,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WKFG",
+          "order": 4,
+          "observed_fitness": 4.45316835886,
+          "additive_prediction": -1.5188756961363001,
+          "epistasis_residual": 5.9720440549963,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "YIFG",
+          "order": 4,
+          "observed_fitness": 5.06704771382,
+          "additive_prediction": -0.8034215764944999,
+          "epistasis_residual": 5.8704692903144995,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WRLT",
+          "order": 4,
+          "observed_fitness": 5.1440925588,
+          "additive_prediction": -0.7191723563941799,
+          "epistasis_residual": 5.863264915194179,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        },
+        {
+          "sequence": "WVFG",
+          "order": 4,
+          "observed_fitness": 5.14126464113,
+          "additive_prediction": -0.7090926034263001,
+          "epistasis_residual": 5.8503572445563,
+          "lower_order_coverage": {
+            "n_required": 4,
+            "n_measured": 4,
+            "fraction": 1.0,
+            "complete": true,
+            "missing_sequences": []
+          }
+        }
+      ]
+    }
+  },
+  "lower_order_coverage_by_order": {
+    "2": {
+      "source": "measured presence/absence",
+      "denominator": "measured variants at this order",
+      "n_variants": 2091,
+      "n_complete": 2091,
+      "complete_fraction": 1.0,
+      "mean_subset_coverage": 1.0,
+      "subset_denominator_per_variant": "all 2 immediate order-1 constituents"
+    },
+    "3": {
+      "source": "measured presence/absence",
+      "denominator": "measured variants at this order",
+      "n_variants": 26019,
+      "n_complete": 25035,
+      "complete_fraction": 0.9621814827625965,
+      "mean_subset_coverage": 0.9868557592528537,
+      "subset_denominator_per_variant": "all 3 immediate order-2 constituents"
+    },
+    "4": {
+      "source": "measured presence/absence",
+      "denominator": "measured variants at this order",
+      "n_variants": 121174,
+      "n_complete": 114221,
+      "complete_fraction": 0.9426197038968755,
+      "mean_subset_coverage": 0.9836495452819912,
+      "subset_denominator_per_variant": "all 4 immediate order-3 constituents"
+    }
+  },
+  "aav_peak_posthoc": null
+}

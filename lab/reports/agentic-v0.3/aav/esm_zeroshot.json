@@ -1,0 +1,33 @@
+{
+  "dataset": "aav",
+  "method": "ESM-2 650M zero-shot masked-marginals",
+  "true_peak_fitness": 8.416,
+  "modes": {
+    "fragment": {
+      "peak_rank_gate": 3743,
+      "gate_size": 9533,
+      "peak_rank_all": 8152,
+      "pool_size": 27832,
+      "reachable_in_budget": false,
+      "budget": 288,
+      "spearman_pool": 0.356,
+      "spearman_gate": 0.097,
+      "peak_zscore": -0.433,
+      "gate_top_budget_max_fitness": 6.481,
+      "gate_top_budget_mean_fitness": 1.212
+    },
+    "full_context": {
+      "peak_rank_gate": 4782,
+      "gate_size": 9533,
+      "peak_rank_all": 9671,
+      "pool_size": 27832,
+      "reachable_in_budget": false,
+      "budget": 288,
+      "spearman_pool": 0.41,
+      "spearman_gate": 0.154,
+      "peak_zscore": -1.31,
+      "gate_top_budget_max_fitness": 6.105,
+      "gate_top_budget_mean_fitness": 1.596
+    }
+  }
+}

@@ -1,0 +1,1166 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "agentic",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 48,
+  "n_rounds": 6,
+  "total_budget": 288,
+  "budget_spent": 288,
+  "strong_threshold": 2.6159,
+  "guardrail": true,
+  "max_hd": 4,
+  "blosum_min": 0.0,
+  "n_gate_rejected": 0,
+  "gate_pass_pool_size": 9533,
+  "surrogate": "epistasis",
+  "llm_used": true,
+  "llm_summary": "Campaign complete after Round 6. The final 48 gate-passing candidates were tested using 100% predicted-mean exploitation, consistent with the very high CV Spearman of 0.9057 and the final-round requirement. The experiment budget is exhausted.\n\nThe best discovered variant remains:\n\n- `DEEEIRTTNPVATEQYGSYSTNLQQGNR` — fitness **9.536**\n\nNo tested variant in the final round exceeded the incumbent; the strongest final-round result was 6.262. Across the campaign, measurements confirmed a narrow, strongly epistatic high-fitness basin centered on the enriched substitutions S17E, T20E/T20D, and selected R24/R27 changes. Although the surrogate maintained excellent rank correlation, most additional higher-order combinations were substantially deleterious, so exploitation was appropriately increased i",
+  "agent_model": "gpt-5.6-sol",
+  "n_tool_calls": 25,
+  "summary": {
+    "final_cum_top10_max": 6.5309,
+    "final_cum_top10_mean": 6.1922,
+    "final_cum_n_strong": 163,
+    "cum_top10_max_curve": [
+      5.9988,
+      5.9988,
+      6.5309,
+      6.5309,
+      6.5309,
+      6.5309
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "n_nominated": 48,
+      "top10_max": 5.9988,
+      "top10_mean": 5.2969,
+      "cum_top10_max": 5.9988,
+      "cum_top10_mean": 5.2969,
+      "n_hit_strong": 29,
+      "cum_n_strong": 29,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGSASENIQRGNA",
+          5.9988
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEAATNLQRGGR",
+          5.9521
+        ],
+        [
+          "DEEEIRTTNPVATEAYGSVSENLQRGTR",
+          5.8322
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSASENLQRGNM",
+          5.8127
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASENLQRGMR",
+          5.6302
+        ],
+        [
+          "DEEEIRPTNPVATEAYGSVSENLQRGTR",
+          5.4646
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVANTLQRGNR",
+          5.1849
+        ],
+        [
+          "DEEEIATTNPVATEVYGEASTNLQRGNR",
+          4.4412
+        ],
+        [
+          "QEEEIATTNPVATEQYGEVSTNLQRGGR",
+          4.3829
+        ],
+        [
+          "DEEEICTTNPVATEQYGSASDNLQRGGR",
+          4.2691
+        ]
+      ],
+      "spent_after": 48
+    },
+    {
+      "round": 2,
+      "n_nominated": 48,
+      "top10_max": 5.7677,
+      "top10_mean": 4.2854,
+      "cum_top10_max": 5.9988,
+      "cum_top10_mean": 5.5445,
+      "n_hit_strong": 26,
+      "cum_n_strong": 55,
+      "top10": [
+        [
+          "SEEEIRTTNPVATEQYGSVSTNLQRGTL",
+          5.7677
+        ],
+        [
+          "DEEEIRTTNPVATEGYGSVSENLQHGGR",
+          5.1258
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSEVLQRGNN",
+          4.6759
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSDALQRGNY",
+          4.0722
+        ],
+        [
+          "DEEEIATTNPVATEVYGSVSTNIQRGGR",
+          4.0134
+        ],
+        [
+          "NEEEIRTTNPVATEQYGSVGNNLQRGTR",
+          3.9115
+        ],
+        [
+          "DEEEIRTTNPVATEQYGDVSENLQYGNR",
+          3.8631
+        ],
+        [
+          "KEEEIRTTNPVATEQYGSVSTNLQLGNM",
+          3.8592
+        ],
+        [
+          "DENEISTTNPVATEQYGSVSTNLQVGNQ",
+          3.7946
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGMR",
+          3.7701
+        ]
+      ],
+      "spent_after": 96
+    },
+    {
+      "round": 3,
+      "n_nominated": 48,
+      "top10_max": 6.5309,
+      "top10_mean": 4.8729,
+      "cum_top10_max": 6.5309,
+      "cum_top10_mean": 5.8853,
+      "n_hit_strong": 26,
+      "cum_n_strong": 81,
+      "top10": [
+        [
+          "DDEEIRTTNPVATEQYGTVSTNLQRGNQ",
+          6.5309
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVPTNLQRGGR",
+          5.9907
+        ],
+        [
+          "DEEEIKTTNPVATEVYGEVSTNLQRGQR",
+          5.8728
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSNNLQQGNR",
+          4.601
+        ],
+        [
+          "DEEEITTTNPVATEQYGEVSTNLQRGNF",
+          4.522
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVSDNLQRGNR",
+          4.4031
+        ],
+        [
+          "SEEEIRTTNPVATELYGSVSTNLQQGNR",
+          4.2975
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNM",
+          4.2182
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVATNLQRGNR",
+          4.205
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVATNLQRGGR",
+          4.0877
+        ]
+      ],
+      "spent_after": 144
+    },
+    {
+      "round": 4,
+      "n_nominated": 48,
+      "top10_max": 6.4392,
+      "top10_mean": 5.149,
+      "cum_top10_max": 6.5309,
+      "cum_top10_mean": 6.1492,
+      "n_hit_strong": 26,
+      "cum_n_strong": 107,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGVVSENLQYGNR",
+          6.4392
+        ],
+        [
+          "DEEEIRTTNPVAYEQYGSVSENLQRGNS",
+          6.4036
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSENLQRGND",
+          6.2857
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSENLQHGNR",
+          6.1862
+        ],
+        [
+          "DEEEIRTTNPVATEQYGLVSDNLQRGNL",
+          4.6061
+        ],
+        [
+          "DEEEIKTTNPVATEQYGSVSENLQRGNH",
+          4.6002
+        ],
+        [
+          "DEEEIRTTNPVATEQYGSVSTNLMAGNF",
+          4.2623
+        ],
+        [
+          "DEEEIRTTNPVATEVYGDVSDNLQRGNR",
+          4.2543
+        ],
+        [
+          "DEEEIRTTNPVATENYGEVSTNLQHGNR",
+          4.2364
+        ],
+        [
+          "DEEEIRTTNPVATEQYGEVSTQLQRGQR",
+          4.2156
+        ]
+      ],
+      "spent_after": 192
+    },
+    {
+      "round": 5,
+      "n_nominated": 48,
+      "top10_max": 5.6437,
+      "top10_mean": 4.4095,
+      "cum_top10_max": 6.5309,
+      "cum_top10_mean": 6.1492,
+      "n_hit_strong": 29,
+      "cum_n_strong": 136,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEGYGSVSETLQRGNR",
+          5.6437
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVPTNLQHGNR",
+          5.2504
+        ],
+        [
+          "DEEEIRTTNPVATEGYGSASENLQRANR",
+          4.5563
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTNLQHGNF",
+          4.3844
+        ],
+        [
+          "DEEEIRTTNPVATEMYGTVSTNLQRGER",
+          4.2553
+        ],
+        [
+          "DEEEIRTTNPVATEQFGSVSENLQRGNF",
+          4.0682
+        ],
+        [
+          "DEEEIRTTNPVSTEQYGSVSEVLQRGNR",
+          4.0264
+        ],
+        [
+          "DEEEIRTTNPVATEQYGGVSTNLQSGNQ",
+          3.9957
+        ],
+        [
+          "DEEEISTTNPVATENYGEVSTNLQRGNR",
+          3.9653
+        ],
+        [
+          "DEEEIRQTNPVATEQYGSVSTNQQRGND",
+          3.9497
+        ]
+      ],
+      "spent_after": 240
+    },
+    {
+      "round": 6,
+      "n_nominated": 48,
+      "top10_max": 6.262,
+      "top10_mean": 4.5711,
+      "cum_top10_max": 6.5309,
+      "cum_top10_mean": 6.1922,
+      "n_hit_strong": 27,
+      "cum_n_strong": 163,
+      "top10": [
+        [
+          "DEEEIRTTNPVATEQYGEASTNLQRGTR",
+          6.262
+        ],
+        [
+          "DEEEIRTTNPVATECYGSVSTELQHGNR",
+          5.8089
+        ],
+        [
+          "DEEEIRTTNPVATEQWGSVSENLQRGNS",
+          5.0542
+        ],
+        [
+          "DEEEIATTNPVATEQYGEVSTNLQRGGR",
+          4.8536
+        ],
+        [
+          "SEEEIRTTNPVATEQYGSVSENLQTGNR",
+          4.7533
+        ],
+        [
+          "DEEEIRTTNPVATEQYGVVSTNIQIGNR",
+          3.9661
+        ],
+        [
+          "DEEEIRTTNPVATEGYGSVSENLQRGER",
+          3.7796
+        ],
+        [
+          "DEEEIRTTNPAATEQYGEVSTNLQQGNR",
+          3.7705
+        ],
+        [
+          "DEEEIATTNPVATEQYGSVCENLQRGNR",
+          3.77
+        ],
+        [
+          "DEEEICTTNPVATEQYGTVSTNLQRGNI",
+          3.6928
+        ]
+      ],
+      "spent_after": 288
+    }
+  ],
+  "tool_trace": [
+    {
+      "event_type": "agent.llm.model",
+      "actor": "agent",
+      "payload": {
+        "model": "gpt-5.6-sol",
+        "base_url": "https://token.qianbaner.top/v1"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 288,
+        "current_round": "1 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9059,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        }
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "adaptive_default",
+        "requested_exploit_ratio": 0.8707,
+        "exploit_ratio": 0.8707,
+        "adaptive_default_ratio": 0.8707,
+        "policy_min_ratio": 0.8,
+        "n_exploit": 42,
+        "n_explore": 6,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 48,
+        "batch_max": 5.999
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10481,
+        "n_pool_unmeasured": 27784,
+        "budget_remaining": 240,
+        "current_round": "2 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.85
+          ],
+          [
+            "T20E",
+            2.792
+          ],
+          [
+            "R27Q",
+            2.504
+          ],
+          [
+            "R27I",
+            2.34
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.301
+          ],
+          [
+            "R27M",
+            2.268
+          ],
+          [
+            "R24Q",
+            2.252
+          ],
+          [
+            "T20D",
+            2.209
+          ],
+          [
+            "R24H",
+            2.126
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R27A",
+            2.052
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9003,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        }
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "adaptive_default",
+        "requested_exploit_ratio": 0.9105,
+        "exploit_ratio": 0.9105,
+        "adaptive_default_ratio": 0.9105,
+        "policy_min_ratio": 0.8,
+        "n_exploit": 44,
+        "n_explore": 4,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 96,
+        "batch_max": 5.768
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10529,
+        "n_pool_unmeasured": 27736,
+        "budget_remaining": 192,
+        "current_round": "3 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.861
+          ],
+          [
+            "T20E",
+            2.823
+          ],
+          [
+            "R27Q",
+            2.502
+          ],
+          [
+            "R27L",
+            2.359
+          ],
+          [
+            "R27I",
+            2.331
+          ],
+          [
+            "R27T",
+            2.311
+          ],
+          [
+            "R27M",
+            2.265
+          ],
+          [
+            "R24Q",
+            2.259
+          ],
+          [
+            "T20D",
+            2.244
+          ],
+          [
+            "R24H",
+            2.153
+          ],
+          [
+            "R24G",
+            2.097
+          ],
+          [
+            "R27N",
+            2.079
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9027,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        }
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "adaptive_default",
+        "requested_exploit_ratio": 0.9648,
+        "exploit_ratio": 0.9648,
+        "adaptive_default_ratio": 0.9648,
+        "policy_min_ratio": 0.8,
+        "n_exploit": 46,
+        "n_explore": 2,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 144,
+        "batch_max": 6.531
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10577,
+        "n_pool_unmeasured": 27688,
+        "budget_remaining": 144,
+        "current_round": "4 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.004
+          ],
+          [
+            "T20E",
+            2.834
+          ],
+          [
+            "R27Q",
+            2.52
+          ],
+          [
+            "R27L",
+            2.359
+          ],
+          [
+            "R27I",
+            2.354
+          ],
+          [
+            "R27T",
+            2.332
+          ],
+          [
+            "R27M",
+            2.287
+          ],
+          [
+            "T20D",
+            2.281
+          ],
+          [
+            "R24Q",
+            2.28
+          ],
+          [
+            "R24H",
+            2.134
+          ],
+          [
+            "R24G",
+            2.097
+          ],
+          [
+            "R27N",
+            2.071
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9002,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        }
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "adaptive_default",
+        "requested_exploit_ratio": 1.0,
+        "exploit_ratio": 1.0,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.8,
+        "n_exploit": 48,
+        "n_explore": 0,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 192,
+        "batch_max": 6.439
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10625,
+        "n_pool_unmeasured": 27640,
+        "budget_remaining": 96,
+        "current_round": "5 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            3.046
+          ],
+          [
+            "T20E",
+            2.875
+          ],
+          [
+            "R27Q",
+            2.531
+          ],
+          [
+            "R27L",
+            2.387
+          ],
+          [
+            "R27I",
+            2.354
+          ],
+          [
+            "R27T",
+            2.332
+          ],
+          [
+            "T20D",
+            2.32
+          ],
+          [
+            "R27M",
+            2.285
+          ],
+          [
+            "R24Q",
+            2.274
+          ],
+          [
+            "R24H",
+            2.217
+          ],
+          [
+            "R27S",
+            2.102
+          ],
+          [
+            "R24G",
+            2.084
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9043,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        }
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "adaptive_default",
+        "requested_exploit_ratio": 1.0,
+        "exploit_ratio": 1.0,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.9,
+        "n_exploit": 48,
+        "n_explore": 0,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 240,
+        "batch_max": 5.644
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    },
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10673,
+        "n_pool_unmeasured": 27592,
+        "budget_remaining": 48,
+        "current_round": "6 / 6",
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "S17E",
+            2.997
+          ],
+          [
+            "T20E",
+            2.897
+          ],
+          [
+            "R27Q",
+            2.548
+          ],
+          [
+            "R27L",
+            2.387
+          ],
+          [
+            "R27I",
+            2.363
+          ],
+          [
+            "R27T",
+            2.338
+          ],
+          [
+            "T20D",
+            2.328
+          ],
+          [
+            "R27M",
+            2.303
+          ],
+          [
+            "R24H",
+            2.281
+          ],
+          [
+            "R24Q",
+            2.279
+          ],
+          [
+            "R27S",
+            2.097
+          ],
+          [
+            "R24G",
+            2.084
+          ]
+        ],
+        "surrogate_status": {
+          "architecture": "EpistasisRidgePredictor",
+          "cv_spearman": 0.9057,
+          "confidence_level": "VERY_HIGH",
+          "recommendation": "Prioritise predicted_mean exploitation (>=80% of the batch)."
+        }
+      }
+    },
+    {
+      "event_type": "agent.tool.compose_batch",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "status": "ok",
+        "allocation_source": "adaptive_default",
+        "requested_exploit_ratio": 1.0,
+        "exploit_ratio": 1.0,
+        "adaptive_default_ratio": 1.0,
+        "policy_min_ratio": 0.9,
+        "n_exploit": 48,
+        "n_explore": 0,
+        "n": 48
+      }
+    },
+    {
+      "event_type": "agent.tool.test",
+      "actor": "experiment",
+      "payload": {
+        "requested": 48,
+        "measured": 48,
+        "spent": 288,
+        "batch_max": 6.262
+      }
+    },
+    {
+      "event_type": "agent.tool.test_composed_batch",
+      "actor": "experiment",
+      "payload": {
+        "n": 48,
+        "status": "ok"
+      }
+    }
+  ]
+}

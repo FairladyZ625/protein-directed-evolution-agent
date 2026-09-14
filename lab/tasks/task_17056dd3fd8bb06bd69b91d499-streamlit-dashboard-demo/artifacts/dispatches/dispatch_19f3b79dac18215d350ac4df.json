@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_19f3b79dac18215d350ac4df",
+  "taskId": "task_17056dd3fd8bb06bd69b91d499",
+  "executionId": "exe_67de23cb4595dfd5723b458460",
+  "agentId": "de-frontend",
+  "agentName": "AI4S 前端工程师",
+  "instanceId": "zcode-glm-5-3",
+  "model": "GLM-5.3",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t8-demo",
+  "missionRef": "tasks/task_17056dd3fd8bb06bd69b91d499-streamlit-dashboard-demo/artifacts/missions/dispatch_19f3b79dac18215d350ac4df.md",
+  "runtimeSessionId": "runtime_9526e7256002df236207fbd2",
+  "providerSessionId": "sess_65f18167-957e-41eb-9e9d-cc4bf8797bc0",
+  "startedAt": "2026-09-11T08:30:49.769Z",
+  "endedAt": "2026-09-11T08:54:20.766Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/ed00f3545fa6b4dd107b3f090da14266599866a7ee51d28f1a5c893441cf7684",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_19f3b79dac18215d350ac4df.jsonl",
+  "attemptGroupId": "dispatch_19f3b79dac18215d350ac4df",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "zcode-glm-5-3",
+    "model": "GLM-5.3"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

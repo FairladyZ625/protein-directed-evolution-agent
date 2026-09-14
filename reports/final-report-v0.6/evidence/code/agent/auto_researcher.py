@@ -950,7 +950,7 @@ def main(argv=None):
                         "(no cum_top10_max improvement for >=2 rounds) in the prompt. Default "
                         "acquisition in both modes is pure predicted-mean exploitation.")
     p.add_argument("--out-dir", type=Path, default=None,
-                   help="default: harness/reports/<agentic-version>/<dataset>/")
+                   help="default: lab/reports/<agentic-version>/<dataset>/")
     a = p.parse_args(argv)
 
     from evolution.results_layout import run_dir

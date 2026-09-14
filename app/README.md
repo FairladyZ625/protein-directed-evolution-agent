@@ -1,7 +1,7 @@
 # GB1 × AAV 定向进化科学智能体看板
 
 **单一入口 `app/demo.py`**,顶层两个视图,**全程只读**消费上游产物
-(`@st.cache_data` / `@st.cache_resource`,不写事件流、不覆盖 `reports/` 或 `harness/reports/`)。
+(`@st.cache_data` / `@st.cache_resource`,不写事件流、不覆盖 `reports/` 或 `lab/reports/`)。
 
 ```bash
 streamlit run app/demo.py     # 或 make demo
@@ -45,12 +45,12 @@ v0.8 强制注入残差而四臂送测集合逐位相同;v0.9 换契约后同一
 
 | 数据 | 用于 | 缺失时 |
 |---|---|---|
-| `harness/reports/workflow-v1.*/gb1/campaign_*.metrics.json` | 模块① | ① 停等,提示 `make campaign` |
+| `lab/reports/workflow-v1.*/gb1/campaign_*.metrics.json` | 模块① | ① 停等,提示 `make campaign` |
 | 同目录 `campaign_*.events.jsonl[.gz]` | 模块② | ② 停等(`.jsonl` 会透明回退到 `.gz`) |
 | `data/pools/train_pool.csv` | 模块③ Ridge 拟合 | ③ 停等 |
 | `data/four_mutations_full_data.csv`(46 MB,不入库) | 模块③ 真值/分位/推荐 oracle | 打分可用(无真值校验),推荐停等 |
-| `harness/reports/analysis-v0.1/<ds>/` | 模块④⑤ | 对应面板停等 |
-| `harness/reports/v09-contract/<四臂>/` | 模块⑥ | ⑥ 停等,提示 `scripts/run_v09_contract.sh` |
+| `lab/reports/analysis-v0.1/<ds>/` | 模块④⑤ | 对应面板停等 |
+| `lab/reports/v09-contract/<四臂>/` | 模块⑥ | ⑥ 停等,提示 `scripts/run_v09_contract.sh` |
 | `.env`(可选,`API_KEY` 等) | 模块③(b) LLM 模式 | LLM 复选框自动禁用,不报错 |
 
 ## 测试

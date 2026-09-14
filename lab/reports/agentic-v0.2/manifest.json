@@ -1,0 +1,14 @@
+{
+  "line": "agentic",
+  "version": "v0.2",
+  "description": "在 v0.1 自主 agent 的 test 前加双层 Knowledge 门禁流:入口塑形(list_pool 只出门内候选 HD≤4 且平均BLOSUM62≥0)+ 出口硬门(test 拒收不扣预算、不可绕过)。门塑造搜索空间而非只筑墙。",
+  "agent_model": "gpt-5.6-sol",
+  "guardrail": {"max_hd": 4, "blosum_min": 0.0, "gate_pass_pool_size": 9533, "gate_pass_rate": "34.3%", "peak_inside_gate": 8.42},
+  "datasets": {
+    "aav": "AAV 池式,288 预算(48×6),seed 42。含 agentic 跑分 + 事件流(链校验通过,43 事件)+ 门内确定性对照"
+  },
+  "key_result": "cum_top10_max 5.96→7.53(追平 greedy)、strong 15→93、budget 花满 284/288、n_gate_rejected 1(手搓门外候选被出口门抓)。探索惩罚被消除,但未突破 7.53——真峰 8.42 在门内仍被 one_hot 代理排到 #5763,天花板是表征问题非决策问题。",
+  "status": "gate neutralizes autonomy penalty; parity with greedy; ceiling is representation-bound",
+  "date": "2026-09-11",
+  "next": "实验二:ESM-2 表征——看 richer embedding 能否把真峰 8.42 的预测排名从 #5763 拉进 top,给门禁流真正的破顶空间"
+}

@@ -117,7 +117,7 @@ def main(argv=None):
     p.add_argument("--surrogates", nargs="+", default=["ridge", "knn", "hgb"])
     p.add_argument("--budget", type=int, default=288)
     p.add_argument("--out", type=Path,
-                   default=ROOT / "harness/reports/agentic-v0.3/aav/surrogate_scan.json")
+                   default=ROOT / "lab/reports/agentic-v0.3/aav/surrogate_scan.json")
     a = p.parse_args(argv)
     res = scan(tuple(a.features), tuple(a.surrogates), a.budget)
     a.out.parent.mkdir(parents=True, exist_ok=True)

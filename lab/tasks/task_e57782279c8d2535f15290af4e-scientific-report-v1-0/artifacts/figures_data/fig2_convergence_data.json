@@ -1,0 +1,46 @@
+{
+  "dataset": "GB1 (149,361 variants, WT=VDGV=1.0, true_max=FWAA=8.762)",
+  "rounds": [
+    1,
+    2,
+    3
+  ],
+  "budget_per_round": 96,
+  "total_budget": 288,
+  "strategies": {
+    "random_baseline": {
+      "round_max": [
+        1.612,
+        2.374,
+        2.374
+      ],
+      "hits": 6
+    },
+    "model_greedy": {
+      "round_max": [
+        7.282,
+        8.045,
+        8.045
+      ],
+      "hits": 231,
+      "status": "deadlock_at_8.045"
+    },
+    "agent_ablation_no_knowledge": {
+      "round_max": [
+        7.282,
+        8.762,
+        8.762
+      ],
+      "hits": 215
+    },
+    "knowledge_agent_ucb_gate": {
+      "round_max": [
+        8.762,
+        8.762,
+        8.762
+      ],
+      "hits": 201,
+      "status": "hit_global_peak_round_1"
+    }
+  }
+}

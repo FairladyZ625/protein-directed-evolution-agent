@@ -98,7 +98,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--budget", type=int, default=288)
     p.add_argument("--out", type=Path,
-                   default=ROOT / "harness/reports/agentic-v0.3/aav/esm_zeroshot.json")
+                   default=ROOT / "lab/reports/agentic-v0.3/aav/esm_zeroshot.json")
     a = p.parse_args(argv)
     wt = AAV_WT
     full = "".join(l.strip() for l in open(ROOT / "data/aav/P03135.fasta")

@@ -14,7 +14,7 @@
 特性代码。所以做成脚本。
 
 判据(故意保守,宁可误报不可漏报):
-    对每个 `harness/reports/<line>-v<version>/`,
+    对每个 `lab/reports/<line>-v<version>/`,
     从它的 report.md / manifest.json 里抽出提到的**仓库内代码路径**与**commit**,
     逐个检查:代码路径在 HEAD 上存在吗?commit 在 HEAD 的祖先链上吗?
 
@@ -32,7 +32,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORTS = ROOT / "harness/reports"
+REPORTS = ROOT / "lab/reports"
 
 CODE_RE = re.compile(r"`((?:agent|analysis|app|data|evolution|events|features|knowledge|models|scripts|tests)"
                      r"/[A-Za-z0-9_./-]+\.py)`")

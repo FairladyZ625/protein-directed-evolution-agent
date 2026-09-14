@@ -1,0 +1,2 @@
+{"kind": "start", "mode": "full", "seed": 0}
+{"kind": "result", "mode": "full", "seed": 0, "summary": {"final_cum_top10_max": 6.5309, "final_cum_top10_mean": 6.1231, "final_cum_n_strong": 132, "cum_top10_max_curve": [5.9988, 5.9988, 5.9988, 5.9988, 6.0791, 6.5309]}, "model": "claude-sonnet-5", "llm_used": true, "spent": 288, "seconds": 1774.99, "errors": {"agent.tool.error": 0, "agent.llm.round_error": 0, "agent.llm.no_test": 2, "agent.llm.fallback": 0}}

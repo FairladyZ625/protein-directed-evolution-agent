@@ -44,4 +44,4 @@ printf '[run-all] 3/3 campaign: four strategies on measured GB1 (hard regime); o
   --out-events "$campaign_out/campaign_hard.events.jsonl"
 
 printf '%s\n' '[run-all] complete: smoke, predictor, and four-strategy campaign finished.'
-printf '%s\n' '[run-all] 提交在 harness/reports/ 下的产物未被改动;本次结果在 tmp/run-all/,可与前者对比。'
+printf '%s\n' '[run-all] 提交在 lab/reports/ 下的产物未被改动;本次结果在 tmp/run-all/,可与前者对比。'

@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_074c8738be3cacff57878100",
+  "taskId": "task_73e3a88adf751c868a5d5f6967",
+  "executionId": "exe_77b5bf0260792ffe73721b208e",
+  "agentId": "de-ml",
+  "agentName": "AI4S 蛋白 ML 工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-sol",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-conservation",
+  "missionRef": "tasks/task_73e3a88adf751c868a5d5f6967-v0-1-esm-2-4/artifacts/missions/dispatch_074c8738be3cacff57878100.md",
+  "runtimeSessionId": "runtime_6dc9e4ca62d0d2a3cc93ce57",
+  "providerSessionId": "01a095df-68bf-77f2-8048-767ae782cb97",
+  "startedAt": "2026-09-12T13:47:21.110Z",
+  "endedAt": "2026-09-12T13:51:26.214Z",
+  "outcome": "unknown",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/b4a78349c5e247f4245a545d20c6d3dea3306e5eaca8c01a25d6e0d1e569e017",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_074c8738be3cacff57878100.jsonl",
+  "attemptGroupId": "dispatch_074c8738be3cacff57878100",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-sol"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker exited with uncommitted changes in its worktree."
+}

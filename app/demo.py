@@ -68,7 +68,7 @@ LANDSCAPE_CSV = ROOT / "data" / "four_mutations_full_data.csv"
 # 前五个模块全部消费 GB1 workflow 线（evolution/campaign.py + agent/pipeline.py）。
 # agentic 线（agent/auto_researcher.py，AAV）此前在看板上完全不可见，而试题
 # 「Agent 是否真学到科学家思维，还是只是调用预测模型」的答案恰恰在那条线上。
-V09_CONTRACT_DIR = ROOT / "harness" / "reports" / "v09-contract"
+V09_CONTRACT_DIR = ROOT / "lab" / "reports" / "v09-contract"
 V09_ARMS = {
     "contract-v08_reflexion-off_seed-42": ("v0.8 契约", "反思关"),
     "contract-v08_reflexion-on_seed-42": ("v0.8 契约", "反思开"),
@@ -76,7 +76,7 @@ V09_ARMS = {
     "contract-v09_reflexion-on_seed-42": ("v0.9 契约", "反思开"),
 }
 
-# ---- 模块④⑤（分析面板）的数据源：全部只读，见 harness/reports/ 的版本化产物树 ----
+# ---- 模块④⑤（分析面板）的数据源：全部只读，见 lab/reports/ 的版本化产物树 ----
 RATIONALES_JSON = report_dir("workflow") / "agent_combination_rationales.json"
 ANALYSIS_DIR = {ds: run_dir("analysis", ds, create=False) for ds in ("gb1", "aav")}
 _V10_GB1 = run_dir("workflow", "gb1", version="v1.0", create=False)
@@ -90,7 +90,7 @@ HINTS = {
                   "`ed3b4f2` 固定入库）。",
     "mutation_order": "先跑 `PYTHONPATH=. python analysis/mutation_order.py` 重新生成。",
     "conservation": "先跑 `PYTHONPATH=. python features/conservation.py --dataset {ds} "
-                    "--data <对应 DMS 真值表 csv> --output-dir harness/reports/analysis-v0.1` 重新生成。",
+                    "--data <对应 DMS 真值表 csv> --output-dir lab/reports/analysis-v0.1` 重新生成。",
     "alpha_sweep": "先跑 `python -m models.alpha_sweep` 重新生成（该文件存档于 workflow-v1.0 周期目录）。",
     "scaling": "先跑 `python -m models.evaluate_all` 重新生成（该文件存档于 workflow-v1.0 周期目录）。",
 }
@@ -880,7 +880,7 @@ def render_concentration_panel() -> None:
     """④-a 推荐突变是否集中在关键位点：按策略 × 位点展示 top-k 残基分布。"""
     st.markdown("#### ④-a 推荐突变是否集中在关键位点——top-k 残基集中度")
     st.caption(
-        "数据源：`harness/reports/workflow-v1.1/gb1/campaign_easy.metrics.json` 的 "
+        "数据源：`lab/reports/workflow-v1.1/gb1/campaign_easy.metrics.json` 的 "
         "`strategies.<策略>.topk_concentration`（easy 档 · 随机池冷启动）。只读展示，数字均为 JSON 原字段。"
     )
     if _missing_artifact(METRICS_JSON, HINTS["metrics"]):
@@ -935,7 +935,7 @@ def render_concentration_panel() -> None:
 def render_rationales_panel() -> None:
     """④-b 为什么组合某些突变：实测增益（evidence）与叙事（narrative）分开标注。"""
     st.markdown("#### ④-b 为什么组合这些突变——组合理由与实测增益")
-    st.caption("数据源：`harness/reports/workflow-v1.1/agent_combination_rationales.json`（workflow-v1.1 周期捕获）。")
+    st.caption("数据源：`lab/reports/workflow-v1.1/agent_combination_rationales.json`（workflow-v1.1 周期捕获）。")
     if _missing_artifact(RATIONALES_JSON, HINTS["rationales"]):
         return
     data = load_metrics(str(RATIONALES_JSON)) or {}
@@ -994,7 +994,7 @@ def render_mutation_order_panel() -> None:
     ds_labels = {"aav": "AAV（28 aa，阶数 0–28，加分项③主证据）", "gb1": "GB1（四位点，阶数 0–4）"}
     ds = st.selectbox("数据集", ("aav", "gb1"), index=0, format_func=ds_labels.get, key="m5a_ds")
     path = ANALYSIS_DIR[ds] / "mutation_order.json"
-    st.caption(f"数据源：`harness/reports/analysis-v0.1/{ds}/mutation_order.json`（只读分析线，不跑新实验）。")
+    st.caption(f"数据源：`lab/reports/analysis-v0.1/{ds}/mutation_order.json`（只读分析线，不跑新实验）。")
     if _missing_artifact(path, HINTS["mutation_order"]):
         return
     d = load_metrics(str(path)) or {}
@@ -1091,7 +1091,7 @@ def render_conservation_panel() -> None:
     ds_labels = {"aav": "AAV（28 aa，有真峰位点记录）", "gb1": "GB1（56 aa，四位点组合空间）"}
     ds = st.selectbox("数据集", ("aav", "gb1"), index=0, format_func=ds_labels.get, key="m5b_ds")
     path = ANALYSIS_DIR[ds] / "conservation.json"
-    st.caption(f"数据源：`harness/reports/analysis-v0.1/{ds}/conservation.json`（只读分析线）。")
+    st.caption(f"数据源：`lab/reports/analysis-v0.1/{ds}/conservation.json`（只读分析线）。")
     if _missing_artifact(path, HINTS["conservation"].format(ds=ds)):
         return
     c = load_metrics(str(path)) or {}
@@ -1169,15 +1169,15 @@ def render_alpha_sweep_panel() -> None:
     """⑤-c 为什么不能固定 Ridge alpha：固定 alpha 的预处理反转 + 逐特征选 alpha。"""
     st.markdown("#### ⑤-c 为什么不能固定 Ridge alpha——逐特征 alpha 扫描")
     st.caption(
-        "数据源：`harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`（曲线）与 "
+        "数据源：`lab/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`（曲线）与 "
         "`predictor_ladder_scaling_ablation.json`（固定 alpha 消融）。"
     )
     sweep_missing = not ALPHA_SWEEP_JSON.exists()
     scaling_missing = not SCALING_ABLATION_JSON.exists()
     if sweep_missing:
-        st.warning(f"缺 `harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`——{HINTS['alpha_sweep']} 扫描曲线停等。")
+        st.warning(f"缺 `lab/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`——{HINTS['alpha_sweep']} 扫描曲线停等。")
     if scaling_missing:
-        st.warning(f"缺 `harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json`——{HINTS['scaling']} 固定 alpha 对照停等。")
+        st.warning(f"缺 `lab/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json`——{HINTS['scaling']} 固定 alpha 对照停等。")
     if sweep_missing and scaling_missing:
         return
     sweep = load_metrics(str(ALPHA_SWEEP_JSON)) if not sweep_missing else None
@@ -1318,8 +1318,8 @@ def render_contract_module() -> None:
             if (V09_CONTRACT_DIR / name / "agentic.metrics.json").exists()}
     if len(arms) < 4:
         st.warning(
-            f"缺 v0.9 四臂归档（现有 {len(arms)}/4，目录 `harness/reports/v09-contract/`）——"
-            "先跑 `scripts/run_v09_contract.sh harness/reports/v09-contract 42` 再归档。本模块停等，其余模块不受影响。"
+            f"缺 v0.9 四臂归档（现有 {len(arms)}/4，目录 `lab/reports/v09-contract/`）——"
+            "先跑 `scripts/run_v09_contract.sh lab/reports/v09-contract 42` 再归档。本模块停等，其余模块不受影响。"
         )
         return
 
@@ -1426,8 +1426,8 @@ def render_experiment_dashboard() -> None:
         "看工具契约如何决定 agent 的自主性；突变阶数面板（⑤-a）用的也是 AAV。"
     )
     st.caption(
-        "本看板**只读**消费 T7/T4/T3 产物与 `harness/reports/` 分析产物（`@st.cache_data` / `@st.cache_resource`），"
-        "不写事件流、不覆盖 `reports/` 或 `harness/reports/`。运行：`streamlit run app/demo.py`（或 `make demo`）。"
+        "本看板**只读**消费 T7/T4/T3 产物与 `lab/reports/` 分析产物（`@st.cache_data` / `@st.cache_resource`），"
+        "不写事件流、不覆盖 `reports/` 或 `lab/reports/`。运行：`streamlit run app/demo.py`（或 `make demo`）。"
     )
 
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(

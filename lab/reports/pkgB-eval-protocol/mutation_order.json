@@ -1,0 +1,428 @@
+{
+  "schema_version": "mutation-order.v1",
+  "dataset": "GB1 Wu 2016",
+  "wild_type": "VDGV",
+  "wild_type_fitness": 1.0,
+  "source": {
+    "outer_pools": "data/pools/{train_pool,query_pool,holdout}.csv",
+    "historical_trajectory_audit": "lab/reports/agentic-v0.*/aav/*metrics.json",
+    "historical_trajectory_limitation": "round aggregates and Top-10 only; full nominations/HD unavailable"
+  },
+  "protocol": {
+    "feature": "one_hot_80d",
+    "model": "5-seed Ridge ensemble",
+    "seed": 42,
+    "selection_metric": "validation Spearman",
+    "selected_alpha": 0.01,
+    "equal_budget_per_group": 24,
+    "nomination_space": "query-test only; holdout untouched",
+    "hit_definition": "true fitness > WT fitness (1.0)",
+    "gain_definition": "true fitness - WT fitness",
+    "budget_efficiency_definition": "sum(max(gain, 0)) / assays"
+  },
+  "negative_control": {
+    "shuffle_seed": 123,
+    "validation_spearman": -0.03874678795004475
+  },
+  "groups": {
+    "HD=1": {
+      "candidate_pool_size": 24,
+      "budget": 24,
+      "n_hits_above_wt": 6,
+      "hit_rate_above_wt": 0.25,
+      "mean_fitness": 0.6101746975856547,
+      "best_fitness": 3.90146075608,
+      "mean_gain_over_wt": -0.3898253024143454,
+      "best_gain_over_wt": 2.90146075608,
+      "positive_gain_per_assay": 0.23852813065333334,
+      "nominations": [
+        {
+          "variant": "VDGA",
+          "hd": 1,
+          "fitness": 1.37294933339
+        },
+        {
+          "variant": "VDGG",
+          "hd": 1,
+          "fitness": 0.265820485664
+        },
+        {
+          "variant": "VNGV",
+          "hd": 1,
+          "fitness": 1.80292279874
+        },
+        {
+          "variant": "VIGV",
+          "hd": 1,
+          "fitness": 1.79171333093
+        },
+        {
+          "variant": "VDGT",
+          "hd": 1,
+          "fitness": 0.615188984875
+        },
+        {
+          "variant": "VWGV",
+          "hd": 1,
+          "fitness": 3.90146075608
+        },
+        {
+          "variant": "VTGV",
+          "hd": 1,
+          "fitness": 1.16546536279
+        },
+        {
+          "variant": "VGGV",
+          "hd": 1,
+          "fitness": 0.864025848061
+        },
+        {
+          "variant": "LDGV",
+          "hd": 1,
+          "fitness": 1.69016355375
+        },
+        {
+          "variant": "YDGV",
+          "hd": 1,
+          "fitness": 0.0720225131902
+        },
+        {
+          "variant": "VDGI",
+          "hd": 1,
+          "fitness": 0.377105030763
+        },
+        {
+          "variant": "VDGN",
+          "hd": 1,
+          "fitness": 0.225092059946
+        },
+        {
+          "variant": "VDGK",
+          "hd": 1,
+          "fitness": 0.007655337403
+        },
+        {
+          "variant": "VDCV",
+          "hd": 1,
+          "fitness": 0.0607126195004
+        },
+        {
+          "variant": "CDGV",
+          "hd": 1,
+          "fitness": 0.242237277886
+        },
+        {
+          "variant": "RDGV",
+          "hd": 1,
+          "fitness": 0.0172018642765
+        },
+        {
+          "variant": "QDGV",
+          "hd": 1,
+          "fitness": 0.102672417647
+        },
+        {
+          "variant": "KDGV",
+          "hd": 1,
+          "fitness": 0.0201606557734
+        },
+        {
+          "variant": "GDGV",
+          "hd": 1,
+          "fitness": 0.00829790573568
+        },
+        {
+          "variant": "NDGV",
+          "hd": 1,
+          "fitness": 0.0116278958495
+        },
+        {
+          "variant": "VDSV",
+          "hd": 1,
+          "fitness": 0.0138843009535
+        },
+        {
+          "variant": "VDIV",
+          "hd": 1,
+          "fitness": 0.00342405539668
+        },
+        {
+          "variant": "VDDV",
+          "hd": 1,
+          "fitness": 0.00595378718971
+        },
+        {
+          "variant": "VDEV",
+          "hd": 1,
+          "fitness": 0.00643456626514
+        }
+      ]
+    },
+    "HD=2": {
+      "candidate_pool_size": 668,
+      "budget": 24,
+      "n_hits_above_wt": 12,
+      "hit_rate_above_wt": 0.5,
+      "mean_fitness": 1.2591493905314792,
+      "best_fitness": 3.15825911665,
+      "mean_gain_over_wt": 0.2591493905314792,
+      "best_gain_over_wt": 2.15825911665,
+      "positive_gain_per_assay": 0.56406291703625,
+      "nominations": [
+        {
+          "variant": "VRGA",
+          "hd": 2,
+          "fitness": 2.18901455283
+        },
+        {
+          "variant": "VHGG",
+          "hd": 2,
+          "fitness": 1.56704167512
+        },
+        {
+          "variant": "VIGA",
+          "hd": 2,
+          "fitness": 1.92980590237
+        },
+        {
+          "variant": "VAGG",
+          "hd": 2,
+          "fitness": 0.56545120425
+        },
+        {
+          "variant": "VNGG",
+          "hd": 2,
+          "fitness": 0.821538099668
+        },
+        {
+          "variant": "VSGA",
+          "hd": 2,
+          "fitness": 2.08726940714
+        },
+        {
+          "variant": "FDGA",
+          "hd": 2,
+          "fitness": 1.73291398784
+        },
+        {
+          "variant": "IDGA",
+          "hd": 2,
+          "fitness": 1.51164738806
+        },
+        {
+          "variant": "FDGG",
+          "hd": 2,
+          "fitness": 0.860054602338
+        },
+        {
+          "variant": "VGGA",
+          "hd": 2,
+          "fitness": 0.165091131494
+        },
+        {
+          "variant": "WDGG",
+          "hd": 2,
+          "fitness": 0.102386627952
+        },
+        {
+          "variant": "VFGG",
+          "hd": 2,
+          "fitness": 0.819555364906
+        },
+        {
+          "variant": "VMGG",
+          "hd": 2,
+          "fitness": 0.214212648909
+        },
+        {
+          "variant": "VTGG",
+          "hd": 2,
+          "fitness": 0.176249773884
+        },
+        {
+          "variant": "VPGA",
+          "hd": 2,
+          "fitness": 0.799109760406
+        },
+        {
+          "variant": "YDGG",
+          "hd": 2,
+          "fitness": 0.0425002639422
+        },
+        {
+          "variant": "VDAG",
+          "hd": 2,
+          "fitness": 2.36785396466
+        },
+        {
+          "variant": "VHGC",
+          "hd": 2,
+          "fitness": 3.15825911665
+        },
+        {
+          "variant": "VDCG",
+          "hd": 2,
+          "fitness": 1.91858334368
+        },
+        {
+          "variant": "HDGA",
+          "hd": 2,
+          "fitness": 0.0984444889274
+        },
+        {
+          "variant": "VVGC",
+          "hd": 2,
+          "fitness": 1.97187732545
+        },
+        {
+          "variant": "VRGC",
+          "hd": 2,
+          "fitness": 2.26938777424
+        },
+        {
+          "variant": "VNGC",
+          "hd": 2,
+          "fitness": 2.83385557083
+        },
+        {
+          "variant": "KDGA",
+          "hd": 2,
+          "fitness": 0.0174813972089
+        }
+      ]
+    },
+    "HD>=3": {
+      "candidate_pool_size": 49308,
+      "budget": 24,
+      "n_hits_above_wt": 18,
+      "hit_rate_above_wt": 0.75,
+      "mean_fitness": 2.043328220963333,
+      "best_fitness": 5.06357347363,
+      "mean_gain_over_wt": 1.0433282209633334,
+      "best_gain_over_wt": 4.06357347363,
+      "positive_gain_per_assay": 1.1276651689979167,
+      "nominations": [
+        {
+          "variant": "WRGA",
+          "hd": 3,
+          "fitness": 1.63986812472
+        },
+        {
+          "variant": "FNGA",
+          "hd": 3,
+          "fitness": 3.26153887436
+        },
+        {
+          "variant": "WYGA",
+          "hd": 3,
+          "fitness": 2.28459723995
+        },
+        {
+          "variant": "FIGA",
+          "hd": 3,
+          "fitness": 3.17791137407
+        },
+        {
+          "variant": "WVGG",
+          "hd": 3,
+          "fitness": 0.628938561476
+        },
+        {
+          "variant": "WRGG",
+          "hd": 3,
+          "fitness": 0.685756686481
+        },
+        {
+          "variant": "MHGA",
+          "hd": 3,
+          "fitness": 1.75529965485
+        },
+        {
+          "variant": "FQGA",
+          "hd": 3,
+          "fitness": 1.7646039421
+        },
+        {
+          "variant": "WHAA",
+          "hd": 4,
+          "fitness": 2.66219915753
+        },
+        {
+          "variant": "LVGA",
+          "hd": 3,
+          "fitness": 1.82537590996
+        },
+        {
+          "variant": "IHGG",
+          "hd": 3,
+          "fitness": 0.978044742115
+        },
+        {
+          "variant": "LRGA",
+          "hd": 3,
+          "fitness": 2.39363916881
+        },
+        {
+          "variant": "YRGA",
+          "hd": 3,
+          "fitness": 3.19873414423
+        },
+        {
+          "variant": "WAGG",
+          "hd": 3,
+          "fitness": 0.814712712726
+        },
+        {
+          "variant": "WSGA",
+          "hd": 3,
+          "fitness": 1.58842915386
+        },
+        {
+          "variant": "LNGA",
+          "hd": 3,
+          "fitness": 2.55322335565
+        },
+        {
+          "variant": "IVGG",
+          "hd": 3,
+          "fitness": 0.524480455503
+        },
+        {
+          "variant": "IIGA",
+          "hd": 3,
+          "fitness": 2.09020983699
+        },
+        {
+          "variant": "YAGA",
+          "hd": 3,
+          "fitness": 3.47979301052
+        },
+        {
+          "variant": "MRGA",
+          "hd": 3,
+          "fitness": 1.66130045644
+        },
+        {
+          "variant": "WFGA",
+          "hd": 3,
+          "fitness": 1.4859946078
+        },
+        {
+          "variant": "YHGG",
+          "hd": 3,
+          "fitness": 0.343980088869
+        },
+        {
+          "variant": "YYGA",
+          "hd": 3,
+          "fitness": 3.17767257048
+        },
+        {
+          "variant": "VHCA",
+          "hd": 3,
+          "fitness": 5.06357347363
+        }
+      ]
+    }
+  }
+}

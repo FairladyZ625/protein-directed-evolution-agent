@@ -4,7 +4,7 @@
 > ①换协议重跑的结果(什么复现了、什么没复现);②**没复现那条的机制查证**;
 > ③第八章「改进建议与未来拓展」的素材,每条都挂着本项目自己的证据。
 >
-> 数据:`harness/reports/v09-contract/`(48×6)与 `harness/reports/v09-contract-b12/`(12×6)。
+> 数据:`lab/reports/v09-contract/`(48×6)与 `lab/reports/v09-contract-b12/`(12×6)。
 > 复现:`V09_BUDGET=12 scripts/run_v09_contract.sh tmp/v09-b12 42`。
 
 ---

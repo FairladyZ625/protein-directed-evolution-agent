@@ -1,0 +1,10 @@
+{
+  "line": "package-record",
+  "version": "pkgB-eval-protocol",
+  "description": "Evaluation-protocol delivery record, not a standalone experiment cycle.",
+  "artifacts": {
+    "report.md": "382400810e5496a37810fe0ea5c93209ff0a75354a4c1242568ea1c008877398",
+    "mutation_order.json": "a29d561a0f42e620b5f90a9c7b0bd454da3f904c193824d6f12cf4029a14e64a",
+    "mutation_order.png": "3cebbd3a0b3ce72a00c0b38a9cfde8b5bb468125daab01dcf615e6f06581323e"
+  }
+}

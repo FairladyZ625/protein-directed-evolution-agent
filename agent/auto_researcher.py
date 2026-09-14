@@ -1207,7 +1207,7 @@ def main(argv=None):
                         "adds `exclude_motifs` so measured lethal substitutions can act on the "
                         "next nomination instead of only appearing in prose. Omit for v0.8.")
     p.add_argument("--out-dir", type=Path, default=None,
-                   help="default: harness/reports/<agentic-version>/<dataset>/")
+                   help="default: lab/reports/<agentic-version>/<dataset>/")
     p.add_argument("--skip-experiment-log", action="store_true",
                    help="keep a task-local smoke run out of the shared experiment log")
     a = p.parse_args(argv)

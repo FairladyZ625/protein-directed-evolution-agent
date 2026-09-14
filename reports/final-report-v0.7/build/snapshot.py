@@ -6,10 +6,10 @@ import json,hashlib,subprocess,gzip
 # verify.py then checks a fraction of the sources. Refresh individual entries in place
 # instead, or re-add the missing sections before writing sources.json.
 ROOT=Path(__file__).resolve().parents[1];repo=ROOT.parents[1];main=Path('/Users/lizeyu/Projects/ai4s-directed-evolution-agent'); paths={}
-for reg in ['easy','hard','sparse','llm']:paths[f'gb1_{reg}.json']=f'harness/reports/workflow-v1.1/gb1/campaign_{reg}.metrics.json'
-paths.update({'alpha.json':'harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json','scaling.json':'harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json','predictors.json':'harness/reports/workflow-v1.1/gb1/predictor_metrics.json','knowledge_components.json':'harness/reports/workflow-v1.1/gb1/knowledge_component_ablation.json','aav_atomic.json':'harness/reports/knowledge-ablation/atomic-seed0/metrics.json','aav_checkpoint.json':'harness/reports/knowledge-ablation/checkpoint-seed0/metrics.json','aav_multiseed.json':'harness/context/research/v07-multiseed-evidence/summary.json','epistasis.json':'reports/final-report-v0.5/evidence/epistasis.json','aav_mechanism.md':'harness/context/research/v07-peak-mechanism.md','multiseed_protocol.md':'harness/context/research/v07-multiseed-robustness.md','handoff.md':'harness/reports/REPORT-HANDOFF.md','v08-proposal-received.md':'reports/v0.8-proposal-event-stream-reflexion.md'})
+for reg in ['easy','hard','sparse','llm']:paths[f'gb1_{reg}.json']=f'lab/reports/workflow-v1.1/gb1/campaign_{reg}.metrics.json'
+paths.update({'alpha.json':'lab/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json','scaling.json':'lab/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json','predictors.json':'lab/reports/workflow-v1.1/gb1/predictor_metrics.json','knowledge_components.json':'lab/reports/workflow-v1.1/gb1/knowledge_component_ablation.json','aav_atomic.json':'lab/reports/knowledge-ablation/atomic-seed0/metrics.json','aav_checkpoint.json':'lab/reports/knowledge-ablation/checkpoint-seed0/metrics.json','aav_multiseed.json':'lab/context/research/v07-multiseed-evidence/summary.json','epistasis.json':'reports/final-report-v0.5/evidence/epistasis.json','aav_mechanism.md':'lab/context/research/v07-peak-mechanism.md','multiseed_protocol.md':'lab/context/research/v07-multiseed-robustness.md','handoff.md':'lab/reports/REPORT-HANDOFF.md','v08-proposal-received.md':'reports/v0.8-proposal-event-stream-reflexion.md'})
 for ds in ['gb1','aav']:
- for typ in ['mutation_order','conservation']:paths[f'{ds}_{typ}.json']=f'harness/reports/analysis-v0.1/{ds}/{typ}.json'
+ for typ in ['mutation_order','conservation']:paths[f'{ds}_{typ}.json']=f'lab/reports/analysis-v0.1/{ds}/{typ}.json'
 for f in ['agent/pipeline.py','evolution/campaign.py','agent/auto_researcher.py','agent/llm.py','knowledge/validators.py','knowledge/rules.yaml','events/store.py','models/train_ladder.py','models/alpha_sweep.py','features/conservation.py','analysis/mutation_order.py','app/demo.py']:paths['code/'+f]=f
 manifest={'code_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),'inputs':[]}
 for dst,src in paths.items():
@@ -20,7 +20,7 @@ for dst,src in paths.items():
 # Compact reproducible audit of archived GB1 events; only relevant fields are retained.
 audit={}
 for reg in ['easy','hard','sparse','llm']:
- src=f'harness/reports/workflow-v1.1/gb1/campaign_{reg}.events.jsonl.gz';p=repo/src
+ src=f'lab/reports/workflow-v1.1/gb1/campaign_{reg}.events.jsonl.gz';p=repo/src
  if not p.exists():continue
  dest=ROOT/'evidence'/f'gb1_{reg}.events.jsonl.gz';dest.write_bytes(p.read_bytes())
  manifest['inputs'].append({'path':src,'snapshot':str(dest.relative_to(ROOT)),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'origin':'frozen checkout'})

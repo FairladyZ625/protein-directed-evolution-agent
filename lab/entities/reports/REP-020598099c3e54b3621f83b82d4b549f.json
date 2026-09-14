@@ -1,0 +1,14 @@
+{
+  "schema": "schema://artifact-descriptor",
+  "typeIdentity": "entity-kind/KND-22c8d77f610481a7fac16512a855ad18",
+  "kindVersion": 1,
+  "entityId": "REP-020598099c3e54b3621f83b82d4b549f",
+  "title": "final-report-v0.2:面向蛋白质定向进化的科学智能体研究报告(进阶版·纳入上位破顶实测)",
+  "locator": {
+    "kind": "repository-path",
+    "value": "lab/reports/final-report-v0.2"
+  },
+  "contentVersion": "sha256:110ec85bf0b38ea38f750f6e9d0eace1eefd995246765d9dc8c5fa17b09f1bef",
+  "attributes": {},
+  "source": "repo:ai4s-directed-evolution-agent:lab/reports/final-report-v0.2"
+}

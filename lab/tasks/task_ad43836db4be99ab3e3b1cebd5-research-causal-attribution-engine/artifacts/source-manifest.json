@@ -1,0 +1,46 @@
+{
+  "read_date": "2026-09-12",
+  "sources": [
+    {
+      "path": "/Users/lizeyu/Documents/ZeYu-AI-Brain/03-KNOWLEDGE/01-READING/01-DOMAINS/Agent-RSI/2026-08-31-memory-compiler-instinct-thesis.md",
+      "sha256": "a0dbf61cdc80e3810e3fbd1af5e8a633d7f4c7cd3d9310688a087f053e3d1715",
+      "bytes": 17914
+    },
+    {
+      "path": "/Users/lizeyu/Documents/ZeYu-AI-Brain/03-KNOWLEDGE/01-READING/01-DOMAINS/Agent-RSI/2026-08-04-rsibench-data-centric-research-benchmark.md",
+      "sha256": "8bcc45b83adbf059a1289685a6caa760935f60270823f5832b038681713b5d2f",
+      "bytes": 11952
+    },
+    {
+      "path": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/reports/theoretical_foundations/03_rsi_cybernetic_ai4s_system_spec.md",
+      "sha256": "6fcf105990c0fc7f3ada17f02fd5a227210ffa4d90df385848a39ea10103ee58",
+      "bytes": 38211
+    },
+    {
+      "path": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/lab/context/research/plateau-breaking-methods.md",
+      "sha256": "428095b1e3045e2f197acadcdf74eb56b56916f76088f14af8750946048ee255",
+      "bytes": 10691
+    },
+    {
+      "path": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/lab/governance/standards/decision-writing.md",
+      "sha256": "7695be729d8c0faceda66821501808733991f269e4c98d0ac02cebe8145154e8",
+      "bytes": 344
+    },
+    {
+      "path": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/lab/governance/standards/repository-governance.md",
+      "sha256": "82a292796c74d063bc2ac64cdf1850336cd9e2021d33f2e8f5b9064a781fa894",
+      "bytes": 332
+    },
+    {
+      "path": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/harness/harness.yaml",
+      "sha256": "b0006046bcbe07b6ae2086b6a5307749665f1968b8fa981316fb03f3276c0957",
+      "bytes": 577
+    },
+    {
+      "path": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/lab/tasks/task_ad43836db4be99ab3e3b1cebd5-research-causal-attribution-engine/task_plan.md",
+      "sha256": "b9077e688e8fddcd37f7b8022c1f462e9fa4eedacabf074305947bcfe0a3ad71",
+      "bytes": 3452
+    }
+  ],
+  "limitations": "Local notes are source observations, not independent experimental replication; canonical specification was absent from worker checkout."
+}

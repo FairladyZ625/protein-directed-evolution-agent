@@ -46,26 +46,28 @@ and one earlier claim it falsified, are in
 
 ## Companion repository
 
-The research bookkeeping — tasks, decisions, append-only facts and their relations — lives in its
-own repo with its own 1,457-commit history:
-**[protein-directed-evolution-agent-harness](https://github.com/FairladyZ625/protein-directed-evolution-agent-harness)**.
+The research bookkeeping — tasks, decisions, append-only facts and their relations — was kept in a
+separate ledger repo:
+**[protein-directed-evolution-agent-harness](https://github.com/FairladyZ625/protein-directed-evolution-agent-harness)**
+(1,458 commits on `main`, last pushed 2026-09-13).
 
-You do **not** need it to run anything here. This repository is self-contained: `harness/` is tracked
-in full, so a plain `git clone` gives you every artifact the dashboard and the report cite. The
-companion repo is the same content plus the commit-by-commit record of how it accumulated — useful
-if you want to see when a decision was taken or when a fact was first recorded, not required to
-reproduce a result.
+You do **not** need it to run anything here. Every artifact the dashboard and the report cite is
+tracked in this repository under [`lab/`](lab/): the ledger's document tree — experiment artifacts,
+research notes, task packages, facts and decisions — as of 2026-09-14, checked in as plain files and
+no longer driven by any tooling. The companion repo holds the commit-by-commit record of how that
+tree accumulated (it stops at 2026-09-13 and is not byte-identical to `lab/`); useful if you want to
+see when a decision was taken or when a fact was first recorded, not required to reproduce a result.
 
 ## Repository layout: two trees, two jobs
 
 - **`reports/`** — the *report authoring* tree: `final-report-v0.x/` holds each report version's
   markdown, figures, build scripts and rendered PDF.
-- **`harness/reports/`** — the *experiment artifact* tree: one self-contained folder per research
+- **`lab/reports/`** — the *experiment artifact* tree: one self-contained folder per research
   cycle, named `<line>-v<version>/` (see `evolution/results_layout.py`, the single source of truth for
   this layout). Current method lines: `workflow-v1.2` (delivery pipeline on GB1), `agentic-v0.7`
   (autonomous researcher on AAV), `v09-contract` / `v09-contract-b12` (the tool-contract factorials),
   `analysis-v0.1` (read-only analyses over already-measured data). A revision digest for the report
-  writer lives at [`harness/reports/REPORT-HANDOFF.md`](harness/reports/REPORT-HANDOFF.md).
+  writer lives at [`lab/reports/REPORT-HANDOFF.md`](lab/reports/REPORT-HANDOFF.md).
 
 ## Datasets
 
@@ -185,7 +187,7 @@ exploration (`mean + λ·√var`) plus a BLOSUM62 conservativeness prior; `--no-
 campaign step and agent tool call is recorded and `verify()`-able, including per-variant
 nomination-time predictions and residuals (`campaign.oracle.residuals`,
 `agent.tool.test.residuals`). Separately, **every experiment run** appends an immutable entry to the
-master ledger [`harness/reports/experiment_log.jsonl`](harness/reports/experiment_log.jsonl)
+master ledger [`lab/reports/experiment_log.jsonl`](lab/reports/experiment_log.jsonl)
 (command, params, git commit, artifact SHA-256, summary).
 
 **Honest scope note:** that ledger covers the main closed-loop experiments. It does not yet cover
@@ -272,7 +274,7 @@ analysis/         read-only analyses (mutation order, ESM zero-shot scan)
 app/              Streamlit dashboard (experiment view + research-timeline view)
 scripts/          install, run_all, smoke, factorial runners, reference checker
 reports/          report authoring tree (final-report-v0.x: markdown, figures, build, PDF)
-harness/reports/  experiment artifacts, one folder per cycle + experiment ledger
+lab/reports/  experiment artifacts, one folder per cycle + experiment ledger
 tests/            unit tests (the CI set is self-contained: no CSV, no network, no API key)
 ```
 

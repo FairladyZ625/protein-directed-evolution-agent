@@ -1,0 +1,12 @@
+{
+  "line": "analysis",
+  "version": "v0.1",
+  "description": "Read-only analyses of measured GB1 and AAV tables; no virtual evolution or imputed truth values.",
+  "artifacts": {
+    "report.md": "d5dee6833ef681913a23b705a4f8098284996e28e4309ba64b1f7fad48ef502d",
+    "gb1/mutation_order.json": "05f23b240017f0bedbb35af043a59e36ac66ab2c73bdf51fae691953d107587d",
+    "aav/mutation_order.json": "f83fb8ed83d4bc58e80a71a6abdd0b8f3d0aeb7d4f6668086461994e0655dc4b",
+    "gb1/conservation.json": "0346b053d4edda4b609bd8bcbc64af2b96fab21038bd66a19f62bc4538c4eba1",
+    "aav/conservation.json": "12bc6db61cfa42b3a22ba6781085c64fa39c7167d9fb30c7036feb1b17bf6a52"
+  }
+}

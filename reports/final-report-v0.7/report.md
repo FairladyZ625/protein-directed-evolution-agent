@@ -1068,24 +1068,24 @@ $$\mathrm{EVI}(B)=\mathbb E_Y[V(D\cup\{B,Y\})]-V(D).$$
 
 | # | 快照 | 原始来源 |
 |---|---|---|
-| 1 | `gb1_easy.json` | `harness/reports/workflow-v1.1/gb1/campaign_easy.metrics.json` |
-| 2 | `gb1_hard.json` | `harness/reports/workflow-v1.1/gb1/campaign_hard.metrics.json` |
-| 3 | `gb1_sparse.json` | `harness/reports/workflow-v1.1/gb1/campaign_sparse.metrics.json` |
-| 4 | `gb1_llm.json` | `harness/reports/workflow-v1.1/gb1/campaign_llm.metrics.json` |
-| 5 | `alpha.json` | `harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json` |
-| 6 | `scaling.json` | `harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json` |
-| 7 | `predictors.json` | `harness/reports/workflow-v1.1/gb1/predictor_metrics.json` |
-| 8 | `aav_atomic.json` | `harness/reports/knowledge-ablation/atomic-seed0/metrics.json` |
-| 9 | `aav_checkpoint.json` | `harness/reports/knowledge-ablation/checkpoint-seed0/metrics.json` |
-| 10 | `aav_multiseed.json` | `harness/context/research/v07-multiseed-evidence/summary.json` |
+| 1 | `gb1_easy.json` | `lab/reports/workflow-v1.1/gb1/campaign_easy.metrics.json` |
+| 2 | `gb1_hard.json` | `lab/reports/workflow-v1.1/gb1/campaign_hard.metrics.json` |
+| 3 | `gb1_sparse.json` | `lab/reports/workflow-v1.1/gb1/campaign_sparse.metrics.json` |
+| 4 | `gb1_llm.json` | `lab/reports/workflow-v1.1/gb1/campaign_llm.metrics.json` |
+| 5 | `alpha.json` | `lab/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json` |
+| 6 | `scaling.json` | `lab/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json` |
+| 7 | `predictors.json` | `lab/reports/workflow-v1.1/gb1/predictor_metrics.json` |
+| 8 | `aav_atomic.json` | `lab/reports/knowledge-ablation/atomic-seed0/metrics.json` |
+| 9 | `aav_checkpoint.json` | `lab/reports/knowledge-ablation/checkpoint-seed0/metrics.json` |
+| 10 | `aav_multiseed.json` | `lab/context/research/v07-multiseed-evidence/summary.json` |
 | 11 | `epistasis.json` | `reports/final-report-v0.5/evidence/epistasis.json` |
-| 12 | `aav_mechanism.md` | `harness/context/research/v07-peak-mechanism.md` |
-| 13 | `multiseed_protocol.md` | `harness/context/research/v07-multiseed-robustness.md` |
-| 14 | `handoff.md` | `harness/reports/REPORT-HANDOFF.md` |
+| 12 | `aav_mechanism.md` | `lab/context/research/v07-peak-mechanism.md` |
+| 13 | `multiseed_protocol.md` | `lab/context/research/v07-multiseed-robustness.md` |
+| 14 | `handoff.md` | `lab/reports/REPORT-HANDOFF.md` |
 | 15 | `v08-proposal-received.md` | `reports/v0.8-proposal-event-stream-reflexion.md` |
-| 16 | `gb1_mutation_order.json` | `harness/reports/analysis-v0.1/gb1/mutation_order.json` |
-| 17 | `gb1_conservation.json` | `harness/reports/analysis-v0.1/gb1/conservation.json` |
-| 18 | `aav_mutation_order.json` | `harness/reports/analysis-v0.1/aav/mutation_order.json` |
+| 16 | `gb1_mutation_order.json` | `lab/reports/analysis-v0.1/gb1/mutation_order.json` |
+| 17 | `gb1_conservation.json` | `lab/reports/analysis-v0.1/gb1/conservation.json` |
+| 18 | `aav_mutation_order.json` | `lab/reports/analysis-v0.1/aav/mutation_order.json` |
 
 <!-- PAGE -->
 ## 附录 K.2　证据文件与原始来源索引
@@ -1094,7 +1094,7 @@ $$\mathrm{EVI}(B)=\mathbb E_Y[V(D\cup\{B,Y\})]-V(D).$$
 
 | # | 快照 | 原始来源 |
 |---|---|---|
-| 19 | `aav_conservation.json` | `harness/reports/analysis-v0.1/aav/conservation.json` |
+| 19 | `aav_conservation.json` | `lab/reports/analysis-v0.1/aav/conservation.json` |
 | 20 | `code/agent/pipeline.py` | `agent/pipeline.py` |
 | 21 | `code/evolution/campaign.py` | `evolution/campaign.py` |
 | 22 | `code/agent/auto_researcher.py` | `agent/auto_researcher.py` |
@@ -1107,11 +1107,11 @@ $$\mathrm{EVI}(B)=\mathbb E_Y[V(D\cup\{B,Y\})]-V(D).$$
 | 29 | `code/features/conservation.py` | `features/conservation.py` |
 | 30 | `code/analysis/mutation_order.py` | `analysis/mutation_order.py` |
 | 31 | `code/app/demo.py` | `app/demo.py` |
-| 32 | `gb1_easy.events.jsonl.gz` | `harness/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl.gz` |
-| 33 | `gb1_hard.events.jsonl.gz` | `harness/reports/workflow-v1.1/gb1/campaign_hard.events.jsonl.gz` |
-| 34 | `gb1_sparse.events.jsonl.gz` | `harness/reports/workflow-v1.1/gb1/campaign_sparse.events.jsonl.gz` |
-| 35 | `gb1_llm.events.jsonl.gz` | `harness/reports/workflow-v1.1/gb1/campaign_llm.events.jsonl.gz` |
-| 36 | `v08-smoke-1seed.md` | `harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-1seed.md` |
+| 32 | `gb1_easy.events.jsonl.gz` | `lab/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl.gz` |
+| 33 | `gb1_hard.events.jsonl.gz` | `lab/reports/workflow-v1.1/gb1/campaign_hard.events.jsonl.gz` |
+| 34 | `gb1_sparse.events.jsonl.gz` | `lab/reports/workflow-v1.1/gb1/campaign_sparse.events.jsonl.gz` |
+| 35 | `gb1_llm.events.jsonl.gz` | `lab/reports/workflow-v1.1/gb1/campaign_llm.events.jsonl.gz` |
+| 36 | `v08-smoke-1seed.md` | `lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-1seed.md` |
 
 <!-- PAGE -->
 ## 附录 K.3　证据文件与原始来源索引
@@ -1120,18 +1120,18 @@ $$\mathrm{EVI}(B)=\mathbb E_Y[V(D\cup\{B,Y\})]-V(D).$$
 
 | # | 快照 | 原始来源 |
 |---|---|---|
-| 37 | `handoff-update-v08.md` | `harness/reports/REPORT-HANDOFF.md` |
-| 38 | `v08-control.metrics.json` | `harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.metrics.json` |
-| 39 | `v08-control.events.jsonl.gz` | `harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.events.jsonl.gz` |
-| 40 | `v08-reflexion.metrics.json` | `harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.metrics.json` |
-| 41 | `v08-reflexion.events.jsonl.gz` | `harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.events.jsonl.gz` |
-| 42 | `gb1_llm_replication.json` | `harness/reports/workflow-v1.2/gb1/campaign_llm.metrics.json` |
-| 43 | `gb1_llm_replication.events.jsonl` | `harness/reports/workflow-v1.2/gb1/campaign_llm.events.jsonl` |
-| 44 | `handoff-update-replication.md` | `harness/reports/REPORT-HANDOFF.md` |
+| 37 | `handoff-update-v08.md` | `lab/reports/REPORT-HANDOFF.md` |
+| 38 | `v08-control.metrics.json` | `lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.metrics.json` |
+| 39 | `v08-control.events.jsonl.gz` | `lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-control.events.jsonl.gz` |
+| 40 | `v08-reflexion.metrics.json` | `lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.metrics.json` |
+| 41 | `v08-reflexion.events.jsonl.gz` | `lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-reflexion.events.jsonl.gz` |
+| 42 | `gb1_llm_replication.json` | `lab/reports/workflow-v1.2/gb1/campaign_llm.metrics.json` |
+| 43 | `gb1_llm_replication.events.jsonl` | `lab/reports/workflow-v1.2/gb1/campaign_llm.events.jsonl` |
+| 44 | `handoff-update-replication.md` | `lab/reports/REPORT-HANDOFF.md` |
 | 45 | `engineering/v07-handoff.md` | `reports/final-report-v0.6/v07-handoff-from-engineering.md` |
-| 46 | `engineering/handoff-current.md` | `harness/reports/REPORT-HANDOFF.md` |
-| 47 | `engineering/v08-factorial.md` | `harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/factorial-2x2-seed42.md` |
-| 48 | `engineering/v09-contract.md` | `harness/tasks/task_feb731c779788be5bfff65e979-v0-9/artifacts/contract-2x2-seed42.md` |
+| 46 | `engineering/handoff-current.md` | `lab/reports/REPORT-HANDOFF.md` |
+| 47 | `engineering/v08-factorial.md` | `lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/factorial-2x2-seed42.md` |
+| 48 | `engineering/v09-contract.md` | `lab/tasks/task_feb731c779788be5bfff65e979-v0-9/artifacts/contract-2x2-seed42.md` |
 | 49 | `code-v09/agent/auto_researcher.py` | `agent/auto_researcher.py` |
 | 50 | `code-v09/events/reflexion.py` | `events/reflexion.py` |
 | 51 | `code-v09/scripts/run_v08_factorial.sh` | `scripts/run_v08_factorial.sh` |
@@ -1173,20 +1173,20 @@ $$\mathrm{EVI}(B)=\mathbb E_Y[V(D\cup\{B,Y\})]-V(D).$$
 | # | 快照 | 原始来源 |
 |---|---|---|
 | 73 | `v08/acq-v06_reflexion-on_seed-42/wall-seconds.txt` | `tmp/v08-factorial/acq-v06_reflexion-on_seed-42.wall-seconds.txt` |
-| 74 | `v09/contract-v08_reflexion-off_seed-42/metrics.json` | `harness/reports/v09-contract/contract-v08_reflexion-off_seed-42/agentic.metrics.json` |
-| 75 | `v09/contract-v08_reflexion-off_seed-42/events.jsonl.gz` | `harness/reports/v09-contract/contract-v08_reflexion-off_seed-42/agentic.events.jsonl.gz` |
+| 74 | `v09/contract-v08_reflexion-off_seed-42/metrics.json` | `lab/reports/v09-contract/contract-v08_reflexion-off_seed-42/agentic.metrics.json` |
+| 75 | `v09/contract-v08_reflexion-off_seed-42/events.jsonl.gz` | `lab/reports/v09-contract/contract-v08_reflexion-off_seed-42/agentic.events.jsonl.gz` |
 | 76 | `v09/contract-v08_reflexion-off_seed-42/stdout.log` | `tmp/v09-contract/contract-v08_reflexion-off_seed-42.stdout.log` |
 | 77 | `v09/contract-v08_reflexion-off_seed-42/wall-seconds.txt` | `tmp/v09-contract/contract-v08_reflexion-off_seed-42.wall-seconds.txt` |
-| 78 | `v09/contract-v08_reflexion-on_seed-42/metrics.json` | `harness/reports/v09-contract/contract-v08_reflexion-on_seed-42/agentic.metrics.json` |
-| 79 | `v09/contract-v08_reflexion-on_seed-42/events.jsonl.gz` | `harness/reports/v09-contract/contract-v08_reflexion-on_seed-42/agentic.events.jsonl.gz` |
+| 78 | `v09/contract-v08_reflexion-on_seed-42/metrics.json` | `lab/reports/v09-contract/contract-v08_reflexion-on_seed-42/agentic.metrics.json` |
+| 79 | `v09/contract-v08_reflexion-on_seed-42/events.jsonl.gz` | `lab/reports/v09-contract/contract-v08_reflexion-on_seed-42/agentic.events.jsonl.gz` |
 | 80 | `v09/contract-v08_reflexion-on_seed-42/stdout.log` | `tmp/v09-contract/contract-v08_reflexion-on_seed-42.stdout.log` |
 | 81 | `v09/contract-v08_reflexion-on_seed-42/wall-seconds.txt` | `tmp/v09-contract/contract-v08_reflexion-on_seed-42.wall-seconds.txt` |
-| 82 | `v09/contract-v09_reflexion-off_seed-42/metrics.json` | `harness/reports/v09-contract/contract-v09_reflexion-off_seed-42/agentic.metrics.json` |
-| 83 | `v09/contract-v09_reflexion-off_seed-42/events.jsonl.gz` | `harness/reports/v09-contract/contract-v09_reflexion-off_seed-42/agentic.events.jsonl.gz` |
+| 82 | `v09/contract-v09_reflexion-off_seed-42/metrics.json` | `lab/reports/v09-contract/contract-v09_reflexion-off_seed-42/agentic.metrics.json` |
+| 83 | `v09/contract-v09_reflexion-off_seed-42/events.jsonl.gz` | `lab/reports/v09-contract/contract-v09_reflexion-off_seed-42/agentic.events.jsonl.gz` |
 | 84 | `v09/contract-v09_reflexion-off_seed-42/stdout.log` | `tmp/v09-contract/contract-v09_reflexion-off_seed-42.stdout.log` |
 | 85 | `v09/contract-v09_reflexion-off_seed-42/wall-seconds.txt` | `tmp/v09-contract/contract-v09_reflexion-off_seed-42.wall-seconds.txt` |
-| 86 | `v09/contract-v09_reflexion-on_seed-42/metrics.json` | `harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.metrics.json` |
-| 87 | `v09/contract-v09_reflexion-on_seed-42/events.jsonl.gz` | `harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.events.jsonl.gz` |
+| 86 | `v09/contract-v09_reflexion-on_seed-42/metrics.json` | `lab/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.metrics.json` |
+| 87 | `v09/contract-v09_reflexion-on_seed-42/events.jsonl.gz` | `lab/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.events.jsonl.gz` |
 | 88 | `v09/contract-v09_reflexion-on_seed-42/stdout.log` | `tmp/v09-contract/contract-v09_reflexion-on_seed-42.stdout.log` |
 | 89 | `v09/contract-v09_reflexion-on_seed-42/wall-seconds.txt` | `tmp/v09-contract/contract-v09_reflexion-on_seed-42.wall-seconds.txt` |
 | 90 | `code-metrics/reflexion.py` | `events/reflexion.py` |
@@ -1228,7 +1228,7 @@ $$\mathrm{EVI}(B)=\mathbb E_Y[V(D\cup\{B,Y\})]-V(D).$$
 | 110 | `v09-b12/contract-v09_reflexion-on_seed-42/stdout.log` | `tmp/v09-b12/contract-v09_reflexion-on_seed-42.stdout.log` |
 | 111 | `v09-b12/contract-v09_reflexion-on_seed-42/wall-seconds.txt` | `tmp/v09-b12/contract-v09_reflexion-on_seed-42.wall-seconds.txt` |
 | 112 | `v07-handoff-02-protocol-and-chapter8.md` | `reports/final-report-v0.6/v07-handoff-02-protocol-and-chapter8.md` |
-| 113 | `knowledge_components.json` | `harness/reports/workflow-v1.1/gb1/knowledge_component_ablation.json` |
+| 113 | `knowledge_components.json` | `lab/reports/workflow-v1.1/gb1/knowledge_component_ablation.json` |
 | 114 | `code/scripts_knowledge_component_ablation.py` | `scripts/knowledge_component_ablation.py` |
 <!-- PAGE -->
 ## 附录 L.1　数学定义：协议、指标与预测模型

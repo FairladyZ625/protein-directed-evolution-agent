@@ -41,11 +41,11 @@
 | agent_no_knowledge | **8.761966** | 7.045837 | 95 |
 | knowledge_agent | **8.761966** | 7.005510 | 86 |
 
-- 产物:`harness/reports/workflow-v1.1/gb1/campaign_easy.metrics.json`
-- 事件流:`harness/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl.gz`(166 条,哈希链可验)。
+- 产物:`lab/reports/workflow-v1.1/gb1/campaign_easy.metrics.json`
+- 事件流:`lab/reports/workflow-v1.1/gb1/campaign_easy.events.jsonl.gz`(166 条,哈希链可验)。
   注意后缀是 `.gz`:归档流已按仓库约定压缩(见 7.7),`EventStore` 传逻辑 `.jsonl` 路径会
   透明回退到 `.gz`,但**在报告里写路径时要写实际存在的那个文件名**。
-- 曲线:`harness/reports/workflow-v1.1/gb1/figures/campaign_easy.png`
+- 曲线:`lab/reports/workflow-v1.1/gb1/figures/campaign_easy.png`
 - LLM 归属:`"deterministic (pool LLM port available via --use-llm)"`——**本轮未调商业 LLM**,
   报告里不得写成「LLM 驱动」。
 
@@ -53,12 +53,12 @@
 所以在 GB1 上「谁更强」不能只看 `cum_top10_max`,要看 `cum_top10_mean` 与 `strong`。
 
 > ⚠️ 本文件定稿时 hard / sparse 两档冷启动仍在重跑,数字未齐。**若报告要引三档对照,
-> 请先确认 `harness/reports/workflow-v1.1/gb1/` 下已有 `campaign_hard.metrics.json` 与
+> 请先确认 `lab/reports/workflow-v1.1/gb1/` 下已有 `campaign_hard.metrics.json` 与
 > `campaign_sparse.metrics.json`**;只有 easy 一档时,必须写明只报了 easy。
 
 ### 2.2 「ESM-2 未稳定优于 one-hot」这个结论是错的,要反过来写
 
-**原结论的来源**:`harness/reports/workflow-v1.0/gb1/predictor_ladder.json` 里
+**原结论的来源**:`lab/reports/workflow-v1.0/gb1/predictor_ladder.json` 里
 ridge 0.4925(esm2) vs 0.4840(one-hot)、xgboost 0.3768 vs 0.4741。
 
 **为什么不成立**:那组数固定了 `Ridge(alpha=1)`,而 alpha=1 对两种特征意味着完全不同的
@@ -73,7 +73,7 @@ ridge 0.4925(esm2) vs 0.4840(one-hot)、xgboost 0.3768 vs 0.4741。
 | esm2 hd_extrapolation standardized | **0.1226** |
 
 结论随预处理反向 → **固定 alpha 下的任何一侧都不能支撑排序断言**。
-产物:`harness/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json`。
+产物:`lab/reports/workflow-v1.0/gb1/predictor_ladder_scaling_ablation.json`。
 
 **再做 answer-agnostic 的 alpha 扫描**(每个组合在训练集内做 80/20 留出选 alpha,
 不看测试集,alpha ∈ {0.01, 0.1, 1, 10, 100, 1000, 10000}):
@@ -91,7 +91,7 @@ ridge 0.4925(esm2) vs 0.4840(one-hot)、xgboost 0.3768 vs 0.4741。
    random 划分上也略高 0.005~0.008。hd_extrapolation 正是「向远端突变体外推」,
    是定向进化真正要的能力。
 
-- 产物:`harness/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`
+- 产物:`lab/reports/workflow-v1.0/gb1/predictor_alpha_sweep.json`
 - 参照实现:`models/alpha_sweep.py`
 - fact:`F-1E17A592`(标准化消融)、`F-5CC3FABA`(alpha 扫描)
 
@@ -161,8 +161,8 @@ D0Q+S17E 组合缺测」不是个例,**是 3 阶的常态**。上位残差随阶
 是一条有用的警示。
 
 - 入口:`analysis/mutation_order.py`
-- 产物:`harness/reports/analysis-v0.1/{gb1,aav}/mutation_order.json` + `figures/`
-- 报告:`harness/reports/analysis-v0.1/report.md`
+- 产物:`lab/reports/analysis-v0.1/{gb1,aav}/mutation_order.json` + `figures/`
+- 报告:`lab/reports/analysis-v0.1/report.md`
 - 测试:`tests/test_mutation_order.py`(含阳性对照:纯加性合成地形上位量应近零)
 
 ### 3.2 保守位点分析(加分项④),首要产出是一个负结果
@@ -196,8 +196,8 @@ ESM-2 的熵是自然度先验,而本项目真峰已被证明反自然。已用�
 `grep conservation evolution/ agent/` 为空,未接线。
 
 - 入口:`features/conservation.py`
-- 产物:`harness/reports/analysis-v0.1/{gb1,aav}/conservation.json` + `figures/`
-- 报告:`harness/reports/analysis-v0.1/conservation-report.md`
+- 产物:`lab/reports/analysis-v0.1/{gb1,aav}/conservation.json` + `figures/`
+- 报告:`lab/reports/analysis-v0.1/conservation-report.md`
 - 测试:`tests/test_conservation.py`(阳性对照:均匀分布熵应最大、one-hot 应为 0)
 
 ### 3.3 有无知识增强的对照:AAV 为正、GB1 为负,方向相反且机制自洽
@@ -226,7 +226,7 @@ strong 阈值 2.615913579904):
 只剩约束成本(GB1 四位点、greedy 本就达全局最优)。**两个方向相反的结果合起来比任何
 单一方向都更有说服力**,不要只报对自己有利的那一半。
 
-- 产物:`harness/reports/knowledge-ablation/{atomic-seed0,checkpoint-seed0}/metrics.json`
+- 产物:`lab/reports/knowledge-ablation/{atomic-seed0,checkpoint-seed0}/metrics.json`
   (含 `events.jsonl`、`rejected_candidates.json`、`knowledge_ablation.png`)
 - fact:`F-61F813F3`
 - ⚠️ **口径限制**:AAV 侧只有 **1 个 seed**(`n_seeds: 1`),不能宣称跨 seed 统计显著。
@@ -247,7 +247,7 @@ strong 阈值 2.615913579904):
 - **没有任何笼内方案能让这个特定真峰进入可达区**,原因是 oracle 的池边界,不是算法不行。
 
 fact:`F-E158724C`。相关论述已改入
-`harness/context/research/plateau-breaking-methods.md` §0 与总纲。
+`lab/context/research/plateau-breaking-methods.md` §0 与总纲。
 
 ### 3.5 预测器阶梯:方差退化已修
 
@@ -264,7 +264,7 @@ fact:`F-E158724C`。相关论述已改入
 | xgboost | 0.5034 | 1.25e-06 | 0.6461 |
 | mlp | 0.4499 | 3.56e-05 | 0.5684 |
 
-产物:`harness/reports/workflow-v1.1/gb1/predictor_metrics.json` +
+产物:`lab/reports/workflow-v1.1/gb1/predictor_metrics.json` +
 `figures/predictor_comparison.png`;测试 `tests/test_predictor.py`。
 
 ### 3.6 小规模复现路径(试题「代码」硬要求)
@@ -320,13 +320,13 @@ LLM 不可用时走 fallback 且 `state["source"]` 如实记 `fallback`,
 
 | 版本 | 数据落点 | 状态 |
 |---|---|---|
-| agentic-v0.1 ~ v0.4 | `harness/reports/agentic-v0.{1,2,3,4}/` | 在主线 |
-| agentic-v0.5 / v0.6 | `harness/reports/agentic-v0.{5,6}/` | **本轮从分支取入主线**(只取数据,代码留在 tag) |
-| agentic-v0.7 | `harness/context/research/v07-*.md`(5 份)+ `v07-multiseed-evidence/` | **本轮抢救入库**,见 4.3 |
-| workflow-v1.0 | `harness/reports/workflow-v1.0/` | 在主线 |
-| workflow-v1.1 | `harness/reports/workflow-v1.1/` | 本轮新增 |
-| analysis-v0.1 | `harness/reports/analysis-v0.1/` | 本轮新增 |
-| 知识消融 | `harness/reports/knowledge-ablation/` | **本轮抢救入库** |
+| agentic-v0.1 ~ v0.4 | `lab/reports/agentic-v0.{1,2,3,4}/` | 在主线 |
+| agentic-v0.5 / v0.6 | `lab/reports/agentic-v0.{5,6}/` | **本轮从分支取入主线**(只取数据,代码留在 tag) |
+| agentic-v0.7 | `lab/context/research/v07-*.md`(5 份)+ `v07-multiseed-evidence/` | **本轮抢救入库**,见 4.3 |
+| workflow-v1.0 | `lab/reports/workflow-v1.0/` | 在主线 |
+| workflow-v1.1 | `lab/reports/workflow-v1.1/` | 本轮新增 |
+| analysis-v0.1 | `lab/reports/analysis-v0.1/` | 本轮新增 |
+| 知识消融 | `lab/reports/knowledge-ablation/` | **本轮抢救入库** |
 
 三版代码的复现锚点是 tag:`agentic-v0.5` / `agentic-v0.6` / `agentic-v0.7`
 (分支会移动,tag 不会)。26 个工作分支也都推到了远端做保留。
@@ -337,7 +337,7 @@ LLM 不可用时走 fallback 且 `state["source"]` 如实记 `fallback`,
 
 1. **v0.7 证据包**:整个目录 **134MB 全未跟踪**,只存在于 worktree `t-astra-seeds` 的
    文件系统里。已纳入其中 336KB 证据文件到
-   `harness/context/research/v07-multiseed-evidence/`:`protocol.md`、`run.py`、
+   `lab/context/research/v07-multiseed-evidence/`:`protocol.md`、`run.py`、
    `verify_ucb3.py`、`results.json`(78KB)、`summary.json`、
    `reference-seed42.json`(55KB)、`controls.json`、
    `ucb3-uncached-verification.json`、治理留痕与三个 worker 的原始日志。
@@ -348,7 +348,7 @@ LLM 不可用时走 fallback 且 `state["source"]` 如实记 `fallback`,
 
 ### 4.4 v0.7 的口径限制(引用时不得省略)
 
-`harness/context/research/v07-multiseed-robustness.md` 自己写明,这三条必须带上:
+`lab/context/research/v07-multiseed-robustness.md` 自己写明,这三条必须带上:
 
 - 那 30 个 seed 是**同一轨迹的确定性重复**(这些方法不消费采集 RNG),
   因此 **n=30 的 Wilson 置信区间不可用于统计推断**,有效独立轨迹只有 1 条。
@@ -362,7 +362,7 @@ LLM 不可用时走 fallback 且 `state["source"]` 如实记 `fallback`,
 
 ### 4.5 复现脊柱现状(诚实披露)
 
-`harness/reports/experiment_log.jsonl` 是声明的「版本脊柱」(记录每个产物的 git commit
+`lab/reports/experiment_log.jsonl` 是声明的「版本脊柱」(记录每个产物的 git commit
 与 SHA-256),现有 **15 条**,**覆盖不全**:缺 agentic-v0.1/v0.3/v0.5/v0.6/v0.7、
 analysis-v0.1、workflow-v1.1 的 predictor/alpha 扫描/标准化消融、以及三份 final-report。
 补全工作已立任务 `task_5c6e3951aafc21310d1c0d6d6c`,**报告若要声称「每个产物都可追溯」,
@@ -392,7 +392,7 @@ analysis-v0.1、workflow-v1.1 的 predictor/alpha 扫描/标准化消融、以�
 |---|---|---|
 | 四策略 hard / sparse 两档 | **重跑中** | 定稿前确认 `campaign_{hard,sparse}.metrics.json` 是否已在 |
 | 复现脊柱补全 | 未完成 | 见 4.5,任务 `task_5c6e3951aafc21310d1c0d6d6c` |
-| 仓库双报告树 | 未收敛 | 根 `reports/`(149 文件)与 `harness/reports/`(141 文件)并存,而 `results_layout.py` 声明后者为 canonical。评委会看到两份看似都权威的产物树 |
+| 仓库双报告树 | 未收敛 | 根 `reports/`(149 文件)与 `lab/reports/`(141 文件)并存,而 `results_layout.py` 声明后者为 canonical。评委会看到两份看似都权威的产物树 |
 | `tests/test_demo_app.py` | **3 个失败** | 既存缺陷(在 `f3a4179`/`f40e901`/`HEAD` 三点完全一致,非本轮回归)。模块①②在 AppTest 下不渲染,未定位到具体分支。**该文件因此未纳入 CI 门控**,以免 main 变红 |
 | 强化学习(加分项①后半) | **不做** | 在本任务上要么是给采集策略套个 bandit 薄壳(无科学价值),要么时间不够。**建议在报告里写明为什么不做**,这比硬凑更体现判断力 |
 | 结构信息(加分项④前半) | 不做 | 走了保守位点这条替代路径,理由见 3.2 |
@@ -440,7 +440,7 @@ LLM critic 调用都抛 `ValidationError`,被 `ScientificCritic` 的 `except Exc
 
 - Fact:`F-363846B5`
 - 修复:commit `52b2dd6`(端口返回 `{"note": ...}`;空回复算失败;新增 `llm_budget` 上限)
-- 数据:`harness/reports/workflow-v1.1/gb1/campaign_llm.*`(用修好的 critic 重跑)
+- 数据:`lab/reports/workflow-v1.1/gb1/campaign_llm.*`(用修好的 critic 重跑)
 
 **报告怎么改**:
 - 凡出现「LLM Critic 评审候选」「Critic 由 LLM 驱动」之类表述,**改成明确的两段式**:
@@ -479,7 +479,7 @@ LLM critic 调用都抛 `ValidationError`,被 `ScientificCritic` 的 `except Exc
 **sparse 是四个 regime 里唯一出现策略分层的**:greedy 与无知识 agent 都停在 5.772032,
 只有知识增强(UCB λ=0.75 + BLOSUM62 先验 β=0.30)走到全局最优。
 
-- Fact:`F-61A84D3B`;数据:`harness/reports/workflow-v1.1/gb1/campaign_{easy,hard,sparse}.metrics.json`;commit `c2fa02f`
+- Fact:`F-61A84D3B`;数据:`lab/reports/workflow-v1.1/gb1/campaign_{easy,hard,sparse}.metrics.json`;commit `c2fa02f`
 - **建议写法**:「种子池越稀疏,领域知识的边际价值越大」。
   **反过来那半句也必须写**:在信息充足的 easy regime 里知识库不产生可测增益
   (三个模型策略并列命中),所以**不能把知识增强写成普遍有效**。
@@ -495,7 +495,7 @@ easy regime 里 `agent_no_knowledge` 的强命中数(95)高于知识增强(86),
 
 ### 7.5 【可复现性】曾有一处「数据在、代码不在」的洞,已堵
 
-`harness/reports/knowledge-ablation/` 的 1.5MB 产物早已在主线,但产生它的
+`lab/reports/knowledge-ablation/` 的 1.5MB 产物早已在主线,但产生它的
 `knowledge/ablation.py`(404 行)从未合入 —— 报告第 84 节列的复现命令在 main 上
 必然 `ModuleNotFoundError`。同批遗漏 `agent/auto_researcher.py` 的 quality-aware
 采集(`agentic-v0.5` 数据的生产代码)与两个测试文件。
@@ -517,7 +517,7 @@ easy regime 里 `agent_no_knowledge` 的强命中数(95)高于知识增强(86),
 - `scripts/install.sh` / `scripts/run_all.sh`(Linux + macOS),`requirements.txt` 分轻量/完整两档。
   验收要求是在**全新 `/tmp` venv** 里跑通,不是在已装好的 `.venv` 里跑一遍。
 - `agentic-v0.7` 版本树已补齐(commit `c742ef0`):数据一直都在,只是落在任务包的
-  `artifacts/reports/agentic-v0.7/` 而非 `harness/reports/agentic-v0.7/`,
+  `artifacts/reports/agentic-v0.7/` 而非 `lab/reports/agentic-v0.7/`,
   版本树里看不见会让读者以为 v0.7 没有产物。现已复制 47 个结果文件(1.9MB),
   manifest 记录全部真实 sha256,15 条事件链全部 `verify()` 通过。
   **provenance 要说清这是复制不是重跑。**
@@ -636,8 +636,8 @@ agent_no_knowledge = `llm / fallback / llm`,knowledge_agent = `llm / fallback / 
 knowledge_agent 第 1 轮 LLM 预算花了 0/10,因为 15 个候选全被知识门禁拒了,
 没有候选走到「写评审」这一步 —— 这是预期行为不是故障。
 
-数据:`harness/reports/workflow-v1.1/gb1/campaign_{hard,llm}.metrics.json`;
-完整读法见 `harness/reports/workflow-v1.1/report.md` 第 ④ 条。
+数据:`lab/reports/workflow-v1.1/gb1/campaign_{hard,llm}.metrics.json`;
+完整读法见 `lab/reports/workflow-v1.1/report.md` 第 ④ 条。
 
 ### 7.12 【交付面·2026-09-13】看板三处失效已修,并牵出一个 94 秒/轮的核心性能 bug
 
@@ -688,7 +688,7 @@ streamlit run app/demo.py     # 五个面板逐个点过去
 
 ### 7.13 【v0.8 第一轮·2026-09-13】残差反思:注入改变了 agent 的动作,却没改变任何一个提名
 
-**完整证据与复现命令见 `harness/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-1seed.md`,
+**完整证据与复现命令见 `lab/tasks/task_91e931121d3ae400a0a2be246b-v0-8-aav/artifacts/smoke-1seed.md`,
 写这一节之前请先读那份,尤其是它最后的「引用时必须带的话」。**
 
 v0.8 给 AAV agentic 线补上了此前完全缺失的一环:**逐变体预测残差**。

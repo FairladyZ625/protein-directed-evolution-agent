@@ -1,0 +1,1 @@
+AI4S Harness CEO 晚报任务：检查 M1-baseline-eval / M2-agent-pipeline / M3-closed-loop / M4-delivery 四个 milestone 的任务状态（ha agenda / ha task list），对照周日 15:00 硬冻结倒计时评估进度与风险，产出中文日报写入 lab/context/development/（文件名 daily-YYYY-MM-DD.md），先结论后细节：里程碑进度/风险/明日计划。红线：data/ 不入 git；外部资源必须声明。

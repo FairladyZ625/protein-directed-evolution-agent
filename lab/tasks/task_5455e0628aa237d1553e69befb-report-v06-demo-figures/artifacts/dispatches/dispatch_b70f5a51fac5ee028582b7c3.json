@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_b70f5a51fac5ee028582b7c3",
+  "taskId": "task_5455e0628aa237d1553e69befb",
+  "executionId": "exe_3aea824100fb0b52f2e9a6c807",
+  "agentId": "de-frontend",
+  "agentName": "AI4S 前端工程师",
+  "instanceId": "zcode-glm-5-3",
+  "model": "GLM-5.3",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent",
+  "missionRef": "tasks/task_5455e0628aa237d1553e69befb-report-v06-demo-figures/artifacts/missions/dispatch_b70f5a51fac5ee028582b7c3.md",
+  "runtimeSessionId": "runtime_79876a43f30ce4c3dae06ca6",
+  "providerSessionId": "sess_3164f27f-1472-4919-a44d-18a050525f16",
+  "startedAt": "2026-09-13T02:29:09.021Z",
+  "endedAt": "2026-09-13T02:41:21.470Z",
+  "outcome": "cancelled",
+  "exitCode": null,
+  "resultRef": "artifact:runtime-result/sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_b70f5a51fac5ee028582b7c3.jsonl",
+  "attemptGroupId": "dispatch_b70f5a51fac5ee028582b7c3",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "zcode-glm-5-3",
+    "model": "GLM-5.3"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker stop was requested."
+}

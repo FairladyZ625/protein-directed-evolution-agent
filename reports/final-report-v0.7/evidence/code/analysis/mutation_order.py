@@ -25,7 +25,7 @@ from evolution.random_baseline import load_landscape
 from models.alpha_sweep import ALPHAS
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "harness" / "reports" / "analysis-v0.1"
+DEFAULT_OUTPUT = ROOT / "lab" / "reports" / "analysis-v0.1"
 AAV_PEAK = "QEEEIRTTNPVATEQYGEASTNLQRGNR"
 
 

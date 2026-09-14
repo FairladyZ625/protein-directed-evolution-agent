@@ -20,6 +20,7 @@ __pycache__/
 # 台账树随交付一起公开;仅排除其嵌套 git 仓与大缓存
 # 台账仓是独立的嵌套 git 仓库,由其自身跟踪,外层仓库不再收录
 harness/
+lab/reports/cache/
 /.harness/
 .worktrees/
 

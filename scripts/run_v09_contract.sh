@@ -17,11 +17,11 @@
 #
 # 用法:
 #   scripts/run_v09_contract.sh [输出根目录] [seed ...]
-#   scripts/run_v09_contract.sh harness/reports/v09-contract 42
+#   scripts/run_v09_contract.sh lab/reports/v09-contract 42
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
-out_root="${1:-$repo_root/harness/reports/v09-contract}"
+out_root="${1:-$repo_root/lab/reports/v09-contract}"
 shift || true
 seeds=("$@")
 [ ${#seeds[@]} -eq 0 ] && seeds=(42)

@@ -217,7 +217,7 @@ def main(argv: list[str] | None = None) -> dict:
     p.add_argument("--n-rounds", type=int, default=3)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--out-dir", type=Path, default=None,
-                   help="default: harness/reports/runs/workflow@<v>/<dataset>/")
+                   help="default: lab/reports/runs/workflow@<v>/<dataset>/")
     args = p.parse_args(argv)
 
     from events.store import EventStore

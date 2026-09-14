@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_fd014dfd4c069919fe5f26b3",
+  "taskId": "task_51297081bf4eeb7e466da8a3e1",
+  "executionId": "exe_4303b9cb9f113ef61674d86417",
+  "agentId": "de-ml",
+  "agentName": "AI4S 蛋白 ML 工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-sol",
+  "reasoningEffort": "high",
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent/.worktrees/t-pkgB-eval-protocol",
+  "missionRef": "tasks/task_51297081bf4eeb7e466da8a3e1-b-validation-hd1-2-3/artifacts/missions/dispatch_fd014dfd4c069919fe5f26b3.md",
+  "runtimeSessionId": "runtime_f37e32e59544bd3e2f4fb1ce",
+  "providerSessionId": "01a09524-0fdf-7c43-afa2-15547973bfae",
+  "startedAt": "2026-09-12T10:22:43.237Z",
+  "endedAt": "2026-09-12T10:37:49.242Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/e80816dd0b327a04acd1633d3c0327a75261555875b57b31a9fee37e8cdae919",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_fd014dfd4c069919fe5f26b3.jsonl",
+  "attemptGroupId": "dispatch_fd014dfd4c069919fe5f26b3",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-sol"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

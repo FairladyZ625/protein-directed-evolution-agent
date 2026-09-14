@@ -1,6 +1,6 @@
 # 试题章节对照
 
-依据：harness/context/research/AI4S-assignment.md「三、详细要求 → 实验报告」。正文的八个章名和顺序逐项匹配；第六、七章跨页，续页不另立章。
+依据：lab/context/research/AI4S-assignment.md「三、详细要求 → 实验报告」。正文的八个章名和顺序逐项匹配；第六、七章跨页，续页不另立章。
 
 | 试题要求 / 正文章名 | PDF页码 | 内容 | 补充资料 |
 |---|---:|---|---|

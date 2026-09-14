@@ -1,0 +1,14 @@
+{
+  "schema": "schema://artifact-descriptor",
+  "typeIdentity": "entity-kind/KND-3b7e2c9a1d5f6e8c0a4b2d3f5e7c9a16",
+  "kindVersion": 1,
+  "entityId": "RES-524fbd368d18cf801e4e4fac7527de53",
+  "title": "AI4S 精简事件流内核设计",
+  "locator": {
+    "kind": "repository-path",
+    "value": "lab/context/research/event-stream-kernel-design.md"
+  },
+  "contentVersion": "sha256:28beaff1009b80efc704f0967b871fd661890b506c48526b36e3e2ed1447caa2",
+  "attributes": {},
+  "source": "repo:ai4s-directed-evolution-agent:lab/context/research/event-stream-kernel-design.md"
+}

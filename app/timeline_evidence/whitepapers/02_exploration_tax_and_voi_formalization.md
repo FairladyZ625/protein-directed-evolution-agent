@@ -1,6 +1,6 @@
 # 极小实验预算下的探索税、有限视界后悔与信息价值采样
 
-任务：`task_dc290fc9d622b4e96ad1edc327`。日期：2026-09-12。本文为理论研究交付，不修改 `compose_batch`。原始证据以规范仓库中的 `reports/scientific_report_v1.0.md` 第 7 章为主；v0.5 核对补充读取 `harness/context/research/v05-agent-optimization-gemini.md`。公式中的概率均依赖明确模型，报告中的实测数值均为现有报告转录，未重跑湿实验或查表实验。
+任务：`task_dc290fc9d622b4e96ad1edc327`。日期：2026-09-12。本文为理论研究交付，不修改 `compose_batch`。原始证据以规范仓库中的 `reports/scientific_report_v1.0.md` 第 7 章为主；v0.5 核对补充读取 `lab/context/research/v05-agent-optimization-gemini.md`。公式中的概率均依赖明确模型，报告中的实测数值均为现有报告转录，未重跑湿实验或查表实验。
 
 ## 1. 问题修正与文献定位
 

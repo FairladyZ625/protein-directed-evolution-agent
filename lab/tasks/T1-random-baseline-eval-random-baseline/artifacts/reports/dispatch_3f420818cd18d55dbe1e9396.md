@@ -1,0 +1,1 @@
+Provider exited with code 1 without a structured failure or stderr diagnostic.

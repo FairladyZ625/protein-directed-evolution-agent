@@ -1,50 +1,50 @@
 {
   "v0.1/agentic.metrics.json": {
-    "source": "harness/reports/agentic-v0.1/aav/agentic.metrics.json",
+    "source": "lab/reports/agentic-v0.1/aav/agentic.metrics.json",
     "sha256": "d76e20c134605f3b6af420e733a8318ed036fbb59a82230cb88443da7a6d11c5"
   },
   "v0.1/agentic.events.jsonl": {
-    "source": "harness/reports/agentic-v0.1/aav/agentic.events.jsonl",
+    "source": "lab/reports/agentic-v0.1/aav/agentic.events.jsonl",
     "sha256": "e8d2f5ce819a4db9c37b17f9160401ff6f92a60ad0b5a8aacbfec71f77166399"
   },
   "v0.2/agentic.metrics.json": {
-    "source": "harness/reports/agentic-v0.2/aav/agentic.metrics.json",
+    "source": "lab/reports/agentic-v0.2/aav/agentic.metrics.json",
     "sha256": "ed60ac4ffb7cd83b58ea676d2394aa050e92e146894ad0c2357c04f986a056a7"
   },
   "v0.2/agentic.events.jsonl": {
-    "source": "harness/reports/agentic-v0.2/aav/agentic.events.jsonl",
+    "source": "lab/reports/agentic-v0.2/aav/agentic.events.jsonl",
     "sha256": "14b84537fae663a3b42cb58ad6aa8b4259f09429b303d689e28afd7e4d43d596"
   },
   "v0.4/agentic.metrics.json": {
-    "source": "harness/reports/agentic-v0.4/aav/agentic.metrics.json",
+    "source": "lab/reports/agentic-v0.4/aav/agentic.metrics.json",
     "sha256": "3f1fb10ba36a18287156f6e8dd52abb4d03a993d8c8656b87802ec49a3724612"
   },
   "v0.4/agentic.events.jsonl": {
-    "source": "harness/reports/agentic-v0.4/aav/agentic.events.jsonl",
+    "source": "lab/reports/agentic-v0.4/aav/agentic.events.jsonl",
     "sha256": "40905f7824a4a189e40af8ea4bf4adb0381eced460b74b414bc15b826a44fa88"
   },
   "v0.5/agentic.metrics.json": {
-    "source": ".worktrees/t-v05/harness/reports/agentic-v0.5/aav/agentic.metrics.json",
+    "source": ".worktrees/t-v05/lab/reports/agentic-v0.5/aav/agentic.metrics.json",
     "sha256": "a718c0b063bae3630812b606bfed5112556d595c08655f7e1bea89ee221d65ee"
   },
   "v0.5/agentic.events.jsonl": {
-    "source": ".worktrees/t-v05/harness/reports/agentic-v0.5/aav/agentic.events.jsonl",
+    "source": ".worktrees/t-v05/lab/reports/agentic-v0.5/aav/agentic.events.jsonl",
     "sha256": "20c16adcd13d93b6043837aeebb970425fafe6a7d8e46b379c3490a898465df0"
   },
   "v0.7/agentic.metrics.json": {
-    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/alternating-seed42/metrics.json",
+    "source": ".worktrees/t-v07/lab/reports/agentic-v0.7/aav/alternating-seed42/metrics.json",
     "sha256": "a3c9a19f94fd6bf376151cc3d7039f2f4b4f750acb62d232c8f60c62d604727c"
   },
   "v0.7/agentic.events.jsonl": {
-    "source": ".worktrees/t-v07/harness/reports/agentic-v0.7/aav/alternating-seed42/events.jsonl",
+    "source": ".worktrees/t-v07/lab/reports/agentic-v0.7/aav/alternating-seed42/events.jsonl",
     "sha256": "fe7ce555a9b1a6b35d42032cb0edeb782e8b59cd1a7f2c365ec239da44770408"
   },
   "v0.3/surrogate_scan.json": {
-    "source": "harness/reports/agentic-v0.3/aav/surrogate_scan.json",
+    "source": "lab/reports/agentic-v0.3/aav/surrogate_scan.json",
     "sha256": "c6484f6dde0b4a60e2257438834055071f545f7660837527455eac135e9f4df8"
   },
   "baseline.metrics.json": {
-    "source": "harness/reports/agentic-v0.4/aav/deterministic.metrics.json",
+    "source": "lab/reports/agentic-v0.4/aav/deterministic.metrics.json",
     "sha256": "41ae9945a401c0d047c7b6bd81738f96e953fa638bc55c5b22d1cae7e0e144b0"
   },
   "scientific_report_v1.0.md": {
@@ -53,11 +53,11 @@
   },
   "whitepapers/01_higher_order_epistasis_theory.md": {
     "source": "reports/theoretical_foundations/01_higher_order_epistasis_theory.md",
-    "sha256": "4e424dde0f068f46f6d55985b4ca1ae5c32eb1559bcc1e1ededd803ecab3e4b9"
+    "sha256": "d5dc515fb039753da64b2986361e6a5d1ff5c347c8832bac993645ac64a61dd2"
   },
   "whitepapers/02_exploration_tax_and_voi_formalization.md": {
     "source": "reports/theoretical_foundations/02_exploration_tax_and_voi_formalization.md",
-    "sha256": "a5eec86ac65eee34e5a757dc77cbbc0fc050219c53497e8aa36eaecaf42adfac"
+    "sha256": "64b5f528467d88c29f4930a2b5e3fe912da469af96cdcef5960b72578643990e"
   },
   "whitepapers/03_rsi_cybernetic_ai4s_system_spec.md": {
     "source": "reports/theoretical_foundations/03_rsi_cybernetic_ai4s_system_spec.md",
@@ -82,11 +82,11 @@
     "source_sha256": "520c7c6545e61d3c23b41616fbb6afe3396c3ca11da1fe14ead92846dfeffa77"
   },
   "v0.6/agentic.metrics.json": {
-    "source": "harness/reports/agentic-v0.6/aav/semi/agentic.metrics.json",
+    "source": "lab/reports/agentic-v0.6/aav/semi/agentic.metrics.json",
     "sha256": "8994f5b35b4b4368a822669484c59ddb9118338c613315c8f1a2f8b943ff00bd"
   },
   "v0.6/agentic.events.jsonl": {
-    "source": "harness/reports/agentic-v0.6/aav/semi/agentic.events.jsonl",
+    "source": "lab/reports/agentic-v0.6/aav/semi/agentic.events.jsonl",
     "sha256": "270e1eb08d0f28d65f597be3a85f1748325afaabb61fbd04da7b4b7b5b30f636"
   },
   "v0.8/agentic.metrics.json": {
@@ -98,11 +98,11 @@
     "sha256": "5ae7411fc3b81116d81b4c702cde01be890bb3d5fbe614ca21625765a2113aed"
   },
   "v0.9/agentic.metrics.json": {
-    "source": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.metrics.json",
+    "source": "lab/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.metrics.json",
     "sha256": "d5f6663e98b2ed1c2ca3776c20460ec960ef633f6f24b63a35e508e1e8014a27"
   },
   "v0.9/agentic.events.jsonl": {
-    "source": "harness/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.events.jsonl",
+    "source": "lab/reports/v09-contract/contract-v09_reflexion-on_seed-42/agentic.events.jsonl",
     "sha256": "e7280854dabd3e5514f8d75024982c78dc318dc0d734f4b2830f17b9d84d7dfc"
   }
 }

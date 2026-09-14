@@ -55,7 +55,7 @@ VERSIONS = {
     'v0.7': (
         '确定性机制固化',
         'v0.7 确定性机制固化 · 验证 UCB 参数置信界收敛性',
-        '确定性交替采样策略在第 4 批次精确命中 8.4162 未测候选池全局真峰。进一步系统参数网格扫描证实，重探索 UCB 采集函数（β=3）在固定候选池上确定性达峰 8.4162——该配置不消耗采集随机数，30 个种子跑出的是同一条轨迹，因此这是确定性结果而非 30 次独立成功（真正含随机成分的交替调度与 Thompson 采样达峰率为 2/30 与 3/30）。据此确立微观确定性数学优化与宏观智能体战略调度的双环系统架构。（该网格的产物路径：harness/context/research/v07-multiseed-evidence/summary.json 与 results.json，共 7 方法 × 30 seed = 210 条记录；叙述表见 harness/context/research/v07-multiseed-robustness.md）',
+        '确定性交替采样策略在第 4 批次精确命中 8.4162 未测候选池全局真峰。进一步系统参数网格扫描证实，重探索 UCB 采集函数（β=3）在固定候选池上确定性达峰 8.4162——该配置不消耗采集随机数，30 个种子跑出的是同一条轨迹，因此这是确定性结果而非 30 次独立成功（真正含随机成分的交替调度与 Thompson 采样达峰率为 2/30 与 3/30）。据此确立微观确定性数学优化与宏观智能体战略调度的双环系统架构。（该网格的产物路径：lab/context/research/v07-multiseed-evidence/summary.json 与 results.json，共 7 方法 × 30 seed = 210 条记录；叙述表见 lab/context/research/v07-multiseed-robustness.md）',
         '构建具备全周期状态审计能力的外环元控制器，实现对微观连续收敛停滞的自主诊断与参数回溯调度。',
     ),
     'v0.8': (
@@ -177,7 +177,7 @@ RESEARCH_INSIGHTS = [
         'core_data': [
             {'label': '纯 LLM 自主决策最高分', 'val': '7.8290', 'desc': '深陷高维局部鞍点吸引盆，邻域突变呈现活性悬崖，后续轮次边际收益归零'},
             {'label': '确定性交替参考达峰', 'val': '8.4162', 'desc': '于第 4 批次命中未测候选池唯一全局真峰，击穿加性理论天花板'},
-            {'label': '重探索 UCB (β=3) 达峰', 'val': '确定性达峰', 'desc': '该配置不消耗采集随机数，30 个种子跑出同一条轨迹（第 3 轮达峰），非 30 次独立成功；纯均值贪心 (β=0) 同为确定性、始终不达峰。含随机成分的交替调度为 2/30、高斯 Thompson 为 3/30（产物：harness/context/research/v07-multiseed-evidence/summary.json）'},
+            {'label': '重探索 UCB (β=3) 达峰', 'val': '确定性达峰', 'desc': '该配置不消耗采集随机数，30 个种子跑出同一条轨迹（第 3 轮达峰），非 30 次独立成功；纯均值贪心 (β=0) 同为确定性、始终不达峰。含随机成分的交替调度为 2/30、高斯 Thompson 为 3/30（产物：lab/context/research/v07-multiseed-evidence/summary.json）'},
             {'label': '探索税 (Exploration Tax)', 'val': 'Δ = 0.5872', 'desc': '8.4162 − 7.8290，定量表征微观低效试错付出的置换机会成本'},
         ],
         'sections': [
@@ -506,7 +506,7 @@ OUTER_LOOP = {
             'kind': 'human',
             'title': '无约束探索基线确立：检验盲目探索的失活风险',
             'detail': '评估大模型在脱离生物物理与化学先验约束下的自主决策表现，探究高维突变空间无导向探索对蛋白质折叠与功能稳定性的破坏性。',
-            'ref': 'harness/reports/final-report-v0.1',
+            'ref': 'lab/reports/final-report-v0.1',
         },
         {
             'kind': 'signal',
@@ -538,7 +538,7 @@ OUTER_LOOP = {
             'kind': 'harness',
             'title': 'v0.2 阶段性实证报告归档',
             'detail': '门禁约束流成功追平贪心基线（7.5301），强变体提升至 93/288，探索惩罚有效消除；报告客观记录「功能止损达成但未突破加性峰值」。',
-            'ref': 'git 6c7b31a · harness/reports/agentic-v0.2',
+            'ref': 'git 6c7b31a · lab/reports/agentic-v0.2',
         },
         {
             'kind': 'insight',
@@ -552,7 +552,7 @@ OUTER_LOOP = {
             'kind': 'human',
             'title': '暂停湿实验并启动代理模型全空间表征诊断',
             'detail': '团队果断叫停盲目湿实验测试，将整代研发周期置换为全空间表征与代理模型系统级扫描，定位真实真峰不可见性的理论根源。',
-            'ref': 'harness/reports/agentic-v0.3',
+            'ref': 'lab/reports/agentic-v0.3',
         },
         {
             'kind': 'signal',
@@ -596,13 +596,13 @@ OUTER_LOOP = {
             'kind': 'harness',
             'title': '增加采样轮次无法弥补微观优化缺陷',
             'detail': '消融实验表明：大模型的根本短板在于高维微观连续空间的梯度利用效率而非单纯迭代轮次，盲目增加轮次无法对冲探索税损耗。',
-            'ref': 'git 3280724 · harness/reports/agentic-v0.4',
+            'ref': 'git 3280724 · lab/reports/agentic-v0.4',
         },
         {
             'kind': 'insight',
             'title': '探索税（Exploration Tax）的形式化测定',
             'detail': 'LLM 自主决策停滞于 7.8290，确定性参考达 8.4162：在高置信度模型下，探索配额置换代价首次被严密量化（描述性差值 Δ = 0.5872）。',
-            'ref': 'harness/reports/agentic-v0.4',
+            'ref': 'lab/reports/agentic-v0.4',
         },
     ],
     'v0.5': [
@@ -628,7 +628,7 @@ OUTER_LOOP = {
             'kind': 'insight',
             'title': '不可篡改的阴性结果入账与机制转向',
             'detail': '从静态固定探索分配转向基于收敛状态动态监测与回溯机制，该失败直接催化了 v0.7 稳健确定性参考策略的设计。',
-            'ref': 'harness/reports/agentic-v0.4',
+            'ref': 'lab/reports/agentic-v0.4',
         },
     ],
     'v0.6': [
@@ -636,7 +636,7 @@ OUTER_LOOP = {
             'kind': 'human',
             'title': '人在环干预：把停滞判定与逃逸权交给智能体',
             'detail': 'v0.5 的过早退火剪掉了潜在高适应度分支。研发团队据此加入元层：固定规则监测累计 top-10 最大值，连续 2 轮不提升即在轮次提示中给出 STALLED 标志；是否行动、跳多远交由智能体判断。逃逸工具是 redirect_batch——按与最优簇的突变组成重叠度跳到另一个高预测盆地。',
-            'ref': 'harness/reports/agentic-v0.6',
+            'ref': 'lab/reports/agentic-v0.6',
         },
         {
             'kind': 'signal',
@@ -648,7 +648,7 @@ OUTER_LOOP = {
             'kind': 'insight',
             'title': '判据危机：工具动作变了，不等于送去测量的批次变了',
             'detail': '本代暴露出一个此前没有的方法学问题——衡量“智能体做了什么”一直靠工具调用次数与自然语言总结，而这两者都可能在实测批次完全不变的情况下发生变化。必须建立只看实测批次、不看叙述的判据。这个缺口直接催生了 v0.8 的逐变体残差事件流。',
-            'ref': 'harness/reports/REPORT-HANDOFF.md',
+            'ref': 'lab/reports/REPORT-HANDOFF.md',
         },
     ],
     'v0.7': [
@@ -700,7 +700,7 @@ OUTER_LOOP = {
             'kind': 'insight',
             'title': '自述与行为的分离：它声称排除了致死背景，批次却一字未改',
             'detail': '反思臂的总结写着 “Residual reflexion excluded the two strongly lethal round-5 contexts”，而该轮实测送测集合与对照臂逐字节相同。这确立了本项目的核心判据：只认 agent.tool.test.residuals 里 records[].seq 的集合哈希——那是唯一真正花掉预算的东西。同一判据看得见采集档位造成的差异，所以“未分叉”是关于处理的结论，不是判据不灵敏。',
-            'ref': 'harness/reports/REPORT-HANDOFF.md',
+            'ref': 'lab/reports/REPORT-HANDOFF.md',
         },
         {
             'kind': 'harness',
@@ -720,7 +720,7 @@ OUTER_LOOP = {
             'kind': 'human',
             'title': '契约改造：给证据一个同构的落点',
             'detail': 'compose_batch 增加残基级 exclude_motifs（按 W<零基位置>M 剔除候选，剔完不足 n 时返回 exclusion_too_strict 而非静默缩批）；采集段落删去 Prefer that default 并点名新入口；释放利用比地板使因变量不再被压成常数。两个契约的差异落在工具 schema 上而不只在提示词——v0.8 臂根本看不到那个参数，否则对照臂就不是对照。',
-            'ref': 'harness/tasks/task_feb731c779788be5bfff65e979-v0-9',
+            'ref': 'lab/tasks/task_feb731c779788be5bfff65e979-v0-9',
         },
         {
             'kind': 'signal',
@@ -738,7 +738,7 @@ OUTER_LOOP = {
             'kind': 'harness',
             'title': '指标饱和的自我揭发',
             'detail': '八个臂全部在第 2 轮达到候选池真实最优 8.416205，即 67% 的预算花在答案已经找到之后——峰值与样本效率两个主指标同时失去区分力。压到 12×6 后达峰推到 r4、浪费降到 33%，但四臂仍同轮达峰。改用致死 motif 复现率（此前算好却全仓无人消费的死指标）后，后段四臂为 13.9% / 13.9% / 20.1% / 6.2%。另更正一处口径：候选池 27,832 条里超过冷启动 incumbent 9.536457 的是 0 条，全表最优本身落在 HD=2——“未超越 incumbent”是数据集构造，不是智能体的失败。',
-            'ref': 'harness/reports/v09-contract-b12',
+            'ref': 'lab/reports/v09-contract-b12',
         },
     ],
 }
@@ -769,7 +769,7 @@ COGNITION_ARC = [
         'tag': '第 4 阶段 · 机制形式化确立',
         'color': '#059669',
         'title': '贝叶斯置信界固化：重探索 UCB (β=3) 确定性收敛至池内真峰',
-        'detail': '通过 7 方法 × 30 种子网格扫描：重探索 UCB 采集函数于第 3 轮达峰，纯贪心对照始终不达峰。需同时说明口径——两者均为确定性配置，30 次跑的是同一条轨迹，不能按独立样本读；含随机成分的交替调度与 Thompson 采样达峰率分别为 2/30 与 3/30。产物路径：harness/context/research/v07-multiseed-evidence/summary.json（7 方法 × 30 seed）。',
+        'detail': '通过 7 方法 × 30 种子网格扫描：重探索 UCB 采集函数于第 3 轮达峰，纯贪心对照始终不达峰。需同时说明口径——两者均为确定性配置，30 次跑的是同一条轨迹，不能按独立样本读；含随机成分的交替调度与 Thompson 采样达峰率分别为 2/30 与 3/30。产物路径：lab/context/research/v07-multiseed-evidence/summary.json（7 方法 × 30 seed）。',
         'ref': 'reports/explainer_for_humans.html #sec8',
     },
 ]
@@ -779,7 +779,7 @@ HONEST_BOUNDARIES = [
         'title': '重复口径边界（确定性配置的 30 次不是 30 个独立样本）',
         'detail': '均值与 UCB 路径不消耗采集随机数，在固定候选池上 30 个种子跑出的是同一条轨迹，'
                   '因此「UCB β=3 达峰、纯均值不达峰」应读作确定性结论，不可换算成成功率或套用 Wilson 置信区间。'
-                  '本项目中真正含随机成分的只有交替调度与高斯 Thompson 采样（各 30 条不同轨迹），其达峰率为 2/30 与 3/30（产物：harness/context/research/v07-multiseed-evidence/summary.json，两者 unique_trajectories 均为 30）。',
+                  '本项目中真正含随机成分的只有交替调度与高斯 Thompson 采样（各 30 条不同轨迹），其达峰率为 2/30 与 3/30（产物：lab/context/research/v07-multiseed-evidence/summary.json，两者 unique_trajectories 均为 30）。',
     },
     {
         'title': '极值定义边界（未测离散候选池极值 vs 历史全库全局记录）',

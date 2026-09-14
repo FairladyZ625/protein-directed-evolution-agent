@@ -1,0 +1,25 @@
+## Summary
+
+完成因果反事实归因状态机与影子沙箱自演进工程蓝图，正式交付 artifacts/causal-attribution-engine-blueprint.md。包含自动平台期检测、残差相关/汉明距离/方差信噪比、四竞争假说、预测直接效应与闭环总效应、13 状态 Mermaid、Pydantic 契约、最小模型补丁流水线、只读 Verifier 隔离与 Rollback Transaction。公开副本及可重复静态验收位于 worker 的 artifacts/causal-attribution-engine/。
+
+交付提交：686c826d06c6a2b477c2e369943de14615bbec99（分支 t-causal-attribution）。任务产物已通过 Harness artifact/doc-sync 路由发布到 canonical package。下游裁定提案 dec_956152B50EA1B4EC050D9C7FAF 已建立并校验，不代表已接受或授权部署。
+
+## Verification
+
+使用既有 Python 环境及 Pydantic 2.13.5 执行 verify_blueprint.py：13 状态全部入口可达、都有终态路径；三个事务状态均有回滚出口；13 个契约可载入与导出 JSON Schema；13 个非法输入负例均拒绝。git diff --cached --check 通过；六份正式 canonical 产物与 worker 内容逐字节一致，最终报告 SHA256 与蓝图相符。
+
+最终静态记录为 artifacts/verification-final.json；原 artifacts/verification.json 保留为文档治理路由修正前的历史结果。已读取四份指定材料，来源及内容 SHA256 见 artifacts/source-manifest.json。S3 从 canonical repository 读取，因为 worker 的相同路径不存在。
+
+事实 F-9648FFB0 记录静态验收，F-F84D79D7 记录指定笔记含事后真峰信息。决策两个 load-bearing claim 均以 canonical evidenced-by 关系覆盖；ha decision validate 返回 0 warning、0 error。任务有效 preset 为 docs-task，completionGates 为空，本任务没有 CI 权限改动或应用行为改动。
+
+尚未进行独立 review-execution 或 owner review-consent；本执行者不自审。未执行 Mermaid 渲染、运行期越权/崩溃注入、统计校准或蛋白质实验；蓝图静态验收不替代这些实现阶段证据。
+
+## Residual Risk
+
+阈值与功效仍需校准；残差/覆盖/SNR 是诊断信号而非因果证明；有限池重放不能证明真实实验外推。只读评测器不能消除指标失配和自适应泄漏，隔离与回滚尚无运行期证明。方案要求独立评测、新分区、预算与签名边界、有界停止，并已在决策提案中记录这些限制。研究者后续运行需要清洁上下文，不能继承含答案笔记的本次会话。
+
+## Same Mechanism Elsewhere
+
+机制句：优化者若能读到评测答案或修改验收规则，观测到的分数改善无法独立证明任务能力提升。
+
+本任务仅交付研究设计，没有修改应用行为，因此不适用代码修复后的全仓同机制排查。按任务最小上下文规则，在已指定材料内核对该机制：RSIBench-Data 笔记第 6 节指出同一子集选择与评估不能证明留出泛化；五机规范第 8–9 节指出隐藏集反复查询与评价权限风险；平台期方法笔记第 0、3 节直接使用已知峰身份与排名。本蓝图以分区隔离、清洁记忆视图和独立 Verifier 将三处共同机制纳入统一边界；未宣称完成全仓源码安全审计。

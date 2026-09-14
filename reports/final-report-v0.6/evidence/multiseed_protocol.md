@@ -78,9 +78,9 @@ sign test 去掉平局，检验 Greedy 在随机轨迹上 strong 更高的概率
 复现：在本代码基线从仓库根运行（已有目录拒绝覆盖；另建目录并复制run.py可重跑）：
 
 ```bash
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONPATH=. .venv/bin/python harness/context/research/v07-multiseed-evidence/run.py
-PYTHONPATH=. .venv/bin/python harness/context/research/v07-multiseed-evidence/run.py --verify-only
-PYTHONPATH=. .venv/bin/python harness/context/research/v07-multiseed-evidence/audit.py
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONPATH=. .venv/bin/python lab/context/research/v07-multiseed-evidence/run.py
+PYTHONPATH=. .venv/bin/python lab/context/research/v07-multiseed-evidence/run.py --verify-only
+PYTHONPATH=. .venv/bin/python lab/context/research/v07-multiseed-evidence/audit.py
 ```
 
 证据目录：[v07-multiseed-evidence](v07-multiseed-evidence/)：run.py、audit.py、verify_ucb3.py、protocol.md、manifest.json、210份trials、results.json、summary.json、controls.json、reference-seed42.json、runner/worker日志及预测cache。报告与本地证据不强制加入公共代码仓。

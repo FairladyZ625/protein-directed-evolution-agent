@@ -837,7 +837,7 @@ def render_outer_loop(version):
     legend = '　·　'.join(f'<span style="color:{m["color"]}">{m["icon"]} {m["label"]}</span>' for m in OUTER_KINDS.values())
     st.markdown(f'<div class="oloop-legend">{legend}</div>', unsafe_allow_html=True)
     st.markdown(_outer_timeline_html(OUTER_LOOP[version]), unsafe_allow_html=True)
-    st.caption('注：外环事件由 git 提交历史、harness/reports 报告与研究文稿只读萃取沉淀；与内环 SHA-256 实验物理隔离，忠实呈现人机决策演变。')
+    st.caption('注：外环事件由 git 提交历史、lab/reports 报告与研究文稿只读萃取沉淀；与内环 SHA-256 实验物理隔离，忠实呈现人机决策演变。')
 
 
 # ---------------------------------------------------------------------------

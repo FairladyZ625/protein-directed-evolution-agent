@@ -1,0 +1,30 @@
+{
+  "schema": "runtime-dispatch/v1",
+  "dispatchId": "dispatch_f4a32befbf388389dccf48d6",
+  "taskId": "task_cea947b5025412586587d1e4b1",
+  "executionId": "exe_b4f2705c650e640c8635c3c67e",
+  "agentId": "de-ml",
+  "agentName": "AI4S 蛋白 ML 工程师",
+  "instanceId": "test-codex-sol",
+  "model": "gpt-5.6-sol",
+  "reasoningEffort": null,
+  "fast": false,
+  "cwd": "/Users/lizeyu/Projects/ai4s-directed-evolution-agent",
+  "missionRef": "tasks/task_cea947b5025412586587d1e4b1-knowledge-rules-base/artifacts/missions/dispatch_f4a32befbf388389dccf48d6.md",
+  "runtimeSessionId": "runtime_216b0bc948884ca35cb388df",
+  "providerSessionId": "01a095d1-2665-7aa1-8b77-9f6d71f4c5f2",
+  "startedAt": "2026-09-12T13:31:46.734Z",
+  "endedAt": "2026-09-12T13:35:46.205Z",
+  "outcome": "succeeded",
+  "exitCode": 0,
+  "resultRef": "artifact:runtime-result/sha256/3db3b85b5fbddee0eb95454683b6711b8937fdc39ece3f72a11f46ebf608c458",
+  "eventStreamRef": "file:.harness/runtime/dispatches/dispatch_f4a32befbf388389dccf48d6.jsonl",
+  "attemptGroupId": "dispatch_f4a32befbf388389dccf48d6",
+  "attemptIndex": 0,
+  "provider": {
+    "instance": "test-codex-sol",
+    "model": "gpt-5.6-sol"
+  },
+  "classification": "worker_stop",
+  "reason": "Worker completed the attempt successfully."
+}

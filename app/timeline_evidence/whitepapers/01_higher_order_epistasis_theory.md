@@ -24,7 +24,7 @@
 
 ## 3. 数据及既有接口审计
 
-已阅读 `reports/scientific_report_v1.0.md` 第 3、7 章与 `harness/context/research/plateau-breaking-methods.md`。后者记载冷启动 10,433 条 HD≤2；这是当前任务的输入契约，本文未重新清洗并复算该数量。原始 `data/aav/full_data.csv` 的字段包括 mutated_region、reference_region、score、category、number_of_mutations、levenshtein_distance 及多个 split 标识。开头记录包含终止符与长度变化，说明原始 CSV 不能不加过滤地当作 28aa 替换池。
+已阅读 `reports/scientific_report_v1.0.md` 第 3、7 章与 `lab/context/research/plateau-breaking-methods.md`。后者记载冷启动 10,433 条 HD≤2；这是当前任务的输入契约，本文未重新清洗并复算该数量。原始 `data/aav/full_data.csv` 的字段包括 mutated_region、reference_region、score、category、number_of_mutations、levenshtein_distance 及多个 split 标识。开头记录包含终止符与长度变化，说明原始 CSV 不能不加过滤地当作 28aa 替换池。
 
 下游应读取现有合法池清单并保存哈希，验证长度等于 28、字母属于 20 种氨基酸、score 有限、序列去重及 split 不交叉。重复实验不能跨训练/验证；若汇总重复测量，需保留方差及批次。HD 应相对于同一 reference_region 重新计算，而非把 Levenshtein 距离或原始 number_of_mutations 不经审计直接替代。所有候选标签仅通过已授权 oracle 测量后加入训练；候选序列可用于合法性和无标签覆盖统计，不能读取其 score 来选簇。
 

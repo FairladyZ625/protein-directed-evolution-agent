@@ -19,11 +19,11 @@ def build(root: Path, v05: Path, v07: Path, out: Path):
                                 'sha256': hashlib.sha256(dest.read_bytes()).hexdigest()}
     for version, origin in [('v0.1', root), ('v0.2', root), ('v0.4', root), ('v0.5', v05)]:
         for suffix in ['metrics.json', 'events.jsonl']:
-            copy(origin / f'harness/reports/agentic-{version}/aav/agentic.{suffix}', f'{version}/agentic.{suffix}')
+            copy(origin / f'lab/reports/agentic-{version}/aav/agentic.{suffix}', f'{version}/agentic.{suffix}')
     for suffix in ['metrics.json', 'events.jsonl']:
-        copy(v07 / f'harness/reports/agentic-v0.7/aav/alternating-seed42/{suffix}', f'v0.7/agentic.{suffix}')
-    copy(root / 'harness/reports/agentic-v0.3/aav/surrogate_scan.json', 'v0.3/surrogate_scan.json')
-    copy(root / 'harness/reports/agentic-v0.4/aav/deterministic.metrics.json', 'baseline.metrics.json')
+        copy(v07 / f'lab/reports/agentic-v0.7/aav/alternating-seed42/{suffix}', f'v0.7/agentic.{suffix}')
+    copy(root / 'lab/reports/agentic-v0.3/aav/surrogate_scan.json', 'v0.3/surrogate_scan.json')
+    copy(root / 'lab/reports/agentic-v0.4/aav/deterministic.metrics.json', 'baseline.metrics.json')
     copy(root / 'reports/scientific_report_v1.0.md', 'scientific_report_v1.0.md')
     for p in sorted((root / 'reports/theoretical_foundations').glob('*.md')):
         copy(p, f'whitepapers/{p.name}')

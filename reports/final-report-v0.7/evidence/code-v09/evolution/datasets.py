@@ -34,7 +34,7 @@ def esm_encoder(name: str, seqs_all: list[str]):
     """Cached ESM-2 embedder over the mutated-region strings (see features/esm2.py).
 
     Embeddings are computed once for every sequence in the dataset and cached to
-    harness/reports/cache/esm_<name>.npz, then looked up per call.
+    lab/reports/cache/esm_<name>.npz, then looked up per call.
     """
     from evolution.results_layout import CACHE
     cache = CACHE / f"esm_{name}.npz"

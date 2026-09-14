@@ -1,0 +1,11 @@
+{
+  "line": "workflow",
+  "version": "v1.0",
+  "description": "固定五角色工作流 + 池式四策略主动学习(random / greedy / agent_no_knowledge / knowledge_agent)。策略只在候选排序上不同,共享同池、同预算、同 oracle。",
+  "datasets": {
+    "gb1": "GB1 四位点组合库,四策略×3轮,三档冷启动(easy/hard/sparse)+ LLM 注入档,含预测器阶梯与随机基线",
+    "aav": "AAV FLIP 池式四策略,one_hot 特征,HD≤2 冷启动 → HD>2 池"
+  },
+  "status": "baseline archetype",
+  "date": "2026-09"
+}

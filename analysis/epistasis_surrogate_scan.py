@@ -106,7 +106,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--budget", type=int, default=288)
     p.add_argument("--out", type=Path,
-                   default=ROOT / "harness/reports/agentic-v0.4/aav/epistasis_surrogate_scan.json")
+                   default=ROOT / "lab/reports/agentic-v0.4/aav/epistasis_surrogate_scan.json")
     a = p.parse_args(argv)
     res = scan(a.budget)
     a.out.parent.mkdir(parents=True, exist_ok=True)

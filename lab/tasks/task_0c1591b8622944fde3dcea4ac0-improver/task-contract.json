@@ -1,0 +1,104 @@
+{
+  "schema": "task-contract/v1",
+  "contractVersion": 1,
+  "taskId": "task_0c1591b8622944fde3dcea4ac0",
+  "packagePath": "tasks/task_0c1591b8622944fde3dcea4ac0-improver",
+  "title": "外环最小可信一步:Improver 从残差自动生成排除列表,经沙箱回测才热更新内环",
+  "taskClass": "standard",
+  "verticalId": "software/coding",
+  "presetId": "standard-task",
+  "profileId": "baseline",
+  "locale": "zh-CN",
+  "metadata": {
+    "fromLegacyId": null,
+    "idempotencyKey": null,
+    "moduleKey": null,
+    "parentTaskId": null,
+    "presetId": "standard-task",
+    "profileId": "baseline",
+    "riskTier": "medium",
+    "slug": "improver",
+    "surfaces": [],
+    "urgency": "medium",
+    "verticalId": "software/coding",
+    "workKind": "feat"
+  },
+  "registerModule": null,
+  "completionGates": [
+    "ci",
+    "code-doc-reconciliation"
+  ],
+  "presetSnapshotDigest": "sha256:f59578ca01cd614644f384fa534c07c56d497ebb17b530fdc086b9684f2b0066",
+  "scaffold": {
+    "baseVersion": "software-coding/v1",
+    "overlayDigest": null,
+    "resolvedSelectionDigest": "sha256:646c23def836360837eaa8b9cf5e6dc875f702718c6c2db2d4faf37ca754e322"
+  },
+  "documents": [
+    {
+      "slot": "task.index",
+      "path": "INDEX.md",
+      "owner": "machine",
+      "materializeAs": "INDEX.md",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.contract",
+      "path": "task-contract.json",
+      "owner": "machine",
+      "materializeAs": "task-contract.json",
+      "requiredAnchors": [],
+      "templateRef": null,
+      "contentSha256": null
+    },
+    {
+      "slot": "task.plan",
+      "path": "task_plan.md",
+      "owner": "doc-sync",
+      "materializeAs": "task_plan.md",
+      "requiredAnchors": [
+        "## Brief",
+        "## Goal",
+        "## Context",
+        "## Required Reading",
+        "## Entry Conditions",
+        "## Dependencies",
+        "## Execution Surface",
+        "## Constraints",
+        "## Checkpoint",
+        "## CI/Gate Authority Stop Condition",
+        "## Implementation Plan",
+        "## Deliverable Contract",
+        "## Evidence Protocol",
+        "## Verification"
+      ],
+      "templateRef": "template://planning/task-plan@1",
+      "contentSha256": "44d9bab7d530b5fcb38dd98a0e59608d37a8753b33906f4b1ccbda01cb727921"
+    },
+    {
+      "slot": "task.closeout",
+      "path": "closeout.md",
+      "owner": "doc-sync",
+      "materializeAs": "closeout.md",
+      "requiredAnchors": [
+        "## Summary",
+        "## Verification",
+        "## Residual Risk"
+      ],
+      "templateRef": "template://planning/closeout@1",
+      "contentSha256": "54fe38a08c370c1d160068406d365c53238c1ec374c1778e160253aae7f5c6d5"
+    },
+    {
+      "slot": "task.artifacts.keep",
+      "path": "artifacts/.gitkeep",
+      "owner": "doc-sync",
+      "materializeAs": "artifacts/.gitkeep",
+      "requiredAnchors": [],
+      "templateRef": "template://planning/keep-file@1",
+      "contentSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ],
+  "pinned": true
+}

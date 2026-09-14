@@ -1,0 +1,150 @@
+{
+  "schema_version": "pool.v1",
+  "dataset": "aav[one_hot]",
+  "strategy": "agentic",
+  "nomination": "LLM-driven tool-calling active learning (pool-based)",
+  "oracle": "measured table lookup",
+  "wild_type": "DEEEIRTTNPVATEQYGSVSTNLQRGNR",
+  "candidate_pool_size": 27832,
+  "cold_start_size": 10433,
+  "budget_per_round": 96,
+  "n_rounds": 0,
+  "total_budget": 288,
+  "budget_spent": 0,
+  "strong_threshold": 2.6159,
+  "llm_used": true,
+  "llm_summary": "Good insights from the data:\n\n**Current state:**\n- Best variant: `DEEEIRTTNPVATEQYGSYSTNLQQGNR` at 9.536 fitness\n- 10,433 variants measured, 27,832 unmeasured\n- Top enriched substitutions emphasize positions 20 (T20E/D), 17 (S17E), 27 (R27Q/I/L/T/M/S), and 24 (R24Q/G/H)\n\n**Key observations:**\n1. The surrogate predicts multiple variants with fitness >11, well above current best (9.536)\n2. High-uncertainty variants fail knowledge checks badly (too many mutations, non-conservative substitutions)\n3. Top predictions maintain the core template near the current best but add more acidic residues (",
+  "n_tool_calls": 5,
+  "summary": {
+    "final_cum_top10_max": null,
+    "final_cum_top10_mean": null,
+    "final_cum_n_strong": null,
+    "cum_top10_max_curve": []
+  },
+  "rounds": [],
+  "tool_trace": [
+    {
+      "event_type": "agent.tool.analyze_measured",
+      "actor": "data_analyst",
+      "payload": {
+        "n_measured": 10433,
+        "n_pool_unmeasured": 27832,
+        "budget_remaining": 288,
+        "best_measured": [
+          [
+            "DEEEIRTTNPVATEQYGSYSTNLQQGNR",
+            9.536
+          ],
+          [
+            "DEEEIRTTNPVATEAYGSVSENLQRGNR",
+            8.645
+          ],
+          [
+            "DEEEIRTTNPVATEQYGIVSDNLQRGNR",
+            8.438
+          ],
+          [
+            "DEEEIRTTNPVATEWYGSVSTNLQRGNQ",
+            8.39
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSASENLQRGNR",
+            8.078
+          ],
+          [
+            "DEEEIRTTNPVATEQYGDVSDNLQRGNR",
+            7.836
+          ],
+          [
+            "DEEELRTTNPVATEQYGEVSTNLQRGNR",
+            7.636
+          ],
+          [
+            "DEEEIRTTNPVATEQYGSVSENLQRGNN",
+            7.527
+          ]
+        ],
+        "top_enriched_substitutions": [
+          [
+            "T20E",
+            2.784
+          ],
+          [
+            "S17E",
+            2.686
+          ],
+          [
+            "R27Q",
+            2.501
+          ],
+          [
+            "R27I",
+            2.35
+          ],
+          [
+            "R27L",
+            2.324
+          ],
+          [
+            "R27T",
+            2.297
+          ],
+          [
+            "R24Q",
+            2.241
+          ],
+          [
+            "T20D",
+            2.207
+          ],
+          [
+            "R27M",
+            2.193
+          ],
+          [
+            "R24G",
+            2.068
+          ],
+          [
+            "R24H",
+            2.056
+          ],
+          [
+            "R27S",
+            2.048
+          ]
+        ]
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "predicted_mean",
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.list_pool",
+      "actor": "hypothesis_generator",
+      "payload": {
+        "by": "uncertainty",
+        "n": 40
+      }
+    },
+    {
+      "event_type": "agent.tool.predict",
+      "actor": "fitness_evaluator",
+      "payload": {
+        "n": 20
+      }
+    },
+    {
+      "event_type": "agent.tool.check_knowledge",
+      "actor": "scientific_critic",
+      "payload": {
+        "n": 8
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "schema://artifact-descriptor",
+  "typeIdentity": "entity-kind/KND-3b7e2c9a1d5f6e8c0a4b2d3f5e7c9a16",
+  "kindVersion": 1,
+  "entityId": "RES-64477fdb9f6c80b62c2ab1c6f2ca099e",
+  "title": "AI4S 笔试技术方案",
+  "locator": {
+    "kind": "repository-path",
+    "value": "lab/context/research/AI4S-technical-plan.md"
+  },
+  "contentVersion": "sha256:83a7410f262105d156d7bb6ffc20ccde94c1775000cd4bf176495fba8dd46194",
+  "attributes": {},
+  "source": "repo:ai4s-directed-evolution-agent:lab/context/research/AI4S-technical-plan.md"
+}
