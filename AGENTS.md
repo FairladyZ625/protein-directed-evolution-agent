@@ -127,7 +127,9 @@ ha task complete <id>
 1. **lease 接回**:worker 跑完后执行留在 active、无 lease,`ha task start <id>` 报 `lease_conflict` 或 `progress append` 报 `progress_lease_required` —— 用 `ha task start <id> --execution-id <exe_…>` 接回那个执行。反过来,执行处于 active 时用**新的** execution-id 起一个执行会被拒(`invalid_transition`)。
 2. **评审独立性**:自己提交的执行不能自审(`actor_unauthorized`)。派 reviewer 必须**一个被审任务派一次**:`ha agent run de-reviewer --task <被审任务> --instance <inst> --role reviewer --cwd <仓库根> --detach`(2026-09-14 实测:旧写法 `ha runtime run <inst> --agent …` 已被 `error code=invalid_field` 拒,CLI 自述 hint 为「Use ha agent run <agent-id> --task <task-id> for task-bound work」;派工回执形如 `runtime-run: detached dispatch_… ; next: ha runtime status runtime_… --wait`)。用"一个评审任务统管 N 个被审任务"的形态派工,worker 会把活全干完但写入时才报 `executor_binding_invalid`,整轮作废。
 3. **纯文档任务 + worktree = 提交死锁**(fact `F-B1B5EABC`):产出全在 gitignored 的 `/harness/` 里 → worker 的交付提交是空提交 → `document_invalid`。未绑 worktree 的同类任务走 privateDelivery 路径可正常提交。
-4. **本仓 standard-task 的 ci 门结构性不可满足**(fact `F-8ED77039`):`submit`/`complete` 必返回 `service_rejected`(`gh run list --workflow rewrite-ci.yml` HTTP 404)。**不得**新建 workflow、改 CI 配置或 `transition --force`;记录进度后停手,交 CEO。上游修复跟踪于 `task_7994263c6be22e8690ec8d5950`。
+4. **ci 完成门的真实判据**(fact `F-B0148E72`;2026-09-14 实测更正):见证只为 **`headBranch=='main'` 且 `status=='completed'`** 的运行发布,并要求 `workflowName` 落在 `settings.ci.workflows` 里——本仓 `harness.yaml:13-14` 配的是 `workflows: [ci]`。**见证与被审任务自己的 commit 无关**:它取 main 上的 `ci` 运行,所以只要 main 的 `ci` 是绿的,`complete` 会自行铸出 `Checker witnesses: ci/op_…`。2026-09-14 有两个任务据此真过了门(`task_2e485a1ae…`、`task_6a18b55b9…`,均为 approved → consent → complete)。
+   **原写「standard-task 的 ci 门结构性不可满足(`rewrite-ci.yml` HTTP 404),`submit`/`complete` 必返 `service_rejected`」已作废**——`rewrite-ci` 在全局 CLI dist 里 `grep` **零命中**,该上游缺陷已修(见 `task_8cca79cbf…/task_plan.md:48`);那个 404 是拿错 workflow 名(`rewrite-ci.yml` 而非配置里的 `ci`)的历史状态。**照旧条推断会得出错误结论,2026-09-14 本会话即因此误判两次。**
+   仍然有效的红线不变:**不得**新建 workflow、改 CI 配置或 `transition --force`;门真红时记录进度后停手,交 CEO。
 
 ### 配方 4:把报告/工件登记为实体并挂到任务
 ```
