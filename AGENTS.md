@@ -2,6 +2,8 @@
 
 本文件是 Agent 在本仓库工作的统一操作入口与认知基准。任务专属上下文与当前进度请查阅 active task package 与 `task_plan.md`。
 
+**权威源 (SSoT)**: SQLite 状态库与事件流是台账的权威源；Git 提交是代码的权威源。
+
 ---
 
 ## 1. 核心本体与系统心智模型 (Ontology & Mental Model)
@@ -9,7 +11,6 @@
 - **代码与 Git 是物理现实 (Code as Physical Reality)**: 代码仓与真实 Git 历史是唯一的生产交付实体。任何文档、计划或台账若脱离可运行、可测试的代码与提交，均无实际效力。
 - **Harness 作为认知中枢 (Cognitive Ledger)**: Harness 不是流程路障，而是 Agent 长期演进的外脑与因果追踪器。在长周期任务与多轮协作中，它沉淀「为何决策（Decision）」、「基于何种实测（Fact）」、「交付了什么（Task）」，防止目标偏移与架构失忆。
 - **SSoT 与只读投影 (SSoT vs Projections)**:
-  - **权威源 (SSoT)**: SQLite 状态库与事件流是台账的权威源；Git 提交是代码的权威源。
   - **只读投影 (Projections)**: `harness/` 目录下的 Markdown 文件（`tasks/`、`decisions/`、`facts/` 等）是只读投影视图。不要手工修改其 frontmatter 或机器元数据，统一通过 `ha` CLI 驱动。
 - **三元因果闭环 (Triad Causal Loop)**:
   - **Fact（客观观察）**: 真实世界的代码行为、错误复现、基准测试输出、数据分析等客观事实。一切决策始于可复核的 Fact，杜绝主观臆测。
@@ -62,17 +63,21 @@
   ```bash
   ha task transition <id> cancelled --force --reason "<真实情况说明及对照记录>"
   ```
+
   授权严禁扩展至「硬闯红门」、「绕过未通过测试」或「将未完成工作标为完成」。
 
 ### 5.2 实测命令配方 (Copy-Paste Ready)
 
 #### 配方 1: 记录 Fact
+
 ```bash
 ha fact record --statement "<客观实测观察>" --source "<代码/测试/日志文件路径>" --confidence high [--task <task-id>]
 ```
+
 *注：带 `--task` 会自动建立 `task --produces--> fact` 边，满足任务完成门的 Fact 要求。*
 
 #### 配方 2: 制定决策 (Decision) 并履约 Claim
+
 ```bash
 # ① 提议决策（chosen / rejected / claims 必填，rejected 必带 whyNot）
 ha decision propose --json-input @- <<'J'
@@ -96,6 +101,7 @@ ha decision validate <id>
 ```
 
 #### 配方 3: 任务收口与交付 (Task Closeout)
+
 ```bash
 # ① 认领或接回租约（若已有 active 执行，带 --execution-id 接回）
 ha task start <id> [--execution-id <exe_...>]
@@ -120,12 +126,14 @@ ha task complete <id>
 ```
 
 #### 配方 4: 登记工件与自定义实体 (Entity Import)
+
 ```bash
 ha vertical entity-kind upsert --from-file kind.json
 ha entity import --kind <kind> --locator <文件或目录路径> --expected-version 0 --title "..."
 ```
 
 ### 5.3 已知合法关系三元组 (Declared Triples)
+
 - `task --produces--> fact` (记 fact 带 `--task` 自动建立)
 - `decision/<claim> --evidenced-by--> fact` (支撑决策 claim)
 - `decision/<claim> --derives--> task` (决策派生任务)
