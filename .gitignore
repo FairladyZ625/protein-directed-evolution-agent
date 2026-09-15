@@ -17,11 +17,10 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
-# 台账树随交付一起公开;仅排除其嵌套 git 仓与大缓存
-# 台账仓是独立的嵌套 git 仓库,由其自身跟踪,外层仓库不再收录
+# 台账投影与本地状态由 daemon 物化,不入库;交付文档树在 lab/
 harness/
-lab/reports/cache/
 /.harness/
+lab/reports/cache/
 .worktrees/
 
 # 更难数据集原始文件(不入库,同 GB1)
