@@ -9,7 +9,7 @@
 |---|---|
 | `reports/` | 实验产物树，每个研究周期一个自包含文件夹（`workflow-v1.x`、`agentic-v0.x`、`v09-contract`、`analysis-v0.1` 等）；`REPORT-HANDOFF.md` 是给报告作者的修订摘要；`experiment_log.jsonl` 是追加式实验台账 |
 | `context/` | 研究文稿与架构文档（试题原文、领域调研、技术方案、平台期破局、多种子稳健性等） |
-| `tasks/` | 78 个任务包：`task_plan.md`、`closeout.md`、执行记录、评审记录、`artifacts/` 产物 |
+| `tasks/` | 77 个任务包：`task_plan.md`、`closeout.md`、执行记录、评审记录、`artifacts/` 产物 |
 | `facts/` | 163 条追加式事实记录（`F-XXXXXXXX.md`） |
 | `decisions/` | 9 个决策包 |
 | `agents/` | 10 个 agent 声明（`de-reviewer`、`de-research`、`de-ml` 等） |
